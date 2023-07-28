@@ -147,7 +147,7 @@ export default function Banner() {
                     <Flex flexDirection={"column"} gap={5} alignItems={"center"} justifyContent={"center"}>
                         <Flex w={{base: "15%", md: "100%"}} justifyContent={"center"}><Image src={"/head.png"}/></Flex>
                         <Box>
-                            <Container color={"#B0F6FF"} fontSize={{base: "16px", md: "24px"}}>Your YTD
+                            <Container color={"#B0F6FF"} fontSize={{base: "16px", md: "24px"}} textAlign={"center"}>Your YTD
                                 Volume</Container>
                         </Box>
                     </Flex>
