@@ -18,9 +18,9 @@ const Footer = () => {
       pt={"55px"}
       backgroundColor={"#18215D"}
     >
-      {socials.map((social) => {
+      {socials.map((social, index) => {
         return (
-          <Box>
+          <Box key={index}>
             <Link display={"flex"} justifyContent={"center"}>
               <Image w={{ base: "50%", md: "100%" }} src={social.src} />
             </Link>

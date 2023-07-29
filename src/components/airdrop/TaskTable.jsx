@@ -18,11 +18,35 @@ import {
 } from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
 import { useEffect } from "react";
+import { mintNftContractWithSigner } from "src/state/util";
+import { ethers } from "ethers";
+
 const TaskTable = () => {
   const { onCopy, value, setValue, hasCopied } = useClipboard("");
   useEffect(() => {
     setValue("https://pira.finance/Signup?ref=12345-1234567");
   }, []);
+
+  const contract = mintNftContractWithSigner(
+    "0xe7f686be4f39c101d1e425fd416f40d1f9a8c026"
+  );
+
+  console.log(contract);
+
+  const handleMintNft = async () => {
+    console.log("Hehehe");
+    contract.mint({ value: ethers.utils.parseEther("0.001") }).then((tx) => {
+      tx.wait().then(
+        (txResult) => (
+          console.log("txResult", txResult),
+          console.log("transaction hash", txResult.transactionHash),
+          // setTxHash(txResult.transactionHash),
+          // setIsLoading(false),
+          // setIsSuccess(true)
+        )
+      );
+    });
+  };
 
   return (
     <TableContainer
@@ -61,7 +85,7 @@ const TaskTable = () => {
         </Thead>
 
         <Tbody>
-          <TaskTab />
+          <TaskTab handleMintNft={handleMintNft} />
           <TaskTab />
           <TaskTab />
           <Tr borderBottomWidth={1}>
@@ -110,7 +134,7 @@ const TaskTable = () => {
 
 export default TaskTable;
 
-const TaskTab = (title, list) => {
+const TaskTab = ({ title, list, handleMintNft }) => {
   return (
     <Tr borderBottomWidth={1}>
       <Td rowSpan={1} borderRightWidth={1}>
@@ -152,7 +176,7 @@ const TaskTab = (title, list) => {
 
       <Td borderRightWidth={1}>
         <Center>
-          <Button background="cyan.300">
+          <Button background="cyan.300" onClick={handleMintNft}>
             <Text fontSize="md">Mint</Text>
           </Button>
         </Center>
