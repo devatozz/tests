@@ -87,7 +87,9 @@ export default function LeaderBoard() {
 
   return (
     <VStack spacing="30px" width="full">
-      <Text fontSize="5xl">24H LEADERBOARD</Text>
+      <Text fontSize="5xl" color={"#5EEDFF"}>
+        24H LEADERBOARD
+      </Text>
       <TableContainer
         width="full"
         rounded="lg"

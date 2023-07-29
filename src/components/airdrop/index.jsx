@@ -27,8 +27,12 @@ import LeaderBoard from "./LeaderBoard";
 
 const AirdropPage = () => {
   return (
-    <Container maxW={"7xl"} bg={"blue.700"}>
-      <Text fontSize="5xl" textAlign="center" color="cyan.500">
+    <Container
+      bgGradient="linear(180deg, #3146C6 0%, #18215D 100%)"
+      maxW={""}
+      paddingX={"90px"}
+    >
+      <Text fontSize="5xl" textAlign="center" color={"#5EEDFF"}>
         PIRA SEASON 1
       </Text>
 
@@ -41,7 +45,7 @@ const AirdropPage = () => {
           mx={1}
           width="max-content"
           fontSize="3xl"
-          color="cyan.400"
+          color="#5EEDFF"
         >
           $200K
         </Text>
@@ -73,7 +77,7 @@ const AirdropPage = () => {
               <Text fontSize="3xl">Earning Token</Text>
               <Popover trigger="hover">
                 <PopoverTrigger>
-                  <InfoOutlineIcon />
+                  <InfoOutlineIcon color={"#00F0FF"} />
                 </PopoverTrigger>
                 <PopoverContent width={"194px"} height={"60px"} border="none">
                   <Box
@@ -115,7 +119,7 @@ const AirdropPage = () => {
               <Text fontSize="3xl">Referral Token</Text>
               <Popover trigger="hover">
                 <PopoverTrigger>
-                  <InfoOutlineIcon />
+                  <InfoOutlineIcon color={"#00F0FF"} />
                 </PopoverTrigger>
                 <PopoverContent width={"194px"} height={"60px"} border="none">
                   <Box
@@ -156,7 +160,7 @@ const AirdropPage = () => {
               <Text fontSize="3xl">BOOST</Text>
               <Popover trigger="hover">
                 <PopoverTrigger>
-                  <InfoOutlineIcon />
+                  <InfoOutlineIcon color={"#00F0FF"} />
                 </PopoverTrigger>
                 <PopoverContent width={"200px"} height={"54px"} border="none">
                   <Box

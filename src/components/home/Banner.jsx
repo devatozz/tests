@@ -36,12 +36,7 @@ export default function Banner() {
         {src: 'https://placehold.co/250x100'},
     ];
 
-    const socials = [
-        {src: '/x_icon.png'},
-        {src: '/discord_icon.png'},
-        {src: '/group_icon.png'},
-        {src: '/z_icon.png'}
-    ];
+  
     return (
         <Box bgGradient="linear(180deg, #3146C6 0%, #18215D 100%)" m={0} w={"100%"} p={"0px"}>
             <Flex alignItems={"center"} position={"relative"}>
@@ -288,16 +283,6 @@ export default function Banner() {
                     <Text color={"#fff"} fontSize={{base: "12px", md: "22px"}} textAlign={"center"}>Empowering
                         individuals worldwide to take control of their financial future</Text>
                 </Box>
-                <Flex alignItems={"center"} justifyContent={"center"} gap={{base: 1, md: 5}} pb={"50px"}>
-                    {socials.map(social => {
-                        return (
-                            <Box>
-                                <Link display={"flex"} justifyContent={"center"}>
-                                    <Image w={{base: "50%", md: "100%"}} src={social.src}/>
-                                </Link>
-                            </Box>)
-                    })}
-                </Flex>
             </Flex>
         </Box>
     );

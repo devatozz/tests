@@ -11,7 +11,7 @@ const Progress = (props) => {
           position="relative"
           width="full"
           borderWidth={2}
-          borderColor={"cyan.500"}
+          borderColor={"#00F0FF"}
           bg={"white"}
           rounded="lg"
         >
@@ -19,7 +19,7 @@ const Progress = (props) => {
             style={{ width: `${percent}%` }}
             position="absolute"
             height="full"
-            bg="cyan.400"
+            bg="#5EEDFF"
             zIndex={0}
           ></Box>
 
