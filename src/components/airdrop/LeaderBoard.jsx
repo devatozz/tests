@@ -87,7 +87,7 @@ export default function LeaderBoard() {
 
   return (
     <VStack spacing="30px" width="full">
-      <Text fontSize="5xl" color={"#5EEDFF"}>
+      <Text fontSize={{base: '2xl', md: '5xl'}} color={"#5EEDFF"}>
         24H LEADERBOARD
       </Text>
       <TableContainer
@@ -107,7 +107,7 @@ export default function LeaderBoard() {
                     color="white"
                     borderColor="cyan.400"
                     textAlign="center"
-                    fontSize={"24px"}
+                    fontSize={{base:'xs', md: 'xl'}}
                   >
                     {thead}
                   </Text>
@@ -118,25 +118,25 @@ export default function LeaderBoard() {
           <Tbody>
             {data.map((row, index) => (
               <Tr key={index} borderBottomWidth={1}>
-                <Td textAlign="center" fontSize="24px" borderRightWidth={1}>
+                <Td textAlign="center" fontSize={{base:'xs', md: 'xl'}} borderRightWidth={1}>
                   {row.position}
                 </Td>
-                <Td textAlign="center " fontSize="24px" borderRightWidth={1}>
+                <Td textAlign="center " fontSize={{base:'xs', md: 'xl'}} borderRightWidth={1}>
                   {row.name}
                 </Td>
                 <Td
                   borderRightWidth={1}
                   textAlign="center"
-                  fontSize="24px"
+                  fontSize={{base:'xs', md: 'xl'}}
                   color={getColor(row.boost)}
                 >{`${row.boost}x`}</Td>
-                <Td textAlign="center" fontSize="24px" borderRightWidth={1}>
+                <Td textAlign="center" fontSize={{base:'xs', md: 'xl'}} borderRightWidth={1}>
                   {row.referralToken}
                 </Td>
-                <Td textAlign="center" fontSize="24px" borderRightWidth={1}>
+                <Td textAlign="center" fontSize={{base:'xs', md: 'xl'}} borderRightWidth={1}>
                   {row.earningToken}
                 </Td>
-                <Td textAlign="center" fontSize="24px" borderRightWidth={1}>
+                <Td textAlign="center" fontSize={{base:'xs', md: 'xl'}} borderRightWidth={1}>
                   {row.totalPiraEarn}
                 </Td>
               </Tr>

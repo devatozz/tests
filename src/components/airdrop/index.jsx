@@ -18,27 +18,50 @@ import {
   PopoverTrigger,
   PopoverContent,
   HStack,
+  useToast,
 } from "@chakra-ui/react";
 import Progress from "./Progress";
 import TaskTable from "./TaskTable";
 import { CopyIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { useEffect } from "react";
 import LeaderBoard from "./LeaderBoard";
+import { useSelector } from "react-redux";
 
 const AirdropPage = () => {
+  const { account}  = useSelector(state => state.chain);
+  const {onCopy, setValue: setCopyValue } = useClipboard("");
+  const toast = useToast()
+
+  useEffect(()=>{
+    setCopyValue(`https://pira.finance/Signup?ref=${account}`)
+  },[])
+
+  const copyRefLink = () => {
+    onCopy()
+    toast({
+      title: 'Link is Copied',
+      status: 'success',
+      duration: 1000
+    })
+  } 
+
+
   return (
     <Container
       bgGradient="linear(180deg, #3146C6 0%, #18215D 100%)"
-      maxW={""}
-      paddingX={"90px"}
+      maxW={1400}
+      mx='auto'
+      paddingX={{base: 2, md: 90}}
+      pb={4}
+    
     >
-      <Text fontSize="5xl" textAlign="center" color={"#5EEDFF"}>
+      <Text fontSize={{base: '2xl', md: '5xl'}} textAlign="center" color={"#5EEDFF"}>
         PIRA SEASON 1
       </Text>
 
       <Progress />
 
-      <Text fontSize="3xl" textAlign="center" color="white" my={6}>
+      <Text fontSize={{base: '1xl', md:'3xl'}} textAlign="center" color="white" my={6}>
         {/* <Text
           as={"span"}
           mx={1}
@@ -57,6 +80,7 @@ const AirdropPage = () => {
         width={{ base: "full", lg: "95%" }}
         marginX="auto"
         spacing={10}
+        paddingX={{base: 6, md:0}}
       >
         <Box
           rounded="lg"
@@ -73,7 +97,7 @@ const AirdropPage = () => {
             h="100%"
           >
             <HStack>
-              <Text fontSize="3xl">Earning Token</Text>
+              <Text fontSize={{base: '1xl', md:'3xl'}}>Earning Token</Text>
               <Popover trigger="hover">
                 <PopoverTrigger>
                   <InfoOutlineIcon color={"#00F0FF"} />
@@ -94,7 +118,7 @@ const AirdropPage = () => {
                 </PopoverContent>
               </Popover>
             </HStack>
-            <Text fontSize="4xl" my={4}>
+            <Text fontSize={{base: '2xl', md:'4xl'}} my={4}>
               0,0
             </Text>
           </Flex>
@@ -115,7 +139,7 @@ const AirdropPage = () => {
             h="100%"
           >
             <HStack>
-              <Text fontSize="3xl">Referral Token</Text>
+              <Text fontSize={{base: '1xl', md:'3xl'}}>Referral Token</Text>
               <Popover trigger="hover">
                 <PopoverTrigger>
                   <InfoOutlineIcon color={"#00F0FF"} />
@@ -136,7 +160,7 @@ const AirdropPage = () => {
                 </PopoverContent>
               </Popover>
             </HStack>
-            <Text fontSize="4xl" my={4}>
+            <Text fontSize={{base: '2xl', md:'4xl'}} my={4}>
               0,0
             </Text>
           </Flex>
@@ -156,7 +180,7 @@ const AirdropPage = () => {
             h="100%"
           >
             <HStack>
-              <Text fontSize="3xl">BOOST</Text>
+              <Text fontSize={{base: '1xl', md:'3xl'}}>BOOST</Text>
               <Popover trigger="hover">
                 <PopoverTrigger>
                   <InfoOutlineIcon color={"#00F0FF"} />
@@ -178,7 +202,7 @@ const AirdropPage = () => {
                 </PopoverContent>
               </Popover>
             </HStack>
-            <Text fontSize="4xl" my={4}>
+            <Text fontSize={{base: '2xl', md:'4xl'}} my={4}>
               1,5x
             </Text>
           </Flex>
@@ -191,23 +215,27 @@ const AirdropPage = () => {
             rounded="lg"
             borderWidth={2}
             borderColor="cyan.400"
-            fontSize="2xl"
+            fontSize={{base: '1xl', md: '2xl'}}
             px={24}
+            py={2}
             bg="white"
           >
             Pira Season 1 detail
           </Text>
         </Flex>
 
-        <Text fontSize="2xl" width="full" textAlign="start" color="white">
+        <Flex width={'full'} flexWrap='nowrap'  >
+        <Text  fontSize={{base: '1xl', md: '2xl'}} whiteSpace={'nowrap'} overflow={'hidden'}  textOverflow='ellipsis' maxWidth={600} textAlign="start" color="white">
           Referal link:{" "}
-          <Link isExternal>https://pira.finance/Signup?ref=12345-1234567</Link>
-          <CopyIcon mx="2px" />
-        </Text>
+          {`https://pira.finance/Signup?ref=${account}`}
+          
+        </Text><CopyIcon onClick={copyRefLink} fontSize='2xl' color='white' cursor='pointer' mx="2px" />
+        </Flex>
+    
 
         <Flex width="full">
           <Text
-            fontSize="3xl"
+             fontSize={{base: '1xl', md: '3xl'}}
             borderBottomWidth={2}
             borderColor={"cyan.400"}
             color="white"
@@ -215,7 +243,7 @@ const AirdropPage = () => {
             How to get FIRA?
           </Text>
         </Flex>
-        <TaskTable />
+        <TaskTable copyRefLink={copyRefLink} />
         <LeaderBoard />
       </VStack>
     </Container>

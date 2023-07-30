@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  ButtonGroup,
   Center,
   Flex,
   Link,
@@ -21,7 +23,7 @@ import { useEffect } from "react";
 import { mintNftContractWithSigner } from "src/state/util";
 import { ethers } from "ethers";
 
-const TaskTable = () => {
+const TaskTable = ({copyRefLink}) => {
   const obj = {
     data: {
       nftTask: {
@@ -138,26 +140,38 @@ const TaskTable = () => {
       borderColor="cyan.400"
       backgroundColor="blue.900"
     >
-      <Table variant="unstyled">
+      <Table variant="unstyled" size={'xs'}>
         <Thead>
-          <Tr>
+          <Tr borderBottomWidth={1} >
             <Th borderRightWidth={1}>
               <Text
-                width="fit-content"
+                width="full"
                 color="white"
-                borderBottomWidth={1}
-                borderColor="cyan.400"
+
+                fontSize={'md'}
+                py={2}
+                textAlign='center'
               >
                 Task
               </Text>
             </Th>
             <Th borderRightWidth={1}>
-              <Text width="fit-content" color="white">
+              <Text  width="full"
+                color="white"
+
+                fontSize={'md'}
+                py={2}
+                textAlign='center'>
                 Detail
               </Text>
             </Th>
             <Th borderRightWidth={1}>
-              <Text width="fit-content" color="white">
+              <Text width="full"
+                color="white"
+
+                fontSize={'md'}
+                py={2}
+                textAlign='center'>
                 Token earn
               </Text>
             </Th>
@@ -166,7 +180,7 @@ const TaskTable = () => {
           </Tr>
         </Thead>
 
-        <Tbody>
+        <Tbody >
           {dataTaskTables.map((dataTaskTable, index) => (
             <TaskTab key={index} dataTask={dataTaskTable} />
           ))}
@@ -175,12 +189,18 @@ const TaskTable = () => {
           <TaskTab /> */}
           <Tr borderBottomWidth={1}>
             <Td borderRightWidth={1}>
-              <Text width="fit-content" color="white" fontSize="xl">
+              <Text  
+                width="full"
+                color="white"
+                py={2}
+                textAlign='center'
+                fontSize={{base: 'md', md: 'xl'}}
+                >
                 Invite your friend
               </Text>
             </Td>
             <Td pl={0} borderRightWidth={1}>
-              <Text px={2} color="white" fontSize="lg">
+              <Text textAlign='center' px={2} color="white"  fontSize={{base: 'xs', md: 'lg'}}>
                 You will earn a number of tokens equal to 20% of F1 and 4% of F2
               </Text>
             </Td>
@@ -188,7 +208,7 @@ const TaskTable = () => {
             <Td p={0} borderRightWidth={1}>
               <Text
                 color="gray.500"
-                fontSize="xl"
+                fontSize={{base:'sm',md: 'xl'}}
                 py={2}
                 textAlign="center"
                 width="full"
@@ -199,16 +219,28 @@ const TaskTable = () => {
 
             <Td borderRightWidth={1}>
               <Center>
-                <Button background="#00F0FF">
-                  <Text fontSize="md">Invite</Text>
+                <Button my={{base: 1, md: 0}} onClick={copyRefLink} background="#00F0FF">
+                  <Text fontSize={{base:'xs',md: 'md'}}>Invite</Text>
                 </Button>
               </Center>
             </Td>
 
             <Td>
-              <Text py={1} fontSize="xl" color={"gray.500"}>
-                Claim
-              </Text>
+            <Button
+            // py={2}
+          
+            width={'full'}
+            fontSize={{base:'xs',md: 'xl'}}
+            color={"gray.500"}
+            textAlign="center"
+            cursor='pointer'
+            variant='ghost'
+            
+           
+            onClick={ () => null}
+          >
+            Claim
+          </Button>
             </Td>
           </Tr>
         </Tbody>
@@ -223,9 +255,15 @@ const TaskTab = ({ dataTask }) => {
   console.log("dataTask", dataTask);
 
   return (
-    <Tr borderBottomWidth={1}>
+    <Tr borderBottomWidth={1}  >
       <Td rowSpan={1} borderRightWidth={1}>
-        <Text width="fit-content" color="white" fontSize="2xl">
+        <Text                 
+          width="full"
+          color="white"
+          py={2}
+          textAlign='center'
+          fontSize={{base: 'md', md: '2xl'}}
+        >
           {dataTask.type === "MINT_NFT"
             ? "FREE MINT NFT"
             : dataTask.type === "SWAP"
@@ -236,84 +274,70 @@ const TaskTab = ({ dataTask }) => {
         </Text>
       </Td>
       <Td p={0} borderRightWidth={1}>
-        {dataTask.targets.map((item, i) => (
-          <Text
-            key={i}
-            px={2}
-            color={item.isDoing ? "blue.900" : "gray.500"}
-            background={item.isDoing ? "#00F0FF" : "inherit"}
-            fontSize="xl"
-            py={2}
-            width="full"
-          >
-            {dataTask.type === "MINT_NFT"
-              ? `${
-                  item.target === 1
-                    ? "1 Day"
-                    : item.target === 7
-                    ? "7 Days (3/7)"
-                    : item.target === 30
-                    ? "30 Days (3/30)"
-                    : item.target === 60
-                    ? "60 Days (3/60)"
-                    : ""
-                }`
-              : dataTask.type === "SWAP"
-              ? `${
-                  item.target === 1000
-                    ? "SWAP TOTAL VOLUME $1,000"
-                    : item.target === 10000
-                    ? "SWAP TOTAL VOLUME $10,000"
-                    : item.target === 50000
-                    ? "SWAP TOTAL VOLUME $50,000"
-                    : item.target === 200000
-                    ? "SWAP TOTAL VOLUME $200,000"
-                    : ""
-                }`
-              : dataTask.type === "ADD_LIQUIDITY"
-              ? `${
-                  item.target === 1000
-                    ? "ADD LIQUIDITY $1,000"
-                    : item.target === 5000
-                    ? "ADD LIQUIDITY $5,000"
-                    : item.target === 10000
-                    ? "ADD LIQUIDITY $10,000"
-                    : ""
-                }`
-              : ""}
-          </Text>
-        ))}
+        {dataTask.targets.map((item, i) => {
+         
+          const isDoing = i > 0 && dataTask?.progress > dataTask?.targets[i-1].target && dataTask?.progress < item?.target || i === 0 && dataTask?.progress < item?.target
+
+
+     
+          return (
+            (
+              <Text
+                key={i}
+                px={2}
+                color={isDoing ? "blue.900" : "gray.500"}
+                background={isDoing ? "#00F0FF" : "inherit"}
+                fontSize={{base:'xs',md: 'xl'}}
+                py={2}
+                width="full"
+              >
+                {dataTask.type === "MINT_NFT"
+                  ? `${item.target} ${item.target === 1 ? 'Day': "Days"} ${item.target > 1 && `(${dataTask.progress}/${item.target})`}`
+                  : dataTask.type === "SWAP"
+                  ? `SWAP TOTAL VOLUME ${item.target}`
+                  : dataTask.type === "ADD_LIQUIDITY"
+                  ? `ADD LIQUIDITY ${item.target}`
+                  : ""}
+              </Text>
+            )
+          )
+        } )}
       </Td>
 
       <Td p={0} borderRightWidth={1}>
-        {dataTask.targets.map((item, i) => (
-          <Text
-            key={i}
-            color={item.isDoing ? "blue.900" : "gray.500"}
-            background={item.isDoing ? "#00F0FF" : "inherit"}
-            fontSize="xl"
-            py={2}
-            textAlign="center"
-            width="full"
-          >
-            {item.reward} PIRA
-          </Text>
-        ))}
+        {dataTask.targets.map((item, i) =>
+        {
+          const isDoing = i > 0 && dataTask?.progress > dataTask?.targets[i-1].target && dataTask?.progress < item?.target || i === 0 && dataTask?.progress < item?.target
+          return        (
+            <Text
+              key={i}
+              color={isDoing ? "blue.900" : "gray.500"}
+              background={isDoing ? "#00F0FF" : "inherit"}
+              fontSize={{base:'xs',md: 'xl'}}
+              py={2}
+              textAlign="center"
+              width="full"
+            >
+              {item.reward} PIRA
+            </Text>
+          )
+        } 
+)}
       </Td>
 
       <Td borderRightWidth={1}>
         <Center>
           {dataTask.type === "MINT_NFT" ? (
             <Button background="#00F0FF">
-              <Text fontSize="md">Mint</Text>
+              <Text fontSize={{base:'xs',md: 'md'}}>Mint</Text>
             </Button>
           ) : dataTask.type === "SWAP" ? (
             <Button background="#00F0FF">
-              <Text fontSize="md">Swap</Text>
+              <Text fontSize={{base:'xs',md: 'md'}}>Swap</Text>
             </Button>
           ) : dataTask.type === "ADD_LIQUIDITY" ? (
             <Button background="#00F0FF">
-              <Text fontSize="md">Add Liquidity</Text>
+              <Text fontSize={{base:'xs',md: 'md'}}>Add Liquidity</Text>
             </Button>
           ) : (
             ""
@@ -322,17 +346,28 @@ const TaskTab = ({ dataTask }) => {
       </Td>
 
       <Td>
+         <Box display='flex' flexDirection='column' gap={2}>
+            
         {dataTask.targets.map((item, i) => (
-          <Text
-            py={2}
+         
+      
+          <Button
+            // py={2}
             key={i}
-            fontSize="xl"
+            width={'full'}
+            fontSize={{base:'xs',md: 'xl'}}
             color={"gray.500"}
             textAlign="center"
+            cursor='pointer'
+            variant='ghost'
+            
+            isDisabled={!item?.isClaimable}
+            onClick={item.isClaimable ? 'function handle claim' : () => null}
           >
             {item.isClaimable ? "Claimed" : "Claim"}
-          </Text>
+          </Button>
         ))}
+            </Box>
       </Td>
     </Tr>
   );
