@@ -18,8 +18,8 @@ const NAV_ITEMS = [
 
     },
     {
-        label: 'Pools',
-        href: '/pools',
+        label: 'Liquidity',
+        href: '/liquidity',
     },
     {
         label: 'Launchpad',

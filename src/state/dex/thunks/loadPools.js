@@ -49,8 +49,11 @@ const mapPools = async (data) => {
             tokenSet.add(token1);
             tokenSet.add(token2);
             const poolInfo = {
-                reserve1: item._reserve0,
-                reserve2: item._reserve1,
+                pair: item.pair,
+                token1: token1,
+                token2: token2,
+                reserve1: item.reverses._reserve0,
+                reserve2: item.reverses._reserve1,
             };
             if (poolMatrix.hasOwnProperty(token1)) {
                 if (poolMatrix[token1].hasOwnProperty(token2)) {
@@ -97,7 +100,7 @@ async function getPairData(pairAddress) {
             pairContract.getReserves(),
         ]);
 
-        return { token0: token0, token1: token1, reverses: reverses };
+        return { pair: pairAddress, token0: token0, token1: token1, reverses: reverses };
     } catch (error) {
         console.error('Error fetching token data:', error);
         throw error;

@@ -38,7 +38,6 @@ function getTokenContract(address) {
 }
 
 export const loadBalance = async (account, chain, tokenAddress) => {
-  console.log(account, chain, tokenAddress)
   try {
     let result = BigNumber.from(0)
     if (tokenAddress == config[chain].wrapAddress || tokenAddress ==noneAddress) {
