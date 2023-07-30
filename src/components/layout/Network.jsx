@@ -17,7 +17,10 @@ import { useRouter } from "next/router";
 import WalletIcon from 'src/components/icons/Wallet';
 import { disconnectNetwork, setIsConnecting, handleEthereumAccountChange } from 'src/state/chain/slice';
 import NavItem from './NavItem';
-import loadTokens from 'src/state/chain/thunks/loadTokens';
+// import loadTokens from 'src/state/dex/thunks/loadTokens';
+import loadContract from 'src/state/dex/thunks/loadContract';
+import loadPools from 'src/state/dex/thunks/loadPools';
+import loadTokens from 'src/state/dex/thunks/loadTokens';
 
 const USER_ITEMS = [
     {
@@ -33,7 +36,8 @@ const USER_ITEMS = [
 export default function Network() {
     const router = useRouter();
     const dispatch = useDispatch();
-    const { isConnecting, selectedChain, account, tokens: {loaded} } = useSelector(state => state.chain);
+    const { isConnecting, selectedChain, account } = useSelector(state => state.chain);
+    const { loaded: contractLoaded, tokens: { loaded: tokenLoaded }, pools: { loaded: poolLoaded } } = useSelector(state => state.dex);
 
     const handleConnectNetwork = useCallback(async (chain) => {
         dispatch(setIsConnecting(true));
@@ -68,11 +72,32 @@ export default function Network() {
         }
     }, []);
 
+    // useEffect(() => {
+    //     if (selectedChain || !loaded) {
+    //         dispatch(loadTokens());
+    //     }
+    // }, [selectedChain, loaded]);
+
     useEffect(() => {
-        if (selectedChain || !loaded) {
+        if (!contractLoaded) {
+            dispatch(loadContract());
+        } else {
+            dispatch(loadPools())
+        }
+    }, [contractLoaded]);
+
+    useEffect(() => {
+        if (contractLoaded && poolLoaded && !tokenLoaded) {
             dispatch(loadTokens());
         }
-    }, [selectedChain, loaded]);
+    }, [contractLoaded, poolLoaded, tokenLoaded]);
+
+    useEffect(() => {
+        if (selectedChain && account) {
+            dispatch(loadContract());
+        }
+    }, [selectedChain, account])
+
     useEffect(() => {
         // Check metamask account is disconnected
         if (window.ethereum) {

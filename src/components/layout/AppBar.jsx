@@ -14,12 +14,12 @@ import Network from './Network';
 const NAV_ITEMS = [
     {
         label: 'Swap',
-        href: '#',
+        href: '/swap',
 
     },
     {
-        label: 'Staking',
-        href: '#',
+        label: 'Pools',
+        href: '/pools',
     },
     {
         label: 'Launchpad',
