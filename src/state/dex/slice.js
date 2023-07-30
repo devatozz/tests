@@ -83,7 +83,6 @@ export const slice = createSlice({
             state.isLoading = true
         })
         builder.addCase(loadPools.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.pools.loaded = true;
             if (action.payload.error) {
                 state.pools.list = [];
