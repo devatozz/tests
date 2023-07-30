@@ -39,8 +39,7 @@ const AirdropPage = () => {
       <Progress />
 
       <Text fontSize="3xl" textAlign="center" color="white" my={6}>
-        All
-        <Text
+        {/* <Text
           as={"span"}
           mx={1}
           width="max-content"
@@ -48,9 +47,9 @@ const AirdropPage = () => {
           color="#5EEDFF"
         >
           $200K
-        </Text>
-        transaction fees will be used for buyback when the token is listed on
-        CEX
+        </Text> */}
+        All transaction fees will be used for buyback when the token is listed
+        on CEX
       </Text>
 
       <SimpleGrid
@@ -202,12 +201,7 @@ const AirdropPage = () => {
 
         <Text fontSize="2xl" width="full" textAlign="start" color="white">
           Referal link:{" "}
-          <Link
-            href={"https://pira.finance/Signup?ref=12345-1234567"}
-            isExternal
-          >
-            https://pira.finance/Signup?ref=12345-1234567
-          </Link>
+          <Link isExternal>https://pira.finance/Signup?ref=12345-1234567</Link>
           <CopyIcon mx="2px" />
         </Text>
 

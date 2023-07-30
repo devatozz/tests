@@ -38,7 +38,7 @@ const Progress = (props) => {
               textAlign="center"
               color="blue.700"
             >
-              23,452/1,360,000,000 PIRA claimed
+              23,452/1,360,000,000 PIRA earned
             </Text>
           </Flex>
         </Flex>

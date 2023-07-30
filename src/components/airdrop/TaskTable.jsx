@@ -22,6 +22,91 @@ import { mintNftContractWithSigner } from "src/state/util";
 import { ethers } from "ethers";
 
 const TaskTable = () => {
+  const obj = {
+    data: {
+      nftTask: {
+        type: "MINT_NFT",
+        progress: 4,
+        targets: [
+          {
+            target: 1,
+            reward: "50",
+            isClaimable: true,
+          },
+          {
+            target: 7,
+            reward: "400",
+            isClaimable: false,
+          },
+          {
+            target: 30,
+            reward: "2000",
+            isClaimable: false,
+          },
+          {
+            target: 60,
+            reward: "5000",
+            isClaimable: false,
+          },
+        ],
+      },
+      swapTask: {
+        type: "SWAP",
+        progress: 200,
+        targets: [
+          {
+            target: 1000,
+            reward: "50",
+            isClaimable: false,
+          },
+          {
+            target: 10000,
+            reward: "900",
+            isClaimable: false,
+          },
+          {
+            target: 50000,
+            reward: "5000",
+            isClaimable: false,
+          },
+          {
+            target: 200000,
+            reward: "25000",
+            isClaimable: false,
+          },
+        ],
+      },
+      addLiquidityTask: {
+        type: "ADD_LIQUIDITY",
+        progress: 5100,
+        targets: [
+          {
+            target: 1000,
+            reward: "200",
+            isClaimable: false,
+          },
+          {
+            target: 5000,
+            reward: "1800",
+            isClaimable: false,
+          },
+          {
+            target: 10000,
+            reward: "5000",
+            isClaimable: false,
+          },
+        ],
+      },
+      inviteFriendTask: {
+        tokenEarn: 1000,
+      },
+    },
+  };
+
+  const dataTaskTables = Object.values(obj.data).slice(0, -1);
+
+  console.log("dataTaskTables", dataTaskTables);
+
   const { onCopy, value, setValue, hasCopied } = useClipboard("");
   useEffect(() => {
     setValue("https://pira.finance/Signup?ref=12345-1234567");
@@ -31,15 +116,12 @@ const TaskTable = () => {
     "0xe7f686be4f39c101d1e425fd416f40d1f9a8c026"
   );
 
-  console.log(contract);
-
   const handleMintNft = async () => {
-    console.log("Hehehe");
     contract.mint({ value: ethers.utils.parseEther("0.001") }).then((tx) => {
       tx.wait().then(
         (txResult) => (
           console.log("txResult", txResult),
-          console.log("transaction hash", txResult.transactionHash),
+          console.log("transaction hash", txResult.transactionHash)
           // setTxHash(txResult.transactionHash),
           // setIsLoading(false),
           // setIsSuccess(true)
@@ -85,9 +167,12 @@ const TaskTable = () => {
         </Thead>
 
         <Tbody>
-          <TaskTab handleMintNft={handleMintNft} />
+          {dataTaskTables.map((dataTaskTable, index) => (
+            <TaskTab key={index} dataTask={dataTaskTable} />
+          ))}
+          {/* <TaskTab handleMintNft={handleMintNft} />
           <TaskTab />
-          <TaskTab />
+          <TaskTab /> */}
           <Tr borderBottomWidth={1}>
             <Td borderRightWidth={1}>
               <Text width="fit-content" color="white" fontSize="xl">
@@ -108,13 +193,13 @@ const TaskTable = () => {
                 textAlign="center"
                 width="full"
               >
-                000 PIRA
+                {obj.data.inviteFriendTask.tokenEarn} PIRA
               </Text>
             </Td>
 
             <Td borderRightWidth={1}>
               <Center>
-                <Button background="cyan.300">
+                <Button background="#00F0FF">
                   <Text fontSize="md">Invite</Text>
                 </Button>
               </Center>
@@ -134,88 +219,121 @@ const TaskTable = () => {
 
 export default TaskTable;
 
-const TaskTab = ({ title, list, handleMintNft }) => {
+const TaskTab = ({ dataTask }) => {
+  console.log("dataTask", dataTask);
+
   return (
     <Tr borderBottomWidth={1}>
       <Td rowSpan={1} borderRightWidth={1}>
         <Text width="fit-content" color="white" fontSize="2xl">
-          FREE MINT NFT
+          {dataTask.type === "MINT_NFT"
+            ? "FREE MINT NFT"
+            : dataTask.type === "SWAP"
+            ? "SWAP"
+            : dataTask.type === "ADD_LIQUIDITY"
+            ? "ADD LIQUIDITY"
+            : ""}
         </Text>
       </Td>
       <Td p={0} borderRightWidth={1}>
-        {mintTask.map((item, i) => (
+        {dataTask.targets.map((item, i) => (
           <Text
             key={i}
             px={2}
             color={item.isDoing ? "blue.900" : "gray.500"}
-            background={item.isDoing ? "cyan.300" : "inherit"}
+            background={item.isDoing ? "#00F0FF" : "inherit"}
             fontSize="xl"
             py={2}
             width="full"
           >
-            {item.detail}
+            {dataTask.type === "MINT_NFT"
+              ? `${
+                  item.target === 1
+                    ? "1 Day"
+                    : item.target === 7
+                    ? "7 Days (3/7)"
+                    : item.target === 30
+                    ? "30 Days (3/30)"
+                    : item.target === 60
+                    ? "60 Days (3/60)"
+                    : ""
+                }`
+              : dataTask.type === "SWAP"
+              ? `${
+                  item.target === 1000
+                    ? "SWAP TOTAL VOLUME $1,000"
+                    : item.target === 10000
+                    ? "SWAP TOTAL VOLUME $10,000"
+                    : item.target === 50000
+                    ? "SWAP TOTAL VOLUME $50,000"
+                    : item.target === 200000
+                    ? "SWAP TOTAL VOLUME $200,000"
+                    : ""
+                }`
+              : dataTask.type === "ADD_LIQUIDITY"
+              ? `${
+                  item.target === 1000
+                    ? "ADD LIQUIDITY $1,000"
+                    : item.target === 5000
+                    ? "ADD LIQUIDITY $5,000"
+                    : item.target === 10000
+                    ? "ADD LIQUIDITY $10,000"
+                    : ""
+                }`
+              : ""}
           </Text>
         ))}
       </Td>
 
       <Td p={0} borderRightWidth={1}>
-        {mintTask.map((item, i) => (
+        {dataTask.targets.map((item, i) => (
           <Text
             key={i}
             color={item.isDoing ? "blue.900" : "gray.500"}
-            background={item.isDoing ? "cyan.300" : "inherit"}
+            background={item.isDoing ? "#00F0FF" : "inherit"}
             fontSize="xl"
             py={2}
             textAlign="center"
             width="full"
           >
-            {item.tokenEarn} PIRA
+            {item.reward} PIRA
           </Text>
         ))}
       </Td>
 
       <Td borderRightWidth={1}>
         <Center>
-          <Button background="cyan.300" onClick={handleMintNft}>
-            <Text fontSize="md">Mint</Text>
-          </Button>
+          {dataTask.type === "MINT_NFT" ? (
+            <Button background="#00F0FF">
+              <Text fontSize="md">Mint</Text>
+            </Button>
+          ) : dataTask.type === "SWAP" ? (
+            <Button background="#00F0FF">
+              <Text fontSize="md">Swap</Text>
+            </Button>
+          ) : dataTask.type === "ADD_LIQUIDITY" ? (
+            <Button background="#00F0FF">
+              <Text fontSize="md">Add Liquidity</Text>
+            </Button>
+          ) : (
+            ""
+          )}
         </Center>
       </Td>
 
       <Td>
-        {mintTask.map((item, i) => (
-          <Text py={1} key={i} fontSize="xl" color={"gray.500"}>
-            {item.isClaimed ? "Claimed" : "Claim"}
+        {dataTask.targets.map((item, i) => (
+          <Text
+            py={2}
+            key={i}
+            fontSize="xl"
+            color={"gray.500"}
+            textAlign="center"
+          >
+            {item.isClaimable ? "Claimed" : "Claim"}
           </Text>
         ))}
       </Td>
     </Tr>
   );
 };
-
-export const mintTask = [
-  {
-    detail: "1 Day",
-    tokenEarn: 50,
-    isClaimed: true,
-    isDoing: false,
-  },
-  {
-    detail: "7 Day",
-    tokenEarn: 400,
-    isClaimed: false,
-    isDoing: true,
-  },
-  {
-    detail: "30 Day",
-    tokenEarn: 2000,
-    isClaimed: false,
-    isDoing: false,
-  },
-  {
-    detail: "60 Day",
-    tokenEarn: 5000,
-    isClaimed: false,
-    isDoing: false,
-  },
-];
