@@ -36,9 +36,10 @@ import { useSelector } from "react-redux";
 import { loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
 import { currencyFormat } from "src/utils/stringUtil";
-
+import { createFtContractWithSigner } from "src/utils/helper";
+import { config } from "src/state/chain/config";
 export default function Pools() {
-    const { tokens, pools } = useSelector(state => state.dex)
+    const { tokens, pools, dex } = useSelector(state => state.dex)
     const { account, selectedChain} = useSelector(state => state.chain)
     const toast = useToast();
     const [loading, setLoading] = useState(false);
@@ -242,7 +243,65 @@ export default function Pools() {
 
     const handleAddLiquidity = async (e) => {
         e.preventDefault();
-        
+        const currentTimeUnix = Math.floor(Date.now() / 1000);
+        // Calculate the Unix time for the next 30 minutes
+        const next30MinutesUnix = currentTimeUnix + 30 * 60;
+        const deadline = BigNumber.from(next30MinutesUnix)
+        setLoading(true)
+        try {
+            if (token1Name == config[selectedChain].wrapAddress || token2Name == config[selectedChain].wrapAddress) {
+                let tokenAddr = token1Name == config[selectedChain].wrapAddress ? token2Name : token1Name
+                let amountIn = token1Name == config[selectedChain].wrapAddress ? token2Amount : token1Amount
+                let amountETH = token1Name == config[selectedChain].wrapAddress ? token1Amount : token2Amount
+
+                let erc20 = createFtContractWithSigner(tokenAddr);
+                let aDesired = ethers.utils.parseUnits(amountIn, tokens.obj[tokenAddr]?.decimals)
+                let approveTx = await erc20.approve(
+                    config[selectedChain].dexAddress,
+                    aDesired);
+                await approveTx.wait();
+                let addLiquidTx = await dex.signer.addLiquidityETH(
+                    tokenAddr,
+                    aDesired,
+                    BigNumber.from(0),
+                    BigNumber.from(0),
+                    account,
+                    deadline,
+                    { value: ethers.utils.parseEther(amountETH) }
+                );
+                await addLiquidTx.wait();
+            } else {
+                let erc20In = createFtContractWithSigner(token1Name);
+                let erc20Out = createFtContractWithSigner(token2Name);
+
+                let aDesired = ethers.utils.parseUnits(token1Amount, tokens.obj[token1Name]?.decimals)
+                let bDesired = ethers.utils.parseUnits(token2Amount, tokens.obj[token2Name]?.decimals)
+
+                let approve1Tx = await erc20In.approve(
+                    config[selectedChain].dexAddress,
+                    aDesired);
+                let approve2Tx = await erc20Out.approve(
+                    config[selectedChain].dexAddress,
+                    bDesired);
+                await approve1Tx.wait();
+                await approve2Tx.wait();
+
+                let addLiquidTx = await dex.signer.addLiquidity(
+                    token1Name,
+                    token2Name,
+                    aDesired,
+                    bDesired,
+                    BigNumber.from(0),
+                    BigNumber.from(0),
+                    account,
+                    deadline
+                );
+                await addLiquidTx.wait();
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
         setLoading(false);
     };
 
@@ -281,10 +340,6 @@ export default function Pools() {
         token1Amount,
         tokenName
     ) => {
-        console.log(reserve1,
-            reserve2,
-            token1Amount,
-            tokenName)
         // const reserve1BN = new BN(reserve1);
         if (reserve1.eq(BigNumber.from(0))) {
             return "0";
