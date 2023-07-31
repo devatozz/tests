@@ -47,10 +47,11 @@ const NAV_ITEMS = [
 ];
 
 export default function AppBar() {
-
+    const [isDesktop] = useMediaQuery('(min-width: 680px)')
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const btnRef = React.useRef()
     return (
         <Box>
-            <MobileNav />
             <Flex
                 bg={useColorModeValue('white', 'gray.800')}
                 color={useColorModeValue('gray.600', 'white')}
@@ -65,6 +66,12 @@ export default function AppBar() {
                 align={'center'}
                 bgColor={"#3045C3"}
             >
+                {!isDesktop && 
+                    <Button  ref={btnRef} bg='#18215d'  color='white' onClick={onOpen}>
+                        <HamburgerIcon />
+                    </Button>
+                }
+         
                 <NextLink href={"/"}><Image src={"/piralogo.svg"} alt='pira.finance' h={30} /></NextLink>
                     <Flex display={{ base: 'none', md: 'flex' }}>
                         <Stack direction={'row'} spacing={4}>
@@ -87,26 +94,7 @@ export default function AppBar() {
                 </Flex>
                 <Network />
             </Flex>
-        </Box>
-    );
-}
-
-
-
-export  function MobileNav () {
-    const [isDesktop] = useMediaQuery('(min-width: 768px)')
-
-    console.log(';------------------', isDesktop)
-
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef = React.useRef()
-        return <>
-        {!isDesktop && 
-            <>
-            <Button zIndex={999} ref={btnRef} bg='#18215d' position={'fixed'} display={{base: 'auto', md: 'hidden'}} top={'8%'} color='white' onClick={onOpen}>
-                <HamburgerIcon />
-            </Button>
-
+            {!isDesktop && 
             <Drawer
                 isOpen={isOpen} 
                 placement='left'
@@ -120,7 +108,8 @@ export  function MobileNav () {
              
 
                 <DrawerBody bg="#3045c3" >
-                    <VStack direction={'row'} spacing={4} align='center'>
+                    <Flex h='full' w='full' align={'center'}>
+                        <VStack  w='full' direction={'row'} spacing={4} align='center'>
                         {NAV_ITEMS.map((navItem) => (
                             <Link
                                 pr={2}
@@ -137,14 +126,18 @@ export  function MobileNav () {
                             </Link>
                         ))}
                     </VStack>
+                    </Flex>
+                   
                 </DrawerBody>
 
 
                 </DrawerContent>
             </Drawer>
-            </>
+
         }
-        
-      
-        </>
+        </Box>
+    );
 }
+
+
+
