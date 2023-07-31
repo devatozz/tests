@@ -56,12 +56,12 @@ export default function Banner() {
                         Built on BASE-Layer 2 Blockchains, Pira Finance offers a seamless and secure trading experience
                     </Box>
                 </Flex>
-                <Box position={{base: "absolute", md: "relative"}}
+                <Flex position={{base: "absolute", md: "relative"}}
                      opacity={{base: 0.7, md: 1}}
                      w={{base: "80%", md: "50%"}}
-                     left={0} right={0} ml={"auto"} mr={"auto"} zIndex={1}>
+                     left={0} right={0} ml={"auto"} mr={"auto"} zIndex={1} justifyContent={"center"}>
                     <Image src={"/triangle.png"}/>
-                </Box>
+                </Flex>
             </Flex>
 
             <Flex bgImage={"url('/small_image.png')"}
