@@ -7,10 +7,23 @@ import {
     Link,
     useColorModeValue,
     Image,
+    Button,
+    useDisclosure,
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
+    DrawerHeader,
+    DrawerBody,
+    Input,
+    DrawerFooter,
+    useMediaQuery,
+    VStack,
 } from '@chakra-ui/react';
 
 import NextLink from 'next/link';
 import Network from './Network';
+import { HamburgerIcon } from '@chakra-ui/icons';
 const NAV_ITEMS = [
     {
         label: 'Swap',
@@ -22,19 +35,21 @@ const NAV_ITEMS = [
         href: '/liquidity',
     },
     {
-        label: 'Launchpad',
-        href: '#',
+        label: 'Airdrop',
+        href: '/airdrop',
 
     },
     {
         label: 'Bridge',
-        href: '#',
+        href: 'https://docs.base.org/tools/bridges/',
 
     },
 ];
 
 export default function AppBar() {
-
+    const [isDesktop] = useMediaQuery('(min-width: 680px)')
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const btnRef = React.useRef()
     return (
         <Box>
             <Flex
@@ -51,6 +66,12 @@ export default function AppBar() {
                 align={'center'}
                 bgColor={"#3045C3"}
             >
+                {!isDesktop && 
+                    <Button  ref={btnRef} bg='#18215d'  color='white' onClick={onOpen}>
+                        <HamburgerIcon />
+                    </Button>
+                }
+         
                 <NextLink href={"/"}><Image src={"/piralogo.svg"} alt='pira.finance' h={30} /></NextLink>
                     <Flex display={{ base: 'none', md: 'flex' }}>
                         <Stack direction={'row'} spacing={4}>
@@ -73,6 +94,50 @@ export default function AppBar() {
                 </Flex>
                 <Network />
             </Flex>
+            {!isDesktop && 
+            <Drawer
+                isOpen={isOpen} 
+                placement='left'
+                onClose={onClose}
+                finalFocusRef={btnRef}
+                
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                <DrawerCloseButton />
+             
+
+                <DrawerBody bg="#3045c3" >
+                    <Flex h='full' w='full' align={'center'}>
+                        <VStack  w='full' direction={'row'} spacing={4} align='center'>
+                        {NAV_ITEMS.map((navItem) => (
+                            <Link
+                                pr={2}
+                                py={2}
+                                fontSize={'sm'}
+                                fontWeight={700}
+                                color='white'
+                                href={navItem.href}
+                                _hover={{
+                                    textDecoration: 'none',
+                                    color: 'gray',
+                                }}>
+                                {navItem.label}
+                            </Link>
+                        ))}
+                    </VStack>
+                    </Flex>
+                   
+                </DrawerBody>
+
+
+                </DrawerContent>
+            </Drawer>
+
+        }
         </Box>
     );
 }
+
+
+

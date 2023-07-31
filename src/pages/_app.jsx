@@ -4,6 +4,7 @@ import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "src/createEmotionCache";
 import favicon from "src/public/static/favicon.ico";
 const clientSideEmotionCache = createEmotionCache();
+import '../styles/global.css'
 import theme from "src/styles/theme";
 import {
   Box,
