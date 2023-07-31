@@ -27,6 +27,9 @@ import {
 import React, { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { currencyFormat } from "src/utils/stringUtil";
+import { BigNumber, ethers } from "ethers";
+import { useSelector } from "react-redux";
+import { config } from "src/state/chain/config";
 
 export default function LiquidityItem({
   lpToken,
@@ -34,16 +37,20 @@ export default function LiquidityItem({
   handleRemoveLiquidity,
   loading,
 }) {
+  console.log(lpToken,
+    pool)
   const [share, setShare] = useState("0");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [removeAmount, setRemoveAmount] = useState("0");
+  const { tokens } = useSelector(state => state.dex)
+  const { selectedChain } = useSelector(state => state.chain)
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
 
   useEffect(() => {
-    const balanceBN = new BN(lpToken.balance);
-    if (balanceBN.lt(parseUnits(removeAmount))) {
+    const balanceBN = BigNumber.from(lpToken.balance);
+    if (balanceBN.lt(ethers.utils.parseUnits(removeAmount, 18))) {
       handleBalanceInsufficient();
     } else {
       handleBalanceOk();
@@ -64,18 +71,18 @@ export default function LiquidityItem({
     setBtnText("Insufficient balance");
   };
 
-  useEffect(() => {
-    const getPoolShare = () => {
-      const balance = Number(lpToken.balance);
-      const poolTotalSupply = Number(pool.total_supply);
-      if (balance > 0 && poolTotalSupply > 0) {
-        const share = (balance / poolTotalSupply) * 100;
-        setShare(share.toFixed(2));
-      }
-    };
+  // useEffect(() => {
+  //   const getPoolShare = () => {
+  //     const balance = Number(lpToken.balance);
+  //     const poolTotalSupply = Number(pool.total_supply);
+  //     if (balance > 0 && poolTotalSupply > 0) {
+  //       const share = (balance / poolTotalSupply) * 100;
+  //       setShare(share.toFixed(2));
+  //     }
+  //   };
 
-    getPoolShare();
-  }, [lpToken, pool]);
+  //   getPoolShare();
+  // }, [lpToken, pool]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,7 +91,7 @@ export default function LiquidityItem({
   };
 
   const handleSetMaxAmount = () => {
-    setRemoveAmount(formatUnits(lpToken.balance));
+    setRemoveAmount(ethers.utils.formatUnits(lpToken.balance));
   };
 
   return (
@@ -100,18 +107,18 @@ export default function LiquidityItem({
           <Box flex="1" textAlign="left" fontWeight="bold">
             <Avatar
               size="xs"
-              name={pool.token_id_1}
-              src={metadatas[pool.token_id_1]?.icon}
+              name={tokens.obj[pool.token0]?.symbol}
+              src={config[selectedChain][pool.token0]?.icon}
             />
             {"  "}
-            {metadatas[pool.token_id_1]?.symbol} -{"  "}
+            {tokens.obj[pool.token0]?.symbol} -{"  "}
             <Avatar
               size="xs"
-              name={pool.token_id_2}
-              src={metadatas[pool.token_id_2]?.icon}
+              name={tokens.obj[pool.token1]?.symbol}
+              src={config[selectedChain][pool.token1]?.icon}
             />
             {"  "}
-            {metadatas[pool.token_id_2]?.symbol}
+            {tokens.obj[pool.token1]?.symbol}
           </Box>
           <Text fontWeight="bold" mr={2}>
             Manage
@@ -123,28 +130,27 @@ export default function LiquidityItem({
         <PoolDetail
           label="Your total LP tokens:"
           value={
-            lpToken.balance && currencyFormat(formatUnits(lpToken.balance))
+            lpToken.balance && currencyFormat(ethers.utils.formatUnits(lpToken.balance))
           }
         />
         <PoolDetail
-          label={`Pooled ${metadatas[pool.token_id_1]?.symbol}:`}
+          label={`Pooled ${tokens.obj[pool.token0]?.symbol}:`}
           value={
-            pool.reserve1 &&
+            pool.reverses._reserve0 &&
             currencyFormat(
-              formatUnits(pool.reserve1, metadatas[pool.token_id_1]?.decimals)
+              ethers.utils.formatUnits(pool.reverses._reserve0, tokens.obj[pool.token0]?.decimals)
             )
           }
         />
         <PoolDetail
-          label={`Pooled ${metadatas[pool.token_id_2]?.symbol}:`}
+          label={`Pooled ${tokens.obj[pool.token1]?.symbol}:`}
           value={
-            pool.reserve2 &&
+            pool.reverses._reserve1 &&
             currencyFormat(
-              formatUnits(pool.reserve2, metadatas[pool.token_id_2]?.decimals)
+              ethers.utils.formatUnits(pool.reverses._reserve1, tokens.obj[pool.token1]?.decimals)
             )
           }
         />
-        <PoolDetail label="Your pool share:" value={`${share}%`} />
         <Flex justifyContent="flex-end" mt={5}>
           <Button colorScheme="red" onClick={handleOpenModal} size="sm">
             Remove Liquidity
@@ -158,7 +164,7 @@ export default function LiquidityItem({
           <ModalCloseButton />
           <ModalBody>
             <Text fontWeight="bold">{`LP tokens balance: ${currencyFormat(
-              formatUnits(lpToken.balance)
+              ethers.utils.formatUnits(lpToken.balance)
             )}`}</Text>
             <FormControl>
               <FormLabel>Amount</FormLabel>
@@ -198,18 +204,18 @@ export default function LiquidityItem({
                 <Flex alignItems="center" m={2}>
                   <Avatar
                     size="xs"
-                    name={pool.token_id_1}
-                    src={metadatas[pool.token_id_1]?.icon}
+                    name={tokens.obj[pool.token0]?.symbol}
+                    src={tokens.obj[pool.token0]?.icon}
                   />
-                  <Text ml={2}>{metadatas[pool.token_id_1]?.symbol}</Text>
+                  <Text ml={2}>{tokens.obj[pool.token0]?.symbol}</Text>
                 </Flex>
                 <Flex alignItems="center" m={2}>
                   <Avatar
                     size="xs"
-                    name={pool.token_id_2}
-                    src={metadatas[pool.token_id_2]?.icon}
+                    name={tokens.obj[pool.token0]?.symbol}
+                    src={tokens.obj[pool.token0]?.icon}
                   />
-                  <Text ml={2}>{metadatas[pool.token_id_2]?.symbol}</Text>
+                  <Text ml={2}>{tokens.obj[pool.token0]?.symbol}</Text>
                 </Flex>
               </Flex>
             </Box>

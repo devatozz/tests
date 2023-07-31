@@ -305,7 +305,7 @@ export default function Pools() {
         setLoading(false);
     };
 
-    const handleRemoveLiquidity = async (removeAmount, poolId) => {
+    const handleRemoveLiquidity = async (removeAmount, poolInfo) => {
         setLoading(true);
         try {
             let amount = ethers.utils.parseUnits(removeAmount).toString() + "u128";
@@ -339,7 +339,7 @@ export default function Pools() {
         reserve2,
         token1Amount,
         tokenName
-    ) => {
+    ) => {                     
         // const reserve1BN = new BN(reserve1);
         if (reserve1.eq(BigNumber.from(0))) {
             return "0";
@@ -411,6 +411,27 @@ export default function Pools() {
     };
 
     useEffect(() => {
+        const getMyLpTokens = async () => {
+            const lpTokens = [];
+            //rewrite this
+            await Promise.all(
+                pools.list.map(async (item) => {
+                    const balance = await loadBalance(account, selectedChain, item.pair);
+                    if (balance.gt(BigNumber.from(0))) {
+                        myLpTokens.push({
+                            ...item,
+                            balance: balance.toString(),
+                        });
+                    }
+                })
+            );
+
+            setMyLpTokens(myLpTokens);
+        };
+
+        getMyLpTokens();
+    }, [account, pools.list]);
+    useEffect(() => {
         if (confirm) {
             handleLoadBalance(token1Name).then((res) => setToken1Balance(res));
             handleLoadBalance(token2Name).then((res) => setToken2Balance(res));
@@ -433,9 +454,9 @@ export default function Pools() {
                                         <Accordion allowMultiple>
                                             {myLpTokens.map((lpToken) => (
                                                 <LiquidityItem
-                                                    key={lpToken.address}
+                                                    key={lpToken.pair}
                                                     lpToken={lpToken}
-                                                    pool={lpToPoolMap[lpToken.address]}
+                                                    pool={pools.obj[lpToken.pair]}
                                                     handleRemoveLiquidity={handleRemoveLiquidity}
                                                     loading={loading}
                                                 />
