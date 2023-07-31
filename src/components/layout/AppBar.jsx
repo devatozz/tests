@@ -7,10 +7,23 @@ import {
     Link,
     useColorModeValue,
     Image,
+    Button,
+    useDisclosure,
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
+    DrawerHeader,
+    DrawerBody,
+    Input,
+    DrawerFooter,
+    useMediaQuery,
+    VStack,
 } from '@chakra-ui/react';
 
 import NextLink from 'next/link';
 import Network from './Network';
+import { HamburgerIcon } from '@chakra-ui/icons';
 const NAV_ITEMS = [
     {
         label: 'Swap',
@@ -22,13 +35,13 @@ const NAV_ITEMS = [
         href: '/liquidity',
     },
     {
-        label: 'Launchpad',
-        href: '#',
+        label: 'Airdrop',
+        href: '/airdrop',
 
     },
     {
         label: 'Bridge',
-        href: '#',
+        href: 'https://docs.base.org/tools/bridges/',
 
     },
 ];
@@ -37,6 +50,7 @@ export default function AppBar() {
 
     return (
         <Box>
+            <MobileNav />
             <Flex
                 bg={useColorModeValue('white', 'gray.800')}
                 color={useColorModeValue('gray.600', 'white')}
@@ -75,4 +89,62 @@ export default function AppBar() {
             </Flex>
         </Box>
     );
+}
+
+
+
+export  function MobileNav () {
+    const [isDesktop] = useMediaQuery('(min-width: 768px)')
+
+    console.log(';------------------', isDesktop)
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const btnRef = React.useRef()
+        return <>
+        {!isDesktop && 
+            <>
+            <Button zIndex={999} ref={btnRef} bg='#18215d' position={'fixed'} display={{base: 'auto', md: 'hidden'}} top={'8%'} color='white' onClick={onOpen}>
+                <HamburgerIcon />
+            </Button>
+
+            <Drawer
+                isOpen={isOpen} 
+                placement='left'
+                onClose={onClose}
+                finalFocusRef={btnRef}
+                
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                <DrawerCloseButton />
+             
+
+                <DrawerBody bg="#3045c3" >
+                    <VStack direction={'row'} spacing={4} align='center'>
+                        {NAV_ITEMS.map((navItem) => (
+                            <Link
+                                pr={2}
+                                py={2}
+                                fontSize={'sm'}
+                                fontWeight={700}
+                                color='white'
+                                href={navItem.href}
+                                _hover={{
+                                    textDecoration: 'none',
+                                    color: 'gray',
+                                }}>
+                                {navItem.label}
+                            </Link>
+                        ))}
+                    </VStack>
+                </DrawerBody>
+
+
+                </DrawerContent>
+            </Drawer>
+            </>
+        }
+        
+      
+        </>
 }
