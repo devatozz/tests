@@ -37,9 +37,9 @@ export default function SwapPage() {
   const [tokenIn, setTokenIn] = useState("");
   const [bIn, setBIn] = useState(BigNumber.from(0));
   const [bOut, setBOut] = useState(BigNumber.from(0));
-  const [amountIn, setAmountIn] = useState(0);
+  const [amountIn, setAmountIn] = useState("0");
   const [tokenOut, setTokenOut] = useState("");
-  const [amountOut, setAmountOut] = useState(0);
+  const [amountOut, setAmountOut] = useState("0");
   const [swapSteps, setSwapSteps] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -60,7 +60,7 @@ export default function SwapPage() {
   const [btnText, setBtnText] = useState("Swap");
 
   useEffect(() => {
-    if (tokenIn && bIn.lt(amountIn)) {
+    if (tokenIn && bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))) {
       handleBalanceInsufficient();
     } else {
       handleSwapAvailable();
@@ -173,14 +173,14 @@ export default function SwapPage() {
           account,
           deadline,
           {
-            value: ethers.utils.parseEther(tokenIn),
+            value: ethers.utils.parseEther(amountIn),
           }
         );
         await swapTx.wait();
       } else if (tokenOut == config[selectedChain].wrapAddress) {
         let erc20 = createFtContractWithSigner(tokenIn);
         let aIn = ethers.utils.parseUnits(
-          tokenIn,
+          amountIn,
           tokens.obj[tokenIn]?.decimals
         );
         let approveTx = await erc20.approve(
@@ -199,7 +199,7 @@ export default function SwapPage() {
       } else {
         let erc20 = createFtContractWithSigner(tokenIn);
         let aIn = ethers.utils.parseUnits(
-          tokenIn,
+          amountIn,
           tokens.obj[tokenIn]?.decimals
         );
         let approveTx = await erc20.approve(
