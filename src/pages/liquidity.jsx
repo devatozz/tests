@@ -28,6 +28,7 @@ import {
     InputGroup,
     InputRightElement,
     useToast,
+    Divider,
 } from "@chakra-ui/react";
 import { BigNumber, ethers } from "ethers";
 
@@ -418,15 +419,16 @@ export default function Pools() {
     }, [confirm]);
 
     return (
-        <Center>
-            <Center borderRadius={"md"} bgColor="#171E2E" px={4} py={6} color='white'>
-                <Tabs variant="soft-rounded">
-                    <Box w="550px">
-                        <TabList>
+        <Center bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 100%)" pt={8}>
+            <Center w={{base: '99%', md: 'auto'}}   borderRadius={"md"} bgColor="white" px={{base: 0, md: 4}} py={6} color='white'>
+                <Tabs variant="soft-rounded" >
+                    <Box w={{base: 'full', md: '550px'}} mx='auto' minH={480} h={{base: 'auto', md: 'calc(100vh - 237px)' }} overflowY={'auto'} >
+                        <TabList w='full'>
                             <Tab>My Liquidity</Tab>
                             <Tab>+ Add Liquidity</Tab>
                         </TabList>
-                        <TabPanels>
+                        <Box h={'2px'} mt={4} bg='black' />
+                        <TabPanels w='full'>
                             <TabPanel>
                                 <VStack spacing={4} align="stretch">
                                     <Box>
