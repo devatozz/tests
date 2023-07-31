@@ -13,53 +13,52 @@ export default function Banner() {
     ];
 
     const partnersSrc = [
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
+        {src: '/nftspeed.png'},
+        {src: '/innovaz.png'},
+        {src: '/basenameservice.png'},
+        {src: '/basenameservice2.png'},
+        {src: '/rollupfinance.png'},
+        {src: '/bullonbase.png'},
+        {src: '/cloudbase.png'},
+        {src: '/misesbrowser.png'},
+        {src: '/zonic.png'},
     ];
 
     const mediaPartnersSrc = [
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
-        {src: 'https://placehold.co/250x100'},
+        {src: '/ethereumdaily.png'},
+        {src: '/basespace.png'},
+        {src: '/basedailycn.png'},
+        {src: '/basestation.png'},
+        {src: '/baseuniverse.png'},
+        {src: '/baseallday.png'},
+        {src: '/baseadvocates.png'},
+        {src: '/baseecosystem.png'},
+        {src: '/basedailynews.png'},
     ];
 
-  
     return (
         <Box bgGradient="linear(180deg, #3146C6 0%, #18215D 100%)" m={0} w={"100%"} p={"0px"}>
-            <Flex alignItems={"center"} position={"relative"}>
+            <Flex alignItems={"center"} position={"relative"} p={{base: '50px 0',md: "100px 0"}}>
                 <Flex flexDirection={"column"} w={{base: "100%", sm: "100%", md: "50%", lg: "50%"}} zIndex={5}>
-                    <Container color={"#fff"}
+                    <Box color={"#fff"}
                                fontWeight={500}
                                p={{base: "20px 20px", sm: "5px 10px", md: "10px 50px", lg: "10px 50px"}}
-                               fontSize={{md: '24px', lg: '24px'}}>
+                               fontSize={{base: '24px', md: '40px'}}>
                         Seamless and secure trading experience with &thinsp;
                         <span style={{color: "#5EEDFF"}}>Pira Finance</span>
-                    </Container>
-                    <Container color={"#fff"}
+                    </Box>
+                    <Box color={"#fff"}
                                textAlign={"justify"}
                                p={{base: "10px 20px 20px 20px", sm: "5px 10px", md: "10px 50px", lg: "10px 50px"}}
-                               fontSize={{md: '24px', lg: '24px'}}>
+                               fontSize={{base: '18px', md: '20px'}}>
                         Welcome to Pira Finance, a community-owned multichain DEX that is revolutionizing decentralized
                         finance.
                         Built on BASE-Layer 2 Blockchains, Pira Finance offers a seamless and secure trading experience
-                    </Container>
+                    </Box>
                 </Flex>
-                <Box position={{base: "absolute", md: "relative", lg: "relative"}}
-                     opacity={{base: 0.5, md: 1}}
-                     w={{base: "60%", md: "50%", lg: "50%"}}
+                <Box position={{base: "absolute", md: "relative"}}
+                     opacity={{base: 0.7, md: 1}}
+                     w={{base: "80%", md: "50%"}}
                      left={0} right={0} ml={"auto"} mr={"auto"} zIndex={1}>
                     <Image src={"/triangle.png"}/>
                 </Box>
@@ -261,7 +260,7 @@ export default function Banner() {
                 <Box>
                     <Text color={"#00F0FF"}
                           fontSize={{base: "24px", md: "48px"}}
-                          textAlign={"center"} m={{base: "20px 0", md: "50px 0"}}>
+                          textAlign={"center"} m={"50px 0"}>
                         MEDIA PARTNERS
                     </Text>
                 </Box>
