@@ -8,10 +8,15 @@ const airdrop = () => {
 };
 
 const AirdropCommingSoon = () => {
-
-  return <Center w='full' h={{base: 'auto', md: 'calc(100vh - 180px)' }}>
-    <Text>Comming Soon !</Text>
-  </Center>
-}
+  return (
+    <Center
+      w="full"
+      h={{ base: "calc(100vh - 170px)", md: "calc(100vh - 180px)" }}
+      // minHeight={{ base: "560px" }}
+    >
+      <Text>Comming Soon !</Text>
+    </Center>
+  );
+};
 
 export default AirdropCommingSoon;
