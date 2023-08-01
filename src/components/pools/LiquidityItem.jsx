@@ -37,7 +37,6 @@ export default function LiquidityItem({
   handleRemoveLiquidity,
   loading,
 }) {
-  console.log(lpToken, pool);
   const [share, setShare] = useState("0");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [removeAmount, setRemoveAmount] = useState("0");

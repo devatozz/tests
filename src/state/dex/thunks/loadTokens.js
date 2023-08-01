@@ -16,7 +16,7 @@ const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) 
             tokenPromises.push(getTokenData(tokenSet[i]));
         }
         let listResult = await Promise.all(tokenPromises);
-        let itemIndex = listResult.findIndex(item => item.address == config[selectedChain].wrapAddress)
+        let itemIndex = listResult.findIndex(item => item.address.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase())
         if (itemIndex != -1) {
             listResult[itemIndex].name = "ETH"
             listResult[itemIndex].symbol = "ETH"

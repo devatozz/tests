@@ -197,7 +197,7 @@ export default function SwapPage() {
       const next30MinutesUnix = currentTimeUnix + 30 * 60;
       const deadline = BigNumber.from(next30MinutesUnix);
 
-      if (tokenIn == config[selectedChain].wrapAddress) {
+      if (tokenIn.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()) {
         let swapTx = await dex.signer.swapExactETHForTokens(
           minAmountOut,
           swapSteps,
@@ -208,7 +208,7 @@ export default function SwapPage() {
           }
         );
         await swapTx.wait();
-      } else if (tokenOut == config[selectedChain].wrapAddress) {
+      } else if (tokenOut.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()) {
         let erc20 = createFtContractWithSigner(tokenIn);
         let aIn = ethers.utils.parseUnits(
           amountIn,

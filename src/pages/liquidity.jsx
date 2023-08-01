@@ -241,19 +241,19 @@ export default function Pools() {
     setLoading(true);
     try {
       if (
-        token1Name == config[selectedChain].wrapAddress ||
-        token2Name == config[selectedChain].wrapAddress
+          token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase() ||
+          token2Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
       ) {
         let tokenAddr =
-          token1Name == config[selectedChain].wrapAddress
+            token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? token2Name
             : token1Name;
         let amountIn =
-          token1Name == config[selectedChain].wrapAddress
+            token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? token2Amount
             : token1Amount;
         let amountETH =
-          token1Name == config[selectedChain].wrapAddress
+            token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? token1Amount
             : token2Amount;
 
