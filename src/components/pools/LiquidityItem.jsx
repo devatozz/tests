@@ -237,10 +237,10 @@ export default function LiquidityItem({
                 <Flex alignItems="center" m={2}>
                   <Avatar
                     size="xs"
-                    name={tokens.obj[pool.token0]?.symbol}
-                    src={tokens.obj[pool.token0]?.icon}
+                    name={tokens.obj[pool.token1]?.symbol}
+                    src={tokens.obj[pool.token1]?.icon}
                   />
-                  <Text ml={2}>{tokens.obj[pool.token0]?.symbol}</Text>
+                  <Text ml={2}>{tokens.obj[pool.token1]?.symbol}</Text>
                 </Flex>
               </Flex>
             </Box>
