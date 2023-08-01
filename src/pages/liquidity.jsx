@@ -506,7 +506,7 @@ export default function Pools() {
         pools.list.map(async (item) => {
           const balance = await loadBalance(account, selectedChain, item.pair);
           if (balance.gt(BigNumber.from(0))) {
-            myLpTokens.push({
+            lpTokens.push({
               ...item,
               balance: balance.toString(),
             });
@@ -514,7 +514,7 @@ export default function Pools() {
         })
       );
 
-      setMyLpTokens(myLpTokens);
+      setMyLpTokens(lpTokens);
     };
 
     getMyLpTokens();
