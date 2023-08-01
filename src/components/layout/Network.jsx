@@ -18,7 +18,7 @@ import WalletIcon from 'src/components/icons/Wallet';
 import { disconnectNetwork, setIsConnecting, handleEthereumAccountChange } from 'src/state/chain/slice';
 import NavItem from './NavItem';
 // import loadTokens from 'src/state/dex/thunks/loadTokens';
-import loadContract from 'src/state/dex/thunks/loadContract';
+import loadContracts from 'src/state/dex/thunks/loadContract';
 import loadPools from 'src/state/dex/thunks/loadPools';
 import loadTokens from 'src/state/dex/thunks/loadTokens';
 
@@ -77,10 +77,9 @@ export default function Network() {
     //         dispatch(loadTokens());
     //     }
     // }, [selectedChain, loaded]);
-
     useEffect(() => {
         if (!contractLoaded) {
-            dispatch(loadContract());
+            dispatch(loadContracts());
         } else {
             dispatch(loadPools())
         }
@@ -155,13 +154,15 @@ export default function Network() {
                     </MenuItem>
                 ))}
                 <MenuDivider />
-                <MenuItem
-                    as={Button}
-                    variant='ghost'
-                    onClick={() => handleDisconnectNetwork()}
-                >
-                    Disconnect
-                </MenuItem>
+                {account &&
+                    <MenuItem
+                        as={Button}
+                        variant='ghost'
+                        onClick={() => handleDisconnectNetwork()}
+                    >
+                        Disconnect
+                    </MenuItem>
+                }
             </MenuList>
         </Menu>
     )

@@ -4,7 +4,7 @@ import PancakePair from "src/abis/PancakePair.json";
 
 const loadPools = createAsyncThunk("dex/pool", async (_payload, { getState }) => {
     const state = await getState();
-    const selectedChain = state.chain.selectedChain;
+    const selectedChain = state.chain.selectedChain ? state.chain.selectedChain : "base";
     const dexLoaded = state.dex.loaded;
     if (!selectedChain || !dexLoaded) {
         return { error: true, message: 'not loaded' };
