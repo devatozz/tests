@@ -315,6 +315,7 @@ export default function SwapPage() {
 
   const handleSetMaxTokenIn = () => {
     setAmountIn(ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals));
+    handleGetAmountOut(tokenIn, tokenOut, ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals));
   };
 
   //   if (!account)
