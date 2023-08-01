@@ -4,7 +4,7 @@ import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "src/createEmotionCache";
 import favicon from "src/public/static/favicon.ico";
 const clientSideEmotionCache = createEmotionCache();
-import '../styles/global.css'
+import "../styles/global.css";
 import theme from "src/styles/theme";
 import {
   Box,
@@ -47,7 +47,11 @@ export default function App(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href={favicon.src} />
-        <meta name={"title"} title={"Pira finance"} />
+        <meta name="title" content="Pira finance" />
+        <meta
+          name="description"
+          content="The community-owned multichain DEX revolutionizing decentralized finance"
+        />
         <title>Pira Finance</title>
       </Head>
       <ChakraProvider theme={theme}>

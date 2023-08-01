@@ -37,13 +37,12 @@ export default function LiquidityItem({
   handleRemoveLiquidity,
   loading,
 }) {
-  console.log(lpToken,
-    pool)
+  console.log(lpToken, pool);
   const [share, setShare] = useState("0");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [removeAmount, setRemoveAmount] = useState("0");
-  const { tokens } = useSelector(state => state.dex)
-  const { selectedChain } = useSelector(state => state.chain)
+  const { tokens } = useSelector((state) => state.dex);
+  const { selectedChain } = useSelector((state) => state.chain);
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
@@ -98,8 +97,9 @@ export default function LiquidityItem({
     <AccordionItem
       borderWidth="1px"
       borderRadius="md"
+      borderColor={"#5EEDFF"}
       m={3}
-      bg="blue.800"
+      bg="white"
       // bgGradient="linear(to-r, blue.600, blue.400)"
     >
       <h2>
@@ -130,7 +130,8 @@ export default function LiquidityItem({
         <PoolDetail
           label="Your total LP tokens:"
           value={
-            lpToken.balance && currencyFormat(ethers.utils.formatUnits(lpToken.balance))
+            lpToken.balance &&
+            currencyFormat(ethers.utils.formatUnits(lpToken.balance))
           }
         />
         <PoolDetail
@@ -138,7 +139,10 @@ export default function LiquidityItem({
           value={
             pool.reverses._reserve0 &&
             currencyFormat(
-              ethers.utils.formatUnits(pool.reverses._reserve0, tokens.obj[pool.token0]?.decimals)
+              ethers.utils.formatUnits(
+                pool.reverses._reserve0,
+                tokens.obj[pool.token0]?.decimals
+              )
             )
           }
         />
@@ -147,7 +151,10 @@ export default function LiquidityItem({
           value={
             pool.reverses._reserve1 &&
             currencyFormat(
-              ethers.utils.formatUnits(pool.reverses._reserve1, tokens.obj[pool.token1]?.decimals)
+              ethers.utils.formatUnits(
+                pool.reverses._reserve1,
+                tokens.obj[pool.token1]?.decimals
+              )
             )
           }
         />
@@ -159,7 +166,7 @@ export default function LiquidityItem({
       </AccordionPanel>
       <Modal isOpen={isOpen} onClose={onClose} size="sm">
         <ModalOverlay />
-        <ModalContent bg="blue.800" color="white">
+        <ModalContent bg="white" color="black">
           <ModalHeader>Remove Liquidity</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -174,6 +181,7 @@ export default function LiquidityItem({
                   onChange={(value) => setRemoveAmount(value)}
                   w="full"
                   size="lg"
+                  borderColor={"#5EEDFF"}
                 >
                   <NumberInputField />
                 </NumberInput>
@@ -195,7 +203,7 @@ export default function LiquidityItem({
             <Box
               mt={4}
               border="1px"
-              borderColor="gray.200"
+              borderColor="#5EEDFF"
               borderRadius="md"
               p={4}
             >

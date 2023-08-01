@@ -61,7 +61,10 @@ export default function SwapPage() {
 
   useEffect(() => {
     if (amountIn > "0") {
-      if (tokenIn && bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))) {
+      if (
+        tokenIn &&
+        bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))
+      ) {
         handleBalanceInsufficient();
       } else {
         handleSwapAvailable();
@@ -85,8 +88,8 @@ export default function SwapPage() {
         let steps = getSteps(tIn, tOut, pools.matrix);
         setSwapSteps(steps);
         if (steps.length < 2) {
-          setBtnDisable(true)
-          setBtnText("Not existed route")
+          setBtnDisable(true);
+          setBtnText("Not existed route");
         } else {
           try {
             let aIns = await dex.contract.getAmountsIn(
@@ -94,17 +97,14 @@ export default function SwapPage() {
               steps
             );
             setAmountIn(
-              ethers.utils.formatUnits(
-                aIns[0],
-                tokens.obj[tIn]?.decimals
-              )
+              ethers.utils.formatUnits(aIns[0], tokens.obj[tIn]?.decimals)
             );
-            setBtnDisable(false)
-            setBtnText("Swap")
+            setBtnDisable(false);
+            setBtnText("Swap");
           } catch (e) {
-            setBtnDisable(true)
-            setBtnText("Not existed route")
-            console.log(e)
+            setBtnDisable(true);
+            setBtnText("Not existed route");
+            console.log(e);
           }
         }
       } else if (tIn && tOut && tIn != tOut) {
@@ -121,8 +121,8 @@ export default function SwapPage() {
         let steps = getSteps(tIn, tOut, pools.matrix);
         setSwapSteps(steps);
         if (steps.length < 2) {
-          setBtnDisable(true)
-          setBtnText("Not existed route")
+          setBtnDisable(true);
+          setBtnText("Not existed route");
         } else {
           try {
             let aOuts = await dex.contract.getAmountsOut(
@@ -135,12 +135,12 @@ export default function SwapPage() {
                 tokens.obj[tOut]?.decimals
               )
             );
-            setBtnDisable(false)
-            setBtnText("Swap")
+            setBtnDisable(false);
+            setBtnText("Swap");
           } catch (e) {
-            setBtnDisable(true)
-            setBtnText("Not existed route")
-            console.log(e)
+            setBtnDisable(true);
+            setBtnText("Not existed route");
+            console.log(e);
           }
         }
       } else if (tIn && tOut && tIn != tOut) {
@@ -184,7 +184,9 @@ export default function SwapPage() {
   const handleSwap = async (e) => {
     setIsLoading(true);
     try {
-      let minAmountOut = BigNumber.from(99).mul(ethers.utils.parseEther(amountOut)).div(BigNumber.from(100))
+      let minAmountOut = BigNumber.from(99)
+        .mul(ethers.utils.parseEther(amountOut))
+        .div(BigNumber.from(100));
 
       const currentTimeUnix = Math.floor(Date.now() / 1000);
       // Calculate the Unix time for the next 30 minutes
@@ -208,7 +210,10 @@ export default function SwapPage() {
           amountIn,
           tokens.obj[tokenIn]?.decimals
         );
-        let currentApproval = await erc20.allowance(account, config[selectedChain].dexAddress)
+        let currentApproval = await erc20.allowance(
+          account,
+          config[selectedChain].dexAddress
+        );
         if (currentApproval.lt(aIn)) {
           let approveTx = await erc20.approve(
             config[selectedChain].dexAddress,
@@ -231,7 +236,10 @@ export default function SwapPage() {
           amountIn,
           tokens.obj[tokenIn]?.decimals
         );
-        let currentApproval = await erc20.allowance(account, config[selectedChain].dexAddress)
+        let currentApproval = await erc20.allowance(
+          account,
+          config[selectedChain].dexAddress
+        );
         if (currentApproval.lt(aIn)) {
           let approveTx = await erc20.approve(
             config[selectedChain].dexAddress,
@@ -248,8 +256,8 @@ export default function SwapPage() {
         );
         await swapTx.wait();
       }
-      handleSelectTokenIn(tokenIn)
-      handleSelectTokenOut(tokenOut)
+      handleSelectTokenIn(tokenIn);
+      handleSelectTokenOut(tokenOut);
     } catch (e) {
       console.log(e);
     }
@@ -304,14 +312,14 @@ export default function SwapPage() {
 
   return (
     <Box
-      bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 100%)"
+      bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
       width={"full"}
-      h={{ base: "auto", md: "calc(100vh - 189px)" }}
+      h={{ base: "auto", md: "100vh" }}
     >
       <Center color="#">
         <Center
           w={{ base: "95%", md: "450px" }}
-          h={"700px"}
+          h={"650px"}
           mt={"50px"}
           borderRadius={"md"}
           bgColor="white"
@@ -349,6 +357,7 @@ export default function SwapPage() {
                   >
                     <PopoverTrigger>
                       <Button
+                        borderColor={"#5EEDFF"}
                         colorScheme="telegram"
                         justifyContent="left"
                         minW="200px"
@@ -375,7 +384,7 @@ export default function SwapPage() {
                         </Text>
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent w="full" maxH="200px" overflowY="scroll">
+                    <PopoverContent w="full" maxH="170px" overflowY="scroll">
                       <PopoverBody w="full">
                         <VStack w="full">
                           {tokens.list
@@ -405,6 +414,7 @@ export default function SwapPage() {
                   </Popover>
                   <InputGroup>
                     <NumberInput
+                      borderColor={"#5EEDFF"}
                       value={amountIn}
                       w="full"
                       size="lg"
@@ -458,6 +468,7 @@ export default function SwapPage() {
                         size="lg"
                         variant="outline"
                         aria-label="Options token out"
+                        borderColor={"#5EEDFF"}
                         onClick={toggleTokenOut}
                         leftIcon={
                           <Avatar
@@ -478,7 +489,7 @@ export default function SwapPage() {
                         </Text>
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent w="full" maxH="200px" overflowY="scroll">
+                    <PopoverContent w="full" maxH="170px" overflowY="scroll">
                       <PopoverBody w="full">
                         <VStack w="full">
                           {tokens.list
@@ -510,6 +521,7 @@ export default function SwapPage() {
                     value={amountOut}
                     w="full"
                     size="lg"
+                    borderColor={"#5EEDFF"}
                     onChange={(value) => handleSetAmountOut(value)}
                   >
                     <NumberInputField />
