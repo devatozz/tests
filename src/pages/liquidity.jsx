@@ -391,12 +391,12 @@ export default function Pools() {
     // const reserve2BN = new BN(reserve2);
     const amount1BN = ethers.utils.parseUnits(
       token1Amount,
-      tokens.obj[tokenName].decimals
+      tokens.obj[tokenName]?.decimals
     );
 
     return ethers.utils.formatUnits(
       amount1BN.mul(reserve2).div(reserve1).toString(),
-      tokens.obj[tokenName].decimals
+      tokens.obj[tokenName]?.decimals
     );
   };
 
@@ -585,7 +585,7 @@ export default function Pools() {
                                 size="sm"
                                 name={
                                   token1Name
-                                    ? tokens.obj[token1Name].symbol
+                                    ? tokens.obj[token1Name]?.symbol
                                     : "In"
                                 }
                                 src={
@@ -698,7 +698,7 @@ export default function Pools() {
                                 size="sm"
                                 name={
                                   token2Name
-                                    ? tokens.obj[token2Name].symbol
+                                    ? tokens.obj[token2Name]?.symbol
                                     : "Out"
                                 }
                                 src={
