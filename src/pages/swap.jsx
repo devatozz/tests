@@ -77,7 +77,7 @@ export default function SwapPage() {
         if (steps.length < 2) {
           setBtnDisable(true);
           setBtnText("Not existed route");
-        } else if (isNaN(aXIn)) {
+        } else if (isNaN(aXOut)) {
           setBtnDisable(true);
           setBtnText("Amount out is not valid");
         } else {
