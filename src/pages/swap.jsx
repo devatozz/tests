@@ -59,19 +59,6 @@ export default function SwapPage() {
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Swap");
 
-  useEffect(() => {
-    if (amountIn > "0") {
-      if (
-        tokenIn &&
-        bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))
-      ) {
-        handleBalanceInsufficient();
-      } else {
-        handleSwapAvailable();
-      }
-    }
-  }, [tokenIn, amountIn, bIn]);
-
   const handleSwapAvailable = () => {
     setBtnDisable(false);
     setBtnText("Swap");
@@ -90,6 +77,9 @@ export default function SwapPage() {
         if (steps.length < 2) {
           setBtnDisable(true);
           setBtnText("Not existed route");
+        } else if (isNaN(aXIn)) {
+          setBtnDisable(true);
+          setBtnText("Amount out is not valid");
         } else {
           try {
             let aIns = await dex.contract.getAmountsIn(
@@ -99,8 +89,14 @@ export default function SwapPage() {
             setAmountIn(
               ethers.utils.formatUnits(aIns[0], tokens.obj[tIn]?.decimals)
             );
-            setBtnDisable(false);
-            setBtnText("Swap");
+            if (
+              bIn.lt(aIns[0])
+            ) {
+              handleBalanceInsufficient();
+            } else {
+              handleSwapAvailable()
+            }
+
           } catch (e) {
             setBtnDisable(true);
             setBtnText("Not existed route");
@@ -112,7 +108,7 @@ export default function SwapPage() {
         setSwapSteps(steps);
       }
     },
-    [tokens, dex, pools]
+    [tokens, dex, pools, bIn]
   );
 
   const handleGetAmountOut = useCallback(
@@ -123,6 +119,9 @@ export default function SwapPage() {
         if (steps.length < 2) {
           setBtnDisable(true);
           setBtnText("Not existed route");
+        } else if (isNaN(aXIn)) {
+          setBtnDisable(true);
+          setBtnText("Amount in is not valid");
         } else {
           try {
             let aOuts = await dex.contract.getAmountsOut(
@@ -135,8 +134,13 @@ export default function SwapPage() {
                 tokens.obj[tOut]?.decimals
               )
             );
-            setBtnDisable(false);
-            setBtnText("Swap");
+            if (
+              bIn.lt(ethers.utils.parseUnits(aXIn, tokens.obj[tIn]?.decimals))
+            ) {
+              handleBalanceInsufficient();
+            } else {
+              handleSwapAvailable()
+            }
           } catch (e) {
             setBtnDisable(true);
             setBtnText("Not existed route");
@@ -148,7 +152,7 @@ export default function SwapPage() {
         setSwapSteps(steps);
       }
     },
-    [tokens, dex, pools]
+    [tokens, dex, pools, bIn]
   );
 
   const handleLoadBalance = useCallback(
@@ -193,7 +197,7 @@ export default function SwapPage() {
       const next30MinutesUnix = currentTimeUnix + 30 * 60;
       const deadline = BigNumber.from(next30MinutesUnix);
 
-      if (tokenIn == config[selectedChain].wrapAddress) {
+      if (tokenIn.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()) {
         let swapTx = await dex.signer.swapExactETHForTokens(
           minAmountOut,
           swapSteps,
@@ -204,7 +208,7 @@ export default function SwapPage() {
           }
         );
         await swapTx.wait();
-      } else if (tokenOut == config[selectedChain].wrapAddress) {
+      } else if (tokenOut.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()) {
         let erc20 = createFtContractWithSigner(tokenIn);
         let aIn = ethers.utils.parseUnits(
           amountIn,
@@ -256,9 +260,21 @@ export default function SwapPage() {
         );
         await swapTx.wait();
       }
+      toast({
+        status: "success",
+        duration: 5000,
+        title: "Swap success",
+        isClosable: true
+      })
       handleSelectTokenIn(tokenIn);
       handleSelectTokenOut(tokenOut);
     } catch (e) {
+      toast({
+        status: "error",
+        duration: 5000,
+        title: "Transaction failed",
+        isClosable: true
+      })
       console.log(e);
     }
     setIsLoading(false);
@@ -535,7 +551,7 @@ export default function SwapPage() {
             w={"full"}
             isLoading={isLoading}
             onClick={handleSwap}
-            isDisabled={btnDisable || swapSteps.length != 2 || !account}
+            isDisabled={btnDisable || swapSteps.length != 2 || !account || isNaN(amountIn)}
           >
             {account ? btnText : "Please connect wallet"}
           </Button>
