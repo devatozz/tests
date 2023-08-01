@@ -95,7 +95,7 @@ export default function LiquidityItem({
 
   return (
     <AccordionItem
-      borderWidth="3px"
+      borderWidth="1px"
       borderRadius="md"
       borderColor={"#5EEDFF"}
       m={3}

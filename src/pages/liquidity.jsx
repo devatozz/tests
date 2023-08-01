@@ -257,54 +257,77 @@ export default function Pools() {
             ? token1Amount
             : token2Amount;
 
-                let erc20 = createFtContractWithSigner(tokenAddr);
-                let aDesired = ethers.utils.parseUnits(amountIn, tokens.obj[tokenAddr]?.decimals)
-                let currentApproval = await erc20.allowance(account, config[selectedChain].dexAddress)
-                if (currentApproval.lt(aDesired)) {
-                    let approveTx = await erc20.approve(
-                        config[selectedChain].dexAddress,
-                        ethers.constants.MaxUint256);
-                    await approveTx.wait();
-                }
+        let erc20 = createFtContractWithSigner(tokenAddr);
+        let aDesired = ethers.utils.parseUnits(
+          amountIn,
+          tokens.obj[tokenAddr]?.decimals
+        );
+        let currentApproval = await erc20.allowance(
+          account,
+          config[selectedChain].dexAddress
+        );
+        if (currentApproval.lt(aDesired)) {
+          let approveTx = await erc20.approve(
+            config[selectedChain].dexAddress,
+            ethers.constants.MaxUint256
+          );
+          await approveTx.wait();
+        }
 
-                let addLiquidTx = await dex.signer.addLiquidityETH(
-                    tokenAddr,
-                    aDesired,
-                    BigNumber.from(0),
-                    BigNumber.from(0),
-                    account,
-                    deadline,
-                    { value: ethers.utils.parseEther(amountETH) }
-                );
-                await addLiquidTx.wait();
-            } else {
-                let erc20In = createFtContractWithSigner(token1Name);
-                let erc20Out = createFtContractWithSigner(token2Name);
-                let approvePromises = []
+        let addLiquidTx = await dex.signer.addLiquidityETH(
+          tokenAddr,
+          aDesired,
+          BigNumber.from(0),
+          BigNumber.from(0),
+          account,
+          deadline,
+          { value: ethers.utils.parseEther(amountETH) }
+        );
+        await addLiquidTx.wait();
+      } else {
+        let erc20In = createFtContractWithSigner(token1Name);
+        let erc20Out = createFtContractWithSigner(token2Name);
+        let approvePromises = [];
 
-                let aDesired = ethers.utils.parseUnits(token1Amount, tokens.obj[token1Name]?.decimals)
-                let bDesired = ethers.utils.parseUnits(token2Amount, tokens.obj[token2Name]?.decimals)
-                let currentApproval1 = await erc20In.allowance(account, config[selectedChain].dexAddress)
-                let currentApproval2 = await erc20In.allowance(account, config[selectedChain].dexAddress)
+        let aDesired = ethers.utils.parseUnits(
+          token1Amount,
+          tokens.obj[token1Name]?.decimals
+        );
+        let bDesired = ethers.utils.parseUnits(
+          token2Amount,
+          tokens.obj[token2Name]?.decimals
+        );
+        let currentApproval1 = await erc20In.allowance(
+          account,
+          config[selectedChain].dexAddress
+        );
+        let currentApproval2 = await erc20In.allowance(
+          account,
+          config[selectedChain].dexAddress
+        );
 
-                if (currentApproval1.lt(aDesired)) {
-                    approvePromises.push(erc20In.approve(
-                        config[selectedChain].dexAddress,
-                        ethers.constants.MaxUint256))
-                }
-                if (currentApproval2.lt(bDesired)) {
-                    approvePromises.push( erc20Out.approve(
-                        config[selectedChain].dexAddress,
-                        ethers.constants.MaxUint256))
-                }
-                let approveRes = await Promise.all(approvePromises)
-                approvePromises = []
-                approveRes.forEach(item =>
-                    approvePromises.push(item.wait())
-                )
-                if (approvePromises.length) {
-                    await Promise.all(approvePromises)
-                }
+        if (currentApproval1.lt(aDesired)) {
+          approvePromises.push(
+            erc20In.approve(
+              config[selectedChain].dexAddress,
+              ethers.constants.MaxUint256
+            )
+          );
+        }
+        if (currentApproval2.lt(bDesired)) {
+          approvePromises.push(
+            erc20Out.approve(
+              config[selectedChain].dexAddress,
+              ethers.constants.MaxUint256
+            )
+          );
+        }
+        let approveRes = await Promise.all(approvePromises);
+        approvePromises = [];
+        approveRes.forEach((item) => approvePromises.push(item.wait()));
+        if (approvePromises.length) {
+          await Promise.all(approvePromises);
+        }
 
         let addLiquidTx = await dex.signer.addLiquidity(
           token1Name,
@@ -453,249 +476,282 @@ export default function Pools() {
     }
   }, [confirm]);
 
-    return (
-        <Center bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 100%)" pt={8}>
-            <Center w={{base: '99%', md: 'auto'}}   borderRadius={"md"} bgColor="white" px={{base: 0, md: 4}} py={6}>
-                <Tabs variant="soft-rounded" >
-                    <Box w={{base: 'full', md: '550px'}} mx='auto' minH={600} h={{base: 'auto', md: 'calc(100vh - 237px)' }} overflowY={'auto'} >
-                        <TabList w='full'>
-                            <Tab>My Liquidity</Tab>
-                            <Tab>+ Add Liquidity</Tab>
-                        </TabList>
-                        <Box h={'2px'} mt={4} bg='black' />
-                        <TabPanels w='full'>
-                            <TabPanel>
-                                <VStack spacing={4} align="stretch">
-                                    <Box>
-                                        <Accordion allowMultiple>
-                                            {myLpTokens.map((lpToken) => (
-                                                <LiquidityItem
-                                                    key={lpToken.pair}
-                                                    lpToken={lpToken}
-                                                    pool={pools.obj[lpToken.pair]}
-                                                    handleRemoveLiquidity={handleRemoveLiquidity}
-                                                    loading={loading}
-                                                />
-                                            ))}
-                                        </Accordion>
-                                    </Box>
-                                </VStack>
-                            </TabPanel>
-                            <TabPanel
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <FormControl w="full">
-                                    <FormControl id="token1">
-                                        <Box
-                                            display="flex"
-                                            justifyContent="space-between"
-                                            alignItems="center"
-                                        >
-                                            <FormLabel>First Token</FormLabel>
-                                            {token1Balance && (
-                                                <div>
-                                                    Balance:{" "}
-                                                    {currencyFormat(
-                                                        ethers.utils.formatUnits(
-                                                            token1Balance,
-                                                            tokens.obj[token1Name]?.decimals
-                                                        )
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Box>
-                                        <Flex gap={6}>
-                                            <InputGroup>
-                                                <NumberInput
-                                                    value={token1Amount}
-                                                    w="full"
-                                                    size="lg"
-                                                    onChange={handleToken1AmountChange}
-                                                >
-                                                    <NumberInputField />
-                                                </NumberInput>
-                                                <InputRightElement width="4.5rem" m="0.25rem">
-                                                    <Button
-                                                        h="1.75rem"
-                                                        size="sm"
-                                                        onClick={handleSetMaxToken1}
-                                                    >
-                                                        Max
-                                                    </Button>
-                                                </InputRightElement>
-                                            </InputGroup>
-                                            <Popover
-                                                matchWidth
-                                                isOpen={openTokenIn}
-                                                onClose={closeTokenIn}
-                                            >
-                                                <PopoverTrigger>
-                                                    <Button
-                                                        colorScheme="telegram"
-                                                        justifyContent="left"
-                                                        minW="200px"
-                                                        size="lg"
-                                                        variant="outline"
-                                                        aria-label="Options token 1"
-                                                        onClick={toggleTokenIn}
-                                                        leftIcon={
-                                                            <Avatar
-                                                                size="sm"
-                                                                name={token1Name ? tokens.obj[token1Name].symbol : "In"}
-                                                                src={
-                                                                    token1Name
-                                                                        ? tokens.obj[token1Name]?.icon
-                                                                        : "/base-logo-in-blue.png"
-                                                                }
-                                                            />
-                                                        }
-                                                    >
-                                                        <Text>
-                                                            {token1Name
-                                                                ? tokens.obj[token1Name]?.symbol
-                                                                : "Select token"}
-                                                        </Text>
-                                                    </Button>
-                                                </PopoverTrigger>
-                                                <PopoverContent w="full" maxH='200px' overflowY='scroll'>
-                                                    <PopoverBody w="full">
-                                                        <VStack w="full">
-                                                            {tokens
-                                                                .list
-                                                                .filter((fItem) => fItem.address !== token1Name)
-                                                                .map((item, index) => (
-                                                                    <Button
-                                                                        w="full"
-                                                                        justifyContent="left"
-                                                                        key={`token-option-in-${index}`}
-                                                                        leftIcon={
-                                                                            <Avatar
-                                                                                size="xs"
-                                                                                name={item.symbol}
-                                                                                src={tokens.obj[item.address]?.icon}
-                                                                            />
-                                                                        }
-                                                                        onClick={() => {
-                                                                            handleToken1NameChange(item.address);
-                                                                        }}
-                                                                    >
-                                                                        <Text>{tokens.obj[item.address]?.symbol}</Text>
-                                                                    </Button>
-                                                                ))}
-                                                        </VStack>
-                                                    </PopoverBody>
-                                                </PopoverContent>
-                                            </Popover>
-                                        </Flex>
-                                    </FormControl>
+  return (
+    <Center
+      bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
+      pt={8}
+    >
+      <Center
+        w={{ base: "99%", md: "auto" }}
+        borderRadius={"md"}
+        bgColor="white"
+        px={{ base: 0, md: 4 }}
+        py={6}
+      >
+        <Tabs variant="soft-rounded">
+          <Box
+            w={{ base: "full", md: "550px" }}
+            mx="auto"
+            minH={600}
+            h={{ base: "auto", md: "calc(100vh - 237px)" }}
+            overflowY={"auto"}
+          >
+            <TabList w="full">
+              <Tab>My Liquidity</Tab>
+              <Tab>+ Add Liquidity</Tab>
+            </TabList>
+            <Box h={"2px"} mt={4} bg="black" />
+            <TabPanels w="full">
+              <TabPanel>
+                <VStack spacing={4} align="stretch">
+                  <Box>
+                    <Accordion allowMultiple>
+                      {myLpTokens.map((lpToken) => (
+                        <LiquidityItem
+                          key={lpToken.pair}
+                          lpToken={lpToken}
+                          pool={pools.obj[lpToken.pair]}
+                          handleRemoveLiquidity={handleRemoveLiquidity}
+                          loading={loading}
+                        />
+                      ))}
+                    </Accordion>
+                  </Box>
+                </VStack>
+              </TabPanel>
+              <TabPanel
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <FormControl w="full">
+                  <FormControl id="token1">
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <FormLabel>First Token</FormLabel>
+                      {token1Balance && (
+                        <div>
+                          Balance:{" "}
+                          {currencyFormat(
+                            ethers.utils.formatUnits(
+                              token1Balance,
+                              tokens.obj[token1Name]?.decimals
+                            )
+                          )}
+                        </div>
+                      )}
+                    </Box>
+                    <Flex gap={6}>
+                      <InputGroup>
+                        <NumberInput
+                          value={token1Amount}
+                          w="full"
+                          size="lg"
+                          onChange={handleToken1AmountChange}
+                        >
+                          <NumberInputField />
+                        </NumberInput>
+                        <InputRightElement width="4.5rem" m="0.25rem">
+                          <Button
+                            h="1.75rem"
+                            size="sm"
+                            onClick={handleSetMaxToken1}
+                          >
+                            Max
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                      <Popover
+                        matchWidth
+                        isOpen={openTokenIn}
+                        onClose={closeTokenIn}
+                      >
+                        <PopoverTrigger>
+                          <Button
+                            colorScheme="telegram"
+                            justifyContent="left"
+                            minW="200px"
+                            size="lg"
+                            variant="outline"
+                            aria-label="Options token 1"
+                            onClick={toggleTokenIn}
+                            leftIcon={
+                              <Avatar
+                                size="sm"
+                                name={
+                                  token1Name
+                                    ? tokens.obj[token1Name].symbol
+                                    : "In"
+                                }
+                                src={
+                                  token1Name
+                                    ? tokens.obj[token1Name]?.icon
+                                    : "/base-logo-in-blue.png"
+                                }
+                              />
+                            }
+                          >
+                            <Text>
+                              {token1Name
+                                ? tokens.obj[token1Name]?.symbol
+                                : "Select token"}
+                            </Text>
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          w="full"
+                          maxH="200px"
+                          overflowY="scroll"
+                        >
+                          <PopoverBody w="full">
+                            <VStack w="full">
+                              {tokens.list
+                                .filter((fItem) => fItem.address !== token1Name)
+                                .map((item, index) => (
+                                  <Button
+                                    w="full"
+                                    justifyContent="left"
+                                    key={`token-option-in-${index}`}
+                                    leftIcon={
+                                      <Avatar
+                                        size="xs"
+                                        name={item.symbol}
+                                        src={tokens.obj[item.address]?.icon}
+                                      />
+                                    }
+                                    onClick={() => {
+                                      handleToken1NameChange(item.address);
+                                    }}
+                                  >
+                                    <Text>
+                                      {tokens.obj[item.address]?.symbol}
+                                    </Text>
+                                  </Button>
+                                ))}
+                            </VStack>
+                          </PopoverBody>
+                        </PopoverContent>
+                      </Popover>
+                    </Flex>
+                  </FormControl>
 
-                                    <FormControl id="token2" mt={4}>
-                                        <Box
-                                            display="flex"
-                                            justifyContent="space-between"
-                                            alignItems="center"
-                                        >
-                                            <FormLabel>Second Token</FormLabel>
-                                            {token2Balance && (
-                                                <div>
-                                                    Balance:{" "}
-                                                    {currencyFormat(
-                                                        ethers.utils.formatUnits(
-                                                            token2Balance,
-                                                            tokens.obj[token2Name]?.decimals
-                                                        )
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Box>
-                                        <Flex gap={6}>
-                                            <InputGroup>
-                                                <NumberInput
-                                                    value={token2Amount}
-                                                    w="full"
-                                                    size="lg"
-                                                    onChange={handleToken2AmountChange}
-                                                >
-                                                    <NumberInputField />
-                                                </NumberInput>
-                                                <InputRightElement width="4.5rem" m="0.25rem">
-                                                    <Button
-                                                        h="1.75rem"
-                                                        size="sm"
-                                                        onClick={handleSetMaxToken2}
-                                                    >
-                                                        Max
-                                                    </Button>
-                                                </InputRightElement>
-                                            </InputGroup>
-                                            <Popover
-                                                matchWidth
-                                                isOpen={openTokenOut}
-                                                onClose={closeTokenOut}
-                                            >
-                                                <PopoverTrigger h="full">
-                                                    <Button
-                                                        colorScheme="telegram"
-                                                        justifyContent="left"
-                                                        minW="200px"
-                                                        size="lg"
-                                                        variant="outline"
-                                                        aria-label="Options token out"
-                                                        onClick={toggleTokenOut}
-                                                        leftIcon={
-                                                            <Avatar
-                                                                size="sm"
-                                                                name={token2Name ? tokens.obj[token2Name].symbol : "Out"}
-                                                                src={
-                                                                    token2Name
-                                                                        ? tokens.obj[token2Name]?.icon
-                                                                        : "/base-logo-in-blue.png"
-                                                                }
-                                                            />
-                                                        }
-                                                    >
-                                                        <Text>
-                                                            {token2Name
-                                                                ? tokens.obj[token2Name]?.symbol
-                                                                : "Select token"}
-                                                        </Text>
-                                                    </Button>
-                                                </PopoverTrigger>
-                                                <PopoverContent w="full" maxH='200px' overflowY='scroll'>
-                                                    <PopoverBody w="full">
-                                                        <VStack w="full">
-                                                            {tokens
-                                                                .list
-                                                                .filter((fItem) => fItem.address !== token2Name)
-                                                                .map((item, index) => (
-                                                                    <Button
-                                                                        w="full"
-                                                                        justifyContent="left"
-                                                                        key={`token-option-out-${index}`}
-                                                                        leftIcon={
-                                                                            <Avatar
-                                                                                size="xs"
-                                                                                name={item.address}
-                                                                                src={tokens.obj[item.address]?.icon}
-                                                                            />
-                                                                        }
-                                                                        onClick={() => {
-                                                                            handleToken2NameChange(item.address);
-                                                                        }}
-                                                                    >
-                                                                        <Text>{tokens.obj[item.address]?.symbol}</Text>
-                                                                    </Button>
-                                                                ))}
-                                                        </VStack>
-                                                    </PopoverBody>
-                                                </PopoverContent>
-                                            </Popover>
-                                        </Flex>
-                                    </FormControl>
+                  <FormControl id="token2" mt={4}>
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <FormLabel>Second Token</FormLabel>
+                      {token2Balance && (
+                        <div>
+                          Balance:{" "}
+                          {currencyFormat(
+                            ethers.utils.formatUnits(
+                              token2Balance,
+                              tokens.obj[token2Name]?.decimals
+                            )
+                          )}
+                        </div>
+                      )}
+                    </Box>
+                    <Flex gap={6}>
+                      <InputGroup>
+                        <NumberInput
+                          value={token2Amount}
+                          w="full"
+                          size="lg"
+                          onChange={handleToken2AmountChange}
+                        >
+                          <NumberInputField />
+                        </NumberInput>
+                        <InputRightElement width="4.5rem" m="0.25rem">
+                          <Button
+                            h="1.75rem"
+                            size="sm"
+                            onClick={handleSetMaxToken2}
+                          >
+                            Max
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                      <Popover
+                        matchWidth
+                        isOpen={openTokenOut}
+                        onClose={closeTokenOut}
+                      >
+                        <PopoverTrigger h="full">
+                          <Button
+                            colorScheme="telegram"
+                            justifyContent="left"
+                            minW="200px"
+                            size="lg"
+                            variant="outline"
+                            aria-label="Options token out"
+                            onClick={toggleTokenOut}
+                            leftIcon={
+                              <Avatar
+                                size="sm"
+                                name={
+                                  token2Name
+                                    ? tokens.obj[token2Name].symbol
+                                    : "Out"
+                                }
+                                src={
+                                  token2Name
+                                    ? tokens.obj[token2Name]?.icon
+                                    : "/base-logo-in-blue.png"
+                                }
+                              />
+                            }
+                          >
+                            <Text>
+                              {token2Name
+                                ? tokens.obj[token2Name]?.symbol
+                                : "Select token"}
+                            </Text>
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          w="full"
+                          maxH="200px"
+                          overflowY="scroll"
+                        >
+                          <PopoverBody w="full">
+                            <VStack w="full">
+                              {tokens.list
+                                .filter((fItem) => fItem.address !== token2Name)
+                                .map((item, index) => (
+                                  <Button
+                                    w="full"
+                                    justifyContent="left"
+                                    key={`token-option-out-${index}`}
+                                    leftIcon={
+                                      <Avatar
+                                        size="xs"
+                                        name={item.address}
+                                        src={tokens.obj[item.address]?.icon}
+                                      />
+                                    }
+                                    onClick={() => {
+                                      handleToken2NameChange(item.address);
+                                    }}
+                                  >
+                                    <Text>
+                                      {tokens.obj[item.address]?.symbol}
+                                    </Text>
+                                  </Button>
+                                ))}
+                            </VStack>
+                          </PopoverBody>
+                        </PopoverContent>
+                      </Popover>
+                    </Flex>
+                  </FormControl>
 
                   <Button
                     mt={4}
