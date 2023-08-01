@@ -77,7 +77,7 @@ export default function SwapPage() {
         if (steps.length < 2) {
           setBtnDisable(true);
           setBtnText("Not existed route");
-        } else if (isNaN(aXIn)) {
+        } else if (isNaN(aXOut)) {
           setBtnDisable(true);
           setBtnText("Amount out is not valid");
         } else {
@@ -315,6 +315,7 @@ export default function SwapPage() {
 
   const handleSetMaxTokenIn = () => {
     setAmountIn(ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals));
+    handleGetAmountOut(tokenIn, tokenOut, ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals));
   };
 
   //   if (!account)
