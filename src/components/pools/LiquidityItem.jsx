@@ -46,8 +46,6 @@ export default function LiquidityItem({
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
 
-  console.log("pool", pool);
-
   useEffect(() => {
     const balanceBN = BigNumber.from(lpToken.balance);
     try {

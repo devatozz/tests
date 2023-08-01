@@ -241,19 +241,24 @@ export default function Pools() {
     setLoading(true);
     try {
       if (
-          token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase() ||
-          token2Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
+        token1Name.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase() ||
+        token2Name.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase()
       ) {
         let tokenAddr =
-            token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? token2Name
             : token1Name;
         let amountIn =
-            token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? token2Amount
             : token1Amount;
         let amountETH =
-            token1Name.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? token1Amount
             : token2Amount;
 
@@ -354,14 +359,17 @@ export default function Pools() {
     const next30MinutesUnix = currentTimeUnix + 30 * 60;
     const deadline = BigNumber.from(next30MinutesUnix);
     setLoading(true);
-
+    console.log("pool", pool, config[selectedChain].wrapAddress);
     try {
       if (
-        pool.token0 == config[selectedChain].wrapAddress ||
-        pool.token1 == config[selectedChain].wrapAddress
+        pool.token0.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase() ||
+        pool.token1.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase()
       ) {
         let tokenAddr =
-          pool.token0 == config[selectedChain].wrapAddress
+          pool.token0.toLocaleLowerCase() ==
+          config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? pool.token1
             : pool.token0;
 
@@ -369,7 +377,11 @@ export default function Pools() {
           removeAmount,
           tokens.obj[pool.pair]?.decimals
         );
-        console.log("body", tokenAddr, liquidity.toNumber());
+        console.log("body", {
+          pool,
+          tokenAddr,
+          liquidity: liquidity.toString(),
+        });
         let rmLiquidTx = await dex.signer.removeLiquidityETH(
           tokenAddr,
           liquidity,
@@ -391,7 +403,7 @@ export default function Pools() {
           "body",
           pool.token0,
           pool.token1,
-          liquidity.toNumber(),
+          liquidity,
           BigNumber.from(0),
           BigNumber.from(0),
           account,
@@ -410,7 +422,7 @@ export default function Pools() {
         await rmLiquidTx.wait();
       }
     } catch (e) {
-      console.log(e);
+      console.log("error", e.message);
     }
     setLoading(false);
   };
