@@ -523,7 +523,7 @@ export default function SwapPage() {
             w={"full"}
             isLoading={isLoading}
             onClick={handleSwap}
-            isDisabled={btnDisable || swapSteps.length != 2}
+            isDisabled={btnDisable || swapSteps.length != 2 || !account}
           >
             {account ? btnText : "Please connect wallet"}
           </Button>

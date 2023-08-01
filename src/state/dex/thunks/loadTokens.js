@@ -4,9 +4,9 @@ import { config } from "src/state/chain/config";
 import { ethers } from "ethers";
 const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) => {
     const state = await getState();
-    const selectedChain = state.chain.selectedChain;
+    const selectedChain = state.chain.selectedChain ? state.chain.selectedChain : "base";
     const dexLoaded = state.dex.loaded;
-    if (!selectedChain || !dexLoaded) {
+    if (!dexLoaded) {
         return { error: true, message: 'not enough loaded' };
     }
     try {
@@ -28,6 +28,7 @@ const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) 
         }
         return { error: false, list: listResult, obj: tokenObj };
     } catch (e) {
+        console.log(e)
         return { error: true, message: e.message };
     }
 })
