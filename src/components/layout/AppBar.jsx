@@ -84,8 +84,9 @@ export default function AppBar() {
         </NextLink>
         <Flex display={{ base: "none", md: "flex" }}>
           <Stack direction={"row"} spacing={4}>
-            {NAV_ITEMS.map((navItem) => (
+            {NAV_ITEMS.map((navItem, index) => (
               <Link
+                key={index}
                 pr={2}
                 py={2}
                 fontSize={"22px"}
@@ -123,8 +124,9 @@ export default function AppBar() {
             <DrawerBody bg="#3045c3">
               <Flex h="full" w="full" align={"center"}>
                 <VStack w="full" direction={"row"} spacing={4} align="center">
-                  {NAV_ITEMS.map((navItem) => (
+                  {NAV_ITEMS.map((navItem, index) => (
                     <Link
+                      key={index}
                       pr={2}
                       py={2}
                       fontSize={"sm"}
