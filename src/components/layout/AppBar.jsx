@@ -85,26 +85,31 @@ export default function AppBar() {
         <Flex display={{ base: "none", md: "flex" }}>
           <Stack direction={"row"} spacing={4}>
             {NAV_ITEMS.map((navItem, index) => (
-              <Link
+              <NextLink
                 key={index}
-                pr={2}
-                py={2}
-                fontSize={"22px"}
-                fontWeight={700}
-                color="white"
                 href={navItem.href}
-                _hover={{
-                  textDecoration: "none",
-                  color: "gray",
-                }}
+                passHref
                 target={
                   navItem.label === "Bridge" || navItem.label === "Whitepaper"
                     ? "_blank"
                     : undefined
                 }
               >
-                {navItem.label}
-              </Link>
+                <Link
+                  pr={2}
+                  py={2}
+                  fontSize={"22px"}
+                  fontWeight={700}
+                  color="white"
+                  _hover={{
+                    textDecoration: "none",
+
+                    color: "gray",
+                  }}
+                >
+                  {navItem.label}
+                </Link>
+              </NextLink>
             ))}
           </Stack>
         </Flex>
@@ -120,23 +125,14 @@ export default function AppBar() {
           <DrawerOverlay />
           <DrawerContent>
             <DrawerCloseButton />
-
             <DrawerBody bg="#3045c3">
               <Flex h="full" w="full" align={"center"}>
                 <VStack w="full" direction={"row"} spacing={4} align="center">
                   {NAV_ITEMS.map((navItem, index) => (
-                    <Link
+                    <NextLink
                       key={index}
-                      pr={2}
-                      py={2}
-                      fontSize={"sm"}
-                      fontWeight={700}
-                      color="white"
                       href={navItem.href}
-                      _hover={{
-                        textDecoration: "none",
-                        color: "gray",
-                      }}
+                      passHref
                       target={
                         navItem.label === "Bridge" ||
                         navItem.label === "Whitepaper"
@@ -144,8 +140,22 @@ export default function AppBar() {
                           : undefined
                       }
                     >
-                      {navItem.label}
-                    </Link>
+                      <Link
+                        pr={2}
+                        py={2}
+                        fontSize={"base"}
+                        fontWeight={700}
+                        onClick={onClose}
+                        color="white"
+                        _hover={{
+                          textDecoration: "none",
+
+                          color: "gray",
+                        }}
+                      >
+                        {navItem.label}
+                      </Link>
+                    </NextLink>
                   ))}
                 </VStack>
               </Flex>

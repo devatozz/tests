@@ -32,7 +32,14 @@ export default function App(props) {
   const actualPageMarkup = <Component {...pageProps} />;
 
   const loadingPageMarkup = (
-    <Box my="6" w="full" boxShadow="lg" bg="white" p={20}>
+    <Box
+      my="6"
+      w="full"
+      boxShadow="lg"
+      bg="white"
+      p={20}
+      h={{ base: "calc(100vh - 50px)" }}
+    >
       <Box>
         <SkeletonCircle size="20" />
         <SkeletonText mt="4" noOfLines={12} spacing="4" />
