@@ -94,8 +94,7 @@ export default function SwapPage() {
             ) {
               handleBalanceInsufficient();
             } else {
-              setBtnDisable(false);
-              setBtnText("Swap");
+              handleSwapAvailable()
             }
 
           } catch (e) {
@@ -140,8 +139,7 @@ export default function SwapPage() {
             ) {
               handleBalanceInsufficient();
             } else {
-              setBtnDisable(false);
-              setBtnText("Swap");
+              handleSwapAvailable()
             }
           } catch (e) {
             setBtnDisable(true);
@@ -262,9 +260,21 @@ export default function SwapPage() {
         );
         await swapTx.wait();
       }
+      toast({
+        status: "success",
+        duration: 5000,
+        title: "Swap success",
+        isClosable: true
+      })
       handleSelectTokenIn(tokenIn);
       handleSelectTokenOut(tokenOut);
     } catch (e) {
+      toast({
+        status: "error",
+        duration: 5000,
+        title: "Transaction failed",
+        isClosable: true
+      })
       console.log(e);
     }
     setIsLoading(false);
