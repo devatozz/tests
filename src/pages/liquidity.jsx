@@ -364,71 +364,14 @@ export default function Pools() {
     setLoading(true);
 
     try {
-
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-
-      // get the network chain id
-      const chainId = (await provider.getNetwork()).chainId;
-
-      // create a signer instance with provider
-      const signer = provider.getSigner()
       const pairContract = createPairContractWithSigner(pool.pair)
-
-      const nonces = await pairContract.nonces(account);
-
-      const domain = {
-        name: await pairContract.name(),
-        version: "1",
-        chainId: chainId,
-        verifyingContract: pool.pair
-      };
-      const types = {
-        Permit: [{
-          name: "owner",
-          type: "address"
-        },
-        {
-          name: "spender",
-          type: "address"
-        },
-        {
-          name: "value",
-          type: "uint256"
-        },
-        {
-          name: "nonce",
-          type: "uint256"
-        },
-        {
-          name: "deadline",
-          type: "uint256"
-        },
-        ],
-      };
       let liquidity = ethers.utils.parseEther(
         removeAmount,
       );
-      const values = {
-        owner: account,
-        spender: config[selectedChain].dexAddress,
-        value: liquidity,
-        nonce: nonces,
-        deadline: deadline,
-      };
-      const signature = await signer._signTypedData(domain, types, values);
 
-      // split the signature into its components
-      const sig = ethers.utils.splitSignature(signature);
-
-
-      let tx = await pairContract.permit(
-        account,
+      let tx = await pairContract.approve(
         config[selectedChain].dexAddress,
-        liquidity,
-        deadline,
-        sig.v,
-        sig.r,
-        sig.s
+        liquidity
       );
       await tx.wait()
       if (account != account) {
@@ -460,7 +403,6 @@ export default function Pools() {
         );
         await rmLiquidTx.wait();
       } else {
-
         let rmLiquidTx = await dex.signer.removeLiquidity(
           pool.token0,
           pool.token1,
