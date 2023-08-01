@@ -104,6 +104,7 @@ export default function Pools() {
     }
     if (
       (token1Name &&
+        token1Amount &&
         token1Balance.lt(
           ethers.utils.parseUnits(
             token1Amount,
@@ -111,6 +112,7 @@ export default function Pools() {
           )
         )) ||
       (token2Name &&
+        token2Amount &&
         token2Balance.lt(
           ethers.utils.parseUnits(
             token2Amount,
@@ -377,7 +379,7 @@ export default function Pools() {
           removeAmount,
           tokens.obj[pool.pair]?.decimals
         );
-        console.log("body", {
+        console.log("body 123", {
           pool,
           tokenAddr,
           liquidity: liquidity.toString(),
@@ -403,7 +405,7 @@ export default function Pools() {
           "body",
           pool.token0,
           pool.token1,
-          liquidity,
+          liquidity.toString(),
           BigNumber.from(0),
           BigNumber.from(0),
           account,
@@ -436,6 +438,10 @@ export default function Pools() {
     // const reserve1BN = new BN(reserve1);
     if (reserve1.eq(BigNumber.from(0))) {
       return "0";
+    }
+
+    if (!token1Amount) {
+      return "";
     }
 
     // const reserve2BN = new BN(reserve2);
