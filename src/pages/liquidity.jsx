@@ -28,13 +28,14 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
-  Divider,
+  SkeletonCircle,
+  SkeletonText
 } from "@chakra-ui/react";
 import { BigNumber, ethers } from "ethers";
 
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { loadBalance } from "src/utils/helper";
+import { createPairContractWithSigner, loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
 import { currencyFormat } from "src/utils/stringUtil";
 import { createFtContractWithSigner } from "src/utils/helper";
@@ -361,9 +362,83 @@ export default function Pools() {
     const next30MinutesUnix = currentTimeUnix + 30 * 60;
     const deadline = BigNumber.from(next30MinutesUnix);
     setLoading(true);
-    console.log("pool", pool, config[selectedChain].wrapAddress);
+
     try {
-      if (
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+      // get the network chain id
+      const chainId = (await provider.getNetwork()).chainId;
+
+      // create a signer instance with provider
+      const signer = provider.getSigner()
+      const pairContract = createPairContractWithSigner(pool.pair)
+
+      const nonces = await pairContract.nonces(account);
+
+      const domain = {
+        name: await pairContract.name(),
+        version: "1",
+        chainId: chainId,
+        verifyingContract: pool.pair
+      };
+      const types = {
+        Permit: [{
+          name: "owner",
+          type: "address"
+        },
+        {
+          name: "spender",
+          type: "address"
+        },
+        {
+          name: "value",
+          type: "uint256"
+        },
+        {
+          name: "nonce",
+          type: "uint256"
+        },
+        {
+          name: "deadline",
+          type: "uint256"
+        },
+        ],
+      };
+      let liquidity = ethers.utils.parseEther(
+        removeAmount,
+      );
+      const values = {
+        owner: account,
+        spender: config[selectedChain].dexAddress,
+        value: liquidity,
+        nonce: nonces,
+        deadline: deadline,
+      };
+      const signature = await signer._signTypedData(domain, types, values);
+
+      // split the signature into its components
+      const sig = ethers.utils.splitSignature(signature);
+
+
+      let tx = await pairContract.permit(
+        account,
+        config[selectedChain].dexAddress,
+        liquidity,
+        deadline,
+        sig.v,
+        sig.r,
+        sig.s
+      );
+      await tx.wait()
+      if (account != account) {
+        toast({
+          status: "error",
+          title: "Current account is not signer",
+          duration: 3000,
+          isClosable: true
+        })
+      } else if (
         pool.token0.toLocaleLowerCase() ==
           config[selectedChain].wrapAddress.toLocaleLowerCase() ||
         pool.token1.toLocaleLowerCase() ==
@@ -374,43 +449,17 @@ export default function Pools() {
           config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? pool.token1
             : pool.token0;
-
-        let liquidity = ethers.utils.parseUnits(
-          removeAmount,
-          tokens.obj[pool.pair]?.decimals
-        );
-        console.log("body 123", {
-          pool,
-          tokenAddr,
-          liquidity: liquidity.toString(),
-        });
-        let rmLiquidTx = await dex.signer.removeLiquidityETH(
+        
+        let rmLiquidTx = await dex.signer.removeLiquidity(
           tokenAddr,
           liquidity,
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline
+          deadline,
         );
         await rmLiquidTx.wait();
       } else {
-        let lpAddress = pool.pair;
-
-        let liquidity = ethers.utils.parseUnits(
-          removeAmount,
-          tokens.obj[lpAddress]?.decimals
-        );
-
-        console.log(
-          "body",
-          pool.token0,
-          pool.token1,
-          liquidity.toString(),
-          BigNumber.from(0),
-          BigNumber.from(0),
-          account,
-          deadline
-        );
 
         let rmLiquidTx = await dex.signer.removeLiquidity(
           pool.token0,
@@ -419,7 +468,7 @@ export default function Pools() {
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline
+          deadline,
         );
         await rmLiquidTx.wait();
       }
@@ -508,23 +557,24 @@ export default function Pools() {
     const getMyLpTokens = async () => {
       const lpTokens = [];
       //rewrite this
-      await Promise.all(
-        pools.list.map(async (item) => {
-          const balance = await loadBalance(account, selectedChain, item.pair);
-          if (balance.gt(BigNumber.from(0))) {
-            lpTokens.push({
-              ...item,
-              balance: balance.toString(),
-            });
-          }
-        })
-      );
-
+      if (pools.loaded && pools.list.length) {
+        await Promise.all(
+          pools.list.map(async (item) => {
+            const balance = await loadBalance(account, selectedChain, item.pair);
+            if (!balance.isZero()) {
+              lpTokens.push({
+                ...item,
+                balance: balance.toString(),
+              });
+            }
+          })
+        );
+      }
       setMyLpTokens(lpTokens);
     };
 
     getMyLpTokens();
-  }, [account, pools.list]);
+  }, [account, pools]);
   useEffect(() => {
     if (confirm) {
       handleLoadBalance(token1Name).then((res) => setToken1Balance(res));
@@ -532,6 +582,21 @@ export default function Pools() {
     }
   }, [confirm]);
 
+  if (!tokens.loaded || !pools.loaded) {
+    return <Box
+      my="6"
+      w="full"
+      boxShadow="lg"
+      bg="white"
+      p={20}
+      h={{ base: "calc(100vh - 50px)" }}
+    >
+      <Box>
+        <SkeletonCircle size="20" />
+        <SkeletonText mt="4" noOfLines={12} spacing="4" />
+      </Box>
+    </Box>
+  }
   return (
     <Center
       bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"

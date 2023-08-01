@@ -51,7 +51,7 @@ export default function LiquidityItem({
     try {
       if (
         balanceBN.lt(
-          ethers.utils.parseUnits(removeAmount, tokens.obj[pool.pair]?.decimals)
+          ethers.utils.parseEther(removeAmount)
         )
       ) {
         handleBalanceInsufficient();
@@ -79,8 +79,6 @@ export default function LiquidityItem({
 
   const handleRemoveAmountChange = (value) => {
     try {
-      ethers.utils.parseUnits(value, tokens.obj[pool.pair]?.decimals);
-
       setRemoveAmount(value);
     } catch (ex) {
       console.log("Ivalid input amount");
@@ -102,7 +100,7 @@ export default function LiquidityItem({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleRemoveLiquidity(removeAmount, pool);
+    await handleRemoveLiquidity(removeAmount, lpToken);
     onClose();
   };
 
@@ -124,18 +122,18 @@ export default function LiquidityItem({
           <Box flex="1" textAlign="left" fontWeight="bold">
             <Avatar
               size="xs"
-              name={tokens.obj[pool.token0]?.symbol}
-              src={config[selectedChain][pool.token0]?.icon}
+              name={tokens.obj[lpToken.token0]?.symbol}
+              src={config[selectedChain][lpToken.token0]?.icon}
             />
             {"  "}
-            {tokens.obj[pool.token0]?.symbol} -{"  "}
+            {tokens.obj[lpToken.token0]?.symbol} -{"  "}
             <Avatar
               size="xs"
-              name={tokens.obj[pool.token1]?.symbol}
-              src={config[selectedChain][pool.token1]?.icon}
+              name={tokens.obj[lpToken.token1]?.symbol}
+              src={config[selectedChain][lpToken.token1]?.icon}
             />
             {"  "}
-            {tokens.obj[pool.token1]?.symbol}
+            {tokens.obj[lpToken.token1]?.symbol}
           </Box>
           <Text fontWeight="bold" mr={2}>
             Manage
@@ -152,25 +150,25 @@ export default function LiquidityItem({
           }
         />
         <PoolDetail
-          label={`Pooled ${tokens.obj[pool.token0]?.symbol}:`}
+          label={`Pooled ${tokens.obj[lpToken.token0]?.symbol}:`}
           value={
-            pool.reverses._reserve0 &&
+            lpToken.reverses._reserve0 &&
             currencyFormat(
               ethers.utils.formatUnits(
-                pool.reverses._reserve0,
-                tokens.obj[pool.token0]?.decimals
+                lpToken.reverses._reserve0,
+                tokens.obj[lpToken.token0]?.decimals
               )
             )
           }
         />
         <PoolDetail
-          label={`Pooled ${tokens.obj[pool.token1]?.symbol}:`}
+          label={`Pooled ${tokens.obj[lpToken.token1]?.symbol}:`}
           value={
-            pool.reverses._reserve1 &&
+            lpToken.reverses._reserve1 &&
             currencyFormat(
               ethers.utils.formatUnits(
-                pool.reverses._reserve1,
-                tokens.obj[pool.token1]?.decimals
+                lpToken.reverses._reserve1,
+                tokens.obj[lpToken.token1]?.decimals
               )
             )
           }
@@ -187,9 +185,9 @@ export default function LiquidityItem({
           <ModalHeader>Remove Liquidity</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontWeight="bold">{`LP tokens balance: ${currencyFormat(
-              ethers.utils.formatUnits(lpToken.balance)
-            )}`}</Text>
+            <Text fontWeight="bold">{`LP tokens balance: ${
+              ethers.utils.formatEther(lpToken.balance)
+            }`}</Text>
             <FormControl>
               <FormLabel>Amount</FormLabel>
               <InputGroup>
@@ -229,18 +227,18 @@ export default function LiquidityItem({
                 <Flex alignItems="center" m={2}>
                   <Avatar
                     size="xs"
-                    name={tokens.obj[pool.token0]?.symbol}
-                    src={tokens.obj[pool.token0]?.icon}
+                    name={tokens.obj[lpToken.token0]?.symbol}
+                    src={tokens.obj[lpToken.token0]?.icon}
                   />
-                  <Text ml={2}>{tokens.obj[pool.token0]?.symbol}</Text>
+                  <Text ml={2}>{tokens.obj[lpToken.token0]?.symbol}</Text>
                 </Flex>
                 <Flex alignItems="center" m={2}>
                   <Avatar
                     size="xs"
-                    name={tokens.obj[pool.token1]?.symbol}
-                    src={tokens.obj[pool.token1]?.icon}
+                    name={tokens.obj[lpToken.token1]?.symbol}
+                    src={tokens.obj[lpToken.token1]?.icon}
                   />
-                  <Text ml={2}>{tokens.obj[pool.token1]?.symbol}</Text>
+                  <Text ml={2}>{tokens.obj[lpToken.token1]?.symbol}</Text>
                 </Flex>
               </Flex>
             </Box>

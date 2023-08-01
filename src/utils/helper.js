@@ -4,6 +4,7 @@ import { config, noneAddress } from "src/state/chain/config";
 import { ethers } from "ethers";
 
 import PancakeERC20 from "src/abis/PancakeERC20.json";
+import PancakePair from "src/abis/PancakePair.json";
 
 export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
   let par = {};
@@ -62,4 +63,10 @@ export const createFtContractWithSigner = (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   return new ethers.Contract(address, PancakeERC20.abi, signer);
+}
+
+export const createPairContractWithSigner = (address) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  return new ethers.Contract(address, PancakePair.abi, signer);
 }
