@@ -257,10 +257,14 @@ export default function Pools() {
 
                 let erc20 = createFtContractWithSigner(tokenAddr);
                 let aDesired = ethers.utils.parseUnits(amountIn, tokens.obj[tokenAddr]?.decimals)
-                let approveTx = await erc20.approve(
-                    config[selectedChain].dexAddress,
-                    aDesired);
-                await approveTx.wait();
+                let currentApproval = await erc20.allowance(account, config[selectedChain].dexAddress)
+                if (currentApproval.lt(aDesired)) {
+                    let approveTx = await erc20.approve(
+                        config[selectedChain].dexAddress,
+                        ethers.constants.MaxUint256);
+                    await approveTx.wait();
+                }
+
                 let addLiquidTx = await dex.signer.addLiquidityETH(
                     tokenAddr,
                     aDesired,
@@ -274,18 +278,31 @@ export default function Pools() {
             } else {
                 let erc20In = createFtContractWithSigner(token1Name);
                 let erc20Out = createFtContractWithSigner(token2Name);
+                let approvePromises = []
 
                 let aDesired = ethers.utils.parseUnits(token1Amount, tokens.obj[token1Name]?.decimals)
                 let bDesired = ethers.utils.parseUnits(token2Amount, tokens.obj[token2Name]?.decimals)
+                let currentApproval1 = await erc20In.allowance(account, config[selectedChain].dexAddress)
+                let currentApproval2 = await erc20In.allowance(account, config[selectedChain].dexAddress)
 
-                let approve1Tx = await erc20In.approve(
-                    config[selectedChain].dexAddress,
-                    aDesired);
-                let approve2Tx = await erc20Out.approve(
-                    config[selectedChain].dexAddress,
-                    bDesired);
-                await approve1Tx.wait();
-                await approve2Tx.wait();
+                if (currentApproval1.lt(aDesired)) {
+                    approvePromises.push(erc20In.approve(
+                        config[selectedChain].dexAddress,
+                        ethers.constants.MaxUint256))
+                }
+                if (currentApproval2.lt(bDesired)) {
+                    approvePromises.push( erc20Out.approve(
+                        config[selectedChain].dexAddress,
+                        ethers.constants.MaxUint256))
+                }
+                let approveRes = await Promise.all(approvePromises)
+                approvePromises = []
+                approveRes.forEach(item =>
+                    approvePromises.push(item.wait())
+                )
+                if (approvePromises.length) {
+                    await Promise.all(approvePromises)
+                }
 
                 let addLiquidTx = await dex.signer.addLiquidity(
                     token1Name,
@@ -497,7 +514,7 @@ export default function Pools() {
                                         <Flex gap={6}>
                                             <InputGroup>
                                                 <NumberInput
-                                                    value={currencyFormat(token1Amount)}
+                                                    value={token1Amount}
                                                     w="full"
                                                     size="lg"
                                                     onChange={handleToken1AmountChange}
@@ -601,7 +618,7 @@ export default function Pools() {
                                         <Flex gap={6}>
                                             <InputGroup>
                                                 <NumberInput
-                                                    value={currencyFormat(token2Amount)}
+                                                    value={token2Amount}
                                                     w="full"
                                                     size="lg"
                                                     onChange={handleToken2AmountChange}

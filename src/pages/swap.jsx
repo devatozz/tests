@@ -60,10 +60,12 @@ export default function SwapPage() {
   const [btnText, setBtnText] = useState("Swap");
 
   useEffect(() => {
-    if (tokenIn && bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))) {
-      handleBalanceInsufficient();
-    } else {
-      handleSwapAvailable();
+    if (amountIn > "0") {
+      if (tokenIn && bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))) {
+        handleBalanceInsufficient();
+      } else {
+        handleSwapAvailable();
+      }
     }
   }, [tokenIn, amountIn, bIn]);
 
@@ -79,21 +81,31 @@ export default function SwapPage() {
 
   const handleGetAmountIn = useCallback(
     async (tIn, tOut, aXOut) => {
-      if (tIn && tOut && aXOut && tIn != tOut) {
+      if (tIn && tOut && aXOut !== "0" && tIn != tOut) {
         let steps = getSteps(tIn, tOut, pools.matrix);
         setSwapSteps(steps);
         if (steps.length < 2) {
+          setBtnDisable(true)
+          setBtnText("Not existed route")
         } else {
-          let aIns = await dex.contract.getAmountsIn(
-            ethers.utils.parseUnits(aXOut, tokens.obj[tOut]?.decimals),
-            steps
-          );
-          setAmountIn(
-            ethers.utils.formatUnits(
-              aIns[aIns.length - 1],
-              tokens.obj[tIn]?.decimals
-            )
-          );
+          try {
+            let aIns = await dex.contract.getAmountsIn(
+              ethers.utils.parseUnits(aXOut, tokens.obj[tOut]?.decimals),
+              steps
+            );
+            setAmountIn(
+              ethers.utils.formatUnits(
+                aIns[0],
+                tokens.obj[tIn]?.decimals
+              )
+            );
+            setBtnDisable(false)
+            setBtnText("Swap")
+          } catch (e) {
+            setBtnDisable(true)
+            setBtnText("Not existed route")
+            console.log(e)
+          }
         }
       } else if (tIn && tOut && tIn != tOut) {
         let steps = getSteps(tIn, tOut, pools.matrix);
@@ -105,21 +117,31 @@ export default function SwapPage() {
 
   const handleGetAmountOut = useCallback(
     async (tIn, tOut, aXIn) => {
-      if (tIn && tOut && aXIn && tIn != tOut) {
+      if (tIn && tOut && aXIn !== "0" && tIn != tOut) {
         let steps = getSteps(tIn, tOut, pools.matrix);
         setSwapSteps(steps);
         if (steps.length < 2) {
+          setBtnDisable(true)
+          setBtnText("Not existed route")
         } else {
-          let aOuts = await dex.contract.getAmountsOut(
-            ethers.utils.parseUnits(aXIn, tokens.obj[tIn]?.decimals),
-            steps
-          );
-          setAmountOut(
-            ethers.utils.formatUnits(
-              aOuts[aOuts.length - 1],
-              tokens.obj[tOut]?.decimals
-            )
-          );
+          try {
+            let aOuts = await dex.contract.getAmountsOut(
+              ethers.utils.parseUnits(aXIn, tokens.obj[tIn]?.decimals),
+              steps
+            );
+            setAmountOut(
+              ethers.utils.formatUnits(
+                aOuts[aOuts.length - 1],
+                tokens.obj[tOut]?.decimals
+              )
+            );
+            setBtnDisable(false)
+            setBtnText("Swap")
+          } catch (e) {
+            setBtnDisable(true)
+            setBtnText("Not existed route")
+            console.log(e)
+          }
         }
       } else if (tIn && tOut && tIn != tOut) {
         let steps = getSteps(tIn, tOut, pools.matrix);
@@ -162,13 +184,16 @@ export default function SwapPage() {
   const handleSwap = async (e) => {
     setIsLoading(true);
     try {
+      let minAmountOut = BigNumber.from(99).mul(ethers.utils.parseEther(amountOut)).div(BigNumber.from(100))
+
       const currentTimeUnix = Math.floor(Date.now() / 1000);
       // Calculate the Unix time for the next 30 minutes
       const next30MinutesUnix = currentTimeUnix + 30 * 60;
       const deadline = BigNumber.from(next30MinutesUnix);
+
       if (tokenIn == config[selectedChain].wrapAddress) {
         let swapTx = await dex.signer.swapExactETHForTokens(
-          BigNumber.from(0),
+          minAmountOut,
           swapSteps,
           account,
           deadline,
@@ -183,14 +208,18 @@ export default function SwapPage() {
           amountIn,
           tokens.obj[tokenIn]?.decimals
         );
-        let approveTx = await erc20.approve(
-          config[selectedChain].dexAddress,
-          aIn
-        );
-        await approveTx.wait();
+        let currentApproval = await erc20.allowance(account, config[selectedChain].dexAddress)
+        if (currentApproval.lt(aIn)) {
+          let approveTx = await erc20.approve(
+            config[selectedChain].dexAddress,
+            ethers.constants.MaxUint256
+          );
+          await approveTx.wait();
+        }
+
         let swapTx = await dex.signer.swapExactTokensForETH(
           aIn,
-          BigNumber.from(0),
+          minAmountOut,
           swapSteps,
           account,
           deadline
@@ -202,20 +231,25 @@ export default function SwapPage() {
           amountIn,
           tokens.obj[tokenIn]?.decimals
         );
-        let approveTx = await erc20.approve(
-          config[selectedChain].dexAddress,
-          aIn
-        );
-        await approveTx.wait();
+        let currentApproval = await erc20.allowance(account, config[selectedChain].dexAddress)
+        if (currentApproval.lt(aIn)) {
+          let approveTx = await erc20.approve(
+            config[selectedChain].dexAddress,
+            ethers.constants.MaxUint256
+          );
+          await approveTx.wait();
+        }
         let swapTx = await dex.signer.swapExactTokensForTokens(
           aIn,
-          BigNumber.from(0),
+          minAmountOut,
           swapSteps,
           account,
           deadline
         );
         await swapTx.wait();
       }
+      handleSelectTokenIn(tokenIn)
+      handleSelectTokenOut(tokenOut)
     } catch (e) {
       console.log(e);
     }
@@ -371,7 +405,7 @@ export default function SwapPage() {
                   </Popover>
                   <InputGroup>
                     <NumberInput
-                      value={currencyFormat(amountIn)}
+                      value={amountIn}
                       w="full"
                       size="lg"
                       onChange={(value) => handleSetAmountIn(value)}
@@ -473,7 +507,7 @@ export default function SwapPage() {
                     </PopoverContent>
                   </Popover>
                   <NumberInput
-                    value={currencyFormat(amountOut)}
+                    value={amountOut}
                     w="full"
                     size="lg"
                     onChange={(value) => handleSetAmountOut(value)}
@@ -483,17 +517,6 @@ export default function SwapPage() {
                 </Flex>
               </FormControl>
             </Box>
-            <Center w={"full"}>
-              {/* {swapSteps.length
-              ? swapSteps.map((item, index) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <HStack gap={2} pr={4}>
-                    <Avatar size="sm" name={item} src={tokens.obj[item]?.icon} />
-
-                  </HStack>
-                ))
-              : null} */}
-            </Center>
           </VStack>
           <Button
             colorScheme="facebook"
