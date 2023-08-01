@@ -388,7 +388,7 @@ export default function SwapPage() {
                             name={tokenIn ? tokenIn : "In"}
                             src={
                               tokenIn
-                                ? tokens.obj[tokenIn]?.symbol
+                                ? tokens.obj[tokenIn]?.icon
                                 : "/base-logo-in-blue.png"
                             }
                           />
@@ -415,7 +415,7 @@ export default function SwapPage() {
                                   <Avatar
                                     size="xs"
                                     name={item.symbol}
-                                    src={tokens.obj[item.address]?.symbol}
+                                    src={tokens.obj[item.address]?.icon}
                                   />
                                 }
                                 onClick={() => {
@@ -493,7 +493,7 @@ export default function SwapPage() {
                             name={tokenOut ? tokenOut : "Out"}
                             src={
                               tokenOut
-                                ? tokens.obj[tokenOut]?.symbol
+                                ? tokens.obj[tokenOut]?.icon
                                 : "/base-logo-in-blue.png"
                             }
                           />
@@ -520,7 +520,7 @@ export default function SwapPage() {
                                   <Avatar
                                     size="xs"
                                     name={item.symbol}
-                                    src={tokens.obj[item.address]?.symbol}
+                                    src={tokens.obj[item.address]?.icon}
                                   />
                                 }
                                 onClick={() => {

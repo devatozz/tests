@@ -123,14 +123,14 @@ export default function LiquidityItem({
             <Avatar
               size="xs"
               name={tokens.obj[lpToken.token0]?.symbol}
-              src={config[selectedChain][lpToken.token0]?.icon}
+              src={tokens.obj[lpToken.token0]?.icon}
             />
             {"  "}
             {tokens.obj[lpToken.token0]?.symbol} -{"  "}
             <Avatar
               size="xs"
               name={tokens.obj[lpToken.token1]?.symbol}
-              src={config[selectedChain][lpToken.token1]?.icon}
+              src={tokens.obj[lpToken.token1]?.icon}
             />
             {"  "}
             {tokens.obj[lpToken.token1]?.symbol}
