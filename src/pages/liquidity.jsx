@@ -348,31 +348,69 @@ export default function Pools() {
     setLoading(false);
   };
 
-  const handleRemoveLiquidity = async (removeAmount, poolInfo) => {
+  const handleRemoveLiquidity = async (removeAmount, pool) => {
+    const currentTimeUnix = Math.floor(Date.now() / 1000);
+    // Calculate the Unix time for the next 30 minutes
+    const next30MinutesUnix = currentTimeUnix + 30 * 60;
+    const deadline = BigNumber.from(next30MinutesUnix);
     setLoading(true);
+
     try {
-      let amount = ethers.utils.parseUnits(removeAmount).toString() + "u128";
-      const aleoTransaction = Transaction.createTransaction(
-        publicKey,
-        WalletAdapterNetwork.Testnet,
-        process.env.NEXT_PUBLIC_ALEO_SWAP_PROGRAM_ID,
-        "remove_liquidity",
-        [amount, `${poolId}u64`],
-        15000000
-      );
+      if (
+        pool.token0 == config[selectedChain].wrapAddress ||
+        pool.token1 == config[selectedChain].wrapAddress
+      ) {
+        let tokenAddr =
+          pool.token0 == config[selectedChain].wrapAddress
+            ? pool.token1
+            : pool.token0;
 
-      const txId = await wallet.adapter.requestTransaction(aleoTransaction);
+        let liquidity = ethers.utils.parseUnits(
+          removeAmount,
+          tokens.obj[pool.pair]?.decimals
+        );
+        console.log("body", tokenAddr, liquidity.toNumber());
+        let rmLiquidTx = await dex.signer.removeLiquidityETH(
+          tokenAddr,
+          liquidity,
+          BigNumber.from(0),
+          BigNumber.from(0),
+          account,
+          deadline
+        );
+        await rmLiquidTx.wait();
+      } else {
+        let lpAddress = pool.pair;
 
-      setTransactionId(txId);
-    } catch (ex) {
-      console.log("ex", JSON.stringify(ex));
-      setTransactionId("");
-      toast({
-        title: "Create new pool failed: " + ex.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+        let liquidity = ethers.utils.parseUnits(
+          removeAmount,
+          tokens.obj[lpAddress]?.decimals
+        );
+
+        console.log(
+          "body",
+          pool.token0,
+          pool.token1,
+          liquidity.toNumber(),
+          BigNumber.from(0),
+          BigNumber.from(0),
+          account,
+          deadline
+        );
+
+        let rmLiquidTx = await dex.signer.removeLiquidity(
+          pool.token0,
+          pool.token1,
+          liquidity,
+          BigNumber.from(0),
+          BigNumber.from(0),
+          account,
+          deadline
+        );
+        await rmLiquidTx.wait();
+      }
+    } catch (e) {
+      console.log(e);
     }
     setLoading(false);
   };

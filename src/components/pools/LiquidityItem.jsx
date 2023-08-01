@@ -37,7 +37,6 @@ export default function LiquidityItem({
   handleRemoveLiquidity,
   loading,
 }) {
-  console.log(lpToken, pool);
   const [share, setShare] = useState("0");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [removeAmount, setRemoveAmount] = useState("0");
@@ -47,12 +46,22 @@ export default function LiquidityItem({
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
 
+  console.log("pool", pool);
+
   useEffect(() => {
     const balanceBN = BigNumber.from(lpToken.balance);
-    if (balanceBN.lt(ethers.utils.parseUnits(removeAmount, 18))) {
+    try {
+      if (
+        balanceBN.lt(
+          ethers.utils.parseUnits(removeAmount, tokens.obj[pool.pair]?.decimals)
+        )
+      ) {
+        handleBalanceInsufficient();
+      } else {
+        handleBalanceOk();
+      }
+    } catch (ex) {
       handleBalanceInsufficient();
-    } else {
-      handleBalanceOk();
     }
   }, [lpToken.balance, removeAmount]);
 
@@ -70,6 +79,16 @@ export default function LiquidityItem({
     setBtnText("Insufficient balance");
   };
 
+  const handleRemoveAmountChange = (value) => {
+    try {
+      ethers.utils.parseUnits(value, tokens.obj[pool.pair]?.decimals);
+
+      setRemoveAmount(value);
+    } catch (ex) {
+      console.log("Ivalid input amount");
+    }
+  };
+
   // useEffect(() => {
   //   const getPoolShare = () => {
   //     const balance = Number(lpToken.balance);
@@ -85,7 +104,7 @@ export default function LiquidityItem({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleRemoveLiquidity(removeAmount, pool.pool_id);
+    await handleRemoveLiquidity(removeAmount, pool);
     onClose();
   };
 
@@ -177,8 +196,8 @@ export default function LiquidityItem({
               <FormLabel>Amount</FormLabel>
               <InputGroup>
                 <NumberInput
-                  value={currencyFormat(removeAmount)}
-                  onChange={(value) => setRemoveAmount(value)}
+                  value={removeAmount}
+                  onChange={(value) => handleRemoveAmountChange(value)}
                   w="full"
                   size="lg"
                   borderColor={"#5EEDFF"}
