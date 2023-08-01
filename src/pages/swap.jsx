@@ -60,7 +60,10 @@ export default function SwapPage() {
   const [btnText, setBtnText] = useState("Swap");
 
   useEffect(() => {
-    if (tokenIn && bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))) {
+    if (
+      tokenIn &&
+      bIn.lt(ethers.utils.parseUnits(amountIn, tokens.obj[tokenIn]?.decimals))
+    ) {
       handleBalanceInsufficient();
     } else {
       handleSwapAvailable();
@@ -270,14 +273,14 @@ export default function SwapPage() {
 
   return (
     <Box
-      bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 100%)"
+      bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
       width={"full"}
-      h={{ base: "auto", md: "calc(100vh - 189px)" }}
+      h={{ base: "auto", md: "100vh" }}
     >
       <Center color="#">
         <Center
           w={{ base: "95%", md: "450px" }}
-          h={"700px"}
+          h={"650px"}
           mt={"50px"}
           borderRadius={"md"}
           bgColor="white"
