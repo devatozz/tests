@@ -99,10 +99,6 @@ export default function Pools() {
   };
 
   useEffect(() => {
-    if (token1Name && token2Name && !poolInfo) {
-      handleNoPoolFound();
-      return;
-    }
     if (
       (token1Name &&
         token1Amount &&

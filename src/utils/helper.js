@@ -3,8 +3,8 @@ import { BigNumber } from "ethers";
 import { config, noneAddress } from "src/state/chain/config";
 import { ethers } from "ethers";
 
-import PancakeERC20 from "src/abis/PancakeERC20.json";
-import PancakePair from "src/abis/PancakePair.json";
+import PiraERC20 from "src/abis/PiraERC20.json";
+import PiraPair from "src/abis/PiraPair.json";
 
 export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
   try {
@@ -39,7 +39,7 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
 
 function getTokenContract(address) {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  return new ethers.Contract(address, PancakeERC20.abi, provider);
+  return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 
 export const loadBalance = async (account, chain, tokenAddress) => {
@@ -66,11 +66,11 @@ export const loadBalance = async (account, chain, tokenAddress) => {
 export const createFtContractWithSigner = (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
-  return new ethers.Contract(address, PancakeERC20.abi, signer);
+  return new ethers.Contract(address, PiraERC20.abi, signer);
 }
 
 export const createPairContractWithSigner = (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
-  return new ethers.Contract(address, PancakePair.abi, signer);
+  return new ethers.Contract(address, PiraPair.abi, signer);
 }
