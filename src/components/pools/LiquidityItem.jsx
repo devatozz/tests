@@ -182,8 +182,8 @@ export default function LiquidityItem({
           <ModalHeader>Remove Liquidity</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontWeight="bold">{`LP tokens balance: ${ethers.utils.formatEther(
-              lpToken.balance
+            <Text fontWeight="bold">{`LP tokens balance: ${currencyFormat(
+              ethers.utils.formatEther(lpToken.balance)
             )}`}</Text>
             <FormControl>
               <FormLabel>Amount</FormLabel>

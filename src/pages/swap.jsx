@@ -18,7 +18,8 @@ import {
   useToast,
   InputGroup,
   InputRightElement,
-  HStack,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useCallback } from "react";
 import {
@@ -175,8 +176,14 @@ export default function SwapPage() {
     (value) => {
       if (value == tokenOut) {
         let oldTokenIn = tokenIn;
-        setTokenOut(oldTokenIn);
-        handleLoadBalance(oldTokenIn).then((res) => setBOut(res));
+        if (oldTokenIn) {
+          setTokenOut(oldTokenIn);
+          handleLoadBalance(oldTokenIn).then((res) => setBOut(res));
+        } else {
+          setTokenOut("");
+          setBOut(BigNumber.from(0));
+        }
+
         handleGetAmountOut(value, oldTokenIn, amountIn);
       } else {
         handleGetAmountOut(value, tokenOut, amountIn);
@@ -293,8 +300,14 @@ export default function SwapPage() {
     (value) => {
       if (value == tokenIn) {
         let oldTokenOut = tokenOut;
-        setTokenIn(oldTokenOut);
-        handleLoadBalance(oldTokenOut).then((res) => setBIn(res));
+        if (oldTokenOut) {
+          setTokenIn(oldTokenOut);
+          handleLoadBalance(oldTokenOut).then((res) => setBIn(res));
+        } else {
+          setTokenIn("");
+          setBIn(BigNumber.from(0));
+        }
+
         handleGetAmountOut(oldTokenOut, value, amountIn);
       } else {
         handleGetAmountOut(tokenIn, value, amountIn);
@@ -341,6 +354,24 @@ export default function SwapPage() {
   //         </Center>
   //       </Center>
   //     );
+
+  if (!tokens.loaded || !pools.loaded) {
+    return (
+      <Box
+        my="6"
+        w="full"
+        boxShadow="lg"
+        bg="white"
+        p={20}
+        h={{ base: "calc(100vh - 50px)" }}
+      >
+        <Box>
+          <SkeletonCircle size="20" />
+          <SkeletonText mt="4" noOfLines={12} spacing="4" />
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box

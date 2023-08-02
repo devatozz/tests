@@ -3,7 +3,10 @@ export function replaceUIntSuffix(number) {
 }
 
 export function currencyFormat(number) {
-  return new Intl.NumberFormat().format(number);
+  var parts = number.toString().split(".");
+  var integerPart = parseInt(parts[0]).toLocaleString();
+  var decimalPart = parts[1] ? parts[1].substring(0, 5) : "";
+  return integerPart + (decimalPart ? "." + decimalPart : "");
 }
 
 export function formatInputAmount(amount) {
