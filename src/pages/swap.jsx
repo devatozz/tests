@@ -331,7 +331,8 @@ export default function SwapPage() {
     <Box
       bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
       width={"full"}
-      h={{ base: "auto", md: "100vh" }}
+      minH={{
+        base: "auto", md: "calc(100vh - 170px)" }}
     >
       <Center color="#">
         <Center

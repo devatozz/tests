@@ -432,7 +432,8 @@ export default function Pools() {
         title: "Remove liquidity success",
         isClosable: true
       })
-
+      getMyLpTokens()
+      handleToken1NameChange(token1Name)
     } catch (e) {
       toast({
         status: "error",
@@ -457,7 +458,7 @@ export default function Pools() {
     }
 
     if (!token1Amount) {
-      return "";
+      return "0";
     }
 
     // const reserve2BN = new BN(reserve2);
@@ -519,35 +520,28 @@ export default function Pools() {
       setToken1Amount(token1Amount);
     }
   };
+  const getMyLpTokens = async () => {
+    const lpTokens = [];
+    //rewrite this
+    if (pools.loaded && pools.list.length && selectedChain) {
+      await Promise.all(
+        pools.list.map(async (item) => {
+          const balance = await loadBalance(account, selectedChain, item.pair);
+          if (!balance.isZero()) {
+            lpTokens.push({
+              ...item,
+              balance: balance.toString(),
+            });
+          }
+        })
+      );
+    }
+    setMyLpTokens(lpTokens);
+  };
 
   useEffect(() => {
-    const getMyLpTokens = async () => {
-      const lpTokens = [];
-      //rewrite this
-      if (pools.loaded && pools.list.length) {
-        await Promise.all(
-          pools.list.map(async (item) => {
-            const balance = await loadBalance(account, selectedChain, item.pair);
-            if (!balance.isZero()) {
-              lpTokens.push({
-                ...item,
-                balance: balance.toString(),
-              });
-            }
-          })
-        );
-      }
-      setMyLpTokens(lpTokens);
-    };
-
     getMyLpTokens();
   }, [account, pools]);
-  useEffect(() => {
-    if (confirm) {
-      handleLoadBalance(token1Name).then((res) => setToken1Balance(res));
-      handleLoadBalance(token2Name).then((res) => setToken2Balance(res));
-    }
-  }, [confirm]);
 
   if (!tokens.loaded || !pools.loaded) {
     return <Box
@@ -576,7 +570,7 @@ export default function Pools() {
         px={{ base: 0, md: 4 }}
         py={6}
       >
-        <Tabs variant="soft-rounded">
+        <Tabs variant="soft-rounded" defaultIndex={account ? 0 : 1}>
           <Box
             w={{ base: "full", md: "550px" }}
             mx="auto"
@@ -584,8 +578,8 @@ export default function Pools() {
             h={{ base: "auto", md: "calc(100vh - 237px)" }}
             overflowY={"auto"}
           >
-            <TabList w="full">
-              <Tab>My Liquidity</Tab>
+            <TabList w="full" >
+              <Tab isDisabled={!account}>My Liquidity</Tab>
               <Tab>+ Add Liquidity</Tab>
             </TabList>
             <Box h={"2px"} mt={4} bg="black" />

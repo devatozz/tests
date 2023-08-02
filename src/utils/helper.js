@@ -7,30 +7,34 @@ import PancakeERC20 from "src/abis/PancakeERC20.json";
 import PancakePair from "src/abis/PancakePair.json";
 
 export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
-  let par = {};
-  let visit = [tokenIn];
-  let q = [tokenIn];
-  while (q.length) {
-    let u = q[0];
-    q.shift();
-    let ku = Object.keys(poolMatrix[u]);
-    for (let v = 0; v < ku.length; v++) {
-      if (!visit.includes(ku[v])) {
-        par[ku[v]] = u;
-        visit.push(ku[v]);
-        q.push(ku[v]);
+  try {
+    let par = {};
+    let visit = [tokenIn];
+    let q = [tokenIn];
+    while (q.length) {
+      let u = q[0];
+      q.shift();
+      let ku = Object.keys(poolMatrix[u]);
+      for (let v = 0; v < ku.length; v++) {
+        if (!visit.includes(ku[v])) {
+          par[ku[v]] = u;
+          visit.push(ku[v]);
+          q.push(ku[v]);
+        }
       }
     }
+    if (!visit.includes(tokenOut)) return [];
+    let steps = [];
+    while (tokenOut != tokenIn) {
+      steps.push(tokenOut);
+      tokenOut = par[tokenOut];
+    }
+    steps.push(tokenIn);
+    steps.reverse();
+    return steps;
+  } catch (e) {
+    return []
   }
-  if (!visit.includes(tokenOut)) return [];
-  let steps = [];
-  while (tokenOut != tokenIn) {
-    steps.push(tokenOut);
-    tokenOut = par[tokenOut];
-  }
-  steps.push(tokenIn);
-  steps.reverse();
-  return steps;
 };
 
 function getTokenContract(address) {
