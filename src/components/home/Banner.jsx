@@ -100,9 +100,9 @@ export default function Banner() {
                 </Text>
                 <Flex alignItems={"center"} justifyContent={"space-evenly"} color={"#fff"} flexWrap={"wrap"}
                       gap={{md: 20}}>
-                    {featureItems.map(item => {
+                    {featureItems.map((item,index) => {
                         return (
-                            <Flex alignItems={"center"} p={{base: "10px 20px", md: "15px 10px"}} maxW={{md: "40%"}}>
+                            <Flex key={index} alignItems={"center"} p={{base: "10px 20px", md: "15px 10px"}} maxW={{md: "40%"}}>
                                 <Image src={item.src} maxW={{base: "25%", md: "100%"}}/>
                                 <Flex flexDirection={"column"} justifyContent={"space-between"}>
                                     <Container color={"#5EEDFF"} fontSize={{base: "16px", md: "24px"}}>{item.title}</Container>
@@ -250,8 +250,8 @@ export default function Banner() {
                     </Text>
                 </Box>
                 <Flex justifyContent={"space-evenly"} flexWrap={"wrap"} alignItems={"center"} gap={"50px 180px"}>
-                    {partnersSrc.map(partner => {
-                        return <Flex alignItems={"center"}><Image src={partner.src}/></Flex>
+                    {partnersSrc.map((partner, index) => {
+                        return <Flex key={index} alignItems={"center"}><Image src={partner.src}/></Flex>
                     })}
                 </Flex>
             </Flex>
@@ -265,8 +265,8 @@ export default function Banner() {
                     </Text>
                 </Box>
                 <Flex justifyContent={"space-evenly"} flexWrap={"wrap"} alignItems={"center"} gap={"50px 180px"}>
-                    {mediaPartnersSrc.map(mediaPartner => {
-                        return <Flex alignItems={"center"}><Image src={mediaPartner.src}/></Flex>
+                    {mediaPartnersSrc.map((mediaPartner, index) => {
+                        return <Flex key={index} alignItems={"center"}><Image src={mediaPartner.src}/></Flex>
                     })}
                 </Flex>
             </Flex>

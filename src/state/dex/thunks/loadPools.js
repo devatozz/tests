@@ -4,7 +4,7 @@ import PancakePair from "src/abis/PancakePair.json";
 
 const loadPools = createAsyncThunk("dex/pool", async (_payload, { getState }) => {
     const state = await getState();
-    const selectedChain = state.chain.selectedChain;
+    const selectedChain = state.chain.selectedChain ? state.chain.selectedChain : "base";
     const dexLoaded = state.dex.loaded;
     if (!selectedChain || !dexLoaded) {
         return { error: true, message: 'not loaded' };
@@ -27,7 +27,8 @@ const loadPools = createAsyncThunk("dex/pool", async (_payload, { getState }) =>
             pairPromises.push(getPairData(pairs[i]));
         }
 
-        const listResult = await Promise.all(pairPromises)
+        let listResult = await Promise.all(pairPromises)
+        listResult = listResult.filter(item => (!item.reverses._reserve0.isZero() || !item.reverses._reserve1.isZero()))
         let objResult = {}
         for (let i = 0; i < pairs.length; i++) {
             objResult[pairs[i]] = listResult[i]

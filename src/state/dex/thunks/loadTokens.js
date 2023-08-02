@@ -3,31 +3,33 @@ import PancakeERC20 from "src/abis/PancakeERC20.json";
 import { config } from "src/state/chain/config";
 import { ethers } from "ethers";
 const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) => {
-    const state = await getState();
-    const selectedChain = state.chain.selectedChain;
-    const dexLoaded = state.dex.loaded;
-    if (!selectedChain || !dexLoaded) {
-        return { error: true, message: 'not enough loaded' };
-    }
+    // const state = await getState();
+    // const selectedChain = state.chain.selectedChain ? state.chain.selectedChain : "base";
+    // const dexLoaded = state.dex.loaded;
+    // if (!dexLoaded) {
+    //     return { error: true, message: 'not enough loaded' };
+    // }
     try {
-        let tokenSet = state.dex.tokens.set;
-        let tokenPromises = []
-        for (let i = 0; i < tokenSet.length; i++) {
-            tokenPromises.push(getTokenData(tokenSet[i]));
-        }
-        let listResult = await Promise.all(tokenPromises);
-        let itemIndex = listResult.findIndex(item => item.address == config[selectedChain].wrapAddress)
-        if (itemIndex != -1) {
-            listResult[itemIndex].name = "ETH"
-            listResult[itemIndex].symbol = "ETH"
-        }
-
+        // let tokenSet = state.dex.tokens.set;
+        // let tokenPromises = []
+        // for (let i = 0; i < tokenSet.length; i++) {
+        //     tokenPromises.push(getTokenData(tokenSet[i]));
+        // }
+        // let listResult = await Promise.all(tokenPromises);
+        // let itemIndex = listResult.findIndex(item => item.address.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase())
+        // if (itemIndex != -1) {
+        //     listResult[itemIndex].name = "ETH"
+        //     listResult[itemIndex].symbol = "ETH"
+        // }
+        let listResultReq = await fetch("/api/tokens")
+        let listResult = (await listResultReq.json()).result
         let tokenObj = {}
         for (let i = 0; i < listResult.length; i++) {
             tokenObj[listResult[i].address] = listResult[i]
         }
         return { error: false, list: listResult, obj: tokenObj };
     } catch (e) {
+        console.log(e)
         return { error: true, message: e.message };
     }
 })

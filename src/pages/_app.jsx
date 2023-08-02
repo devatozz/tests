@@ -4,7 +4,7 @@ import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "src/createEmotionCache";
 import favicon from "src/public/static/favicon.ico";
 const clientSideEmotionCache = createEmotionCache();
-import '../styles/global.css'
+import "../styles/global.css";
 import theme from "src/styles/theme";
 import {
   Box,
@@ -32,7 +32,14 @@ export default function App(props) {
   const actualPageMarkup = <Component {...pageProps} />;
 
   const loadingPageMarkup = (
-    <Box my="6" w="full" boxShadow="lg" bg="white" p={20}>
+    <Box
+      my="6"
+      w="full"
+      boxShadow="lg"
+      bg="white"
+      p={20}
+      h={{ base: "calc(100vh - 50px)" }}
+    >
       <Box>
         <SkeletonCircle size="20" />
         <SkeletonText mt="4" noOfLines={12} spacing="4" />
@@ -47,7 +54,11 @@ export default function App(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href={favicon.src} />
-        <meta name={"title"} title={"Pira finance"} />
+        <meta name="title" content="Pira finance" />
+        <meta
+          name="description"
+          content="The community-owned multichain DEX revolutionizing decentralized finance"
+        />
         <title>Pira Finance</title>
       </Head>
       <ChakraProvider theme={theme}>

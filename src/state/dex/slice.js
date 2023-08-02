@@ -87,7 +87,7 @@ export const slice = createSlice({
             if (action.payload.error) {
                 state.pools.list = [];
                 state.pools.obj = {};
-                console.log("Load tokens error: ", action.payload.message)
+                console.log("Load pools error: ", action.payload.message)
             } else {
                 state.pools.list = action.payload.list;
                 state.pools.obj = action.payload.obj;
