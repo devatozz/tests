@@ -29,18 +29,22 @@ import {
   InputRightElement,
   useToast,
   SkeletonCircle,
-  SkeletonText
+  SkeletonText,
 } from "@chakra-ui/react";
 import { BigNumber, ethers } from "ethers";
 
 import React, { useState, useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { createPairContractWithSigner, loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
 import { currencyFormat } from "src/utils/stringUtil";
 import { createFtContractWithSigner } from "src/utils/helper";
 import { config } from "src/state/chain/config";
+import loadTokens from "src/state/dex/thunks/loadTokens";
+import loadPools from "src/state/dex/thunks/loadPools";
 export default function Pools() {
+  const dispatch = useDispatch();
+
   const { tokens, pools, dex } = useSelector((state) => state.dex);
   const { account, selectedChain } = useSelector((state) => state.chain);
   const toast = useToast();
@@ -56,6 +60,16 @@ export default function Pools() {
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
+
+  const [tabIndex, setTabIndex] = React.useState(0);
+
+  const handleTabsChange = (index) => {
+    setTabIndex(index);
+
+    // Reload tokens and pools when the tab changes
+    dispatch(loadTokens());
+    dispatch(loadPools());
+  };
 
   const {
     isOpen: openTokenIn,
@@ -349,15 +363,15 @@ export default function Pools() {
         status: "success",
         duration: 5000,
         title: "Add liquidity success",
-        isClosable: true
-      })
+        isClosable: true,
+      });
     } catch (e) {
       toast({
         status: "error",
         duration: 5000,
         title: "Transaction failed",
-        isClosable: true
-      })
+        isClosable: true,
+      });
       console.log(e);
     }
 
@@ -372,10 +386,8 @@ export default function Pools() {
     setLoading(true);
 
     try {
-      const pairContract = createPairContractWithSigner(pool.pair)
-      let liquidity = ethers.utils.parseEther(
-        removeAmount,
-      );
+      const pairContract = createPairContractWithSigner(pool.pair);
+      let liquidity = ethers.utils.parseEther(removeAmount);
       let currentApproval = await pairContract.allowance(
         account,
         config[selectedChain].dexAddress
@@ -385,7 +397,7 @@ export default function Pools() {
           config[selectedChain].dexAddress,
           ethers.constants.MaxUint256
         );
-        await tx.wait()
+        await tx.wait();
       }
 
       if (account != account) {
@@ -393,8 +405,8 @@ export default function Pools() {
           status: "error",
           title: "Current account is not signer",
           duration: 3000,
-          isClosable: true
-        })
+          isClosable: true,
+        });
       } else if (
         pool.token0.toLocaleLowerCase() ==
           config[selectedChain].wrapAddress.toLocaleLowerCase() ||
@@ -406,14 +418,14 @@ export default function Pools() {
           config[selectedChain].wrapAddress.toLocaleLowerCase()
             ? pool.token1
             : pool.token0;
-        
+
         let rmLiquidTx = await dex.signer.removeLiquidityETH(
           tokenAddr,
           liquidity,
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline,
+          deadline
         );
         await rmLiquidTx.wait();
       } else {
@@ -424,7 +436,7 @@ export default function Pools() {
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline,
+          deadline
         );
         await rmLiquidTx.wait();
       }
@@ -432,17 +444,17 @@ export default function Pools() {
         status: "success",
         duration: 5000,
         title: "Remove liquidity success",
-        isClosable: true
-      })
-      getMyLpTokens()
-      handleToken1NameChange(token1Name)
+        isClosable: true,
+      });
+      getMyLpTokens();
+      handleToken1NameChange(token1Name);
     } catch (e) {
       toast({
         status: "error",
         duration: 5000,
         title: "Transaction failed",
-        isClosable: true
-      })
+        isClosable: true,
+      });
       console.log("error", e.message);
     }
     setLoading(false);
@@ -546,19 +558,21 @@ export default function Pools() {
   }, [account, pools]);
 
   if (!tokens.loaded || !pools.loaded) {
-    return <Box
-      my="6"
-      w="full"
-      boxShadow="lg"
-      bg="white"
-      p={20}
-      h={{ base: "calc(100vh - 50px)" }}
-    >
-      <Box>
-        <SkeletonCircle size="20" />
-        <SkeletonText mt="4" noOfLines={12} spacing="4" />
+    return (
+      <Box
+        my="6"
+        w="full"
+        boxShadow="lg"
+        bg="white"
+        p={20}
+        h={{ base: "calc(100vh - 50px)" }}
+      >
+        <Box>
+          <SkeletonCircle size="20" />
+          <SkeletonText mt="4" noOfLines={12} spacing="4" />
+        </Box>
       </Box>
-    </Box>
+    );
   }
   return (
     <Center
@@ -572,7 +586,11 @@ export default function Pools() {
         px={{ base: 0, md: 4 }}
         py={6}
       >
-        <Tabs variant="soft-rounded" defaultIndex={account ? 0 : 1}>
+        <Tabs
+          variant="soft-rounded"
+          defaultIndex={account ? 0 : 1}
+          onChange={handleTabsChange}
+        >
           <Box
             w={{ base: "full", md: "550px" }}
             mx="auto"
@@ -580,7 +598,7 @@ export default function Pools() {
             h={{ base: "auto", md: "calc(100vh - 237px)" }}
             overflowY={"auto"}
           >
-            <TabList w="full" >
+            <TabList w="full">
               <Tab isDisabled={!account}>My Liquidity</Tab>
               <Tab>+ Add Liquidity</Tab>
             </TabList>
