@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 // import cacheReducer from "./cache/slice";
 import chainReducer from "./chain/slice";
+import dexReducer from "./dex/slice";
 
 const chainPersistConfig = {
     key: 'chain',
@@ -16,6 +17,7 @@ export const store = configureStore({
     reducer: {
         // cache: cacheReducer,
         chain: chainPersist,
+        dex: dexReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -45,4 +45,3 @@ package-lock.json
 
 # Openzeppelin
 /.openzeppelin
-src/abis/
