@@ -411,6 +411,7 @@ export default function SwapPage() {
                               <Button
                                 w="full"
                                 justifyContent="left"
+                                isDisabled={item?.disable}
                                 key={`token-option-in-${index}`}
                                 leftIcon={
                                   <Avatar
@@ -516,6 +517,7 @@ export default function SwapPage() {
                               <Button
                                 w="full"
                                 justifyContent="left"
+                                isDisabled={item?.disable}
                                 key={`token-option-out-${index}`}
                                 leftIcon={
                                   <Avatar

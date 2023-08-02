@@ -40,7 +40,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Bridge",
-    href: "https://docs.base.org/tools/bridges/",
+    href: "https://owlto.finance/bridge",
   },
   {
     label: "Whitepaper",
