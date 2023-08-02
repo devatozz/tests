@@ -41,7 +41,7 @@ function getTokenContract(address) {
 export const loadBalance = async (account, chain, tokenAddress) => {
   try {
     let result = BigNumber.from(0)
-    if (tokenAddress.toLocaleLowerCase() == config[chain].wrapAddress.toLocaleLowerCase() || tokenAddress ==noneAddress) {
+    if (tokenAddress.toLocaleLowerCase() == config[chain]?.wrapAddress.toLocaleLowerCase() || tokenAddress ==noneAddress) {
       let ethBalance = await window.ethereum.request({
         "method": "eth_getBalance",
         "params": [
