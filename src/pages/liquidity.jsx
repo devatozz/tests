@@ -349,7 +349,19 @@ export default function Pools() {
         );
         await addLiquidTx.wait();
       }
+      toast({
+        status: "success",
+        duration: 5000,
+        title: "Add liquidity success",
+        isClosable: true
+      })
     } catch (e) {
+      toast({
+        status: "error",
+        duration: 5000,
+        title: "Transaction failed",
+        isClosable: true
+      })
       console.log(e);
     }
 
@@ -414,7 +426,20 @@ export default function Pools() {
         );
         await rmLiquidTx.wait();
       }
+      toast({
+        status: "success",
+        duration: 5000,
+        title: "Remove liquidity success",
+        isClosable: true
+      })
+
     } catch (e) {
+      toast({
+        status: "error",
+        duration: 5000,
+        title: "Transaction failed",
+        isClosable: true
+      })
       console.log("error", e.message);
     }
     setLoading(false);
