@@ -407,7 +407,7 @@ export default function Pools() {
             ? pool.token1
             : pool.token0;
         
-        let rmLiquidTx = await dex.signer.removeLiquidity(
+        let rmLiquidTx = await dex.signer.removeLiquidityETH(
           tokenAddr,
           liquidity,
           BigNumber.from(0),
