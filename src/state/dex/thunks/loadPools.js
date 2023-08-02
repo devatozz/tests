@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BigNumber, ethers } from "ethers";
-import PancakePair from "src/abis/PancakePair.json";
+import PiraPair from "src/abis/PiraPair.json";
 
 const loadPools = createAsyncThunk("dex/pool", async (_payload, { getState }) => {
     const state = await getState();
@@ -14,27 +14,33 @@ const loadPools = createAsyncThunk("dex/pool", async (_payload, { getState }) =>
         const totalPairs = await factoryContract.allPairsLength();
 
         let pairsLength = totalPairs.toNumber()
-        let pairPromises = [];
+        if (pairsLength > 0) {
+            let pairPromises = [];
 
-        for (let i = 0; i < pairsLength; i++) {
-            pairPromises.push(factoryContract.allPairs(BigNumber.from(i)));
+            for (let i = 0; i < pairsLength; i++) {
+                pairPromises.push(factoryContract.allPairs(BigNumber.from(i)));
+            }
+
+            const pairs = await Promise.all(pairPromises)
+
+            pairPromises = [];
+            for (let i = 0; i < pairs.length; i++) {
+                pairPromises.push(getPairData(pairs[i]));
+            }
+
+            let listResult = await Promise.all(pairPromises)
+            listResult = listResult.filter(item => (!item.reverses._reserve0.isZero() || !item.reverses._reserve1.isZero()))
+            let objResult = {}
+            for (let i = 0; i < pairs.length; i++) {
+                objResult[pairs[i]] = listResult[i]
+            }
+            let { tokens, poolMap } = await mapPools(listResult);
+            return { error: false, list: listResult, obj: objResult, poolMatrix: poolMap, tokenSet: tokens };
+        } else {
+            return { error: false, list: [], obj: {}, poolMatrix: {}, tokenSet: [] };
+
         }
 
-        const pairs = await Promise.all(pairPromises)
-        
-        pairPromises = [];
-        for (let i = 0; i < pairs.length; i++) {
-            pairPromises.push(getPairData(pairs[i]));
-        }
-
-        let listResult = await Promise.all(pairPromises)
-        listResult = listResult.filter(item => (!item.reverses._reserve0.isZero() || !item.reverses._reserve1.isZero()))
-        let objResult = {}
-        for (let i = 0; i < pairs.length; i++) {
-            objResult[pairs[i]] = listResult[i]
-        }
-        let { tokens, poolMap } = await mapPools(listResult);
-        return { error: false, list: listResult, obj: objResult, poolMatrix: poolMap, tokenSet: tokens  };
     } catch (e) {
         return { error: true, message: e.message };
     }
@@ -88,7 +94,7 @@ const mapPools = async (data) => {
 
 function getPairContract(address) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    return new ethers.Contract(address, PancakePair.abi, provider);
+    return new ethers.Contract(address, PiraPair.abi, provider);
 }
 
 // Function to get token data (name, symbol, decimals) from a token contract

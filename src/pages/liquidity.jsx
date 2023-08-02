@@ -99,10 +99,6 @@ export default function Pools() {
   };
 
   useEffect(() => {
-    if (token1Name && token2Name && !poolInfo) {
-      handleNoPoolFound();
-      return;
-    }
     if (
       (token1Name &&
         token1Amount &&
@@ -380,12 +376,18 @@ export default function Pools() {
       let liquidity = ethers.utils.parseEther(
         removeAmount,
       );
-
-      let tx = await pairContract.approve(
-        config[selectedChain].dexAddress,
-        liquidity
+      let currentApproval = await pairContract.allowance(
+        account,
+        config[selectedChain].dexAddress
       );
-      await tx.wait()
+      if (currentApproval.lt(liquidity)) {
+        let tx = await pairContract.approve(
+          config[selectedChain].dexAddress,
+          ethers.constants.MaxUint256
+        );
+        await tx.wait()
+      }
+
       if (account != account) {
         toast({
           status: "error",

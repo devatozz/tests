@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import PancakeERC20 from "src/abis/PancakeERC20.json";
+import PiraERC20 from "src/abis/PiraERC20.json";
 import { config } from "src/state/chain/config";
 import { ethers } from "ethers";
 const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) => {
@@ -36,7 +36,7 @@ const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) 
 
 function getTokenContract(address) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    return new ethers.Contract(address, PancakeERC20.abi, provider);
+    return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 
 // // Function to get token data (name, symbol, decimals) from a token contract
