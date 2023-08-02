@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { currencyFormat } from "src/utils/stringUtil";
+import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
 import { useSelector } from "react-redux";
 import { config } from "src/state/chain/config";
@@ -49,11 +49,7 @@ export default function LiquidityItem({
   useEffect(() => {
     const balanceBN = BigNumber.from(lpToken.balance);
     try {
-      if (
-        balanceBN.lt(
-          ethers.utils.parseEther(removeAmount)
-        )
-      ) {
+      if (balanceBN.lt(ethers.utils.parseEther(removeAmount))) {
         handleBalanceInsufficient();
       } else {
         handleBalanceOk();
@@ -79,7 +75,7 @@ export default function LiquidityItem({
 
   const handleRemoveAmountChange = (value) => {
     try {
-      setRemoveAmount(value);
+      setRemoveAmount(formatInputAmount(value));
     } catch (ex) {
       console.log("Ivalid input amount");
     }
@@ -101,6 +97,7 @@ export default function LiquidityItem({
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleRemoveLiquidity(removeAmount, lpToken);
+    setRemoveAmount("0");
     onClose();
   };
 
@@ -185,9 +182,9 @@ export default function LiquidityItem({
           <ModalHeader>Remove Liquidity</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontWeight="bold">{`LP tokens balance: ${
-              ethers.utils.formatEther(lpToken.balance)
-            }`}</Text>
+            <Text fontWeight="bold">{`LP tokens balance: ${ethers.utils.formatEther(
+              lpToken.balance
+            )}`}</Text>
             <FormControl>
               <FormLabel>Amount</FormLabel>
               <InputGroup>

@@ -37,11 +37,12 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPairContractWithSigner, loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
-import { currencyFormat } from "src/utils/stringUtil";
+import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { createFtContractWithSigner } from "src/utils/helper";
 import { config } from "src/state/chain/config";
 import loadTokens from "src/state/dex/thunks/loadTokens";
 import loadPools from "src/state/dex/thunks/loadPools";
+import { set } from "date-fns";
 export default function Pools() {
   const dispatch = useDispatch();
 
@@ -83,7 +84,8 @@ export default function Pools() {
   } = useDisclosure();
 
   const handleToken1AmountChange = async (amount) => {
-    setToken1Amount(amount);
+    // Set the token amount
+    setToken1Amount(formatInputAmount(amount));
 
     if (!token1Name || !token2Name || !poolInfo || poolInfo.reserve1 == "0")
       return;
@@ -98,7 +100,7 @@ export default function Pools() {
   };
 
   const handleToken2AmountChange = async (amount) => {
-    setToken2Amount(amount);
+    setToken2Amount(formatInputAmount(amount));
 
     if (!token1Name || !token2Name || !poolInfo || poolInfo.reserve2 == "0")
       return;
@@ -365,6 +367,9 @@ export default function Pools() {
         title: "Add liquidity success",
         isClosable: true,
       });
+
+      setToken1Amount("0");
+      setToken2Amount("0");
     } catch (e) {
       toast({
         status: "error",
