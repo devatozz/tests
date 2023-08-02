@@ -4,28 +4,32 @@ const tokensList = [
         name: "ETH",
         symbol: "ETH",
         decimals: 18,
-        icon: "/eth.png"
+        icon: "/eth.png",
+        disable: false
     },
     {
         address: "0xF42C59170e9Ea38809FC9935dCED761274336C66",
         name: "FLU",
         symbol: "FLU",
         decimals: 18,
-        icon: "/flu.png"
+        icon: "/flu.png",
+        disable: false
     },
     {
         address: "0x23719B3222837Abd564D176c78527623167BdbEc",
         name: "USDC Testnet",
         symbol: "USDC",
         decimals: 18,
-        icon: "/usdc.png"
+        icon: "/usdc.png",
+        disable: false
     },
     {
         address: "0x3F469B262124334F04D0cE45fDF8712dC723773c",
         name: "USDT Testnet",
         symbol: "USDT",
         decimals: 18,
-        icon: "/usdt.png"
+        icon: "/usdt.png",
+        disable: false
     }
 ]
 
