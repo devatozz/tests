@@ -18,7 +18,8 @@ import {
   useToast,
   InputGroup,
   InputRightElement,
-  HStack,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useCallback } from "react";
 import {
@@ -28,7 +29,7 @@ import {
 } from "src/utils/helper";
 
 // import { metadatas } from "src/utils/utils";
-import { currencyFormat } from "src/utils/stringUtil";
+import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
 import { useSelector } from "react-redux";
 import { config } from "src/state/chain/config";
@@ -77,9 +78,11 @@ export default function SwapPage() {
         if (steps.length < 2) {
           setBtnDisable(true);
           setBtnText("Not existed route");
+          setAmountIn("0");
         } else if (isNaN(aXOut)) {
           setBtnDisable(true);
           setBtnText("Amount out is not valid");
+          setAmountIn("0");
         } else {
           try {
             let aIns = await dex.contract.getAmountsIn(
@@ -89,17 +92,15 @@ export default function SwapPage() {
             setAmountIn(
               ethers.utils.formatUnits(aIns[0], tokens.obj[tIn]?.decimals)
             );
-            if (
-              bIn.lt(aIns[0])
-            ) {
+            if (bIn.lt(aIns[0])) {
               handleBalanceInsufficient();
             } else {
-              handleSwapAvailable()
+              handleSwapAvailable();
             }
-
           } catch (e) {
             setBtnDisable(true);
             setBtnText("Not existed route");
+            setAmountIn("0");
             console.log(e);
           }
         }
@@ -118,9 +119,11 @@ export default function SwapPage() {
         setSwapSteps(steps);
         if (steps.length < 2) {
           setBtnDisable(true);
+          setAmountOut("0");
           setBtnText("Not existed route");
         } else if (isNaN(aXIn)) {
           setBtnDisable(true);
+          setAmountOut("0");
           setBtnText("Amount in is not valid");
         } else {
           try {
@@ -139,11 +142,12 @@ export default function SwapPage() {
             ) {
               handleBalanceInsufficient();
             } else {
-              handleSwapAvailable()
+              handleSwapAvailable();
             }
           } catch (e) {
             setBtnDisable(true);
             setBtnText("Not existed route");
+            setAmountOut("0");
             console.log(e);
           }
         }
@@ -172,8 +176,14 @@ export default function SwapPage() {
     (value) => {
       if (value == tokenOut) {
         let oldTokenIn = tokenIn;
-        setTokenOut(oldTokenIn);
-        handleLoadBalance(oldTokenIn).then((res) => setBOut(res));
+        if (oldTokenIn) {
+          setTokenOut(oldTokenIn);
+          handleLoadBalance(oldTokenIn).then((res) => setBOut(res));
+        } else {
+          setTokenOut("");
+          setBOut(BigNumber.from(0));
+        }
+
         handleGetAmountOut(value, oldTokenIn, amountIn);
       } else {
         handleGetAmountOut(value, tokenOut, amountIn);
@@ -197,7 +207,10 @@ export default function SwapPage() {
       const next30MinutesUnix = currentTimeUnix + 30 * 60;
       const deadline = BigNumber.from(next30MinutesUnix);
 
-      if (tokenIn.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()) {
+      if (
+        tokenIn.toLocaleLowerCase() ==
+        config[selectedChain].wrapAddress.toLocaleLowerCase()
+      ) {
         let swapTx = await dex.signer.swapExactETHForTokens(
           minAmountOut,
           swapSteps,
@@ -208,7 +221,10 @@ export default function SwapPage() {
           }
         );
         await swapTx.wait();
-      } else if (tokenOut.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase()) {
+      } else if (
+        tokenOut.toLocaleLowerCase() ==
+        config[selectedChain].wrapAddress.toLocaleLowerCase()
+      ) {
         let erc20 = createFtContractWithSigner(tokenIn);
         let aIn = ethers.utils.parseUnits(
           amountIn,
@@ -264,8 +280,8 @@ export default function SwapPage() {
         status: "success",
         duration: 5000,
         title: "Swap success",
-        isClosable: true
-      })
+        isClosable: true,
+      });
       handleSelectTokenIn(tokenIn);
       handleSelectTokenOut(tokenOut);
     } catch (e) {
@@ -273,8 +289,8 @@ export default function SwapPage() {
         status: "error",
         duration: 5000,
         title: "Transaction failed",
-        isClosable: true
-      })
+        isClosable: true,
+      });
       console.log(e);
     }
     setIsLoading(false);
@@ -284,8 +300,14 @@ export default function SwapPage() {
     (value) => {
       if (value == tokenIn) {
         let oldTokenOut = tokenOut;
-        setTokenIn(oldTokenOut);
-        handleLoadBalance(oldTokenOut).then((res) => setBIn(res));
+        if (oldTokenOut) {
+          setTokenIn(oldTokenOut);
+          handleLoadBalance(oldTokenOut).then((res) => setBIn(res));
+        } else {
+          setTokenIn("");
+          setBIn(BigNumber.from(0));
+        }
+
         handleGetAmountOut(oldTokenOut, value, amountIn);
       } else {
         handleGetAmountOut(tokenIn, value, amountIn);
@@ -299,23 +321,29 @@ export default function SwapPage() {
 
   const handleSetAmountIn = useCallback(
     (value) => {
-      setAmountIn(value);
-      handleGetAmountOut(tokenIn, tokenOut, value);
+      const amount = formatInputAmount(value);
+      setAmountIn(amount);
+      handleGetAmountOut(tokenIn, tokenOut, amount);
     },
     [tokenIn, tokenOut]
   );
 
   const handleSetAmountOut = useCallback(
     (value) => {
-      setAmountOut(value);
-      handleGetAmountIn(tokenIn, tokenOut, value);
+      const amount = formatInputAmount(value);
+      setAmountOut(amount);
+      handleGetAmountIn(tokenIn, tokenOut, amount);
     },
     [tokenIn, tokenOut]
   );
 
   const handleSetMaxTokenIn = () => {
     setAmountIn(ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals));
-    handleGetAmountOut(tokenIn, tokenOut, ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals));
+    handleGetAmountOut(
+      tokenIn,
+      tokenOut,
+      ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals)
+    );
   };
 
   //   if (!account)
@@ -327,12 +355,32 @@ export default function SwapPage() {
   //       </Center>
   //     );
 
+  if (!tokens.loaded || !pools.loaded) {
+    return (
+      <Box
+        my="6"
+        w="full"
+        boxShadow="lg"
+        bg="white"
+        p={20}
+        h={{ base: "calc(100vh - 50px)" }}
+      >
+        <Box>
+          <SkeletonCircle size="20" />
+          <SkeletonText mt="4" noOfLines={12} spacing="4" />
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box
       bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
       width={"full"}
       minH={{
-        base: "auto", md: "calc(100vh - 170px)" }}
+        base: "auto",
+        md: "calc(100vh - 170px)",
+      }}
     >
       <Center color="#">
         <Center
