@@ -9,7 +9,7 @@ export default function Banner() {
         {src: '/farm_icon.png', title: 'Yield Farming made easy', description: 'Yield Farming on Pira DEX is a powerful tool for growing your wealth and participating in the exciting world of decentralized finance.'},
         {src: '/defi_icon.png', title: 'Own the future of DeFi', description: 'Hold PIRA tokens and become a key player in the governance and development of Pira Finance.'},
         {src: '/earn_icon.png', title: 'Earning PIRA TOKENS', description: 'You get $PIRA when you join, when you use an invite, and when someone you invite uses an invite.'},
-        {src: '/ausd_icon.png', title: 'aUSD', description: 'The αUSD mechanism in Pira Finance provides users with an innovative way to utilize their USDC or USDT holdings and earn additional rewards.'}
+        {src: '/ausd_icon.png', title: 'aUSD', description: 'The aUSD mechanism in Pira Finance provides users with an innovative way to utilize their USDC or USDT holdings and earn additional rewards.'}
     ];
 
     const partnersSrc = [
