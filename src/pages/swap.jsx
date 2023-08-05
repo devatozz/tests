@@ -33,13 +33,15 @@ import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
 import { useSelector } from "react-redux";
 import { config } from "src/state/chain/config";
+import TokenModal from "src/components/pools/TokensModal";
+import { emptyToken } from "src/utils/utils";
 
 export default function SwapPage() {
-  const [tokenIn, setTokenIn] = useState("");
+  const [tokenIn, setTokenIn] = useState(emptyToken);
   const [bIn, setBIn] = useState(BigNumber.from(0));
   const [bOut, setBOut] = useState(BigNumber.from(0));
   const [amountIn, setAmountIn] = useState("0");
-  const [tokenOut, setTokenOut] = useState("");
+  const [tokenOut, setTokenOut] = useState(emptyToken);
   const [amountOut, setAmountOut] = useState("0");
   const [swapSteps, setSwapSteps] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,8 +74,8 @@ export default function SwapPage() {
 
   const handleGetAmountIn = useCallback(
     async (tIn, tOut, aXOut) => {
-      if (tIn && tOut && aXOut !== "0" && tIn != tOut) {
-        let steps = getSteps(tIn, tOut, pools.matrix);
+      if (tIn.address && tOut.address && aXOut !== "0" && tIn.address != tOut.address) {
+        let steps = getSteps(tIn.address, tOut.address, pools.matrix);
         setSwapSteps(steps);
         if (steps.length < 2) {
           setBtnDisable(true);
@@ -86,11 +88,11 @@ export default function SwapPage() {
         } else {
           try {
             let aIns = await dex.contract.getAmountsIn(
-              ethers.utils.parseUnits(aXOut, tokens.obj[tOut]?.decimals),
+              ethers.utils.parseUnits(aXOut, tOut.decimals),
               steps
             );
             setAmountIn(
-              ethers.utils.formatUnits(aIns[0], tokens.obj[tIn]?.decimals)
+              ethers.utils.formatUnits(aIns[0], tIn.decimals)
             );
             if (bIn.lt(aIns[0])) {
               handleBalanceInsufficient();
@@ -104,8 +106,8 @@ export default function SwapPage() {
             console.log(e);
           }
         }
-      } else if (tIn && tOut && tIn != tOut) {
-        let steps = getSteps(tIn, tOut, pools.matrix);
+      } else if (tIn.address && tOut.address && tIn.address != tOut.address) {
+        let steps = getSteps(tIn.address, tOut.address, pools.matrix);
         setSwapSteps(steps);
       }
     },
@@ -114,8 +116,8 @@ export default function SwapPage() {
 
   const handleGetAmountOut = useCallback(
     async (tIn, tOut, aXIn) => {
-      if (tIn && tOut && aXIn !== "0" && tIn != tOut) {
-        let steps = getSteps(tIn, tOut, pools.matrix);
+      if (tIn.address && tOut.address && aXIn !== "0" && tIn.address != tOut.address) {
+        let steps = getSteps(tIn.address, tOut.address, pools.matrix);
         setSwapSteps(steps);
         if (steps.length < 2) {
           setBtnDisable(true);
@@ -128,7 +130,7 @@ export default function SwapPage() {
         } else {
           try {
             let aOuts = await dex.contract.getAmountsOut(
-              ethers.utils.parseUnits(aXIn, tokens.obj[tIn]?.decimals),
+              ethers.utils.parseUnits(aXIn, tIn.decimals),
               steps
             );
             setAmountOut(
@@ -138,7 +140,7 @@ export default function SwapPage() {
               )
             );
             if (
-              bIn.lt(ethers.utils.parseUnits(aXIn, tokens.obj[tIn]?.decimals))
+              bIn.lt(ethers.utils.parseUnits(aXIn, tIn.decimals))
             ) {
               handleBalanceInsufficient();
             } else {
@@ -151,8 +153,8 @@ export default function SwapPage() {
             console.log(e);
           }
         }
-      } else if (tIn && tOut && tIn != tOut) {
-        let steps = getSteps(tIn, tOut, pools.matrix);
+      } else if (tIn.address && tOut.address && tIn.address != tOut.address) {
+        let steps = getSteps(tIn.address, tOut.address, pools.matrix);
         setSwapSteps(steps);
       }
     },
@@ -172,28 +174,6 @@ export default function SwapPage() {
     [account, selectedChain]
   );
 
-  const handleSelectTokenIn = useCallback(
-    (value) => {
-      if (value == tokenOut) {
-        let oldTokenIn = tokenIn;
-        if (oldTokenIn) {
-          setTokenOut(oldTokenIn);
-          handleLoadBalance(oldTokenIn).then((res) => setBOut(res));
-        } else {
-          setTokenOut("");
-          setBOut(BigNumber.from(0));
-        }
-
-        handleGetAmountOut(value, oldTokenIn, amountIn);
-      } else {
-        handleGetAmountOut(value, tokenOut, amountIn);
-      }
-      setTokenIn(value);
-      handleLoadBalance(value).then((res) => setBIn(res));
-      closeTokenIn();
-    },
-    [tokenOut, handleLoadBalance, closeTokenIn, tokenIn, amountIn]
-  );
 
   const handleSwap = async (e) => {
     setIsLoading(true);
@@ -208,7 +188,7 @@ export default function SwapPage() {
       const deadline = BigNumber.from(next30MinutesUnix);
 
       if (
-        tokenIn.toLocaleLowerCase() ==
+        tokenIn.address.toLocaleLowerCase() ==
         config[selectedChain].wrapAddress.toLocaleLowerCase()
       ) {
         let swapTx = await dex.signer.swapExactETHForTokens(
@@ -222,13 +202,13 @@ export default function SwapPage() {
         );
         await swapTx.wait();
       } else if (
-        tokenOut.toLocaleLowerCase() ==
+        tokenOut.address.toLocaleLowerCase() ==
         config[selectedChain].wrapAddress.toLocaleLowerCase()
       ) {
-        let erc20 = createFtContractWithSigner(tokenIn);
+        let erc20 = createFtContractWithSigner(tokenIn.address);
         let aIn = ethers.utils.parseUnits(
           amountIn,
-          tokens.obj[tokenIn]?.decimals
+          tokenIn.decimals
         );
         let currentApproval = await erc20.allowance(
           account,
@@ -251,10 +231,10 @@ export default function SwapPage() {
         );
         await swapTx.wait();
       } else {
-        let erc20 = createFtContractWithSigner(tokenIn);
+        let erc20 = createFtContractWithSigner(tokenIn.address);
         let aIn = ethers.utils.parseUnits(
           amountIn,
-          tokens.obj[tokenIn]?.decimals
+          tokenIn.decimals
         );
         let currentApproval = await erc20.allowance(
           account,
@@ -296,15 +276,38 @@ export default function SwapPage() {
     setIsLoading(false);
   };
 
+  const handleSelectTokenIn = useCallback(
+    (value) => {
+      if (value.address == tokenOut.address) {
+        let oldTokenIn = tokenIn;
+        if (oldTokenIn.address) {
+          setTokenOut(oldTokenIn);
+          handleLoadBalance(oldTokenIn.address).then((res) => setBOut(res));
+        } else {
+          setTokenOut(emptyToken);
+          setBOut(BigNumber.from(0));
+        }
+
+        handleGetAmountOut(value, oldTokenIn, amountIn);
+      } else {
+        handleGetAmountOut(value, tokenOut, amountIn);
+      }
+      setTokenIn(value);
+      handleLoadBalance(value.address).then((res) => setBIn(res));
+      closeTokenIn();
+    },
+    [tokenOut, tokenIn, amountIn]
+  );
+
   const handleSelectTokenOut = useCallback(
     (value) => {
-      if (value == tokenIn) {
+      if (value.address == tokenIn.address) {
         let oldTokenOut = tokenOut;
-        if (oldTokenOut) {
+        if (oldTokenOut.address) {
           setTokenIn(oldTokenOut);
-          handleLoadBalance(oldTokenOut).then((res) => setBIn(res));
+          handleLoadBalance(oldTokenOut.address).then((res) => setBIn(res));
         } else {
-          setTokenIn("");
+          setTokenIn(emptyToken);
           setBIn(BigNumber.from(0));
         }
 
@@ -313,10 +316,10 @@ export default function SwapPage() {
         handleGetAmountOut(tokenIn, value, amountIn);
       }
       setTokenOut(value);
-      handleLoadBalance(value).then((res) => setBOut(res));
+      handleLoadBalance(value.address).then((res) => setBOut(res));
       closeTokenOut();
     },
-    [tokenIn, handleLoadBalance, closeTokenOut, tokenOut, amountOut, amountIn]
+    [tokenIn, tokenOut, amountIn]
   );
 
   const handleSetAmountIn = useCallback(
@@ -338,22 +341,13 @@ export default function SwapPage() {
   );
 
   const handleSetMaxTokenIn = () => {
-    setAmountIn(ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals));
+    setAmountIn(ethers.utils.formatUnits(bIn, tokenIn.decimals));
     handleGetAmountOut(
       tokenIn,
       tokenOut,
-      ethers.utils.formatUnits(bIn, tokens.obj[tokenIn]?.decimals)
+      ethers.utils.formatUnits(bIn, tokenIn.decimals)
     );
   };
-
-  //   if (!account)
-  //     return (
-  //       <Center>
-  //         <Center w="40%" borderRadius={"md"} bgColor="#171E2E" px={4} py={6}>
-  //           Please connect wallet to use this application
-  //         </Center>
-  //       </Center>
-  //     );
 
   if (!tokens.loaded || !pools.loaded) {
     return (
@@ -410,75 +404,38 @@ export default function SwapPage() {
                     {currencyFormat(
                       ethers.utils.formatUnits(
                         bIn,
-                        tokenIn ? tokens.obj[tokenIn]?.decimals : 18
+                        tokenIn.decimals
                       )
                     )}
                   </div>
                 </Box>
                 <Flex gap={6} flexDirection={"column"}>
-                  <Popover
-                    matchWidth
-                    isOpen={openTokenIn}
-                    onClose={closeTokenIn}
-                  >
-                    <PopoverTrigger>
-                      <Button
-                        borderColor={"#5EEDFF"}
-                        colorScheme="telegram"
-                        justifyContent="left"
-                        minW="200px"
-                        size="lg"
-                        variant="outline"
-                        aria-label="Options token in"
-                        onClick={toggleTokenIn}
-                        leftIcon={
-                          <Avatar
-                            size="sm"
-                            name={tokenIn ? tokenIn : "In"}
-                            src={
-                              tokenIn
-                                ? tokens.obj[tokenIn]?.icon
-                                : "/base-logo-in-blue.png"
-                            }
-                          />
+                  <Button
+                    borderColor={"#5EEDFF"}
+                    colorScheme="telegram"
+                    justifyContent="left"
+                    minW="200px"
+                    size="lg"
+                    variant="outline"
+                    aria-label="Options token in"
+                    onClick={toggleTokenIn}
+                    leftIcon={
+                      <Avatar
+                        size="sm"
+                        name={tokenIn.symbol ? tokenIn.symbol : "In"}
+                        src={
+                          tokenIn.icon
+                            ? tokenIn?.icon
+                            : "/base-logo-in-blue.png"
                         }
-                      >
-                        <Text>
-                          {tokenIn
-                            ? tokens.obj[tokenIn]?.symbol
-                            : "Select token"}
-                        </Text>
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent w="full" maxH="170px" overflowY="scroll">
-                      <PopoverBody w="full">
-                        <VStack w="full">
-                          {tokens.list
-                            .filter((fItem) => fItem.address !== tokenIn)
-                            .map((item, index) => (
-                              <Button
-                                w="full"
-                                justifyContent="left"
-                                isDisabled={item?.disable}
-                                key={`token-option-in-${index}`}
-                                leftIcon={
-                                  <Avatar
-                                    size="xs"
-                                    name={item.symbol}
-                                    src={tokens.obj[item.address]?.icon}
-                                  />
-                                }
-                                onClick={() => {
-                                  handleSelectTokenIn(item.address);
-                                }}
-                              >
-                                <Text>{tokens.obj[item.address]?.symbol}</Text>
-                              </Button>
-                            ))}
-                        </VStack>
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
+                      />
+                    }
+                  >
+                    {tokenIn.symbol
+                      ? tokenIn.symbol
+                      : "Select token"}
+                  </Button>
+                  <TokenModal isOpen={openTokenIn} onClose={closeTokenIn} handleChoseToken={handleSelectTokenIn} selectedAddr={tokenIn.address} />
                   <InputGroup>
                     <NumberInput
                       borderColor={"#5EEDFF"}
@@ -515,76 +472,40 @@ export default function SwapPage() {
                     {currencyFormat(
                       ethers.utils.formatUnits(
                         bOut,
-                        tokenOut ? tokens.obj[tokenOut]?.decimals : 18
+                        tokenOut.decimals
                       )
                     )}
                   </div>
                 </Box>
                 <Flex gap={6} flexDirection={"column"}>
-                  <Popover
-                    matchWidth
-                    isOpen={openTokenOut}
-                    onClose={closeTokenOut}
-                    width={"50%"}
-                  >
-                    <PopoverTrigger h="full">
-                      <Button
-                        colorScheme="telegram"
-                        justifyContent="left"
-                        minW="200px"
-                        size="lg"
-                        variant="outline"
-                        aria-label="Options token out"
-                        borderColor={"#5EEDFF"}
-                        onClick={toggleTokenOut}
-                        leftIcon={
-                          <Avatar
-                            size="sm"
-                            name={tokenOut ? tokenOut : "Out"}
-                            src={
-                              tokenOut
-                                ? tokens.obj[tokenOut]?.icon
-                                : "/base-logo-in-blue.png"
-                            }
-                          />
+                  <Button
+                    colorScheme="telegram"
+                    justifyContent="left"
+                    minW="200px"
+                    size="lg"
+                    variant="outline"
+                    aria-label="Options token out"
+                    borderColor={"#5EEDFF"}
+                    onClick={toggleTokenOut}
+                    leftIcon={
+                      <Avatar
+                        size="sm"
+                        name={tokenOut.name ? tokenOut.name : "Out"}
+                        src={
+                          tokenOut.icon
+                            ? tokenOut.icon
+                            : "/base-logo-in-blue.png"
                         }
-                      >
-                        <Text>
-                          {tokenOut
-                            ? tokens.obj[tokenOut]?.symbol
-                            : "Select token"}
-                        </Text>
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent w="full" maxH="170px" overflowY="scroll">
-                      <PopoverBody w="full">
-                        <VStack w="full">
-                          {tokens.list
-                            .filter((fItem) => fItem.address !== tokenOut)
-                            .map((item, index) => (
-                              <Button
-                                w="full"
-                                justifyContent="left"
-                                isDisabled={item?.disable}
-                                key={`token-option-out-${index}`}
-                                leftIcon={
-                                  <Avatar
-                                    size="xs"
-                                    name={item.symbol}
-                                    src={tokens.obj[item.address]?.icon}
-                                  />
-                                }
-                                onClick={() => {
-                                  handleSelectTokenOut(item.address);
-                                }}
-                              >
-                                <Text>{tokens.obj[item.address]?.symbol}</Text>
-                              </Button>
-                            ))}
-                        </VStack>
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
+                      />
+                    }
+                  >
+                    <Text>
+                      {tokenOut.symbol
+                        ? tokenOut.symbol
+                        : "Select token"}
+                    </Text>
+                  </Button>
+                  <TokenModal isOpen={openTokenOut} onClose={closeTokenOut} handleChoseToken={handleSelectTokenOut} selectedAddr={tokenOut.address} />
                   <NumberInput
                     value={amountOut}
                     w="full"
