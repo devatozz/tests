@@ -32,8 +32,8 @@ import {
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
 import { useSelector } from "react-redux";
-import { config } from "src/state/chain/config";
-import TokenModal from "src/components/pools/TokensModal";
+import { config, noneAddress } from "src/state/chain/config";
+import SwapTokenModal from "src/components/swap/TokensModal";
 import { emptyToken } from "src/utils/utils";
 
 export default function SwapPage() {
@@ -188,8 +188,7 @@ export default function SwapPage() {
       const deadline = BigNumber.from(next30MinutesUnix);
 
       if (
-        tokenIn.address.toLocaleLowerCase() ==
-        config[selectedChain].wrapAddress.toLocaleLowerCase()
+        tokenIn.address == noneAddress
       ) {
         let swapTx = await dex.signer.swapExactETHForTokens(
           minAmountOut,
@@ -201,10 +200,7 @@ export default function SwapPage() {
           }
         );
         await swapTx.wait();
-      } else if (
-        tokenOut.address.toLocaleLowerCase() ==
-        config[selectedChain].wrapAddress.toLocaleLowerCase()
-      ) {
+      } else if (tokenOut.address == noneAddress) {
         let erc20 = createFtContractWithSigner(tokenIn.address);
         let aIn = ethers.utils.parseUnits(
           amountIn,
@@ -435,7 +431,7 @@ export default function SwapPage() {
                       ? tokenIn.symbol
                       : "Select token"}
                   </Button>
-                  <TokenModal isOpen={openTokenIn} onClose={closeTokenIn} handleChoseToken={handleSelectTokenIn} selectedAddr={tokenIn.address} />
+                  <SwapTokenModal isOpen={openTokenIn} onClose={closeTokenIn} handleChoseToken={handleSelectTokenIn} selectedAddr={tokenIn.address} />
                   <InputGroup>
                     <NumberInput
                       borderColor={"#5EEDFF"}
@@ -505,7 +501,7 @@ export default function SwapPage() {
                         : "Select token"}
                     </Text>
                   </Button>
-                  <TokenModal isOpen={openTokenOut} onClose={closeTokenOut} handleChoseToken={handleSelectTokenOut} selectedAddr={tokenOut.address} />
+                  <SwapTokenModal isOpen={openTokenOut} onClose={closeTokenOut} handleChoseToken={handleSelectTokenOut} selectedAddr={tokenOut.address} />
                   <NumberInput
                     value={amountOut}
                     w="full"

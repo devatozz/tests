@@ -23,7 +23,7 @@ import { getTokenData } from 'src/utils/helper'
 import { emptyToken } from "src/utils/utils";
 import { config } from 'src/state/chain/config'
 
-export default function TokenModal({ handleChoseToken, isOpen, onClose, selectedAddr }) {
+export default function SwapTokenModal({ handleChoseToken, isOpen, onClose, selectedAddr }) {
     const { list, loaded, obj } = useSelector(state => state.dex.tokens)
     const { selectedChain } = useSelector(state => state.chain)
 
@@ -50,11 +50,7 @@ export default function TokenModal({ handleChoseToken, isOpen, onClose, selected
 
     useEffect(() => {
         if (loaded) {
-            setDefaultTokenList(list
-                .filter((fItem) => fItem.address.toLowerCase() !== selectedAddr.toLowerCase() &&
-                    fItem.address.toLowerCase() !== config[selectedChain].wrapAddress.toLowerCase()
-                )
-            )
+            setDefaultTokenList(list.filter((fItem) => fItem.address.toLowerCase() !== selectedAddr.toLowerCase()))
         }
     }, [loaded, selectedAddr])
 
