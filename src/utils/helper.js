@@ -33,6 +33,7 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
     steps.reverse();
     return steps;
   } catch (e) {
+    console.log(e)
     return []
   }
 };
@@ -40,6 +41,22 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
 function getTokenContract(address) {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   return new ethers.Contract(address, PiraERC20.abi, provider);
+}
+
+export async function getTokenData(tokenAddress) {
+  try {
+    const tokenContract = getTokenContract(tokenAddress);
+    const [name, symbol, decimals] = await Promise.all([
+      tokenContract.name(),
+      tokenContract.symbol(),
+      tokenContract.decimals(),
+    ]);
+
+    return { address: tokenAddress, name, symbol, decimals };
+  } catch (error) {
+    console.error('Error fetching token data:', error);
+    throw error;
+  }
 }
 
 export const loadBalance = async (account, chain, tokenAddress) => {
