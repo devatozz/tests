@@ -37,13 +37,13 @@ const TaskTable = () => {
     console.log("Hehehe");
     contract.mint({ value: ethers.utils.parseEther("0.001") }).then((tx) => {
       tx.wait().then(
-        (txResult) => (
-          console.log("txResult", txResult),
-          console.log("transaction hash", txResult.transactionHash),
+        (txResult) => {
+          console.log("txResult", txResult)
+            console.log("transaction hash", txResult.transactionHash)
           // setTxHash(txResult.transactionHash),
           // setIsLoading(false),
           // setIsSuccess(true)
-        )
+        }
       );
     });
   };

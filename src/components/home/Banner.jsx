@@ -134,7 +134,7 @@ export default function Banner() {
                     EARN $PIRA TOKENS
                 </Text>
                 <Text color={"#fff"} fontSize={{base: "18px", md: "24px"}} textAlign={"center"}>
-                    Be an early adopter. The more you earn, the sooner you'll get in
+                    Be an early adopter. The more you earn, the sooner you&apos;ll get in
                 </Text>
 
                 <Flex gap={{base: 5, md: 10}} flexShrink={1} flexDirection={{base: "column", md: "row"}} mb={"50px"}>
