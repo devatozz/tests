@@ -39,7 +39,7 @@ import { createPairContractWithSigner, loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { createFtContractWithSigner } from "src/utils/helper";
-import { config } from "src/state/chain/config";
+import { config, noneAddress } from "src/state/chain/config";
 import loadTokens from "src/state/dex/thunks/loadTokens";
 import loadPools from "src/state/dex/thunks/loadPools";
 import { emptyToken } from "src/utils/utils";
@@ -251,25 +251,17 @@ export default function Pools() {
     const deadline = BigNumber.from(next30MinutesUnix);
     setLoading(true);
     try {
-      if (
-        token1Name.address.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase() ||
-        token2Name.address.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
-      ) {
+      if ( token1Name.address == noneAddress || token2Name.address == noneAddress) {
         let tokenAddr =
-          token1Name.address.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.address == noneAddress
             ? token2Name
             : token1Name;
         let amountIn =
-          token1Name.address.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.address == noneAddress
             ? token2Amount
             : token1Amount;
         let amountETH =
-          token1Name.address.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.address == noneAddress
             ? token1Amount
             : token2Amount;
 

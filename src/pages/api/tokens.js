@@ -1,10 +1,18 @@
 const tokensList = [
     {
-        address: "0xE79598095C29c30f194406B2a14bA2b1256A713E",
+        address: "0x0000000000000000000000000000000000000000",
         name: "ETH",
-        symbol: "ETH",
+        symbol: "Ether",
         decimals: 18,
         icon: "/eth.png",
+        disable: false
+    },
+    {
+        address: "0xE79598095C29c30f194406B2a14bA2b1256A713E",
+        name: "Wrapped Ether",
+        symbol: "WETH",
+        decimals: 18,
+        icon: "/weth.png",
         disable: false
     },
     {

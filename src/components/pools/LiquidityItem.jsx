@@ -30,10 +30,10 @@ import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
 import { useSelector } from "react-redux";
 import { config } from "src/state/chain/config";
+import { emptyToken } from "src/utils/utils";
 
 export default function LiquidityItem({
   lpToken,
-  pool,
   handleRemoveLiquidity,
   loading,
 }) {
@@ -45,6 +45,8 @@ export default function LiquidityItem({
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
+  const [token1Info, setToken1Info] = useState(emptyToken)
+  const [token2Info, setToken2Info] = useState(emptyToken)
 
   useEffect(() => {
     const balanceBN = BigNumber.from(lpToken.balance);
@@ -81,18 +83,6 @@ export default function LiquidityItem({
     }
   };
 
-  // useEffect(() => {
-  //   const getPoolShare = () => {
-  //     const balance = Number(lpToken.balance);
-  //     const poolTotalSupply = Number(pool.total_supply);
-  //     if (balance > 0 && poolTotalSupply > 0) {
-  //       const share = (balance / poolTotalSupply) * 100;
-  //       setShare(share.toFixed(2));
-  //     }
-  //   };
-
-  //   getPoolShare();
-  // }, [lpToken, pool]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,6 +94,45 @@ export default function LiquidityItem({
   const handleSetMaxAmount = () => {
     setRemoveAmount(ethers.utils.formatUnits(lpToken.balance));
   };
+
+  const handleLoadToken1Info = async (address) => {
+    const tokenFetch = await getTokenData(address)
+    setToken1Info({ ...tokenFetch, disable: false, icon: "" })
+  }
+
+  const handleLoadToken2Info = async (address) => {
+    const tokenFetch = await getTokenData(address)
+    setToken2Info({ ...tokenFetch, disable: false, icon: "" })
+  }
+
+  useEffect(() => {
+    if (tokens.obj[lpToken.token0]) {
+      setToken1Info(tokens.obj[lpToken.token0])
+    } else {
+      handleLoadToken1Info(lpToken.token0)
+    }
+  }, [tokens, lpToken])
+
+  useEffect(() => {
+    if (tokens.obj[lpToken.token1]) {
+      setToken2Info(tokens.obj[lpToken.token1])
+    } else {
+      handleLoadToken2Info(lpToken.token1)
+    }
+  }, [tokens, lpToken])
+
+  useEffect(() => {
+    if (selectedChain && token1Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
+      setToken1Info(value => ({...value, icon: "/eth.png"}))
+    }
+  }, [token1Info, selectedChain])
+
+
+  useEffect(() => {
+    if (selectedChain && token2Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
+      setToken2Info(value => ({ ...value, icon: "/eth.png", symbol: "ETH", name: "Ether" }))
+    }
+  }, [token1Info, selectedChain])
 
   return (
     <AccordionItem
@@ -119,18 +148,18 @@ export default function LiquidityItem({
           <Box flex="1" textAlign="left" fontWeight="bold">
             <Avatar
               size="xs"
-              name={tokens.obj[lpToken.token0]?.symbol}
-              src={tokens.obj[lpToken.token0]?.icon}
+              name={token1Info.symbol}
+              src={token1Info.icon}
             />
             {"  "}
-            {tokens.obj[lpToken.token0]?.symbol} -{"  "}
+            {token1Info.symbol} -{"  "}
             <Avatar
               size="xs"
-              name={tokens.obj[lpToken.token1]?.symbol}
-              src={tokens.obj[lpToken.token1]?.icon}
+              name={token2Info.symbol}
+              src={token2Info.icon}
             />
             {"  "}
-            {tokens.obj[lpToken.token1]?.symbol}
+            {token2Info.symbol}
           </Box>
           <Text fontWeight="bold" mr={2}>
             Manage
@@ -147,25 +176,25 @@ export default function LiquidityItem({
           }
         />
         <PoolDetail
-          label={`Pooled ${tokens.obj[lpToken.token0]?.symbol}:`}
+          label={`Pooled ${token1Info.symbol}:`}
           value={
             lpToken.reverses._reserve0 &&
             currencyFormat(
               ethers.utils.formatUnits(
                 lpToken.reverses._reserve0,
-                tokens.obj[lpToken.token0]?.decimals
+                token1Info.decimals
               )
             )
           }
         />
         <PoolDetail
-          label={`Pooled ${tokens.obj[lpToken.token1]?.symbol}:`}
+          label={`Pooled ${token2Info.symbol}:`}
           value={
             lpToken.reverses._reserve1 &&
             currencyFormat(
               ethers.utils.formatUnits(
                 lpToken.reverses._reserve1,
-                tokens.obj[lpToken.token1]?.decimals
+                token2Info.decimals
               )
             )
           }
@@ -224,18 +253,18 @@ export default function LiquidityItem({
                 <Flex alignItems="center" m={2}>
                   <Avatar
                     size="xs"
-                    name={tokens.obj[lpToken.token0]?.symbol}
-                    src={tokens.obj[lpToken.token0]?.icon}
+                    name={token1Info.symbol}
+                    src={token1Info.icon}
                   />
-                  <Text ml={2}>{tokens.obj[lpToken.token0]?.symbol}</Text>
+                  <Text ml={2}>{token1Info.symbol}</Text>
                 </Flex>
                 <Flex alignItems="center" m={2}>
                   <Avatar
                     size="xs"
-                    name={tokens.obj[lpToken.token1]?.symbol}
-                    src={tokens.obj[lpToken.token1]?.icon}
+                    name={token2Info.symbol}
+                    src={token2Info.icon}
                   />
-                  <Text ml={2}>{tokens.obj[lpToken.token1]?.symbol}</Text>
+                  <Text ml={2}>{token2Info.symbol}</Text>
                 </Flex>
               </Flex>
             </Box>
