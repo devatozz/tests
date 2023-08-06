@@ -1,34 +1,22 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ethers } from "ethers";
-import { config } from "src/state/chain/config";
-import PiraRouter from "src/abis/PiraRouter.json";
-import PiraFactory from "src/abis/PiraFactory.json";
-
-async function GetProgress() {
-  const url = `/api_endpoint}`;
-  const response = await fetch(url, {
-    method: "GET",
-  });
-  const result = await response.json();
-  return result;
-}
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 async function GetTaskListApi(address) {
-  const url = `/api_endpoint?${address}`;
+  const url = `http://localhost:3000/pira/api/v1/airdrop?address=${address}`;
   const response = await fetch(url, {
-    method: "GET",
+    method: 'GET',
   });
   const result = await response.json();
   return result;
 }
 
 const loadTaskList = createAsyncThunk(
-  "airdrop/task",
+  'airdrop/task',
   async (address, { getState }) => {
-    // const progressResult = await GetProgress();
-    // const taskListResult = await GetTaskListApi(address);
+    const taskListResult = await GetTaskListApi(address);
+    console.log('taskListResult', taskListResult);
+
     // TODO : RETURN DATA HERE --> slice.js --> update state
-    return { progress: 60, taskList: [1, 2, 3] }; //and DELETE THIS LINE
+    return { taskListResult }; //and DELETE THIS LINE
   }
 );
 export default loadTaskList;
