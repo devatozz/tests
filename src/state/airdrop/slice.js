@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-import loadTaskList from './thunks/getTaskList';
-import claimTask from './thunks/claimTask';
-import mintNFT from './thunks/mintNFT';
+import loadTaskList from "./thunks/getTaskList";
+import claimTask from "./thunks/claimTask";
+import mintNFT from "./thunks/mintNFT";
 
 const initialState = {
   overview: {
@@ -12,12 +12,13 @@ const initialState = {
   },
   totalTokenClaimed: 0,
   taskList: [],
+  countDownMintNFT: 0,
   inviteFriendTaskTokenEarn: 0,
   isLoading: true,
 };
 
 export const slice = createSlice({
-  name: 'airdrop',
+  name: "airdrop",
   initialState,
   reducers: {
     select: (state, action) => {
@@ -39,6 +40,8 @@ export const slice = createSlice({
       ];
       state.inviteFriendTaskTokenEarn =
         action.payload.taskListResult.data.inviteFriendTask.tokenEarn;
+      state.countDownMintNFT =
+        action.payload.taskListResult?.data?.nftTask?.countDownInMS;
       state.isLoading = false;
     });
 
