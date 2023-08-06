@@ -31,6 +31,7 @@ import { BigNumber, ethers } from "ethers";
 import { useSelector } from "react-redux";
 import { config } from "src/state/chain/config";
 import { emptyToken } from "src/utils/utils";
+import { getTokenData } from "src/utils/helper";
 
 export default function LiquidityItem({
   lpToken,
