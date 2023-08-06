@@ -1,77 +1,69 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   Center,
-  Flex,
-  Link,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
   Text,
-  Tfoot,
   Th,
   Thead,
   Tr,
-  VStack,
-  useClipboard,
-} from "@chakra-ui/react";
-import { CopyIcon } from "@chakra-ui/icons";
-import { useEffect } from "react";
-import { mintNftContractWithSigner } from "src/state/util";
-import { ethers } from "ethers";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+} from '@chakra-ui/react';
+
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import CooldownButton from './CooldownButton';
+import { useEffect } from 'react';
 
 const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
-  const { totalTokenClaimed, taskList, inviteFriendTaskTokenEarn } =
-    useSelector((state) => state.airdrop);
-  const address = useSelector((state) => state.chain.account);
-  console.log("taskList", taskList);
-  console.log("inviteFriendTaskTokenEarn", inviteFriendTaskTokenEarn);
+  const { taskList, inviteFriendTaskTokenEarn } = useSelector(
+    (state) => state.airdrop
+  );
+
+  useEffect(() => {}, [taskList, inviteFriendTaskTokenEarn]);
 
   return (
     <TableContainer
-      width="full"
-      rounded="lg"
+      width='full'
+      rounded='lg'
       borderWidth={2}
-      borderColor="cyan.400"
-      backgroundColor="blue.900"
+      borderColor='cyan.400'
+      backgroundColor='blue.900'
     >
-      <Table variant="unstyled" size={"xs"}>
+      <Table variant='unstyled' size={'xs'}>
         <Thead>
           <Tr borderBottomWidth={1}>
             <Th borderRightWidth={1}>
               <Text
-                width="full"
-                color="white"
-                fontSize={"md"}
+                width='full'
+                color='white'
+                fontSize={'md'}
                 py={2}
-                textAlign="center"
+                textAlign='center'
               >
                 Task
               </Text>
             </Th>
             <Th borderRightWidth={1}>
               <Text
-                width="full"
-                color="white"
-                fontSize={"md"}
+                width='full'
+                color='white'
+                fontSize={'md'}
                 py={2}
-                textAlign="center"
+                textAlign='center'
               >
                 Detail
               </Text>
             </Th>
             <Th borderRightWidth={1}>
               <Text
-                width="full"
-                color="white"
-                fontSize={"md"}
+                width='full'
+                color='white'
+                fontSize={'md'}
                 py={2}
-                textAlign="center"
+                textAlign='center'
               >
                 Token earn
               </Text>
@@ -93,21 +85,21 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
           <Tr borderBottomWidth={1}>
             <Td borderRightWidth={1}>
               <Text
-                width="full"
-                color="white"
+                width='full'
+                color='white'
                 py={2}
-                textAlign="center"
-                fontSize={{ base: "md", md: "xl" }}
+                textAlign='center'
+                fontSize={{ base: 'md', md: 'xl' }}
               >
                 Invite your friend
               </Text>
             </Td>
             <Td pl={0} borderRightWidth={1}>
               <Text
-                textAlign="center"
+                textAlign='center'
                 px={2}
-                color="white"
-                fontSize={{ base: "xs", md: "lg" }}
+                color='white'
+                fontSize={{ base: 'xs', md: 'lg' }}
               >
                 You will earn a number of tokens equal to 20% of F1 and 4% of F2
               </Text>
@@ -115,13 +107,13 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
 
             <Td p={0} borderRightWidth={1}>
               <Text
-                color="gray.500"
-                fontSize={{ base: "sm", md: "xl" }}
+                color='gray.500'
+                fontSize={{ base: 'sm', md: 'xl' }}
                 py={2}
-                textAlign="center"
-                width="full"
+                textAlign='center'
+                width='full'
               >
-                {totalTokenClaimed} PIRA
+                {inviteFriendTaskTokenEarn} PIRA
               </Text>
             </Td>
 
@@ -130,27 +122,14 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
                 <Button
                   my={{ base: 1, md: 0 }}
                   onClick={copyRefLink}
-                  background="#00F0FF"
+                  background='#00F0FF'
                 >
-                  <Text fontSize={{ base: "xs", md: "xl" }}>Invite</Text>
+                  <Text fontSize={{ base: 'xs', md: 'xl' }}>Invite</Text>
                 </Button>
               </Center>
             </Td>
 
-            <Td>
-              <Button
-                // py={2}
-                width={"full"}
-                fontSize={{ base: "xs", md: "xl" }}
-                color={"#18215D"}
-                textAlign="center"
-                cursor="pointer"
-                background="#00F0FF"
-                onClick={() => null}
-              >
-                Claim
-              </Button>
-            </Td>
+            <Td></Td>
           </Tr>
         </Tbody>
       </Table>
@@ -161,26 +140,26 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
 export default TaskTable;
 
 const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
-  console.log("dataTask", dataTask);
+  const address = useSelector((state) => state.chain.account);
   const cooldown = useSelector((state) => state.airdrop.countDownMintNFT);
   const router = useRouter();
   return (
     <Tr borderBottomWidth={1}>
       <Td rowSpan={1} borderRightWidth={1}>
         <Text
-          width="full"
-          color="white"
+          width='full'
+          color='white'
           py={2}
-          textAlign="center"
-          fontSize={{ base: "md", md: "2xl" }}
+          textAlign='center'
+          fontSize={{ base: 'md', md: '2xl' }}
         >
-          {dataTask.type === "MINT_NFT"
-            ? "FREE MINT NFT"
-            : dataTask.type === "SWAP"
-            ? "SWAP"
-            : dataTask.type === "ADD_LIQUIDITY"
-            ? "ADD LIQUIDITY"
-            : ""}
+          {dataTask.type === 'MINT_NFT'
+            ? 'FREE MINT NFT'
+            : dataTask.type === 'SWAP'
+            ? 'SWAP'
+            : dataTask.type === 'ADD_LIQUIDITY'
+            ? 'ADD LIQUIDITY'
+            : ''}
         </Text>
       </Td>
       <Td p={0} borderRightWidth={1}>
@@ -195,21 +174,21 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
             <Text
               key={i}
               px={2}
-              color={isDoing ? "blue.900" : "gray.500"}
-              background={isDoing ? "#00F0FF" : "inherit"}
-              fontSize={{ base: "xs", md: "xl" }}
+              color={isDoing ? 'blue.900' : 'gray.500'}
+              background={isDoing ? '#00F0FF' : 'inherit'}
+              fontSize={{ base: 'xs', md: 'xl' }}
               py={2}
-              width="full"
+              width='full'
             >
-              {dataTask.type === "MINT_NFT"
-                ? `${item.target} ${item.target === 1 ? "Day" : "Days"} ${
+              {dataTask.type === 'MINT_NFT'
+                ? `${item.target} ${item.target === 1 ? 'Day' : 'Days'} ${
                     item.target > 1 && `(${dataTask.progress}/${item.target})`
                   }`
-                : dataTask.type === "SWAP"
+                : dataTask.type === 'SWAP'
                 ? `SWAP TOTAL VOLUME $${item.target}`
-                : dataTask.type === "ADD_LIQUIDITY"
+                : dataTask.type === 'ADD_LIQUIDITY'
                 ? `ADD LIQUIDITY $${item.target}`
-                : ""}
+                : ''}
             </Text>
           );
         })}
@@ -225,12 +204,12 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
           return (
             <Text
               key={i}
-              color={isDoing ? "blue.900" : "gray.500"}
-              background={isDoing ? "#00F0FF" : "inherit"}
-              fontSize={{ base: "xs", md: "xl" }}
+              color={isDoing ? 'blue.900' : 'gray.500'}
+              background={isDoing ? '#00F0FF' : 'inherit'}
+              fontSize={{ base: 'xs', md: 'xl' }}
               py={2}
-              textAlign="center"
-              width="full"
+              textAlign='center'
+              width='full'
             >
               {item.reward} PIRA
             </Text>
@@ -240,38 +219,38 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
 
       <Td borderRightWidth={1}>
         <Center>
-          {dataTask.type === "MINT_NFT" ? (
+          {dataTask.type === 'MINT_NFT' ? (
             <CooldownButton cooldownTime={cooldown} onClick={handleMintNFT}>
-              <Text fontSize={{ base: "xs", md: "xl" }}>Mint</Text>
+              <Text fontSize={{ base: 'xs', md: 'xl' }}>Mint</Text>
             </CooldownButton>
-          ) : dataTask.type === "SWAP" ? (
-            <Button background="#00F0FF" onClick={() => router.push("/swap")}>
-              <Text fontSize={{ base: "xs", md: "xl" }}>Swap</Text>
+          ) : dataTask.type === 'SWAP' ? (
+            <Button background='#00F0FF' onClick={() => router.push('/swap')}>
+              <Text fontSize={{ base: 'xs', md: 'xl' }}>Swap</Text>
             </Button>
-          ) : dataTask.type === "ADD_LIQUIDITY" ? (
+          ) : dataTask.type === 'ADD_LIQUIDITY' ? (
             <Button
-              background="#00F0FF"
-              onClick={() => router.push("/liquidity")}
+              background='#00F0FF'
+              onClick={() => router.push('/liquidity')}
             >
-              <Text fontSize={{ base: "xs", md: "xl" }}>Add Liquidity</Text>
+              <Text fontSize={{ base: 'xs', md: 'xl' }}>Add Liquidity</Text>
             </Button>
           ) : (
-            ""
+            ''
           )}
         </Center>
       </Td>
 
       <Td>
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box display='flex' flexDirection='column' gap={2}>
           {dataTask.targets.map((item, i) => {
             if (item.isClaimable && item.isClaimed) {
               return (
                 <Text
                   key={i}
-                  width={"full"}
-                  fontSize={{ base: "xs", md: "xl" }}
-                  color={"gray.500"}
-                  textAlign="center"
+                  width={'full'}
+                  fontSize={{ base: 'xs', md: 'xl' }}
+                  color={'gray.500'}
+                  textAlign='center'
                 >
                   Claimed
                 </Text>
@@ -280,13 +259,13 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
               return (
                 <Button
                   key={i}
-                  width={"full"}
-                  fontSize={{ base: "xs", md: "xl" }}
-                  color={"#18215D"}
-                  textAlign="center"
-                  cursor="pointer"
+                  width={'full'}
+                  fontSize={{ base: 'xs', md: 'xl' }}
+                  color={'#18215D'}
+                  textAlign='center'
+                  cursor='pointer'
                   onClick={() => handleClaim({ address, taskId: item?.taskId })}
-                  background="#00F0FF"
+                  background='#00F0FF'
                 >
                   Claim
                 </Button>
@@ -295,10 +274,10 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
               return (
                 <Text
                   key={i}
-                  width={"full"}
-                  fontSize={{ base: "xs", md: "xl" }}
-                  color={"gray.500"}
-                  textAlign="center"
+                  width={'full'}
+                  fontSize={{ base: 'xs', md: 'xl' }}
+                  color={'gray.500'}
+                  textAlign='center'
                 >
                   Claim
                 </Text>

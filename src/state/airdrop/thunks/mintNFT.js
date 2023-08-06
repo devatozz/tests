@@ -26,6 +26,8 @@ const handleMintNft = async () => {
 const mintNFT = createAsyncThunk('airdrop/minNFT', async (refetchTask) => {
   //HANDLE MINT NFT HERE
   await handleMintNft();
-  return refetchTask();
+  setTimeout(() => refetchTask(), 5000);
+
+  return null;
 });
 export default mintNFT;

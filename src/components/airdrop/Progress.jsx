@@ -1,11 +1,13 @@
-import { Box, Center, Flex, Text, border } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Center, Flex, Text } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const totalToken = 1360000000;
 
 const Progress = () => {
   const { totalTokenClaimed } = useSelector((state) => state.airdrop);
+
+  useEffect(() => {}, [totalTokenClaimed]);
 
   const percent = Math.floor((totalTokenClaimed / totalToken) * 100);
   return (

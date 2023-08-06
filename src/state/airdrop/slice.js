@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import loadTaskList from "./thunks/getTaskList";
-import claimTask from "./thunks/claimTask";
-import mintNFT from "./thunks/mintNFT";
+import loadTaskList from './thunks/getTaskList';
+import claimTask from './thunks/claimTask';
+import mintNFT from './thunks/mintNFT';
 
 const initialState = {
   overview: {
@@ -18,7 +18,7 @@ const initialState = {
 };
 
 export const slice = createSlice({
-  name: "airdrop",
+  name: 'airdrop',
   initialState,
   reducers: {
     select: (state, action) => {
@@ -30,18 +30,18 @@ export const slice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(loadTaskList.fulfilled, (state, action) => {
-      state.overview = action.payload.taskListResult.data.overview;
+      state.overview = action.payload?.taskListResult?.data?.overview;
       state.totalTokenClaimed =
-        action.payload.taskListResult.data.totalTokenClaimed;
+        action.payload?.taskListResult?.data?.totalTokenClaimed;
       state.taskList = [
-        action.payload.taskListResult.data.nftTask,
-        action.payload.taskListResult.data.swapTask,
-        action.payload.taskListResult.data.addLiquidityTask,
+        action.payload?.taskListResult?.data?.nftTask,
+        action.payload?.taskListResult?.data?.swapTask,
+        action.payload?.taskListResult?.data?.addLiquidityTask,
       ];
       state.inviteFriendTaskTokenEarn =
-        action.payload.taskListResult.data.inviteFriendTask.tokenEarn;
+        action.payload?.taskListResult?.data?.inviteFriendTask.tokenEarn;
       state.countDownMintNFT =
-        action.payload.taskListResult?.data?.nftTask?.countDownInMS;
+        action.payload?.taskListResult?.data?.nftTask?.countDownInMS;
       state.isLoading = false;
     });
 
@@ -51,11 +51,22 @@ export const slice = createSlice({
     builder.addCase(claimTask.fulfilled, (state) => {
       state.isLoading = false;
     });
+
+    builder.addCase(claimTask.rejected, (state, action) => {
+      state.isLoading = false;
+      console.error('Error message:', action.error.message);
+    });
+
     builder.addCase(mintNFT.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(mintNFT.fulfilled, (state) => {
       state.isLoading = false;
+    });
+
+    builder.addCase(mintNFT.rejected, (state, action) => {
+      state.isLoading = false;
+      console.error('Error message:', action.error.message);
     });
   },
 });

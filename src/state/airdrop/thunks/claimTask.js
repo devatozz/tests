@@ -17,9 +17,10 @@ async function ClaimApi(data) {
 
 const claimTask = createAsyncThunk(
   'airdrop/claim',
-  async (data, refetchTask) => {
-    const claimResult = await ClaimApi(data);
-    return refetchTask();
+  async ({ data, handleFetchTask }) => {
+    await ClaimApi(data);
+    handleFetchTask();
+    return null;
   }
 );
 export default claimTask;
