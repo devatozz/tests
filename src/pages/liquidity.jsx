@@ -64,7 +64,6 @@ export default function Pools() {
   const [btnText, setBtnText] = useState("Add Liquidity");
 
   const [tabIndex, setTabIndex] = useState(0);
-
   const handleTabsChange = (index) => {
     setTabIndex(index);
 
@@ -90,7 +89,6 @@ export default function Pools() {
 
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve1 == "0")
       return;
-
     const token2Amount = calculateTokenAmount(
       poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
       poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
@@ -152,12 +150,16 @@ export default function Pools() {
     setToken1Name(tokenName);
 
     if (tokenName.address == token2Name.address) {
+      let oldToken1Addr = token1Name.address
       setToken2Name(token1Name);
       setToken2Amount(token1Amount);
       setToken1Amount(token2Amount);
+      handleLoadBalance(oldToken1Addr).then((balance) => setToken2Balance(balance));
     } else if (tokenName.address && token2Name.address) {
       let poolInfo = null;
-      if (pools.matrix[tokenName.address] && pools.matrix[tokenName.address][token2Name.address]) {
+      if (tokenName.address == noneAddress && pools.matrix[config[selectedChain].wrapAddress] && pools.matrix[config[selectedChain].wrapAddress][token2Name.address]) {
+        poolInfo = pools.matrix[config[selectedChain].wrapAddress][token2Name.address][0];
+      } else if (pools.matrix[tokenName.address] && pools.matrix[tokenName.address][token2Name.address]) {
         poolInfo = pools.matrix[tokenName.address][token2Name.address][0];
       }
       setPoolInfo(poolInfo);
@@ -187,12 +189,17 @@ export default function Pools() {
     setToken2Name(tokenName);
 
     if (tokenName.address == token1Name.address) {
+      let oldToken2Addr = token2Name.address
       setToken1Name(token2Name);
       setToken2Amount(token1Amount);
       setToken1Amount(token2Amount);
+      handleLoadBalance(oldToken2Addr).then((balance) => setToken1Balance(balance));
+
     } else if (token1Name.address && tokenName.address) {
       let poolInfo = null;
-      if (pools.matrix[token1Name.address] && pools.matrix[token1Name.address][tokenName.address]) {
+      if (tokenName.address == noneAddress && pools.matrix[token1Name.address] && pools.matrix[token1Name.address][config[selectedChain].wrapAddress]) {
+        poolInfo = pools.matrix[token1Name.address][config[selectedChain].wrapAddress][0];
+      } if (pools.matrix[token1Name.address] && pools.matrix[token1Name.address][tokenName.address]) {
         poolInfo = pools.matrix[token1Name.address][tokenName.address][0];
       }
 
@@ -254,8 +261,8 @@ export default function Pools() {
       if ( token1Name.address == noneAddress || token2Name.address == noneAddress) {
         let tokenAddr =
           token1Name.address == noneAddress
-            ? token2Name
-            : token1Name;
+            ? token2Name.address
+            : token1Name.address;
         let amountIn =
           token1Name.address == noneAddress
             ? token2Amount
@@ -355,6 +362,9 @@ export default function Pools() {
         title: "Add liquidity success",
         isClosable: true,
       });
+      dispatch(loadPools())
+      handleLoadBalance(token1Name.address).then((balance) => setToken1Balance(balance));
+      handleLoadBalance(token2Name.address).then((balance) => setToken2Balance(balance));
 
       setToken1Amount("0");
       setToken2Amount("0");
@@ -439,6 +449,7 @@ export default function Pools() {
         title: "Remove liquidity success",
         isClosable: true,
       });
+      await dispatch(loadPools())
       getMyLpTokens();
       handleToken1NameChange(token1Name);
     } catch (e) {

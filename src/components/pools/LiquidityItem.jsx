@@ -24,7 +24,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
@@ -38,29 +38,15 @@ export default function LiquidityItem({
   handleRemoveLiquidity,
   loading,
 }) {
-  const [share, setShare] = useState("0");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [removeAmount, setRemoveAmount] = useState("0");
-  const { tokens } = useSelector((state) => state.dex);
-  const { selectedChain } = useSelector((state) => state.chain);
+  const { obj: tokenObj, loaded } = useSelector((state) => state.dex.tokens);
+  const selectedChain = useSelector((state) => state.chain.selectedChain);
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
   const [token1Info, setToken1Info] = useState(emptyToken)
   const [token2Info, setToken2Info] = useState(emptyToken)
-
-  useEffect(() => {
-    const balanceBN = BigNumber.from(lpToken.balance);
-    try {
-      if (balanceBN.lt(ethers.utils.parseEther(removeAmount))) {
-        handleBalanceInsufficient();
-      } else {
-        handleBalanceOk();
-      }
-    } catch (ex) {
-      handleBalanceInsufficient();
-    }
-  }, [lpToken.balance, removeAmount]);
 
   const handleOpenModal = () => {
     onOpen();
@@ -84,7 +70,6 @@ export default function LiquidityItem({
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleRemoveLiquidity(removeAmount, lpToken);
@@ -96,38 +81,49 @@ export default function LiquidityItem({
     setRemoveAmount(ethers.utils.formatUnits(lpToken.balance));
   };
 
-  const handleLoadToken1Info = async (address) => {
+  const handleLoadToken1Info = useCallback(async (address) => {
     const tokenFetch = await getTokenData(address)
     setToken1Info({ ...tokenFetch, disable: false, icon: "" })
-  }
+  }, [])
 
-  const handleLoadToken2Info = async (address) => {
+  const handleLoadToken2Info = useCallback(async (address) => {
     const tokenFetch = await getTokenData(address)
     setToken2Info({ ...tokenFetch, disable: false, icon: "" })
-  }
+  }, [])
 
   useEffect(() => {
-    if (tokens.obj[lpToken.token0]) {
-      setToken1Info(tokens.obj[lpToken.token0])
-    } else {
-      handleLoadToken1Info(lpToken.token0)
+    const balanceBN = BigNumber.from(lpToken.balance);
+    try {
+      if (balanceBN.lt(ethers.utils.parseEther(removeAmount))) {
+        handleBalanceInsufficient();
+      } else {
+        handleBalanceOk();
+      }
+    } catch (ex) {
+      handleBalanceInsufficient();
     }
-  }, [tokens, lpToken])
+  }, [lpToken, removeAmount]);
 
   useEffect(() => {
-    if (tokens.obj[lpToken.token1]) {
-      setToken2Info(tokens.obj[lpToken.token1])
-    } else {
-      handleLoadToken2Info(lpToken.token1)
+    if (loaded) {
+      if (tokenObj[lpToken.token0]) {
+        setToken1Info(tokenObj[lpToken.token0])
+      } else {
+        handleLoadToken1Info(lpToken.token0)
+      }
+      if (tokenObj[lpToken.token1]) {
+        setToken2Info(tokenObj[lpToken.token1])
+      } else {
+        handleLoadToken2Info(lpToken.token1)
+      }
     }
-  }, [tokens, lpToken])
+  }, [loaded])
 
   useEffect(() => {
     if (selectedChain && token1Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
       setToken1Info(value => ({ ...value, icon: "/eth.png", symbol: "ETH", name: "Ether" }))
     }
   }, [token1Info, selectedChain])
-
 
   useEffect(() => {
     if (selectedChain && token2Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
@@ -142,7 +138,7 @@ export default function LiquidityItem({
       borderColor={"#5EEDFF"}
       m={3}
       bg="white"
-      // bgGradient="linear(to-r, blue.600, blue.400)"
+    // bgGradient="linear(to-r, blue.600, blue.400)"
     >
       <h2>
         <AccordionButton>
