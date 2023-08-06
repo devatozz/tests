@@ -31,12 +31,13 @@ import {
 // import { metadatas } from "src/utils/utils";
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { config, noneAddress } from "src/state/chain/config";
 import SwapTokenModal from "src/components/swap/TokensModal";
 import { emptyToken } from "src/utils/utils";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import SlippageOptions from "src/components/swap/SlippageOptions";
+import loadPools from "src/state/dex/thunks/loadPools";
 
 export default function SwapPage() {
   const [tokenIn, setTokenIn] = useState(emptyToken);
@@ -54,7 +55,7 @@ export default function SwapPage() {
   const toast = useToast();
   const { pools, tokens, loaded, dex } = useSelector((state) => state.dex);
   const { account, selectedChain } = useSelector((state) => state.chain);
-
+  const dispatch = useDispatch()
   const {
     isOpen: openSettings,
     onToggle: toggleSettings,
@@ -346,6 +347,7 @@ export default function SwapPage() {
         title: "Swap success",
         isClosable: true,
       });
+      dispatch(loadPools())
       handleSelectTokenIn(tokenIn);
       handleSelectTokenOut(tokenOut);
     } catch (e) {
