@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 
 import PiraERC20 from "src/abis/PiraERC20.json";
 import PiraPair from "src/abis/PiraPair.json";
+import PiraWETH from "src/abis/PiraWETH.json";
 
 export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
   try {
@@ -90,4 +91,10 @@ export const createPairContractWithSigner = (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   return new ethers.Contract(address, PiraPair.abi, signer);
+}
+
+export const createWETHContractWithSigner = (address) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  return new ethers.Contract(address, PiraWETH.abi, signer);
 }
