@@ -124,7 +124,7 @@ export default function LiquidityItem({
 
   useEffect(() => {
     if (selectedChain && token1Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
-      setToken1Info(value => ({...value, icon: "/eth.png"}))
+      setToken1Info(value => ({ ...value, icon: "/eth.png", symbol: "ETH", name: "Ether" }))
     }
   }, [token1Info, selectedChain])
 
@@ -133,7 +133,7 @@ export default function LiquidityItem({
     if (selectedChain && token2Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
       setToken2Info(value => ({ ...value, icon: "/eth.png", symbol: "ETH", name: "Ether" }))
     }
-  }, [token1Info, selectedChain])
+  }, [token2Info, selectedChain])
 
   return (
     <AccordionItem
