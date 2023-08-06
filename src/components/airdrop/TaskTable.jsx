@@ -24,32 +24,12 @@ import { mintNftContractWithSigner } from 'src/state/util';
 import { ethers } from 'ethers';
 import { useSelector } from 'react-redux';
 
-const TaskTable = ({ copyRefLink }) => {
+const TaskTable = ({ copyRefLink, handleMintNFT }) => {
   const { totalTokenClaimed, taskList, inviteFriendTaskTokenEarn } =
     useSelector((state) => state.airdrop);
 
   console.log('taskList', taskList);
   console.log('inviteFriendTaskTokenEarn', inviteFriendTaskTokenEarn);
-
-  const { onCopy, value, setValue, hasCopied } = useClipboard('');
-  useEffect(() => {
-    setValue('https://pira.finance/Signup?ref=12345-1234567');
-  }, []);
-
-  const contract = mintNftContractWithSigner(
-    '0xe7f686be4f39c101d1e425fd416f40d1f9a8c026'
-  );
-
-  const handleMintNft = async () => {
-    contract.mint({ value: ethers.utils.parseEther('0.001') }).then((tx) => {
-      tx.wait().then(
-        (txResult) => (
-          console.log('txResult', txResult),
-          console.log('transaction hash', txResult.transactionHash)
-        )
-      );
-    });
-  };
 
   return (
     <TableContainer
@@ -102,7 +82,11 @@ const TaskTable = ({ copyRefLink }) => {
 
         <Tbody>
           {taskList.map((dataTaskTable, index) => (
-            <TaskTab key={index} dataTask={dataTaskTable} />
+            <TaskTab
+              key={index}
+              dataTask={dataTaskTable}
+              handleMintNFT={handleMintNFT}
+            />
           ))}
           <Tr borderBottomWidth={1}>
             <Td borderRightWidth={1}>
@@ -174,7 +158,7 @@ const TaskTable = ({ copyRefLink }) => {
 
 export default TaskTable;
 
-const TaskTab = ({ dataTask }) => {
+const TaskTab = ({ dataTask, handleMintNFT }) => {
   console.log('dataTask', dataTask);
 
   return (
@@ -254,7 +238,7 @@ const TaskTab = ({ dataTask }) => {
       <Td borderRightWidth={1}>
         <Center>
           {dataTask.type === 'MINT_NFT' ? (
-            <Button background='#00F0FF'>
+            <Button background='#00F0FF' onClick={handleMintNFT}>
               <Text fontSize={{ base: 'xs', md: 'xl' }}>Mint</Text>
             </Button>
           ) : dataTask.type === 'SWAP' ? (
@@ -295,7 +279,7 @@ const TaskTab = ({ dataTask }) => {
                   color={'#18215D'}
                   textAlign='center'
                   cursor='pointer'
-                  onClick={'function handle claim'}
+                  onClick={''}
                   background='#00F0FF'
                 >
                   Claim

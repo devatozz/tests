@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import loadTaskList from './thunks/getTaskList';
+import claimTask from './thunks/claimTask';
+import mintNFT from './thunks/mintNFT';
 
 const initialState = {
   overview: {
@@ -37,6 +39,19 @@ export const slice = createSlice({
       ];
       state.inviteFriendTaskTokenEarn =
         action.payload.taskListResult.data.inviteFriendTask.tokenEarn;
+      state.isLoading = false;
+    });
+
+    builder.addCase(claimTask.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(claimTask.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(mintNFT.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(mintNFT.fulfilled, (state) => {
       state.isLoading = false;
     });
   },
