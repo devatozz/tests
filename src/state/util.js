@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 // import PNFT from "src/abis/PNFT.json";
 // import FungibleToken from "src/abis/FungibleToken.json";
-// import ABI_MINT_NFT from "src/abis/MintNft.json";
+import ABI_MINT_NFT from "src/abis/MintNft.json";
 export const uploadBtfs = async (file) => {
   const formData = new FormData();
   formData.append("File", file);
