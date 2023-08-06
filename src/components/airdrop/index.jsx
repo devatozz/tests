@@ -28,6 +28,7 @@ import LeaderBoard from './LeaderBoard';
 import { useDispatch, useSelector } from 'react-redux';
 import { CicularLoading } from './CircularLoading';
 import loadTaskList from 'src/state/airdrop/thunks/getTaskList';
+import mintNFT from 'src/state/airdrop/thunks/minNFT';
 
 const AirdropPage = () => {
   const dispatch = useDispatch();
@@ -50,11 +51,20 @@ const AirdropPage = () => {
   };
 
   //end copy
-  //TODO: MAP TASKLIST
+
+  const handleFetchTask = (address) => {
+    address !== '' && dispatch(loadTaskList(address));
+  }
+
+  const handleMintNFT = () => {
+
+    dispatch(mintNFT(address, handleFetchTask))
+  }
+
   useEffect(() => {
     setCopyValue(`https://pira.finance/Signup?ref=${address}`);
 
-    address !== '' && dispatch(loadTaskList(address));
+    handleFetchTask(addressMemo)
   }, [addressMemo]);
 
   return (
