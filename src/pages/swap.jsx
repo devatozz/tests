@@ -314,9 +314,10 @@ export default function SwapPage() {
 
   const handleSwap = async (e) => {
     setIsLoading(true);
+    
     try {
       let minAmountOut = BigNumber.from(10000 - parseInt(slippage *100))
-        .mul(ethers.utils.parseEther(amountOut))
+        .mul(ethers.utils.parseUnits(amountOut, tokenOut.decimals))
         .div(BigNumber.from(10000));
 
       const currentTimeUnix = Math.floor(Date.now() / 1000);
