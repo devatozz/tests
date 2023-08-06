@@ -7,7 +7,9 @@ async function ClaimApi(data) {
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
-    'Content-Type': 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   const result = await response.json();
   return result;
@@ -17,10 +19,7 @@ const claimTask = createAsyncThunk(
   'airdrop/claim',
   async (data, refetchTask) => {
     const claimResult = await ClaimApi(data);
-
-    if (claimResult.status === 200 || claimResult.status === 201) {
-      return refetchTask();
-    } else return null;
+    return refetchTask();
   }
 );
 export default claimTask;
