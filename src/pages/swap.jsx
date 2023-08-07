@@ -142,11 +142,11 @@ export default function SwapPage() {
         setSwapSteps(steps);
       }
     },
-    [tokens, dex, pools, bIn]
+    [tokens, dex, pools, bIn, selectedChain]
   );
 
   const handleGetAmountOut = useCallback(
-    async (tIn, tOut, aXIn) => {
+    async (tIn, tOut, aXIn, blIn) => {
       let selectChain = selectedChain ? selectedChain : "base"
       if ((tIn.address == noneAddress && tOut.address == config[selectChain].wrapAddress) ||
         (tIn.address == config[selectChain].wrapAddress && tOut.address == noneAddress)
@@ -155,7 +155,7 @@ export default function SwapPage() {
           setSwapSteps([config[selectChain].wrapAddress, noneAddress])
         setAmountOut(aXIn)
         if (
-          aXIn && bIn.lt(ethers.utils.parseEther(aXIn))
+          aXIn && blIn.lt(ethers.utils.parseEther(aXIn))
         ) {
           handleBalanceInsufficient();
         } else {
@@ -170,6 +170,7 @@ export default function SwapPage() {
         } else {
           steps = getSteps(tIn.address, tOut.address, pools.matrix);
         }
+        setSwapSteps(steps);
         if (steps.length < 2) {
           setBtnDisable(true);
           setAmountOut("0");
@@ -191,8 +192,8 @@ export default function SwapPage() {
               )
             );
             if (
-              bIn.lt(ethers.utils.parseUnits(aXIn, tIn.decimals))
-            ) {
+              blIn.lt(ethers.utils.parseUnits(aXIn, tIn.decimals))
+            ) {              
               handleBalanceInsufficient();
             } else {
               handleSwapAvailable();
@@ -209,7 +210,7 @@ export default function SwapPage() {
         setSwapSteps(steps);
       }
     },
-    [tokens, dex, pools, bIn]
+    [tokens, dex, pools, selectedChain]
   );
 
   const handleLoadBalance = useCallback(
@@ -236,7 +237,7 @@ export default function SwapPage() {
       }
     );
     await swapTx.wait();
-  }, [tokenIn, tokenOut, amountIn, account, swapSteps])
+  }, [amountIn, account, swapSteps])
 
   const handleSwapTokensForETH = useCallback(async (minAmountOut, deadline) => {
     let erc20 = createFtContractWithSigner(tokenIn.address);
@@ -264,7 +265,7 @@ export default function SwapPage() {
       deadline
     );
     await swapTx.wait();
-  }, [tokenIn, tokenOut, amountIn, account, selectedChain, swapSteps])
+  }, [tokenIn, amountIn, account, selectedChain, swapSteps])
 
   const handleSwapTokensForTokens = useCallback(async (minAmountOut, deadline) => {
     let erc20 = createFtContractWithSigner(tokenIn.address);
@@ -363,7 +364,9 @@ export default function SwapPage() {
   };
 
   const handleSelectTokenIn = useCallback(
-    (value) => {
+    async (value) => {
+      let blIn = await handleLoadBalance(value.address)
+      setBIn(blIn)
       if (value.address == tokenOut.address) {
         let oldTokenIn = tokenIn;
         if (oldTokenIn.address) {
@@ -373,39 +376,38 @@ export default function SwapPage() {
           setTokenOut(emptyToken);
           setBOut(BigNumber.from(0));
         }
-
-        handleGetAmountOut(value, oldTokenIn, amountIn);
+        handleGetAmountOut(value, oldTokenIn, amountIn, blIn);
       } else {
-        handleGetAmountOut(value, tokenOut, amountIn);
+        handleGetAmountOut(value, tokenOut, amountIn, blIn);
       }
       setTokenIn(value);
-      handleLoadBalance(value.address).then((res) => setBIn(res));
       closeTokenIn();
     },
     [tokenOut, tokenIn, amountIn]
   );
 
   const handleSelectTokenOut = useCallback(
-    (value) => {
+    async (value) => {
+      handleLoadBalance(value.address).then((res) => setBOut(res));
+      let blIn = bIn
       if (value.address == tokenIn.address) {
         let oldTokenOut = tokenOut;
         if (oldTokenOut.address) {
           setTokenIn(oldTokenOut);
-          handleLoadBalance(oldTokenOut.address).then((res) => setBIn(res));
+          blIn = await handleLoadBalance(oldTokenOut.address)
+          setBIn(blIn)
         } else {
           setTokenIn(emptyToken);
           setBIn(BigNumber.from(0));
         }
-
-        handleGetAmountOut(oldTokenOut, value, amountIn);
+        handleGetAmountOut(oldTokenOut, value, amountIn, blIn);
       } else {
-        handleGetAmountOut(tokenIn, value, amountIn);
+        handleGetAmountOut(tokenIn, value, amountIn, blIn);
       }
       setTokenOut(value);
-      handleLoadBalance(value.address).then((res) => setBOut(res));
       closeTokenOut();
     },
-    [tokenIn, tokenOut, amountIn]
+    [tokenIn, tokenOut, amountIn, bIn]
   );
 
   const handleSetAmountIn = useCallback(

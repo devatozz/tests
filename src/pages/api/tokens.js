@@ -8,7 +8,7 @@ const tokensList = [
         disable: false
     },
     {
-        address: "0xE79598095C29c30f194406B2a14bA2b1256A713E",
+        address: "0x4200000000000000000000000000000000000006",
         name: "Wrapped Ether",
         symbol: "WETH",
         decimals: 18,
