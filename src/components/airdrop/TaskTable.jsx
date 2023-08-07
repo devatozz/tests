@@ -143,6 +143,9 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
   const address = useSelector((state) => state.chain.account);
   const cooldown = useSelector((state) => state.airdrop.countDownMintNFT);
   const router = useRouter();
+
+  useEffect(() => {}, [cooldown, address]);
+
   return (
     <Tr borderBottomWidth={1}>
       <Td rowSpan={1} borderRightWidth={1}>
