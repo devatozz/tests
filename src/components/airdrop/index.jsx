@@ -25,7 +25,6 @@ import claimTask from 'src/state/airdrop/thunks/claimTask';
 import { useRouter } from 'next/router';
 import updateRef from 'src/state/airdrop/thunks/updateRef';
 
-
 const AirdropPage = () => {
   const router = useRouter();
   const { ref } = router.query;
@@ -34,7 +33,7 @@ const AirdropPage = () => {
   const address = useSelector((state) => state.chain.account);
   const { overview, isLoading } = useSelector((state) => state.airdrop);
   const addressMemo = useMemo(() => address, [address]);
-
+  const FE_DOMAIN = process.env.NEXT_PUBLIC_FE_DOMAIN;
   //for copy
   const { onCopy, setValue: setCopyValue } = useClipboard('');
   const toast = useToast();
@@ -70,7 +69,7 @@ const AirdropPage = () => {
   };
 
   useEffect(() => {
-    setCopyValue(`http://localhost:4000/airdrop?ref=${address}`);
+    setCopyValue(`${FE_DOMAIN}/airdrop?ref=${address}`);
 
     if (ref !== undefined && address && address !== '') {
       dispatch(
@@ -311,7 +310,7 @@ const AirdropPage = () => {
                   textAlign='start'
                   color='white'
                 >
-                  Referal link: {`http://localhost:4000/airdrop?ref=${address}`}
+                  Referal link: {`${FE_DOMAIN}/airdrop?ref=${address}`}
                 </Text>
                 <CopyIcon
                   onClick={copyRefLink}
