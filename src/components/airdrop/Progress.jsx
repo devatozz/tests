@@ -1,44 +1,52 @@
-import { Box, Center, Flex, Text, border } from "@chakra-ui/react";
-import React from "react";
+import { Box, Center, Flex, Text } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-const Progress = (props) => {
-  const { percent = 60 } = props;
+const totalToken = 1360000000;
+
+const Progress = () => {
+  const { totalTokenClaimed } = useSelector((state) => state.airdrop);
+
+  useEffect(() => {}, [totalTokenClaimed]);
+
+  const percent = Math.floor((totalTokenClaimed / totalToken) * 100);
   return (
-    <Flex justify="center">
-      <Center width={{ base: "full", md: "75%" }}>
+    <Flex justify='center' width='full'>
+      <Center width={{ base: 'full', md: '75%' }}>
         <Flex
-          alignItems="center"
-          position="relative"
-          width="full"
+          alignItems='center'
+          position='relative'
+          width='full'
           borderWidth={2}
-          borderColor={"#00F0FF"}
-          bg={"white"}
-          rounded="lg"
+          borderColor={'#00F0FF'}
+          bg={'white'}
+          rounded='lg'
         >
           <Box
             style={{ width: `${percent}%` }}
-            position="absolute"
-            height="full"
-            bg="#5EEDFF"
+            position='absolute'
+            height='full'
+            bg='#5EEDFF'
             zIndex={0}
           ></Box>
 
-          <Flex height="full" width="full" zIndex={1}>
+          <Flex height='full' width='full' zIndex={1} alignItems='center'>
             <Text
-              fontSize="3xl"
-              width="20%"
-              color="blue.700"
-              textAlign={"center"}
+              fontSize={{ base: '1xl', md: '3xl' }}
+              width='20%'
+              color='blue.700'
+              textAlign={'center'}
             >
               {`${percent}%`}
             </Text>
             <Text
-              fontSize="3xl"
-              width="60%"
-              textAlign="center"
-              color="blue.700"
+              fontSize={{ base: '1xl', md: '3xl' }}
+              width={{ base: '70%', md: '60%' }}
+              textAlign='center'
+              color='blue.700'
             >
-              23,452/1,360,000,000 PIRA claimed
+              {totalTokenClaimed.toLocaleString()}/{totalToken.toLocaleString()}{' '}
+              PIRA earned
             </Text>
           </Flex>
         </Flex>

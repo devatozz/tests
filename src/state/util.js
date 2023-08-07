@@ -1,15 +1,15 @@
-import { ethers } from "ethers";
+import { ethers } from 'ethers';
 // import PNFT from "src/abis/PNFT.json";
 // import FungibleToken from "src/abis/FungibleToken.json";
-// import ABI_MINT_NFT from "src/abis/MintNft.json";
+
 export const uploadBtfs = async (file) => {
   const formData = new FormData();
-  formData.append("File", file);
+  formData.append('File', file);
   const options = {
-    method: "POST",
+    method: 'POST',
     body: formData,
   };
-  let result = await fetch("/api/btfs/upload", options);
+  let result = await fetch('/api/btfs/upload', options);
   let data = await result.json();
   return data.Hash;
 };
@@ -27,13 +27,13 @@ export const uploadBtfs = async (file) => {
 
 export const uploadMetadata = async (values) => {
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
     body: JSON.stringify(values),
   };
-  let result = await fetch("/api/btfs/metadata", options);
+  let result = await fetch('/api/btfs/metadata', options);
   let data = await result.json();
   return data.Hash;
 };
@@ -52,11 +52,6 @@ export const uploadMetadata = async (values) => {
 // }
 
 //mint nft
-export const mintNftContractWithSigner = (address) => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  return new ethers.Contract(address, ABI_MINT_NFT, signer);
-};
 
 export const createNftContract = (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -84,7 +79,7 @@ export const shortenAddress = (address) => {
   if (address) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   }
-  return "";
+  return '';
 };
 
 function getRGB(c) {
@@ -112,10 +107,10 @@ function getContrast(f, b) {
 }
 
 export function getTextColor(bgColor) {
-  const whiteContrast = getContrast(bgColor, "#ffffff");
-  const blackContrast = getContrast(bgColor, "#000000");
+  const whiteContrast = getContrast(bgColor, '#ffffff');
+  const blackContrast = getContrast(bgColor, '#000000');
 
-  return whiteContrast > blackContrast ? "#ffffff" : "#000000";
+  return whiteContrast > blackContrast ? '#ffffff' : '#000000';
 }
 
 export function parseDuration(durationString) {
@@ -126,10 +121,10 @@ export function parseDuration(durationString) {
   const minutes = matches[3] ? parseInt(matches[3]) : 0;
   const seconds = matches[4] ? parseInt(matches[4]) : 0;
   if (
-    typeof matches[1] === "undefined" &&
-    typeof matches[2] === "undefined" &&
-    typeof matches[3] === "undefined" &&
-    typeof matches[4] === "undefined"
+    typeof matches[1] === 'undefined' &&
+    typeof matches[2] === 'undefined' &&
+    typeof matches[3] === 'undefined' &&
+    typeof matches[4] === 'undefined'
   ) {
     return { error: true, result: 0 };
   } else {
@@ -161,12 +156,12 @@ export function formatDuration(seconds) {
     parts.push(`${seconds}s`);
   }
   // joining parts with a comma and space
-  let durationString = parts.join(" ");
+  let durationString = parts.join(' ');
   // remove parts with zero value
-  durationString = durationString.replace(/0 [a-z]+(, )?/g, "");
+  durationString = durationString.replace(/0 [a-z]+(, )?/g, '');
   // handle case where duration is zero
-  if (durationString === "") {
-    durationString = "0s";
+  if (durationString === '') {
+    durationString = '0s';
   }
   return durationString;
 }
@@ -181,24 +176,24 @@ export function formatDurationLong(seconds) {
   // using plural and singular form based on value
   const parts = [];
   if (day > 0) {
-    parts.push(`${day} day${day === 1 ? "" : "s"}`);
+    parts.push(`${day} day${day === 1 ? '' : 's'}`);
   }
   if (hour > 0) {
-    parts.push(`${hour} hour${hour === 1 ? "" : "s"}`);
+    parts.push(`${hour} hour${hour === 1 ? '' : 's'}`);
   }
   if (minutes > 0) {
-    parts.push(`${minutes} minute${minutes === 1 ? "" : "s"}`);
+    parts.push(`${minutes} minute${minutes === 1 ? '' : 's'}`);
   }
   if (seconds > 0) {
-    parts.push(`${seconds} second${seconds === 1 ? "" : "s"}`);
+    parts.push(`${seconds} second${seconds === 1 ? '' : 's'}`);
   }
   // joining parts with a comma and space
-  let durationString = parts.join(", ");
+  let durationString = parts.join(', ');
   // remove parts with zero value
-  durationString = durationString.replace(/0 [a-z]+(, )?/g, "");
+  durationString = durationString.replace(/0 [a-z]+(, )?/g, '');
   // handle case where duration is zero
-  if (durationString === "") {
-    durationString = "0 seconds";
+  if (durationString === '') {
+    durationString = '0 seconds';
   }
   return durationString;
 }
