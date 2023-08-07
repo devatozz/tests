@@ -35,12 +35,12 @@ const NAV_ITEMS = [
     href: "/liquidity",
   },
   {
-    label: "Airdrop",
+    label: "Airdrop🔥",
     href: "/airdrop",
   },
   {
     label: "Bridge",
-    href: "https://owlto.finance/bridge",
+    href: "https://www.orbiter.finance/?source=Ethereum&dest=Base",
   },
   {
     label: "Whitepaper",

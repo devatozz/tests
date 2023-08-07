@@ -241,7 +241,7 @@ export default function Banner() {
                 </Button>
             </Flex>
 
-            <Flex flexDirection={"column"}>
+            {/* <Flex flexDirection={"column"}>
                 <Box m={"20px"}>
                     <Text color={"#00F0FF"}
                           fontSize={{base: "24px", md: "48px"}}
@@ -269,7 +269,7 @@ export default function Banner() {
                         return <Flex key={index} alignItems={"center"}><Image src={mediaPartner.src}/></Flex>
                     })}
                 </Flex>
-            </Flex>
+            </Flex> */}
 
             <Flex alignItems={"center"} justifyContent={"center"} flexDirection={"column"} gap={{base: 5, md: 10}} pt={"50px"}>
                 <Flex alignItems={"center"}>
