@@ -86,11 +86,20 @@ const AirdropPage = () => {
     <Box
       width={'full'}
       bgGradient='linear(180deg, #3146C6 0%, #18215D 90%)'
-      minH={'80vh'}
+      minH={{
+        base: 'auto',
+        md: 'calc(100vh - 170px)',
+      }}
       pt={'30px'}
     >
       {address === '' ? (
-        <Text textAlign='center' fontSize={'3xl'} color={'white'} pt={'10%'}>
+        <Text
+          textAlign='center'
+          fontSize={'3xl'}
+          color={'white'}
+          pt={'10%'}
+          h={{ base: 'calc(100vh - 190px)' }}
+        >
           PLEASE CONNECT WALLET FIRST !
         </Text>
       ) : (
@@ -328,7 +337,7 @@ const AirdropPage = () => {
                   borderColor={'cyan.400'}
                   color='white'
                 >
-                  How to get FIRA?
+                  How to get PIRA?
                 </Text>
               </Flex>
               <TaskTable

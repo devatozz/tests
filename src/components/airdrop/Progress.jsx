@@ -45,8 +45,8 @@ const Progress = () => {
               textAlign='center'
               color='blue.700'
             >
-              {totalTokenClaimed.toLocaleString()}/{totalToken.toLocaleString()}{' '}
-              PIRA earned
+              {totalTokenClaimed?.toLocaleString()}/
+              {totalToken.toLocaleString()} PIRA earned
             </Text>
           </Flex>
         </Flex>

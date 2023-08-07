@@ -74,14 +74,15 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
         </Thead>
 
         <Tbody>
-          {taskList.map((dataTaskTable, index) => (
-            <TaskTab
-              key={index}
-              dataTask={dataTaskTable}
-              handleMintNFT={handleMintNFT}
-              handleClaim={handleClaim}
-            />
-          ))}
+          {taskList &&
+            taskList.map((dataTaskTable, index) => (
+              <TaskTab
+                key={index}
+                dataTask={dataTaskTable}
+                handleMintNFT={handleMintNFT}
+                handleClaim={handleClaim}
+              />
+            ))}
           <Tr borderBottomWidth={1}>
             <Td borderRightWidth={1}>
               <Text

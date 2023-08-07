@@ -3,9 +3,9 @@ import ABI_MINT_NFT from 'src/abis/MintNft.json';
 import { ethers } from 'ethers';
 import BaseConfig from 'src/state/config/base.json';
 
-const handleMintNft = async () => {
-  console.log('debug 2');
+const MINT_FEE = '0.0015';
 
+const handleMintNft = async () => {
   const mintNftContractWithSigner = (address) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -15,10 +15,10 @@ const handleMintNft = async () => {
   const contract = mintNftContractWithSigner(BaseConfig.nft);
 
   try {
-    const tx = await contract.mint({ value: ethers.utils.parseEther('0.001') });
+    const tx = await contract.mint({
+      value: ethers.utils.parseEther(MINT_FEE),
+    });
     const txResult = await tx.wait();
-    console.log('txResult', txResult);
-    console.log('transaction hash', txResult.transactionHash);
   } catch (error) {
     console.error(error);
   }
@@ -26,7 +26,7 @@ const handleMintNft = async () => {
 const mintNFT = createAsyncThunk('airdrop/minNFT', async (refetchTask) => {
   //HANDLE MINT NFT HERE
   await handleMintNft();
-  setTimeout(() => refetchTask(), 5000);
+  setTimeout(() => refetchTask(), 4000);
 
   return null;
 });
