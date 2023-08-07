@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useMemo } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -26,7 +26,7 @@ import { config } from 'src/state/chain/config'
 export default function TokenModal({ handleChoseToken, isOpen, onClose, selectedAddr }) {
     const { list, loaded, obj } = useSelector(state => state.dex.tokens)
     const { selectedChain } = useSelector(state => state.chain)
-
+    const selectChain = useMemo(() => selectedChain? selectedChain: "base", [selectedChain])
     const [tokenList, setTokenList] = useState([])
     const [defaultTokenList, setDefaultTokenList] = useState([])
 
@@ -52,11 +52,11 @@ export default function TokenModal({ handleChoseToken, isOpen, onClose, selected
         if (loaded) {
             setDefaultTokenList(list
                 .filter((fItem) => fItem.address.toLowerCase() !== selectedAddr.toLowerCase() &&
-                    fItem.address.toLowerCase() !== config[selectedChain].wrapAddress.toLowerCase()
+                    fItem.address.toLowerCase() !== config[selectChain].wrapAddress.toLowerCase()
                 )
             )
         }
-    }, [loaded, selectedAddr])
+    }, [loaded, selectChain, selectedAddr])
 
     useEffect(() => {
         if (defaultTokenList.length && tokenSearch != "") {            
