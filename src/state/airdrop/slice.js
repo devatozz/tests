@@ -27,7 +27,7 @@ export const slice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(loadTaskList.pending, (state) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     });
     builder.addCase(loadTaskList.fulfilled, (state, action) => {
       state.overview = action.payload?.taskListResult?.data?.overview;
