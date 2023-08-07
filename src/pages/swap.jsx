@@ -19,6 +19,8 @@ import {
   Link,
   InputRightAddon,
   FormErrorMessage,
+  IconButton,
+  Icon,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useCallback } from "react";
 import {
@@ -36,6 +38,7 @@ import { config, noneAddress } from "src/state/chain/config";
 import SwapTokenModal from "src/components/swap/TokensModal";
 import { emptyToken } from "src/utils/utils";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { LuArrowUpDown } from "react-icons/lu"
 import SlippageOptions from "src/components/swap/SlippageOptions";
 import loadPools from "src/state/dex/thunks/loadPools";
 
@@ -138,7 +141,14 @@ export default function SwapPage() {
           }
         }
       } else if (tIn.address && tOut.address && tIn.address != tOut.address) {
-        let steps = getSteps(tIn.address, tOut.address, pools.matrix);
+        let steps = []
+        if (tIn.address == noneAddress) {
+          steps = getSteps(config[selectChain].wrapAddress, tOut.address, pools.matrix);
+        } else if (tOut.address == noneAddress) {
+          steps = getSteps(tIn.address, config[selectChain].wrapAddress, pools.matrix);
+        } else {
+          steps = getSteps(tIn.address, tOut.address, pools.matrix);
+        }
         setSwapSteps(steps);
       }
     },
@@ -206,7 +216,14 @@ export default function SwapPage() {
           }
         }
       } else if (tIn.address && tOut.address && tIn.address != tOut.address) {
-        let steps = getSteps(tIn.address, tOut.address, pools.matrix);
+        let steps = []
+        if (tIn.address == noneAddress) {
+          steps = getSteps(config[selectChain].wrapAddress, tOut.address, pools.matrix);
+        } else if (tOut.address == noneAddress) {
+          steps = getSteps(tIn.address, config[selectChain].wrapAddress, pools.matrix);
+        } else {
+          steps = getSteps(tIn.address, tOut.address, pools.matrix);
+        }
         setSwapSteps(steps);
       }
     },
@@ -366,6 +383,7 @@ export default function SwapPage() {
   const handleSelectTokenIn = useCallback(
     async (value) => {
       let blIn = await handleLoadBalance(value.address)
+
       setBIn(blIn)
       if (value.address == tokenOut.address) {
         let oldTokenIn = tokenIn;
@@ -410,13 +428,30 @@ export default function SwapPage() {
     [tokenIn, tokenOut, amountIn, bIn]
   );
 
+  const handleReverseTokens = useCallback(
+    () => {
+      let oldTokenIn = tokenIn;
+      let oldTokenOut = tokenOut;
+      let oldBIn = bIn;
+      let oldBOut = bOut;
+      setBIn(oldBOut)
+      setBOut(oldBIn)
+      setTokenIn(oldTokenOut)
+      setTokenOut(oldTokenIn)
+      if (oldTokenIn.address && oldTokenOut.address) {
+        handleGetAmountOut(oldTokenOut, oldTokenIn, amountIn, oldBOut);
+      }
+    },
+    [tokenOut, tokenIn, bIn, bOut, amountIn. amountOut]
+  );
+
   const handleSetAmountIn = useCallback(
     (value) => {
       const amount = formatInputAmount(value);
       setAmountIn(amount);
-      handleGetAmountOut(tokenIn, tokenOut, amount);
+      handleGetAmountOut(tokenIn, tokenOut, amount, bIn);
     },
-    [tokenIn, tokenOut]
+    [tokenIn, tokenOut, bIn]
   );
 
   const handleSetAmountOut = useCallback(
@@ -433,7 +468,8 @@ export default function SwapPage() {
     handleGetAmountOut(
       tokenIn,
       tokenOut,
-      ethers.utils.formatUnits(bIn, tokenIn.decimals)
+      ethers.utils.formatUnits(bIn, tokenIn.decimals),
+      bIn
     );
   };
 
@@ -528,7 +564,7 @@ export default function SwapPage() {
           justifyContent={"space-between"}
         >
           <Text fontSize="2xl">Swap</Text>
-          <VStack gap={"30px"} w="full">
+          <VStack gap={"20px"} w="full">
             <Box w="full">
               <FormControl w="full">
                 <Box
@@ -597,6 +633,9 @@ export default function SwapPage() {
                 </Flex>
               </FormControl>
             </Box>
+            <Center w='full'>
+              <IconButton onClick={handleReverseTokens} isRound colorScheme="telegram" icon={<Icon as={LuArrowUpDown}/>} />
+            </Center>
             <Box w="full">
               <FormControl w="full">
                 <Box
