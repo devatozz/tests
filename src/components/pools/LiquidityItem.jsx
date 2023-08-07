@@ -81,15 +81,25 @@ export default function LiquidityItem({
     setRemoveAmount(ethers.utils.formatUnits(lpToken.balance));
   };
 
-  const handleLoadToken1Info = useCallback(async (address) => {
-    const tokenFetch = await getTokenData(address)
-    setToken1Info({ ...tokenFetch, disable: false, icon: "" })
-  }, [])
+  const handleLoadTokenInfo = useCallback(async () => {
+    if (lpToken.token0 == config[selectedChain].wrapAddress) {
+      setToken1Info({ ...tokenObj[lpToken.token0], icon: "/eth.png", symbol: "ETH", name: "Ether" })
+    } else if (tokenObj[lpToken.token0]) {
+      setToken1Info(tokenObj[lpToken.token0])
+    } else {
+      const tokenFetch = await getTokenData(lpToken.token0)
+      setToken1Info({ ...tokenFetch, disable: false, icon: "" })
+    }
 
-  const handleLoadToken2Info = useCallback(async (address) => {
-    const tokenFetch = await getTokenData(address)
-    setToken2Info({ ...tokenFetch, disable: false, icon: "" })
-  }, [])
+    if (lpToken.token1 == config[selectedChain].wrapAddress) {
+      setToken2Info({ ...tokenObj[lpToken.token0], icon: "/eth.png", symbol: "ETH", name: "Ether" })
+    } else if (tokenObj[lpToken.token1]) {
+      setToken2Info(tokenObj[lpToken.token1])
+    } else {
+      const tokenFetch = await getTokenData(lpToken.token1)
+      setToken2Info({ ...tokenFetch, disable: false, icon: "" })
+    }
+  }, [tokenObj, lpToken, selectedChain])
 
   useEffect(() => {
     const balanceBN = BigNumber.from(lpToken.balance);
@@ -106,30 +116,9 @@ export default function LiquidityItem({
 
   useEffect(() => {
     if (loaded) {
-      if (tokenObj[lpToken.token0]) {
-        setToken1Info(tokenObj[lpToken.token0])
-      } else {
-        handleLoadToken1Info(lpToken.token0)
-      }
-      if (tokenObj[lpToken.token1]) {
-        setToken2Info(tokenObj[lpToken.token1])
-      } else {
-        handleLoadToken2Info(lpToken.token1)
-      }
+      handleLoadTokenInfo()
     }
-  }, [loaded])
-
-  useEffect(() => {
-    if (selectedChain && token1Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
-      setToken1Info(value => ({ ...value, icon: "/eth.png", symbol: "ETH", name: "Ether" }))
-    }
-  }, [token1Info, selectedChain])
-
-  useEffect(() => {
-    if (selectedChain && token2Info.address.toLowerCase() == config[selectedChain].wrapAddress.toLowerCase()) {
-      setToken2Info(value => ({ ...value, icon: "/eth.png", symbol: "ETH", name: "Ether" }))
-    }
-  }, [token2Info, selectedChain])
+  }, [loaded, selectedChain])
 
   return (
     <AccordionItem

@@ -85,31 +85,28 @@ export default function AppBar() {
         <Flex display={{ base: "none", md: "flex" }}>
           <Stack direction={"row"} spacing={4}>
             {NAV_ITEMS.map((navItem, index) => (
-              <NextLink
+              <Link
                 key={index}
                 href={navItem.href}
-                passHref
-                target={
+                as={NextLink}
+                pr={2}
+                py={2}
+                fontSize={"22px"}
+                fontWeight={700}
+                color="white"
+                _hover={{
+                  textDecoration: "none",
+
+                  color: "gray",
+                }}
+                isExternal={
                   navItem.label === "Bridge" || navItem.label === "Whitepaper"
-                    ? "_blank"
-                    : undefined
+                    ? true
+                    : false
                 }
               >
-                <Link
-                  pr={2}
-                  py={2}
-                  fontSize={"22px"}
-                  fontWeight={700}
-                  color="white"
-                  _hover={{
-                    textDecoration: "none",
-
-                    color: "gray",
-                  }}
-                >
-                  {navItem.label}
-                </Link>
-              </NextLink>
+                {navItem.label}
+              </Link>
             ))}
           </Stack>
         </Flex>
@@ -135,7 +132,7 @@ export default function AppBar() {
                       passHref
                       target={
                         navItem.label === "Bridge" ||
-                        navItem.label === "Whitepaper"
+                          navItem.label === "Whitepaper"
                           ? "_blank"
                           : undefined
                       }

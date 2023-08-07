@@ -616,7 +616,6 @@ export default function Pools() {
                         <LiquidityItem
                           key={lpToken.pair}
                           lpToken={lpToken}
-                          pool={pools.obj[lpToken.pair]}
                           handleRemoveLiquidity={handleRemoveLiquidity}
                           loading={loading}
                         />
