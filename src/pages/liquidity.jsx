@@ -316,7 +316,7 @@ export default function Pools() {
           account,
           config[selectedChain].dexAddress
         );
-        let currentApproval2 = await erc20In.allowance(
+        let currentApproval2 = await erc20Out.allowance(
           account,
           config[selectedChain].dexAddress
         );
