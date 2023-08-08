@@ -33,7 +33,7 @@ import {
 } from "@chakra-ui/react";
 import { BigNumber, ethers } from "ethers";
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPairContractWithSigner, loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
@@ -62,6 +62,7 @@ export default function Pools() {
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
+  const selectChain = useMemo(() => selectedChain ? selectedChain : "base");
 
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabsChange = (index) => {
@@ -89,13 +90,23 @@ export default function Pools() {
 
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve1 == "0")
       return;
-    const token2Amount = calculateTokenAmount(
-      poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
-      poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
-      amount,
-      token1Name.decimals
-    );
-    setToken2Amount(token2Amount);
+    if (token1Name.address == noneAddress) {
+      const token2Amount = calculateTokenAmount(
+        poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
+        poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        amount,
+        token1Name.decimals
+      );
+      setToken2Amount(token2Amount);
+    } else {
+      const token2Amount = calculateTokenAmount(
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        amount,
+        token1Name.decimals
+      );
+      setToken2Amount(token2Amount);
+    }
   };
 
   const handleToken2AmountChange = async (amount) => {
@@ -104,13 +115,23 @@ export default function Pools() {
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve2 == "0")
       return;
 
-    const token1Amount = calculateTokenAmount(
-      poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
-      poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
-      amount,
-      token2Name.decimals
-    );
-    setToken1Amount(token1Amount);
+    if (token2Name.address == noneAddress) {
+      const token1Amount = calculateTokenAmount(
+        poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        amount,
+        token2Name.decimals
+      );
+      setToken1Amount(token1Amount);
+    } else {
+      const token1Amount = calculateTokenAmount(
+        poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        amount,
+        token2Name.decimals
+      );
+      setToken1Amount(token1Amount);
+    }
   };
 
   useEffect(() => {
@@ -159,6 +180,8 @@ export default function Pools() {
       let poolInfo = null;
       if (tokenName.address == noneAddress && pools.matrix[config[selectedChain].wrapAddress] && pools.matrix[config[selectedChain].wrapAddress][token2Name.address]) {
         poolInfo = pools.matrix[config[selectedChain].wrapAddress][token2Name.address][0];
+      } else if (token2Name.address == noneAddress && pools.matrix[config[selectedChain].wrapAddress] && pools.matrix[config[selectedChain].wrapAddress][tokenName.address]) {
+        poolInfo = pools.matrix[config[selectedChain].wrapAddress][tokenName.address][0];
       } else if (pools.matrix[tokenName.address] && pools.matrix[tokenName.address][token2Name.address]) {
         poolInfo = pools.matrix[tokenName.address][token2Name.address][0];
       }
@@ -199,7 +222,9 @@ export default function Pools() {
       let poolInfo = null;
       if (tokenName.address == noneAddress && pools.matrix[token1Name.address] && pools.matrix[token1Name.address][config[selectedChain].wrapAddress]) {
         poolInfo = pools.matrix[token1Name.address][config[selectedChain].wrapAddress][0];
-      } if (pools.matrix[token1Name.address] && pools.matrix[token1Name.address][tokenName.address]) {
+      } else if (token1Name.address == noneAddress && pools.matrix[config[selectedChain].wrapAddress] && pools.matrix[config[selectedChain].wrapAddress][tokenName.address]) {
+        poolInfo = pools.matrix[config[selectedChain].wrapAddress][tokenName.address][0];
+      } else if (pools.matrix[token1Name.address] && pools.matrix[token1Name.address][tokenName.address]) {
         poolInfo = pools.matrix[token1Name.address][tokenName.address][0];
       }
 
