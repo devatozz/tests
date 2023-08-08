@@ -1,3 +1,4 @@
+'use client';
 import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';

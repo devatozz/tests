@@ -1,3 +1,4 @@
+'use client';
 import {
   Box,
   Button,
@@ -186,7 +187,9 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
             >
               {dataTask.type === 'MINT_NFT'
                 ? `${item.target} ${item.target === 1 ? 'Day' : 'Days'} ${
-                    item.target > 1 && `(${dataTask.progress}/${item.target})`
+                    item.target > 1
+                      ? `(${dataTask.progress}/${item.target})`
+                      : ''
                   }`
                 : dataTask.type === 'SWAP'
                 ? `SWAP TOTAL VOLUME $${item.target}`

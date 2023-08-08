@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Container, Icon, createIcon } from '@chakra-ui/react';
 import {
