@@ -47,7 +47,7 @@ export default function LiquidityItem({
   const [btnText, setBtnText] = useState("Add Liquidity");
   const [token1Info, setToken1Info] = useState(emptyToken)
   const [token2Info, setToken2Info] = useState(emptyToken)
-  const selectChain = useMemo(() => selectedChain ? selectedChain : "base");
+  const selectChain = useMemo(() => selectedChain ? selectedChain : "base", [selectedChain]);
   const handleOpenModal = () => {
     onOpen();
   };

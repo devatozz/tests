@@ -39,6 +39,7 @@ import loadTokens from "src/state/dex/thunks/loadTokens";
 import loadPools from "src/state/dex/thunks/loadPools";
 import { emptyToken } from "src/utils/utils";
 import TokenModal from "src/components/pools/TokensModal";
+
 export default function Pools() {
   const dispatch = useDispatch();
 
@@ -57,7 +58,7 @@ export default function Pools() {
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
-  const selectChain = useMemo(() => selectedChain ? selectedChain : "base");
+  const selectChain = useMemo(() => selectedChain ? selectedChain : "base", [selectedChain]);
 
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabsChange = (index) => {
@@ -85,23 +86,30 @@ export default function Pools() {
 
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve1 == "0")
       return;
+    let token2Amount = BigNumber.from(0)
     if (token1Name.address == noneAddress) {
-      const token2Amount = calculateTokenAmount(
+      token2Amount = calculateTokenAmount(
         poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         amount,
         token1Name.decimals
       );
-      setToken2Amount(token2Amount);
+    } else if (token2Name.address == noneAddress) {
+      token2Amount = calculateTokenAmount(
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
+        amount,
+        token1Name.decimals
+      );
     } else {
-      const token2Amount = calculateTokenAmount(
+      token2Amount = calculateTokenAmount(
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         amount,
         token1Name.decimals
       );
-      setToken2Amount(token2Amount);
     }
+    setToken2Amount(token2Amount);
   };
 
   const handleToken2AmountChange = async (amount) => {
@@ -109,24 +117,31 @@ export default function Pools() {
 
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve2 == "0")
       return;
+    let token1Amount = BigNumber.from(0)
 
     if (token2Name.address == noneAddress) {
-      const token1Amount = calculateTokenAmount(
+      token1Amount = calculateTokenAmount(
         poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
         amount,
         token2Name.decimals
       );
-      setToken1Amount(token1Amount);
+    } else if (token1Name.address == noneAddress) {
+      token1Amount = calculateTokenAmount(
+        poolInfo.token2 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
+        amount,
+        token2Name.decimals
+      );
     } else {
-      const token1Amount = calculateTokenAmount(
+      token1Amount = calculateTokenAmount(
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
         amount,
         token2Name.decimals
       );
-      setToken1Amount(token1Amount);
     }
+    setToken1Amount(token1Amount);
   };
 
   useEffect(() => {
@@ -173,10 +188,10 @@ export default function Pools() {
       handleLoadBalance(oldToken1Addr).then((balance) => setToken2Balance(balance));
     } else if (tokenName.address && token2Name.address) {
       let poolInfo = null;
-      if (tokenName.address == noneAddress && pools.matrix[config[selectedChain].wrapAddress] && pools.matrix[config[selectedChain].wrapAddress][token2Name.address]) {
-        poolInfo = pools.matrix[config[selectedChain].wrapAddress][token2Name.address][0];
-      } else if (token2Name.address == noneAddress && pools.matrix[config[selectedChain].wrapAddress] && pools.matrix[config[selectedChain].wrapAddress][tokenName.address]) {
-        poolInfo = pools.matrix[config[selectedChain].wrapAddress][tokenName.address][0];
+      if (tokenName.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][token2Name.address]) {
+        poolInfo = pools.matrix[config[selectChain].wrapAddress][token2Name.address][0];
+      } else if (token2Name.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][tokenName.address]) {
+        poolInfo = pools.matrix[config[selectChain].wrapAddress][tokenName.address][0];
       } else if (pools.matrix[tokenName.address] && pools.matrix[tokenName.address][token2Name.address]) {
         poolInfo = pools.matrix[tokenName.address][token2Name.address][0];
       }
@@ -215,10 +230,10 @@ export default function Pools() {
 
     } else if (token1Name.address && tokenName.address) {
       let poolInfo = null;
-      if (tokenName.address == noneAddress && pools.matrix[token1Name.address] && pools.matrix[token1Name.address][config[selectedChain].wrapAddress]) {
-        poolInfo = pools.matrix[token1Name.address][config[selectedChain].wrapAddress][0];
-      } else if (token1Name.address == noneAddress && pools.matrix[config[selectedChain].wrapAddress] && pools.matrix[config[selectedChain].wrapAddress][tokenName.address]) {
-        poolInfo = pools.matrix[config[selectedChain].wrapAddress][tokenName.address][0];
+      if (tokenName.address == noneAddress && pools.matrix[token1Name.address] && pools.matrix[token1Name.address][config[selectChain].wrapAddress]) {
+        poolInfo = pools.matrix[token1Name.address][config[selectChain].wrapAddress][0];
+      } else if (token1Name.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][tokenName.address]) {
+        poolInfo = pools.matrix[config[selectChain].wrapAddress][tokenName.address][0];
       } else if (pools.matrix[token1Name.address] && pools.matrix[token1Name.address][tokenName.address]) {
         poolInfo = pools.matrix[token1Name.address][tokenName.address][0];
       }
@@ -260,14 +275,14 @@ export default function Pools() {
       let result = BigNumber.from(0);
       if (tokenName) {
         setLoading(true);
-        if (account && selectedChain) {
-          result = await loadBalance(account, selectedChain, tokenName);
+        if (account && selectChain) {
+          result = await loadBalance(account, selectChain, tokenName);
         }
         setLoading(false);
       }
       return result;
     },
-    [account, selectedChain]
+    [account, selectChain]
   );
 
   const handleAddLiquidity = async (e) => {
@@ -299,11 +314,11 @@ export default function Pools() {
         );
         let currentApproval = await erc20.allowance(
           account,
-          config[selectedChain].dexAddress
+          config[selectChain].dexAddress
         );
         if (currentApproval.lt(aDesired)) {
           let approveTx = await erc20.approve(
-            config[selectedChain].dexAddress,
+            config[selectChain].dexAddress,
             ethers.constants.MaxUint256
           );
           await approveTx.wait();
@@ -334,17 +349,17 @@ export default function Pools() {
         );
         let currentApproval1 = await erc20In.allowance(
           account,
-          config[selectedChain].dexAddress
+          config[selectChain].dexAddress
         );
         let currentApproval2 = await erc20Out.allowance(
           account,
-          config[selectedChain].dexAddress
+          config[selectChain].dexAddress
         );
 
         if (currentApproval1.lt(aDesired)) {
           approvePromises.push(
             erc20In.approve(
-              config[selectedChain].dexAddress,
+              config[selectChain].dexAddress,
               ethers.constants.MaxUint256
             )
           );
@@ -352,7 +367,7 @@ export default function Pools() {
         if (currentApproval2.lt(bDesired)) {
           approvePromises.push(
             erc20Out.approve(
-              config[selectedChain].dexAddress,
+              config[selectChain].dexAddress,
               ethers.constants.MaxUint256
             )
           );
@@ -413,11 +428,11 @@ export default function Pools() {
       let liquidity = ethers.utils.parseEther(removeAmount);
       let currentApproval = await pairContract.allowance(
         account,
-        config[selectedChain].dexAddress
+        config[selectChain].dexAddress
       );
       if (currentApproval.lt(liquidity)) {
         let tx = await pairContract.approve(
-          config[selectedChain].dexAddress,
+          config[selectChain].dexAddress,
           ethers.constants.MaxUint256
         );
         await tx.wait();
@@ -425,13 +440,13 @@ export default function Pools() {
 
       if (
         pool.token0.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase() ||
+          config[selectChain].wrapAddress.toLocaleLowerCase() ||
         pool.token1.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          config[selectChain].wrapAddress.toLocaleLowerCase()
       ) {
         let tokenAddr =
           pool.token0.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          config[selectChain].wrapAddress.toLocaleLowerCase()
             ? pool.token1
             : pool.token0;
 
@@ -554,10 +569,10 @@ export default function Pools() {
   const getMyLpTokens = async () => {
     const lpTokens = [];
     //rewrite this
-    if (pools.loaded && pools.list.length && selectedChain && account) {
+    if (pools.loaded && pools.list.length && selectChain && account) {
       await Promise.all(
         pools.list.map(async (item) => {
-          const balance = await loadBalance(account, selectedChain, item.pair);
+          const balance = await loadBalance(account, selectChain, item.pair);
           if (!balance.isZero()) {
             lpTokens.push({
               ...item,
