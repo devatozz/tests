@@ -1,9 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import ABI_MINT_NFT from 'src/abis/MintNft.json';
 import { ethers } from 'ethers';
-import BaseConfig from 'src/state/config/base.json';
+import BaseTestnetConfig from 'src/state/config/base-testnet.json';
+import BaseMainnetConfig from 'src/state/config/base-mainnet.json';
 
 const MINT_FEE = '0.0015';
+const BaseConfig = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? BaseMainnetConfig : BaseTestnetConfig
 
 const handleMintNft = async () => {
   const mintNftContractWithSigner = (address) => {
