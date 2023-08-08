@@ -320,7 +320,7 @@ const AirdropPage = () => {
                   textAlign='start'
                   color='white'
                 >
-                  Referal link: {`${FE_DOMAIN}/airdrop?ref=${address}`}
+                  Referral link: {`${FE_DOMAIN}/airdrop?ref=${address}`}
                 </Text>
                 <CopyIcon
                   onClick={copyRefLink}
