@@ -4,6 +4,10 @@ import { Button, Flex, Text } from '@chakra-ui/react';
 const CooldownButton = ({ cooldownTime, onClick, children }) => {
   const [cooldown, setCooldown] = useState(cooldownTime);
 
+  useEffect(() => {
+    setCooldown(cooldownTime);
+  }, [cooldownTime]);
+
   function msToTime(duration) {
     const seconds = Math.floor((duration / 1000) % 60);
     const minutes = Math.floor((duration / (1000 * 60)) % 60);
