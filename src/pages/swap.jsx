@@ -14,8 +14,7 @@ import {
   useToast,
   InputGroup,
   InputRightElement,
-  SkeletonCircle,
-  SkeletonText,
+  CircularProgress,
   Link,
   InputRightAddon,
   FormErrorMessage,
@@ -569,19 +568,26 @@ export default function SwapPage() {
   }, [deadlineTime]);
   if (!tokens.loaded || !pools.loaded) {
     return (
-      <Box
-        my='6'
-        w='full'
-        boxShadow='lg'
-        bg='white'
-        p={20}
-        h={{ base: 'calc(100vh - 50px)' }}
+      <Center
+        bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
+        pt={8}
+        minH={{
+          base: 'calc(100vh - 150px)',
+          md: 'calc(100vh - 170px)',
+        }}
       >
-        <Box>
-          <SkeletonCircle size='20' />
-          <SkeletonText mt='4' noOfLines={12} spacing='4' />
-        </Box>
-      </Box>
+        <Center
+          w={{ base: '95%', md: '450px' }}
+          borderRadius={"md"}
+          bgColor="white"
+          px={{ base: 0, md: 4 }}
+          py={6}
+          minH={500}
+          h={600}
+        >
+          <CircularProgress size='60px' isIndeterminate color='blue.600' />
+        </Center>
+      </Center>
     );
   }
 

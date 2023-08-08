@@ -15,10 +15,6 @@ import {
   NumberInput,
   Avatar,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
   useDisclosure,
   Accordion,
   AccordionIcon,
@@ -28,8 +24,7 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
-  SkeletonCircle,
-  SkeletonText,
+  CircularProgress,
 } from "@chakra-ui/react";
 import { BigNumber, ethers } from "ethers";
 
@@ -428,14 +423,7 @@ export default function Pools() {
         await tx.wait();
       }
 
-      if (account != account) {
-        toast({
-          status: "error",
-          title: "Current account is not signer",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else if (
+      if (
         pool.token0.toLocaleLowerCase() ==
           config[selectedChain].wrapAddress.toLocaleLowerCase() ||
         pool.token1.toLocaleLowerCase() ==
@@ -566,7 +554,7 @@ export default function Pools() {
   const getMyLpTokens = async () => {
     const lpTokens = [];
     //rewrite this
-    if (pools.loaded && pools.list.length && selectedChain) {
+    if (pools.loaded && pools.list.length && selectedChain && account) {
       await Promise.all(
         pools.list.map(async (item) => {
           const balance = await loadBalance(account, selectedChain, item.pair);
@@ -588,19 +576,22 @@ export default function Pools() {
 
   if (!tokens.loaded || !pools.loaded) {
     return (
-      <Box
-        my="6"
-        w="full"
-        boxShadow="lg"
-        bg="white"
-        p={20}
-        h={{ base: "calc(100vh - 50px)" }}
+      <Center
+        bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
+        pt={8}
       >
-        <Box>
-          <SkeletonCircle size="20" />
-          <SkeletonText mt="4" noOfLines={12} spacing="4" />
-        </Box>
-      </Box>
+        <Center
+          w={{ base: "full", md: "582px" }}
+          borderRadius={"md"}
+          bgColor="white"
+          px={{ base: 0, md: 4 }}
+          py={6}
+          minH={500}
+          h={{ base: "auto", md: "calc(100vh - 227px)" }}
+        >
+          <CircularProgress size='60px' isIndeterminate color='blue.600'/>
+        </Center>
+      </Center>
     );
   }
   return (
@@ -623,8 +614,8 @@ export default function Pools() {
           <Box
             w={{ base: "full", md: "550px" }}
             mx="auto"
-            minH={600}
-            h={{ base: "auto", md: "calc(100vh - 237px)" }}
+            minH={500}
+            h={{ base: "auto", md: "calc(100vh - 275px)" }}
             overflowY={"auto"}
           >
             <TabList w="full">

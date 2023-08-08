@@ -24,7 +24,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { BigNumber, ethers } from "ethers";
@@ -47,7 +47,7 @@ export default function LiquidityItem({
   const [btnText, setBtnText] = useState("Add Liquidity");
   const [token1Info, setToken1Info] = useState(emptyToken)
   const [token2Info, setToken2Info] = useState(emptyToken)
-
+  const selectChain = useMemo(() => selectedChain ? selectedChain : "base");
   const handleOpenModal = () => {
     onOpen();
   };
@@ -82,7 +82,7 @@ export default function LiquidityItem({
   };
 
   const handleLoadTokenInfo = useCallback(async () => {
-    if (lpToken.token0 == config[selectedChain].wrapAddress) {
+    if (lpToken.token0 == config[selectChain].wrapAddress) {
       setToken1Info({ ...tokenObj[lpToken.token0], icon: "/eth.png", symbol: "ETH", name: "Ether" })
     } else if (tokenObj[lpToken.token0]) {
       setToken1Info(tokenObj[lpToken.token0])
@@ -91,7 +91,7 @@ export default function LiquidityItem({
       setToken1Info({ ...tokenFetch, disable: false, icon: "" })
     }
 
-    if (lpToken.token1 == config[selectedChain].wrapAddress) {
+    if (lpToken.token1 == config[selectChain].wrapAddress) {
       setToken2Info({ ...tokenObj[lpToken.token0], icon: "/eth.png", symbol: "ETH", name: "Ether" })
     } else if (tokenObj[lpToken.token1]) {
       setToken2Info(tokenObj[lpToken.token1])
@@ -99,7 +99,7 @@ export default function LiquidityItem({
       const tokenFetch = await getTokenData(lpToken.token1)
       setToken2Info({ ...tokenFetch, disable: false, icon: "" })
     }
-  }, [tokenObj, lpToken, selectedChain])
+  }, [tokenObj, lpToken, selectChain])
 
   useEffect(() => {
     const balanceBN = BigNumber.from(lpToken.balance);
