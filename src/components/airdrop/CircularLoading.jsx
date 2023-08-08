@@ -1,3 +1,4 @@
+'use client';
 import { Box, Spinner } from "@chakra-ui/react";
 
 export const CicularLoading = () => {
