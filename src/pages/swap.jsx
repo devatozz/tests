@@ -568,26 +568,29 @@ export default function SwapPage() {
   }, [deadlineTime]);
   if (!tokens.loaded || !pools.loaded) {
     return (
-      <Center
+      <Box
         bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
         pt={8}
+        width={'full'}
         minH={{
           base: 'calc(100vh - 150px)',
           md: 'calc(100vh - 170px)',
         }}
       >
-        <Center
-          w={{ base: '95%', md: '450px' }}
-          borderRadius={"md"}
-          bgColor="white"
-          px={{ base: 0, md: 4 }}
-          py={6}
-          minH={500}
-          h={600}
-        >
-          <CircularProgress size='60px' isIndeterminate color='blue.600' />
+        <Center>
+          <Center
+            w={{ base: '95%', md: '450px' }}
+            borderRadius={"md"}
+            bgColor="white"
+            px={{ base: 0, md: 4 }}
+            py={6}
+            minH={500}
+            h={600}
+          >
+            <CircularProgress size='60px' isIndeterminate color='blue.600' />
+          </Center>
         </Center>
-      </Center>
+      </Box>
     );
   }
 
