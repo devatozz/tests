@@ -3,7 +3,7 @@ import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-const totalToken = 1360000000;
+const totalToken = 360000000;
 
 const Progress = () => {
   const { totalTokenClaimed } = useSelector((state) => state.airdrop);
