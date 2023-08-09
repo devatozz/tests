@@ -51,7 +51,7 @@ export default function Banner() {
                                textAlign={"justify"}
                                p={{base: "10px 20px 20px 20px", sm: "5px 10px", md: "10px 50px", lg: "10px 50px"}}
                                fontSize={{base: '18px', md: '20px'}}>
-                        Welcome to Pira Finance, a community-owned multichain DEX that is revolutionizing decentralized
+                        Welcome to Pira Finance, a community-owned DEX that is revolutionizing decentralized
                         finance.
                         Built on BASE-Layer 2 Blockchains, Pira Finance offers a seamless and secure trading experience
                     </Box>

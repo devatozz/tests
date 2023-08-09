@@ -57,7 +57,7 @@ export default function App(props) {
         <meta name='title' content='Pira finance' />
         <meta
           name='description'
-          content='The community-owned multichain DEX revolutionizing decentralized finance'
+          content='The community-owned DEX revolutionizing decentralized finance'
         />
         <title>Pira Finance</title>
       </Head>
