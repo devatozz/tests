@@ -59,27 +59,27 @@ const mainnetTokensList = [
         disable: false
     },
     {
-        address: "0xF42C59170e9Ea38809FC9935dCED761274336C66",
-        name: "FLU",
-        symbol: "FLU",
-        decimals: 18,
-        icon: "/flu.png",
-        disable: false
-    },
-    {
-        address: "0x23719B3222837Abd564D176c78527623167BdbEc",
-        name: "USDC Testnet",
-        symbol: "USDC",
-        decimals: 18,
+        address: "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+        name: "Axelar Wrapped USDC",
+        symbol: "axlUSDC",
+        decimals: 6,
         icon: "/usdc.png",
         disable: false
     },
     {
-        address: "0x3F469B262124334F04D0cE45fDF8712dC723773c",
-        name: "USDT Testnet",
-        symbol: "USDT",
+        address: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+        name: "USD Base Coin",
+        symbol: "USDCbC",
+        decimals: 6,
+        icon: "/usdc.png",
+        disable: false
+    },
+    {
+        address: "0x7133d274BA9BC6980f31cCBD2cc4E975D6E04879",
+        name: "FLU Bot",
+        symbol: "FLUB",
         decimals: 18,
-        icon: "/usdt.png",
+        icon: "/flu.png",
         disable: false
     }
 ]
