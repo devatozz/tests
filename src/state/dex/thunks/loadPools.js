@@ -65,23 +65,43 @@ const mapPools = async (data) => {
             if (poolMatrix.hasOwnProperty(token1)) {
                 if (poolMatrix[token1].hasOwnProperty(token2)) {
                     poolMatrix[token1][token2].push(poolInfo);
+                    poolMatrix[token1.toLowerCase()][token2].push(poolInfo);
+                    poolMatrix[token1][token2.toLowerCase()].push(poolInfo);
+                    poolMatrix[token1.toLowerCase()][token2.toLowerCase()].push(poolInfo);
                 } else {
                     poolMatrix[token1][token2] = [poolInfo];
+                    poolMatrix[token1][token2.toLowerCase()] = [poolInfo];
+                    poolMatrix[token1.toLowerCase()][token2] = [poolInfo];
+                    poolMatrix[token1.toLowerCase()][token2.toLowerCase()] = [poolInfo];
                 }
             } else {
                 poolMatrix[token1] = {};
+                poolMatrix[token1.toLowerCase()] = {};
                 poolMatrix[token1][token2] = [poolInfo];
+                poolMatrix[token1.toLowerCase()][token2] = [poolInfo];
+                poolMatrix[token1][token2.toLowerCase()] = [poolInfo];
+                poolMatrix[token1.toLowerCase()][token2.toLowerCase()] = [poolInfo];
             }
 
             if (poolMatrix.hasOwnProperty(token2)) {
                 if (poolMatrix[token2].hasOwnProperty(token1)) {
                     poolMatrix[token2][token1].push(poolInfo);
+                    poolMatrix[token2.toLowerCase()][token1].push(poolInfo);
+                    poolMatrix[token2][token1.toLowerCase()].push(poolInfo);
+                    poolMatrix[token2.toLowerCase()][token1.toLowerCase()].push(poolInfo);
                 } else {
                     poolMatrix[token2][token1] = [poolInfo];
+                    poolMatrix[token2.toLowerCase()][token1] = [poolInfo];
+                    poolMatrix[token2][token1.toLowerCase()] = [poolInfo];
+                    poolMatrix[token2.toLowerCase()][token1.toLowerCase()] = [poolInfo];
                 }
             } else {
                 poolMatrix[token2] = {};
+                poolMatrix[token2.toLowerCase()] = {};
                 poolMatrix[token2][token1] = [poolInfo];
+                poolMatrix[token2.toLowerCase()][token1] = [poolInfo];
+                poolMatrix[token2][token1.toLowerCase()] = [poolInfo];
+                poolMatrix[token2.toLowerCase()][token1.toLowerCase()] = [poolInfo];
             }
             if (index == array.length - 1) resolve();
         });

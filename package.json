@@ -4,6 +4,7 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
+    "lint": "next lint --quiet=true",
     "start:test": "next start -p 4000",
     "type-check": "tsc",
     "truffle-compile": "truffle compile"
@@ -16,6 +17,7 @@
     "@metamask/detect-provider": "^1.2.0",
     "@next-auth/mongodb-adapter": "^1.0.4",
     "@reduxjs/toolkit": "^1.8.3",
+    "ahooks": "^3.7.8",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
     "ethers": "^5.6.9",
@@ -27,12 +29,16 @@
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-icon": "^1.0.0",
-    "react-icons": "^4.6.0",
+    "react-icons": "^4.10.1",
     "react-redux": "^8.0.2",
     "redux-persist": "^6.0.0",
     "reduxjs-toolkit-persist": "^7.2.1",
     "web3": "^1.2.9",
     "web3-provider-engine": "~15.0.12",
     "web3-utils": "^1.7.0"
+  },
+  "devDependencies": {
+    "eslint": "8.46.0",
+    "eslint-config-next": "13.4.12"
   }
 }

@@ -15,10 +15,6 @@ import {
   NumberInput,
   Avatar,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
   useDisclosure,
   Accordion,
   AccordionIcon,
@@ -28,21 +24,22 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
-  SkeletonCircle,
-  SkeletonText,
+  CircularProgress,
 } from "@chakra-ui/react";
 import { BigNumber, ethers } from "ethers";
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPairContractWithSigner, loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { createFtContractWithSigner } from "src/utils/helper";
-import { config } from "src/state/chain/config";
+import { config, noneAddress } from "src/state/chain/config";
 import loadTokens from "src/state/dex/thunks/loadTokens";
 import loadPools from "src/state/dex/thunks/loadPools";
-import { set } from "date-fns";
+import { emptyToken } from "src/utils/utils";
+import TokenModal from "src/components/pools/TokensModal";
+
 export default function Pools() {
   const dispatch = useDispatch();
 
@@ -50,9 +47,9 @@ export default function Pools() {
   const { account, selectedChain } = useSelector((state) => state.chain);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const [token1Name, setToken1Name] = useState("");
+  const [token1Name, setToken1Name] = useState(emptyToken);
   const [token1Amount, setToken1Amount] = useState("0");
-  const [token2Name, setToken2Name] = useState("");
+  const [token2Name, setToken2Name] = useState(emptyToken);
   const [token2Amount, setToken2Amount] = useState("0");
   const [token1Balance, setToken1Balance] = useState(BigNumber.from(0));
   const [token2Balance, setToken2Balance] = useState(BigNumber.from(0));
@@ -61,9 +58,9 @@ export default function Pools() {
 
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
+  const selectChain = useMemo(() => selectedChain ? selectedChain : "base", [selectedChain]);
 
-  const [tabIndex, setTabIndex] = React.useState(0);
-
+  const [tabIndex, setTabIndex] = useState(0);
   const handleTabsChange = (index) => {
     setTabIndex(index);
 
@@ -87,49 +84,82 @@ export default function Pools() {
     // Set the token amount
     setToken1Amount(formatInputAmount(amount));
 
-    if (!token1Name || !token2Name || !poolInfo || poolInfo.reserve1 == "0")
+    if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve1 == "0")
       return;
-
-    const token2Amount = calculateTokenAmount(
-      poolInfo.token1 === token1Name ? poolInfo.reserve1 : poolInfo.reserve2,
-      poolInfo.token2 === token2Name ? poolInfo.reserve2 : poolInfo.reserve1,
-      amount,
-      token1Name
-    );
+    let token2Amount = BigNumber.from(0)
+    if (token1Name.address == noneAddress) {
+      token2Amount = calculateTokenAmount(
+        poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
+        poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        amount,
+        token1Name.decimals
+      );
+    } else if (token2Name.address == noneAddress) {
+      token2Amount = calculateTokenAmount(
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
+        amount,
+        token1Name.decimals
+      );
+    } else {
+      token2Amount = calculateTokenAmount(
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        amount,
+        token1Name.decimals
+      );
+    }
     setToken2Amount(token2Amount);
   };
 
   const handleToken2AmountChange = async (amount) => {
     setToken2Amount(formatInputAmount(amount));
 
-    if (!token1Name || !token2Name || !poolInfo || poolInfo.reserve2 == "0")
+    if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve2 == "0")
       return;
+    let token1Amount = BigNumber.from(0)
 
-    const token1Amount = calculateTokenAmount(
-      poolInfo.token2 === token2Name ? poolInfo.reserve2 : poolInfo.reserve1,
-      poolInfo.token1 === token1Name ? poolInfo.reserve1 : poolInfo.reserve2,
-      amount,
-      token2Name
-    );
+    if (token2Name.address == noneAddress) {
+      token1Amount = calculateTokenAmount(
+        poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        amount,
+        token2Name.decimals
+      );
+    } else if (token1Name.address == noneAddress) {
+      token1Amount = calculateTokenAmount(
+        poolInfo.token2 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
+        amount,
+        token2Name.decimals
+      );
+    } else {
+      token1Amount = calculateTokenAmount(
+        poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
+        amount,
+        token2Name.decimals
+      );
+    }
     setToken1Amount(token1Amount);
   };
 
   useEffect(() => {
     if (
-      (token1Name &&
+      (token1Name.address &&
         token1Amount &&
         token1Balance.lt(
           ethers.utils.parseUnits(
             token1Amount,
-            tokens.obj[token1Name]?.decimals
+            token1Name.decimals
           )
         )) ||
-      (token2Name &&
+      (token2Name.address &&
         token2Amount &&
         token2Balance.lt(
           ethers.utils.parseUnits(
             token2Amount,
-            tokens.obj[token2Name]?.decimals
+            token2Name.decimals
           )
         ))
     ) {
@@ -150,27 +180,33 @@ export default function Pools() {
   const handleToken1NameChange = async (tokenName) => {
     setToken1Name(tokenName);
 
-    if (tokenName == token2Name) {
+    if (tokenName.address == token2Name.address) {
+      let oldToken1Addr = token1Name.address
       setToken2Name(token1Name);
       setToken2Amount(token1Amount);
       setToken1Amount(token2Amount);
-    } else if (tokenName && token2Name) {
+      handleLoadBalance(oldToken1Addr).then((balance) => setToken2Balance(balance));
+    } else if (tokenName.address && token2Name.address) {
       let poolInfo = null;
-      if (pools.matrix[tokenName] && pools.matrix[tokenName][token2Name]) {
-        poolInfo = pools.matrix[tokenName][token2Name][0];
+      if (tokenName.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][token2Name.address]) {
+        poolInfo = pools.matrix[config[selectChain].wrapAddress][token2Name.address][0];
+      } else if (token2Name.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][tokenName.address]) {
+        poolInfo = pools.matrix[config[selectChain].wrapAddress][tokenName.address][0];
+      } else if (pools.matrix[tokenName.address] && pools.matrix[tokenName.address][token2Name.address]) {
+        poolInfo = pools.matrix[tokenName.address][token2Name.address][0];
       }
       setPoolInfo(poolInfo);
       if (poolInfo && token2Amount) {
         const reserve1 =
-          poolInfo.token1 == tokenName ? poolInfo.reserve1 : poolInfo.reserve2;
+          poolInfo.token1 == tokenName.address ? poolInfo.reserve1 : poolInfo.reserve2;
         const reserve2 =
-          poolInfo.token1 == tokenName ? poolInfo.reserve2 : poolInfo.reserve1;
+          poolInfo.token1 == tokenName.address ? poolInfo.reserve2 : poolInfo.reserve1;
 
         const token1Amount = calculateTokenAmount(
           reserve1,
           reserve2,
           token2Amount,
-          tokenName
+          tokenName.decimals
         );
         setToken1Amount(token1Amount);
       } else {
@@ -179,34 +215,41 @@ export default function Pools() {
     }
     closeTokenIn();
 
-    handleLoadBalance(tokenName).then((balance) => setToken1Balance(balance));
+    handleLoadBalance(tokenName.address).then((balance) => setToken1Balance(balance));
   };
 
   const handleToken2NameChange = async (tokenName) => {
     setToken2Name(tokenName);
 
-    if (tokenName == token1Name) {
+    if (tokenName.address == token1Name.address) {
+      let oldToken2Addr = token2Name.address
       setToken1Name(token2Name);
       setToken2Amount(token1Amount);
       setToken1Amount(token2Amount);
-    } else if (token1Name && tokenName) {
+      handleLoadBalance(oldToken2Addr).then((balance) => setToken1Balance(balance));
+
+    } else if (token1Name.address && tokenName.address) {
       let poolInfo = null;
-      if (pools.matrix[token1Name] && pools.matrix[token1Name][tokenName]) {
-        poolInfo = pools.matrix[token1Name][tokenName][0];
+      if (tokenName.address == noneAddress && pools.matrix[token1Name.address] && pools.matrix[token1Name.address][config[selectChain].wrapAddress]) {
+        poolInfo = pools.matrix[token1Name.address][config[selectChain].wrapAddress][0];
+      } else if (token1Name.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][tokenName.address]) {
+        poolInfo = pools.matrix[config[selectChain].wrapAddress][tokenName.address][0];
+      } else if (pools.matrix[token1Name.address] && pools.matrix[token1Name.address][tokenName.address]) {
+        poolInfo = pools.matrix[token1Name.address][tokenName.address][0];
       }
 
       setPoolInfo(poolInfo);
 
       if (poolInfo && token1Amount) {
         const reserve1 =
-          poolInfo.token2 == tokenName ? poolInfo.reserve1 : poolInfo.reserve2;
+          poolInfo.token2 == tokenName.address ? poolInfo.reserve1 : poolInfo.reserve2;
         const reserve2 =
-          poolInfo.token2 == tokenName ? poolInfo.reserve2 : poolInfo.reserve1;
+          poolInfo.token2 == tokenName.address ? poolInfo.reserve2 : poolInfo.reserve1;
         const token2Amount = calculateTokenAmount(
           reserve1,
           reserve2,
           token1Amount,
-          tokenName
+          tokenName.decimals
         );
         setToken2Amount(token2Amount);
       } else {
@@ -214,12 +257,7 @@ export default function Pools() {
       }
     }
     closeTokenOut();
-    handleLoadBalance(tokenName).then((balance) => setToken2Balance(balance));
-  };
-
-  const handleNoPoolFound = () => {
-    setBtnDisable(true);
-    setBtnText("No Pool Found!");
+    handleLoadBalance(tokenName.address).then((balance) => setToken2Balance(balance));
   };
 
   const handlePoolAvailable = () => {
@@ -237,14 +275,14 @@ export default function Pools() {
       let result = BigNumber.from(0);
       if (tokenName) {
         setLoading(true);
-        if (account && selectedChain) {
-          result = await loadBalance(account, selectedChain, tokenName);
+        if (account && selectChain) {
+          result = await loadBalance(account, selectChain, tokenName);
         }
         setLoading(false);
       }
       return result;
     },
-    [account, selectedChain]
+    [account, selectChain]
   );
 
   const handleAddLiquidity = async (e) => {
@@ -255,25 +293,17 @@ export default function Pools() {
     const deadline = BigNumber.from(next30MinutesUnix);
     setLoading(true);
     try {
-      if (
-        token1Name.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase() ||
-        token2Name.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
-      ) {
+      if ( token1Name.address == noneAddress || token2Name.address == noneAddress) {
         let tokenAddr =
-          token1Name.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
-            ? token2Name
-            : token1Name;
+          token1Name.address == noneAddress
+            ? token2Name.address
+            : token1Name.address;
         let amountIn =
-          token1Name.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.address == noneAddress
             ? token2Amount
             : token1Amount;
         let amountETH =
-          token1Name.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          token1Name.address == noneAddress
             ? token1Amount
             : token2Amount;
 
@@ -284,11 +314,11 @@ export default function Pools() {
         );
         let currentApproval = await erc20.allowance(
           account,
-          config[selectedChain].dexAddress
+          config[selectChain].dexAddress
         );
         if (currentApproval.lt(aDesired)) {
           let approveTx = await erc20.approve(
-            config[selectedChain].dexAddress,
+            config[selectChain].dexAddress,
             ethers.constants.MaxUint256
           );
           await approveTx.wait();
@@ -305,31 +335,31 @@ export default function Pools() {
         );
         await addLiquidTx.wait();
       } else {
-        let erc20In = createFtContractWithSigner(token1Name);
-        let erc20Out = createFtContractWithSigner(token2Name);
+        let erc20In = createFtContractWithSigner(token1Name.address);
+        let erc20Out = createFtContractWithSigner(token2Name.address);
         let approvePromises = [];
 
         let aDesired = ethers.utils.parseUnits(
           token1Amount,
-          tokens.obj[token1Name]?.decimals
+          token1Name.decimals
         );
         let bDesired = ethers.utils.parseUnits(
           token2Amount,
-          tokens.obj[token2Name]?.decimals
+          token2Name.decimals
         );
         let currentApproval1 = await erc20In.allowance(
           account,
-          config[selectedChain].dexAddress
+          config[selectChain].dexAddress
         );
-        let currentApproval2 = await erc20In.allowance(
+        let currentApproval2 = await erc20Out.allowance(
           account,
-          config[selectedChain].dexAddress
+          config[selectChain].dexAddress
         );
 
         if (currentApproval1.lt(aDesired)) {
           approvePromises.push(
             erc20In.approve(
-              config[selectedChain].dexAddress,
+              config[selectChain].dexAddress,
               ethers.constants.MaxUint256
             )
           );
@@ -337,7 +367,7 @@ export default function Pools() {
         if (currentApproval2.lt(bDesired)) {
           approvePromises.push(
             erc20Out.approve(
-              config[selectedChain].dexAddress,
+              config[selectChain].dexAddress,
               ethers.constants.MaxUint256
             )
           );
@@ -350,8 +380,8 @@ export default function Pools() {
         }
 
         let addLiquidTx = await dex.signer.addLiquidity(
-          token1Name,
-          token2Name,
+          token1Name.address,
+          token2Name.address,
           aDesired,
           bDesired,
           BigNumber.from(0),
@@ -367,6 +397,9 @@ export default function Pools() {
         title: "Add liquidity success",
         isClosable: true,
       });
+      dispatch(loadPools())
+      handleLoadBalance(token1Name.address).then((balance) => setToken1Balance(balance));
+      handleLoadBalance(token2Name.address).then((balance) => setToken2Balance(balance));
 
       setToken1Amount("0");
       setToken2Amount("0");
@@ -395,32 +428,25 @@ export default function Pools() {
       let liquidity = ethers.utils.parseEther(removeAmount);
       let currentApproval = await pairContract.allowance(
         account,
-        config[selectedChain].dexAddress
+        config[selectChain].dexAddress
       );
       if (currentApproval.lt(liquidity)) {
         let tx = await pairContract.approve(
-          config[selectedChain].dexAddress,
+          config[selectChain].dexAddress,
           ethers.constants.MaxUint256
         );
         await tx.wait();
       }
 
-      if (account != account) {
-        toast({
-          status: "error",
-          title: "Current account is not signer",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else if (
+      if (
         pool.token0.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase() ||
+          config[selectChain].wrapAddress.toLocaleLowerCase() ||
         pool.token1.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          config[selectChain].wrapAddress.toLocaleLowerCase()
       ) {
         let tokenAddr =
           pool.token0.toLocaleLowerCase() ==
-          config[selectedChain].wrapAddress.toLocaleLowerCase()
+          config[selectChain].wrapAddress.toLocaleLowerCase()
             ? pool.token1
             : pool.token0;
 
@@ -451,6 +477,7 @@ export default function Pools() {
         title: "Remove liquidity success",
         isClosable: true,
       });
+      await dispatch(loadPools())
       getMyLpTokens();
       handleToken1NameChange(token1Name);
     } catch (e) {
@@ -469,7 +496,7 @@ export default function Pools() {
     reserve1,
     reserve2,
     token1Amount,
-    tokenName
+    decimals
   ) => {
     // const reserve1BN = new BN(reserve1);
     if (reserve1.eq(BigNumber.from(0))) {
@@ -483,34 +510,34 @@ export default function Pools() {
     // const reserve2BN = new BN(reserve2);
     const amount1BN = ethers.utils.parseUnits(
       token1Amount,
-      tokens.obj[tokenName]?.decimals
+      decimals
     );
 
     return ethers.utils.formatUnits(
       amount1BN.mul(reserve2).div(reserve1).toString(),
-      tokens.obj[tokenName]?.decimals
+      decimals
     );
   };
 
   const handleSetMaxToken1 = () => {
     const tokenAmount = ethers.utils.formatUnits(
       token1Balance,
-      tokens.obj[token1Name]?.decimals
+      token1Name.decimals
     );
     setToken1Amount(tokenAmount);
 
-    if (poolInfo && token2Name) {
+    if (poolInfo && token2Name.address) {
       const reserve1 =
-        poolInfo.token1 === token1Name ? poolInfo.reserve1 : poolInfo.reserve2;
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2;
 
       const reserve2 =
-        poolInfo.token1 === token1Name ? poolInfo.reserve2 : poolInfo.reserve1;
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1;
 
       const token2Amount = calculateTokenAmount(
         reserve1,
         reserve2,
         tokenAmount,
-        token2Name
+        token2Name.decimals
       );
       setToken2Amount(token2Amount);
     }
@@ -519,22 +546,22 @@ export default function Pools() {
   const handleSetMaxToken2 = () => {
     const tokenAmount = ethers.utils.formatUnits(
       token2Balance,
-      tokens.obj[token2Name]?.decimals
+      token2Name.decimals
     );
     setToken2Amount(tokenAmount);
 
-    if (poolInfo && token1Name) {
+    if (poolInfo && token1Name.address) {
       const reserve1 =
-        poolInfo.token1 === token1Name ? poolInfo.reserve1 : poolInfo.reserve2;
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2;
 
       const reserve2 =
-        poolInfo.token1 === token1Name ? poolInfo.reserve2 : poolInfo.reserve1;
+        poolInfo.token1 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1;
 
       const token1Amount = calculateTokenAmount(
         reserve2,
         reserve1,
         tokenAmount,
-        token1Name
+        token1Name.decimals
       );
       setToken1Amount(token1Amount);
     }
@@ -542,10 +569,10 @@ export default function Pools() {
   const getMyLpTokens = async () => {
     const lpTokens = [];
     //rewrite this
-    if (pools.loaded && pools.list.length && selectedChain) {
+    if (pools.loaded && pools.list.length && selectChain && account) {
       await Promise.all(
         pools.list.map(async (item) => {
-          const balance = await loadBalance(account, selectedChain, item.pair);
+          const balance = await loadBalance(account, selectChain, item.pair);
           if (!balance.isZero()) {
             lpTokens.push({
               ...item,
@@ -564,19 +591,22 @@ export default function Pools() {
 
   if (!tokens.loaded || !pools.loaded) {
     return (
-      <Box
-        my="6"
-        w="full"
-        boxShadow="lg"
-        bg="white"
-        p={20}
-        h={{ base: "calc(100vh - 50px)" }}
+      <Center
+        bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
+        pt={8}
       >
-        <Box>
-          <SkeletonCircle size="20" />
-          <SkeletonText mt="4" noOfLines={12} spacing="4" />
-        </Box>
-      </Box>
+        <Center
+          w={{ base: "full", md: "582px" }}
+          borderRadius={"md"}
+          bgColor="white"
+          px={{ base: 0, md: 4 }}
+          py={6}
+          minH={500}
+          h={{ base: "auto", md: "calc(100vh - 227px)" }}
+        >
+          <CircularProgress size='60px' isIndeterminate color='blue.600'/>
+        </Center>
+      </Center>
     );
   }
   return (
@@ -599,8 +629,8 @@ export default function Pools() {
           <Box
             w={{ base: "full", md: "550px" }}
             mx="auto"
-            minH={600}
-            h={{ base: "auto", md: "calc(100vh - 237px)" }}
+            minH={500}
+            h={{ base: "auto", md: "calc(100vh - 275px)" }}
             overflowY={"auto"}
           >
             <TabList w="full">
@@ -617,7 +647,6 @@ export default function Pools() {
                         <LiquidityItem
                           key={lpToken.pair}
                           lpToken={lpToken}
-                          pool={pools.obj[lpToken.pair]}
                           handleRemoveLiquidity={handleRemoveLiquidity}
                           loading={loading}
                         />
@@ -647,7 +676,7 @@ export default function Pools() {
                           {currencyFormat(
                             ethers.utils.formatUnits(
                               token1Balance,
-                              tokens.obj[token1Name]?.decimals
+                              token1Name.decimals
                             )
                           )}
                         </div>
@@ -673,78 +702,37 @@ export default function Pools() {
                           </Button>
                         </InputRightElement>
                       </InputGroup>
-                      <Popover
-                        matchWidth
-                        isOpen={openTokenIn}
-                        onClose={closeTokenIn}
-                      >
-                        <PopoverTrigger>
-                          <Button
-                            colorScheme="telegram"
-                            justifyContent="left"
-                            minW="200px"
-                            size="lg"
-                            variant="outline"
-                            aria-label="Options token 1"
-                            onClick={toggleTokenIn}
-                            leftIcon={
-                              <Avatar
-                                size="sm"
-                                name={
-                                  token1Name
-                                    ? tokens.obj[token1Name]?.symbol
-                                    : "In"
-                                }
-                                src={
-                                  token1Name
-                                    ? tokens.obj[token1Name]?.icon
-                                    : "/base-logo-in-blue.png"
-                                }
-                              />
+                      <Button
+                        colorScheme="telegram"
+                        justifyContent="left"
+                        minW="200px"
+                        size="lg"
+                        variant="outline"
+                        aria-label="Options token 1"
+                        onClick={toggleTokenIn}
+                        leftIcon={
+                          <Avatar
+                            size="sm"
+                            name={
+                              token1Name.symbol
+                                ? token1Name.symbol
+                                : "In"
                             }
-                          >
-                            <Text>
-                              {token1Name
-                                ? tokens.obj[token1Name]?.symbol
-                                : "Select token"}
-                            </Text>
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          w="full"
-                          maxH="200px"
-                          overflowY="scroll"
-                        >
-                          <PopoverBody w="full">
-                            <VStack w="full">
-                              {tokens.list
-                                .filter((fItem) => fItem.address !== token1Name)
-                                .map((item, index) => (
-                                  <Button
-                                    w="full"
-                                    justifyContent="left"
-                                    isDisabled={item?.disable}
-                                    key={`token-option-in-${index}`}
-                                    leftIcon={
-                                      <Avatar
-                                        size="xs"
-                                        name={item.symbol}
-                                        src={tokens.obj[item.address]?.icon}
-                                      />
-                                    }
-                                    onClick={() => {
-                                      handleToken1NameChange(item.address);
-                                    }}
-                                  >
-                                    <Text>
-                                      {tokens.obj[item.address]?.symbol}
-                                    </Text>
-                                  </Button>
-                                ))}
-                            </VStack>
-                          </PopoverBody>
-                        </PopoverContent>
-                      </Popover>
+                            src={
+                              token1Name.icon
+                                ? token1Name.icon
+                                : "/base-logo-in-blue.png"
+                            }
+                          />
+                        }
+                      >
+                        <Text>
+                          {token1Name.symbol
+                            ? token1Name.symbol
+                            : "Select token"}
+                        </Text>
+                      </Button>
+                      <TokenModal isOpen={openTokenIn} onClose={closeTokenIn} handleChoseToken={handleToken1NameChange} selectedAddr={token1Name.address} />
                     </Flex>
                   </FormControl>
 
@@ -761,7 +749,7 @@ export default function Pools() {
                           {currencyFormat(
                             ethers.utils.formatUnits(
                               token2Balance,
-                              tokens.obj[token2Name]?.decimals
+                              token2Name.decimals
                             )
                           )}
                         </div>
@@ -787,78 +775,37 @@ export default function Pools() {
                           </Button>
                         </InputRightElement>
                       </InputGroup>
-                      <Popover
-                        matchWidth
-                        isOpen={openTokenOut}
-                        onClose={closeTokenOut}
-                      >
-                        <PopoverTrigger h="full">
-                          <Button
-                            colorScheme="telegram"
-                            justifyContent="left"
-                            minW="200px"
-                            size="lg"
-                            variant="outline"
-                            aria-label="Options token out"
-                            onClick={toggleTokenOut}
-                            leftIcon={
-                              <Avatar
-                                size="sm"
-                                name={
-                                  token2Name
-                                    ? tokens.obj[token2Name]?.symbol
-                                    : "Out"
-                                }
-                                src={
-                                  token2Name
-                                    ? tokens.obj[token2Name]?.icon
-                                    : "/base-logo-in-blue.png"
-                                }
-                              />
+                      <Button
+                        colorScheme="telegram"
+                        justifyContent="left"
+                        minW="200px"
+                        size="lg"
+                        variant="outline"
+                        aria-label="Options token out"
+                        onClick={toggleTokenOut}
+                        leftIcon={
+                          <Avatar
+                            size="sm"
+                            name={
+                              token2Name.symbol
+                                ? token2Name.symbol
+                                : "Out"
                             }
-                          >
-                            <Text>
-                              {token2Name
-                                ? tokens.obj[token2Name]?.symbol
-                                : "Select token"}
-                            </Text>
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          w="full"
-                          maxH="200px"
-                          overflowY="scroll"
-                        >
-                          <PopoverBody w="full">
-                            <VStack w="full">
-                              {tokens.list
-                                .filter((fItem) => fItem.address !== token2Name)
-                                .map((item, index) => (
-                                  <Button
-                                    w="full"
-                                    justifyContent="left"
-                                    isDisabled={item?.disable}
-                                    key={`token-option-out-${index}`}
-                                    leftIcon={
-                                      <Avatar
-                                        size="xs"
-                                        name={item.address}
-                                        src={tokens.obj[item.address]?.icon}
-                                      />
-                                    }
-                                    onClick={() => {
-                                      handleToken2NameChange(item.address);
-                                    }}
-                                  >
-                                    <Text>
-                                      {tokens.obj[item.address]?.symbol}
-                                    </Text>
-                                  </Button>
-                                ))}
-                            </VStack>
-                          </PopoverBody>
-                        </PopoverContent>
-                      </Popover>
+                            src={
+                              token2Name.icon
+                                ? token2Name.icon
+                                : "/base-logo-in-blue.png"
+                            }
+                          />
+                        }
+                      >
+                        <Text>
+                          {token2Name.symbol
+                            ? token2Name.symbol
+                            : "Select token"}
+                        </Text>
+                      </Button>
+                      <TokenModal isOpen={openTokenOut} onClose={closeTokenOut} handleChoseToken={handleToken2NameChange} selectedAddr={token2Name.address} />
                     </Flex>
                   </FormControl>
 

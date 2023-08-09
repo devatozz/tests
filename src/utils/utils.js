@@ -32,3 +32,12 @@ export const metadatas = {
     icon: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
   },
 };
+
+export const emptyToken = {
+  address: "",
+  name: "",
+  symbol: "",
+  decimals: 18,
+  disable: false,
+  icon: ""
+}

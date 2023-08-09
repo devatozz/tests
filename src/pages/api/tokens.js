@@ -1,10 +1,18 @@
-const tokensList = [
+const testnetTokensList = [
     {
-        address: "0xE79598095C29c30f194406B2a14bA2b1256A713E",
+        address: "0x0000000000000000000000000000000000000000",
         name: "ETH",
-        symbol: "ETH",
+        symbol: "Ether",
         decimals: 18,
         icon: "/eth.png",
+        disable: false
+    },
+    {
+        address: "0x4200000000000000000000000000000000000006",
+        name: "Wrapped Ether",
+        symbol: "WETH",
+        decimals: 18,
+        icon: "/weth.png",
         disable: false
     },
     {
@@ -32,6 +40,51 @@ const tokensList = [
         disable: false
     }
 ]
+
+const mainnetTokensList = [
+    {
+        address: "0x0000000000000000000000000000000000000000",
+        name: "ETH",
+        symbol: "Ether",
+        decimals: 18,
+        icon: "/eth.png",
+        disable: false
+    },
+    {
+        address: "0x4200000000000000000000000000000000000006",
+        name: "Wrapped Ether",
+        symbol: "WETH",
+        decimals: 18,
+        icon: "/weth.png",
+        disable: false
+    },
+    {
+        address: "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+        name: "Axelar Wrapped USDC",
+        symbol: "axlUSDC",
+        decimals: 6,
+        icon: "/usdc.png",
+        disable: false
+    },
+    {
+        address: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+        name: "USD Base Coin",
+        symbol: "USDCbC",
+        decimals: 6,
+        icon: "/usdc.png",
+        disable: false
+    },
+    {
+        address: "0x7133d274BA9BC6980f31cCBD2cc4E975D6E04879",
+        name: "FLU Bot",
+        symbol: "FLUB",
+        decimals: 18,
+        icon: "/flu.png",
+        disable: false
+    }
+]
+
+const tokensList = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? mainnetTokensList : testnetTokensList
 
 export default async function handler(_req, res) {
     try {

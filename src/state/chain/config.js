@@ -1,8 +1,9 @@
-import baseConfig from "src/state/config/base.json";
+import baseTestnetConfig from "src/state/config/base-testnet.json";
+import baseMainnetConfig from "src/state/config/base-mainnet.json";
 
 export const noneAddress = "0x0000000000000000000000000000000000000000";
 
-export const config = {
+const TestnetConfig = {
   base: {
     rpcAddress: "https://goerli.base.org",
     logoURL: "",
@@ -17,24 +18,49 @@ export const config = {
       address: noneAddress,
       decimals: 18,
     },
-    factoryAddress: baseConfig.factory,
-    dexAddress: baseConfig.router,
-    wrapAddress : baseConfig.wrap,
+    factoryAddress: baseTestnetConfig.factory,
+    dexAddress: baseTestnetConfig.router,
+    wrapAddress: baseTestnetConfig.wrap,
   }
 };
 
-export const chainInfos = {
-  // ftm: { label: "Fantom", logo: "/ftm.png", disabled: false },
-  // avax: { label: "Avalanche C Chain", logo: "/avax.png", disabled: false },
-  // bttc: { label: "BitTorrent Chain", logo: "/bttc.png", disabled: false },
+const MainnetConfig = {
+  base: {
+    rpcAddress: "https://mainnet.base.org",
+    logoURL: "",
+    wssAddress: "https://mainnet.base.org",
+    chainId: 8453,
+    blockchainExplorer: "https://basescan.org",
+    name: "Base",
+    nativeToken: {
+      name: "ETH",
+      symbol: "ETH",
+      logo: "/eth.png",
+      address: noneAddress,
+      decimals: 18,
+    },
+    factoryAddress: baseMainnetConfig.factory,
+    dexAddress: baseMainnetConfig.router,
+    wrapAddress: baseMainnetConfig.wrap,
+  }
+};
+
+export const config = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? MainnetConfig : TestnetConfig
+
+const ChainInfosTestnet = {
   base: {
     label: "Base Goerli",
     logo: "/base-logo-in-blue.png",
     disabled: false,
   },
-  // ganache: {
-  //   label: "Ganache",
-  //   logo: "/base-logo-in-blue.png",
-  //   disabled: false,
-  // },
 };
+
+const ChainInfosMainnet = {
+  base: {
+    label: "Base",
+    logo: "/base-logo-in-blue.png",
+    disabled: false,
+  },
+};
+
+export const chainInfos = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? ChainInfosMainnet : ChainInfosTestnet

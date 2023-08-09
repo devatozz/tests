@@ -22,4 +22,4 @@ const AirdropCommingSoon = () => {
   );
 };
 
-export default AirdropCommingSoon;
+export default airdrop;
