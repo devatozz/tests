@@ -33,13 +33,13 @@ import {
 import { currencyFormat, formatInputAmount } from 'src/utils/stringUtil';
 import { BigNumber, ethers } from 'ethers';
 import { useDispatch, useSelector } from 'react-redux';
-import { config, noneAddress } from 'src/state/chain/config';
+import { forwardConfig, noneAddress } from 'src/state/chain/config';
 import SwapTokenModal from 'src/components/swap/TokensModal';
 import { emptyToken } from 'src/utils/utils';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { LuArrowUpDown } from 'react-icons/lu';
 import SlippageOptions from 'src/components/swap/SlippageOptions';
-import loadPools from 'src/state/dex/thunks/loadPools';
+import loadPools from 'src/state/forward/thunks/loadPools';
 
 export default function SwapPage() {
   const [tokenIn, setTokenIn] = useState(emptyToken);
@@ -55,7 +55,7 @@ export default function SwapPage() {
   const [deadlineTime, setDeadlineTime] = useState(10);
   const [deadlineMsg, setDeadlineMsg] = useState('');
   const toast = useToast();
-  const { pools, tokens, loaded, dex } = useSelector((state) => state.dex);
+  const { pools, tokens, loaded, dex } = useSelector((state) => state.forward);
   const { account, selectedChain } = useSelector((state) => state.chain);
   const dispatch = useDispatch();
   const { isOpen: openSettings, onToggle: toggleSettings } = useDisclosure();
@@ -88,13 +88,13 @@ export default function SwapPage() {
       let selectChain = selectedChain ? selectedChain : 'base';
       if (
         (tIn.address == noneAddress &&
-          tOut.address == config[selectChain].wrapAddress) ||
-        (tIn.address == config[selectChain].wrapAddress &&
+          tOut.address == forwardConfig[selectChain].wrapAddress) ||
+        (tIn.address == forwardConfig[selectChain].wrapAddress &&
           tOut.address == noneAddress)
       ) {
         tIn.address == noneAddress
-          ? setSwapSteps([noneAddress, config[selectChain].wrapAddress])
-          : setSwapSteps([config[selectChain].wrapAddress, noneAddress]);
+          ? setSwapSteps([noneAddress, forwardConfig[selectChain].wrapAddress])
+          : setSwapSteps([forwardConfig[selectChain].wrapAddress, noneAddress]);
         setAmountIn(aXOut);
         if (aXOut && bIn.lt(ethers.utils.parseEther(aXOut))) {
           handleBalanceInsufficient();
@@ -110,14 +110,14 @@ export default function SwapPage() {
         let steps = [];
         if (tIn.address == noneAddress) {
           steps = getSteps(
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             tOut.address,
             pools.matrix
           );
         } else if (tOut.address == noneAddress) {
           steps = getSteps(
             tIn.address,
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             pools.matrix
           );
         } else {
@@ -155,14 +155,14 @@ export default function SwapPage() {
         let steps = [];
         if (tIn.address == noneAddress) {
           steps = getSteps(
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             tOut.address,
             pools.matrix
           );
         } else if (tOut.address == noneAddress) {
           steps = getSteps(
             tIn.address,
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             pools.matrix
           );
         } else {
@@ -179,13 +179,13 @@ export default function SwapPage() {
       let selectChain = selectedChain ? selectedChain : 'base';
       if (
         (tIn.address == noneAddress &&
-          tOut.address == config[selectChain].wrapAddress) ||
-        (tIn.address == config[selectChain].wrapAddress &&
+          tOut.address == forwardConfig[selectChain].wrapAddress) ||
+        (tIn.address == forwardConfig[selectChain].wrapAddress &&
           tOut.address == noneAddress)
       ) {
         tIn.address == noneAddress
-          ? setSwapSteps([noneAddress, config[selectChain].wrapAddress])
-          : setSwapSteps([config[selectChain].wrapAddress, noneAddress]);
+          ? setSwapSteps([noneAddress, forwardConfig[selectChain].wrapAddress])
+          : setSwapSteps([forwardConfig[selectChain].wrapAddress, noneAddress]);
         setAmountOut(aXIn);
         if (aXIn && blIn.lt(ethers.utils.parseEther(aXIn))) {
           handleBalanceInsufficient();
@@ -201,14 +201,14 @@ export default function SwapPage() {
         let steps = [];
         if (tIn.address == noneAddress) {
           steps = getSteps(
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             tOut.address,
             pools.matrix
           );
         } else if (tOut.address == noneAddress) {
           steps = getSteps(
             tIn.address,
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             pools.matrix
           );
         } else {
@@ -248,14 +248,14 @@ export default function SwapPage() {
         let steps = [];
         if (tIn.address == noneAddress) {
           steps = getSteps(
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             tOut.address,
             pools.matrix
           );
         } else if (tOut.address == noneAddress) {
           steps = getSteps(
             tIn.address,
-            config[selectChain].wrapAddress,
+            forwardConfig[selectChain].wrapAddress,
             pools.matrix
           );
         } else {
@@ -302,11 +302,11 @@ export default function SwapPage() {
       let aIn = ethers.utils.parseUnits(amountIn, tokenIn.decimals);
       let currentApproval = await erc20.allowance(
         account,
-        config[selectedChain].dexAddress
+        forwardConfig[selectedChain].dexAddress
       );
       if (currentApproval.lt(aIn)) {
         let approveTx = await erc20.approve(
-          config[selectedChain].dexAddress,
+          forwardConfig[selectedChain].dexAddress,
           ethers.constants.MaxUint256
         );
         await approveTx.wait();
@@ -330,11 +330,11 @@ export default function SwapPage() {
       let aIn = ethers.utils.parseUnits(amountIn, tokenIn.decimals);
       let currentApproval = await erc20.allowance(
         account,
-        config[selectedChain].dexAddress
+        forwardConfig[selectedChain].dexAddress
       );
       if (currentApproval.lt(aIn)) {
         let approveTx = await erc20.approve(
-          config[selectedChain].dexAddress,
+          forwardConfig[selectedChain].dexAddress,
           ethers.constants.MaxUint256
         );
         await approveTx.wait();
@@ -352,7 +352,7 @@ export default function SwapPage() {
   );
 
   const handleDepositETH = useCallback(async () => {
-    let weth = createWETHContractWithSigner(config[selectedChain].wrapAddress);
+    let weth = createWETHContractWithSigner(forwardConfig[selectedChain].wrapAddress);
     let aIn = ethers.utils.parseEther(amountIn);
 
     let swapTx = await weth.deposit({ value: aIn });
@@ -360,7 +360,7 @@ export default function SwapPage() {
   }, [amountIn, selectedChain]);
 
   const handleWithdrawETH = useCallback(async () => {
-    let weth = createWETHContractWithSigner(config[selectedChain].wrapAddress);
+    let weth = createWETHContractWithSigner(forwardConfig[selectedChain].wrapAddress);
     let aIn = ethers.utils.parseEther(amountIn);
 
     let swapTx = await weth.withdraw(aIn);
@@ -382,12 +382,12 @@ export default function SwapPage() {
       if (
         tokenIn.address == noneAddress &&
         tokenOut.address.toLowerCase() ==
-          config[selectedChain].wrapAddress.toLowerCase()
+          forwardConfig[selectedChain].wrapAddress.toLowerCase()
       ) {
         await handleDepositETH();
       } else if (
         tokenIn.address.toLowerCase() ==
-          config[selectedChain].wrapAddress.toLowerCase() &&
+          forwardConfig[selectedChain].wrapAddress.toLowerCase() &&
         tokenOut.address == noneAddress
       ) {
         await handleWithdrawETH();
