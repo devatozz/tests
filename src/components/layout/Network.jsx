@@ -17,7 +17,6 @@ import { useRouter } from "next/router";
 import WalletIcon from "src/components/icons/Wallet";
 import {
   disconnectNetwork,
-  setIsConnecting,
   handleEthereumAccountChange,
 } from "src/state/chain/slice";
 import loadContracts from "src/state/dex/thunks/loadContract";
@@ -30,7 +29,7 @@ import loadForwardTokens from "src/state/forward/thunks/loadTokens";
 export default function Network() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isConnecting, selectedChain, account } = useSelector(
+  const { isConnecting, selectedChain, account, web3Loaded } = useSelector(
     (state) => state.chain
   );
   const {
@@ -46,29 +45,25 @@ export default function Network() {
 
   const handleConnectNetwork = useCallback(
     async (chain) => {
-      dispatch(setIsConnecting(true));
-
-      await dispatch(connectToWallet(chain));
-
-      dispatch(setIsConnecting(false));
+      dispatch(connectToWallet(chain))
+        .then(() => dispatch(loadForwardContracts()))
+        .then(() => dispatch(loadForwardPools()))
     },
-    [router]
+    []
   );
 
   const handleDisconnectNetwork = useCallback(async () => {
     // handle disconnect here
-    dispatch(setIsConnecting(true));
     dispatch(disconnectNetwork());
-    dispatch(setIsConnecting(false));
   }, [selectedChain]);
 
   const handleCheckChain = useCallback(async () => {
     //@ts-ignore
     const chainId = await window.ethereum.request({ method: "eth_chainId" });
     if (chainId !== config[selectedChain].chainId) {
-      dispatch(setIsConnecting(true));
-      await dispatch(connectToWallet(selectedChain));
-      dispatch(setIsConnecting(false));
+      dispatch(connectToWallet(selectedChain))
+        .then(() => dispatch(loadForwardContracts()))
+        .then(() => dispatch(loadForwardPools()))
     }
   }, [selectedChain]);
 
@@ -79,20 +74,12 @@ export default function Network() {
   }, []);
 
   useEffect(() => {
-    if (!contractLoaded) {
+    if (!contractLoaded && web3Loaded) {
       dispatch(loadContracts());
-    } else {
+    } else if (contractLoaded && web3Loaded) {
       dispatch(loadPools());
     }
-  }, [contractLoaded]);
-
-  useEffect(() => {
-    if (!forwardContractLoaded) {
-      dispatch(loadForwardContracts());
-    } else {
-      dispatch(loadForwardPools());
-    }
-  }, [forwardContractLoaded]);
+  }, [contractLoaded, web3Loaded]);
 
   useEffect(() => {
     if (contractLoaded && poolLoaded && !tokenLoaded) {

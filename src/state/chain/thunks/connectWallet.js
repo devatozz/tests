@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { checkMetaMask, connectMetamask } from "../utils/metamask";
 
-const connectToWallet = createAsyncThunk("wallet/connect", async (chain) => {
+const connectToWallet = createAsyncThunk("wallet/connect", async (chain, {dispatch}) => {
     try {
         let connectResult = false;
         let account = "";
         let checkResult = await checkMetaMask(chain);
-        console.log(checkResult)
+        console.log("check", checkResult)
         if (!checkResult) {
             return { chain: "", account: "" };
         }
@@ -17,6 +17,7 @@ const connectToWallet = createAsyncThunk("wallet/connect", async (chain) => {
             console.log('Success!', 'Wallet Connected!', 'success')
             account = allAccounts[0];
         }
+        
         if (connectResult) {
             return { chain: chain, account: account };
         } else {

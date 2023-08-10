@@ -4,12 +4,11 @@ import connectToWallet from "./thunks/connectWallet";
 
 const initialState = {
     isConnecting: false,
+    isSwitching: false,
     selectedChain: "",
     availableChains: ["base"],
     account: "",
     web3Loaded: false,
-    infoLoaded: false,
-    registered: false,
     isInstalledMetamask: false
 }
 
@@ -19,9 +18,6 @@ export const slice = createSlice({
     reducers: {
         select: (state, action) => {
             state.chain = action.payload;
-        },
-        setIsConnecting: (state, action) => {
-            state.isConnecting = action.payload;
         },
         disconnectNetwork: (state, _action) => {
             state.account = "";
@@ -36,21 +32,22 @@ export const slice = createSlice({
         },
     },
     extraReducers(builder) {
+        builder.addCase(connectToWallet.pending, (state) => {
+            state.isConnecting = true
+            state.web3Loaded = false
+        }),
         builder.addCase(connectToWallet.fulfilled, (state, action) => {
-            if (action.payload.account) {
-                state.web3Loaded = true;
-            } else {
-                state.web3Loaded = false;
-            }
             state.account = action.payload.account;
             state.selectedChain = action.payload.chain;
+            
+            state.web3Loaded = true;
+            state.isConnecting = false
         })
     }
 })
 
 export const {
     select,
-    setIsConnecting,
     setIsInstalledMetamask,
     disconnectNetwork,
     handleEthereumAccountChange

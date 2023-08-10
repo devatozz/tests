@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BigNumber, ethers } from "ethers";
 import PiraPair from "src/abis/PiraPair.json";
 
+const testnetPools = ["0x6e5d28ee7579b46e8b8a26a0b1832b465a4bbefa", "0x9d8c1ed350dca116be79d4e43ecc51b05ab2f759", "0x1D7D6f01e666ffd6C377cB8318A4dAcb7939eD95", "0xa9cccf283330b13e29729c4b1ec24db6b2b5eb0a"]
+const mainnetPools = ["0x9A0b05F3cF748A114A4f8351802b3BFfE07100D4", "0x41d160033C222E6f3722EC97379867324567d883"]
 const loadPools = createAsyncThunk("forward/pool", async (_payload, { getState }) => {
     const state = await getState();
     const selectedChain = state.chain.selectedChain ? state.chain.selectedChain : "base";
@@ -10,21 +12,13 @@ const loadPools = createAsyncThunk("forward/pool", async (_payload, { getState }
         return { error: true, message: 'not loaded' };
     }
     try {
-        console.log("start load pool")
-        let sec = 0
-        let itersec = setInterval(() => console.log(sec++), 1000)
         const factoryContract = state.forward.factory.contract;
         const totalPairs = await factoryContract.allPairsLength();
 
         let pairsLength = totalPairs.toNumber()
         if (pairsLength > 0) {
             let pairPromises = [];
-
-            for (let i = 0; i < pairsLength; i++) {
-                pairPromises.push(factoryContract.allPairs(BigNumber.from(i)));
-            }
-
-            const pairs = await Promise.all(pairPromises)
+            const pairs = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? mainnetPools : testnetPools
 
             pairPromises = [];
             for (let i = 0; i < pairs.length; i++) {
@@ -32,7 +26,6 @@ const loadPools = createAsyncThunk("forward/pool", async (_payload, { getState }
             }
 
             let listResult = await Promise.all(pairPromises)
-            clearInterval(itersec)
             listResult = listResult.filter(item => (!item.reverses._reserve0.isZero() || !item.reverses._reserve1.isZero()))
             let objResult = {}
             for (let i = 0; i < pairs.length; i++) {
