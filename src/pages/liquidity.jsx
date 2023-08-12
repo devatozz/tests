@@ -131,7 +131,7 @@ export default function Pools() {
     if (amountSplit.length == 1) {
       amount = (formatInputAmount(amount));
     } else if (amountSplit.length >= 2) {
-      if (amountSplit[1].length > token1Name.decimals) {
+      if (amountSplit[1].length > token2Name.decimals) {
         amount = parseFloat(formatInputAmount(amount)).toFixed(token2Name.decimals);
       } else {
         amount = formatInputAmount(amount);
@@ -154,7 +154,7 @@ export default function Pools() {
       );
     } else if (token1Name.address == noneAddress) {
       token1AmountCal = calculateTokenAmount(
-        poolInfo.token2 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
+        poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
         amount,
         token2Name.decimals,
@@ -173,20 +173,48 @@ export default function Pools() {
   };
 
   useEffect(() => {
+    let amountSplit1 = token1Amount.split('.')
+    let amount1 = token1Amount
+    if (amountSplit1.length == 1) {
+      amount1 = formatInputAmount(amount1);
+    } else if (amountSplit1.length >= 2) {
+      if (amountSplit1[1].length > token1Name.decimals) {
+        amount1 = parseFloat(formatInputAmount(amount1)).toFixed(token1Name.decimals);
+      } else {
+        amount1 = formatInputAmount(amount1);
+      }
+    } else {
+      amount1 = formatInputAmount(amount1);
+    }
+    setToken1Amount(amount1)
+    let amountSplit2 = token2Amount.split('.')
+    let amount2 = token2Amount
+    if (amountSplit2.length == 1) {
+      amount2 = formatInputAmount(amount2);
+    } else if (amountSplit2.length >= 2) {
+      if (amountSplit2[1].length > token2Name.decimals) {
+        amount2 = parseFloat(formatInputAmount(amount1)).toFixed(token2Name.decimals);
+      } else {
+        amount2 = formatInputAmount(amount2);
+      }
+    } else {
+      amount2 = formatInputAmount(amount2);
+    }
+    setToken2Amount(amount2)
     if (
       (token1Name.address &&
-        token1Amount &&
+        amount1 &&
         token1Balance.lt(
           ethers.utils.parseUnits(
-            token1Amount,
+            amount1,
             token1Name.decimals
           )
         )) ||
       (token2Name.address &&
-        token2Amount &&
+        amount2 &&
         token2Balance.lt(
           ethers.utils.parseUnits(
-            token2Amount,
+            amount2,
             token2Name.decimals
           )
         ))
@@ -216,6 +244,20 @@ export default function Pools() {
       handleLoadBalance(oldToken1Addr).then((balance) => setToken2Balance(balance));
     } else if (tokenName.address && token2Name.address) {
       let poolInfo = null;
+      let amountSplit = token1Amount.split('.')
+      let amount = token1Amount
+      if (amountSplit.length == 1) {
+        amount = formatInputAmount(amount);
+      } else if (amountSplit.length >= 2) {
+        if (amountSplit[1].length > tokenName.decimals) {
+          amount = parseFloat(formatInputAmount(amount)).toFixed(tokenName.decimals);
+        } else {
+          amount = formatInputAmount(amount);
+        }
+      } else {
+        amount = formatInputAmount(amount);
+      }
+      setToken1Amount(amount)
       if (tokenName.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][token2Name.address]) {
         poolInfo = pools.matrix[config[selectChain].wrapAddress][token2Name.address][0];
       } else if (token2Name.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][tokenName.address]) {
@@ -224,32 +266,95 @@ export default function Pools() {
         poolInfo = pools.matrix[tokenName.address][token2Name.address][0];
       }
       setPoolInfo(poolInfo);
-      if (poolInfo && token2Amount) {
-        const reserve1 =
-          poolInfo.token1 == tokenName.address ? poolInfo.reserve1 : poolInfo.reserve2;
-        const reserve2 =
-          poolInfo.token1 == tokenName.address ? poolInfo.reserve2 : poolInfo.reserve1;
-
-        const token1Amount = calculateTokenAmount(
-          reserve1,
-          reserve2,
-          token2Amount,
-          tokenName.decimals,
-          token2Name.decimals
-        );
-        setToken1Amount(token1Amount);
+      if (poolInfo) {
+        let tokenAmounCal = BigNumber.from(0)
+        if (token1Amount) {
+          if (tokenName.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token1 === config[selectChain].wrapAddress ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              amount,
+              tokenName.decimals,
+              token2Name.decimals
+            );
+          } else if (token2Name.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token1 === tokenName.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              amount,
+              tokenName.decimals,
+              token2Name.decimals
+            );
+          } else {
+            let [reserve1, reserve2] = poolInfo.token1 === tokenName.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              amount,
+              tokenName.decimals,
+              token2Name.decimals
+            );
+          }
+          setToken2Amount(tokenAmounCal);
+        } else if (token2Amount) {
+          if (tokenName.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token1 === config[selectChain].wrapAddress ? [poolInfo.reserve2, poolInfo.reserve1] : [poolInfo.reserve1, poolInfo.reserve2]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              token2Amount,
+              tokenName.decimals,
+              token2Name.decimals
+            );
+          } else if (token1Name.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token1 === tokenName.address ? [poolInfo.reserve2, poolInfo.reserve1] : [poolInfo.reserve1, poolInfo.reserve2]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              token2Amount,
+              tokenName.decimals,
+              token2Name.decimals
+            );
+          } else {
+            let [reserve1, reserve2] = poolInfo.token1 === tokenName.address ? [poolInfo.reserve2, poolInfo.reserve1] : [poolInfo.reserve1, poolInfo.reserve2]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              token2Amount,
+              tokenName.decimals,
+              token2Name.decimals
+            );
+          }
+          setToken2Amount(tokenAmounCal);
+        }
       } else {
-        setToken1Amount("0");
+        setToken2Amount("0");
       }
+    } else if (tokenName.address) {
+      let amountSplit = token1Amount.split('.')
+      let amount = token1Amount
+      if (amountSplit.length == 1) {
+        amount = formatInputAmount(amount);
+      } else if (amountSplit.length >= 2) {
+        if (amountSplit[1].length > token1Name.decimals) {
+          amount = parseFloat(formatInputAmount(amount)).toFixed(token1Name.decimals);
+        } else {
+          amount = formatInputAmount(amount);
+        }
+      } else {
+        amount = formatInputAmount(amount);
+      }
+      setToken1Amount(amount)
     }
     closeTokenIn();
 
     handleLoadBalance(tokenName.address).then((balance) => setToken1Balance(balance));
   };
 
-  const handleToken2NameChange = async (tokenName) => {
+  const handleToken2NameChange = (tokenName) => {
     setToken2Name(tokenName);
-
     if (tokenName.address == token1Name.address) {
       let oldToken2Addr = token2Name.address
       setToken1Name(token2Name);
@@ -259,6 +364,20 @@ export default function Pools() {
 
     } else if (token1Name.address && tokenName.address) {
       let poolInfo = null;
+      let amount = token2Amount
+      let amountSplit = token2Amount.split('.')
+      if (amountSplit.length == 1) {
+        amount = formatInputAmount(amount);
+      } else if (amountSplit.length >= 2) {
+        if (amountSplit[1].length > tokenName.decimals) {
+          amount = parseFloat(formatInputAmount(amount)).toFixed(tokenName.decimals);
+        } else {
+          amount = formatInputAmount(amount);
+        }
+      } else {
+        amount = formatInputAmount(amount);
+      }
+      setToken2Amount(amount)
       if (tokenName.address == noneAddress && pools.matrix[token1Name.address] && pools.matrix[token1Name.address][config[selectChain].wrapAddress]) {
         poolInfo = pools.matrix[token1Name.address][config[selectChain].wrapAddress][0];
       } else if (token1Name.address == noneAddress && pools.matrix[config[selectChain].wrapAddress] && pools.matrix[config[selectChain].wrapAddress][tokenName.address]) {
@@ -267,22 +386,87 @@ export default function Pools() {
         poolInfo = pools.matrix[token1Name.address][tokenName.address][0];
       }
       setPoolInfo(poolInfo);
-      if (poolInfo && token1Amount) {
-        const reserve1 =
-          poolInfo.token2 == tokenName.address ? poolInfo.reserve1 : poolInfo.reserve2;
-        const reserve2 =
-          poolInfo.token2 == tokenName.address ? poolInfo.reserve2 : poolInfo.reserve1;
-        const token2Amount = calculateTokenAmount(
-          reserve1,
-          reserve2,
-          token1Amount,
-          tokenName.decimals,
-          token1Name.decimals
-        );
-        setToken2Amount(token2Amount);
+      if (poolInfo) {
+        let tokenAmounCal = BigNumber.from(0)
+        if (token1Amount) {
+          if (tokenName.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token2 === config[selectChain].wrapAddress ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              token1Amount,
+              token1Name.decimals,
+              tokenName.decimals
+            );
+          } else if (token1Name.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token2 === tokenName.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              token1Amount,
+              token1Name.decimals,
+              tokenName.decimals
+            );
+          } else {
+            let [reserve1, reserve2] = poolInfo.token2 === tokenName.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              token1Amount,
+              token1Name.decimals,
+              tokenName.decimals
+            );
+          }
+          setToken2Amount(tokenAmounCal);
+        } else if (token2Amount) {
+          if (tokenName.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token2 === config[selectChain].wrapAddress ? [poolInfo.reserve2, poolInfo.reserve1] : [poolInfo.reserve1, poolInfo.reserve2]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              amount,
+              tokenName.decimals,
+              token1Name.decimals
+            );
+          } else if (token1Name.address == noneAddress) {
+            let [reserve1, reserve2] = poolInfo.token2 === tokenName.address ? [poolInfo.reserve2, poolInfo.reserve1] : [poolInfo.reserve1, poolInfo.reserve2]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              amount,
+              tokenName.decimals,
+              token1Name.decimals
+            );
+          } else {
+            let [reserve1, reserve2] = poolInfo.token2 === tokenName.address ? [poolInfo.reserve2, poolInfo.reserve1] : [poolInfo.reserve1, poolInfo.reserve2]
+            tokenAmounCal = calculateTokenAmount(
+              reserve1,
+              reserve2,
+              amount,
+              tokenName.decimals,
+              token1Name.decimals
+            );
+          }
+          setToken2Amount(tokenAmounCal);
+        }
       } else {
         setToken2Amount("0");
       }
+    } else if (tokenName.address) {
+      let amount = token2Amount
+      let amountSplit = token2Amount.split('.')
+      if (amountSplit.length == 1) {
+        amount = formatInputAmount(amount);
+      } else if (amountSplit.length >= 2) {
+        if (amountSplit[1].length > token2Name.decimals) {
+          amount = parseFloat(formatInputAmount(amount)).toFixed(token2Name.decimals);
+        } else {
+          amount = formatInputAmount(amount);
+        }
+      } else {
+        amount = formatInputAmount(amount);
+      }
+      setToken2Amount(amount)
     }
     closeTokenOut();
     handleLoadBalance(tokenName.address).then((balance) => setToken2Balance(balance));
@@ -555,20 +739,36 @@ export default function Pools() {
     setToken1Amount(tokenAmount);
 
     if (poolInfo && token2Name.address) {
-      const reserve1 =
-        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2;
-
-      const reserve2 =
-        poolInfo.token1 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1;
-
-      const token2Amount = calculateTokenAmount(
-        reserve1,
-        reserve2,
-        tokenAmount,
-        token1Name.decimals,
-        token2Name.decimals
-      );
-      setToken2Amount(token2Amount);
+      let tokenAmounCal = BigNumber.from(0)
+      if (token1Name.address == noneAddress) {
+        let [reserve1, reserve2] = poolInfo.token1 === config[selectChain].wrapAddress ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        tokenAmounCal = calculateTokenAmount(
+          reserve1,
+          reserve2,
+          tokenAmount,
+          token1Name.decimals,
+          token2Name.decimals
+        );
+      } else if (token1Name.address == noneAddress) {
+        let [reserve1, reserve2] = poolInfo.token1 === token1Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        tokenAmounCal = calculateTokenAmount(
+          reserve1,
+          reserve2,
+          tokenAmount,
+          token1Name.decimals,
+          token2Name.decimals
+        );
+      } else {
+        let [reserve1, reserve2] = poolInfo.token1 === token1Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        tokenAmounCal = calculateTokenAmount(
+          reserve1,
+          reserve2,
+          tokenAmount,
+          token1Name.decimals,
+          token2Name.decimals
+        );
+      }
+      setToken2Amount(tokenAmounCal);
     }
   };
 
@@ -580,20 +780,36 @@ export default function Pools() {
     setToken2Amount(tokenAmount);
 
     if (poolInfo && token1Name.address) {
-      const reserve1 =
-        poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2;
-
-      const reserve2 =
-        poolInfo.token1 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1;
-
-      const token1Amount = calculateTokenAmount(
-        reserve2,
-        reserve1,
-        tokenAmount,
-        token2Name.decimals,
-        token1Name.decimals
-      );
-      setToken1Amount(token1Amount);
+      let tokenAmounCal = BigNumber.from(0)
+      if (token2Name.address == noneAddress) {
+        let [reserve1, reserve2] = poolInfo.token1 === config[selectChain].wrapAddress ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        tokenAmounCal = calculateTokenAmount(
+          reserve1,
+          reserve2,
+          tokenAmount,
+          token1Name.decimals,
+          token2Name.decimals
+        );
+      } else if (token1Name.address == noneAddress) {
+        let [reserve1, reserve2] = poolInfo.token1 === token1Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        tokenAmounCal = calculateTokenAmount(
+          reserve1,
+          reserve2,
+          tokenAmount,
+          token1Name.decimals,
+          token2Name.decimals
+        );
+      } else {
+        let [reserve1, reserve2] = poolInfo.token1 === token1Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        tokenAmounCal = calculateTokenAmount(
+          reserve1,
+          reserve2,
+          tokenAmount,
+          token1Name.decimals,
+          token2Name.decimals
+        );
+      }
+      setToken1Amount(tokenAmounCal);
     }
   };
   const getMyLpTokens = async () => {
@@ -858,35 +1074,3 @@ export default function Pools() {
     </Center>
   );
 }
-
-const PoolDetail = ({ label, value }) => (
-  <Flex mb={2}>
-    <Box width="60%" fontWeight="bold">
-      {label}
-    </Box>
-    <Box width="40%" textAlign="right">
-      100
-    </Box>
-  </Flex>
-);
-
-const Pool = ({ pool }) => (
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box flex="1" textAlign="left">
-          {pool.token1} - {pool.token2}
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      <PoolDetail
-        label="Your total liquidity tokens:"
-        value={pool.totalPoolTokens}
-      />
-      <PoolDetail label="Total Token 1:" value={pool.totalToken1} />
-      <PoolDetail label="Total Token 2:" value={pool.totalToken2} />
-    </AccordionPanel>
-  </AccordionItem>
-);
