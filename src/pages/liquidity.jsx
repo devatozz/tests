@@ -86,30 +86,33 @@ export default function Pools() {
 
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve1 == "0")
       return;
-    let token2Amount = BigNumber.from(0)
+    let token2AmountCal = BigNumber.from(0)
     if (token1Name.address == noneAddress) {
-      token2Amount = calculateTokenAmount(
+      token2AmountCal = calculateTokenAmount(
         poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
-        amount,
-        token1Name.decimals
+        formatInputAmount(amount),
+        token1Name.decimals,
+        token2Name.decimals
       );
     } else if (token2Name.address == noneAddress) {
-      token2Amount = calculateTokenAmount(
+      token2AmountCal = calculateTokenAmount(
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
-        amount,
-        token1Name.decimals
+        formatInputAmount(amount),
+        token1Name.decimals,
+        token2Name.decimals
       );
     } else {
-      token2Amount = calculateTokenAmount(
+      token2AmountCal = calculateTokenAmount(
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
-        amount,
-        token1Name.decimals
+        formatInputAmount(amount),
+        token1Name.decimals,
+        token2Name.decimals
       );
     }
-    setToken2Amount(token2Amount);
+    setToken2Amount(token2AmountCal);
   };
 
   const handleToken2AmountChange = async (amount) => {
@@ -117,31 +120,34 @@ export default function Pools() {
 
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve2 == "0")
       return;
-    let token1Amount = BigNumber.from(0)
+    let token1AmountCal = BigNumber.from(0)
 
     if (token2Name.address == noneAddress) {
-      token1Amount = calculateTokenAmount(
+      token1AmountCal = calculateTokenAmount(
         poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
-        amount,
-        token2Name.decimals
+        formatInputAmount(amount),
+        token2Name.decimals,
+        token1Name.decimals
       );
     } else if (token1Name.address == noneAddress) {
-      token1Amount = calculateTokenAmount(
+      token1AmountCal = calculateTokenAmount(
         poolInfo.token2 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
-        amount,
-        token2Name.decimals
+        formatInputAmount(amount),
+        token2Name.decimals,
+        token1Name.decimals
       );
     } else {
-      token1Amount = calculateTokenAmount(
+      token1AmountCal = calculateTokenAmount(
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
-        amount,
-        token2Name.decimals
+        formatInputAmount(amount),
+        token2Name.decimals,
+        token1Name.decimals
       );
     }
-    setToken1Amount(token1Amount);
+    setToken1Amount(token1AmountCal);
   };
 
   useEffect(() => {
@@ -206,7 +212,8 @@ export default function Pools() {
           reserve1,
           reserve2,
           token2Amount,
-          tokenName.decimals
+          tokenName.decimals,
+          token2Name.decimals
         );
         setToken1Amount(token1Amount);
       } else {
@@ -249,7 +256,8 @@ export default function Pools() {
           reserve1,
           reserve2,
           token1Amount,
-          tokenName.decimals
+          tokenName.decimals,
+          token1Name.decimals
         );
         setToken2Amount(token2Amount);
       } else {
@@ -496,7 +504,8 @@ export default function Pools() {
     reserve1,
     reserve2,
     token1Amount,
-    decimals
+    decimals1,
+    decimals2
   ) => {
     // const reserve1BN = new BN(reserve1);
     if (reserve1.eq(BigNumber.from(0))) {
@@ -506,16 +515,15 @@ export default function Pools() {
     if (!token1Amount) {
       return "0";
     }
-
+    if (isNaN(token1Amount)) return "0"
     // const reserve2BN = new BN(reserve2);
     const amount1BN = ethers.utils.parseUnits(
       token1Amount,
-      decimals
+      decimals1
     );
-
     return ethers.utils.formatUnits(
-      amount1BN.mul(reserve2).div(reserve1).toString(),
-      decimals
+      amount1BN.mul(reserve2).div(reserve1),
+      decimals2
     );
   };
 
@@ -537,6 +545,7 @@ export default function Pools() {
         reserve1,
         reserve2,
         tokenAmount,
+        token1Name.decimals,
         token2Name.decimals
       );
       setToken2Amount(token2Amount);
@@ -561,6 +570,7 @@ export default function Pools() {
         reserve2,
         reserve1,
         tokenAmount,
+        token2Name.decimals,
         token1Name.decimals
       );
       setToken1Amount(token1Amount);
