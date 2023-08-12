@@ -80,10 +80,21 @@ export default function Pools() {
     onClose: closeTokenOut,
   } = useDisclosure();
 
-  const handleToken1AmountChange = async (amount) => {
+  const handleToken1AmountChange = (amount) => {
     // Set the token amount
-    setToken1Amount(formatInputAmount(amount));
-
+    let amountSplit = amount.split('.')
+    if (amountSplit.length == 1) {
+      amount = formatInputAmount(amount);
+    } else if (amountSplit.length >= 2) {
+      if (amountSplit[1].length > token1Name.decimals) {
+        amount = parseFloat(formatInputAmount(amount)).toFixed(token1Name.decimals);
+      } else {
+        amount = formatInputAmount(amount);
+      }
+    } else {
+      amount = formatInputAmount(amount);
+    }
+    setToken1Amount(amount)
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve1 == "0")
       return;
     let token2AmountCal = BigNumber.from(0)
@@ -91,7 +102,7 @@ export default function Pools() {
       token2AmountCal = calculateTokenAmount(
         poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
-        formatInputAmount(amount),
+        amount,
         token1Name.decimals,
         token2Name.decimals
       );
@@ -99,7 +110,7 @@ export default function Pools() {
       token2AmountCal = calculateTokenAmount(
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
-        formatInputAmount(amount),
+        amount,
         token1Name.decimals,
         token2Name.decimals
       );
@@ -107,7 +118,7 @@ export default function Pools() {
       token2AmountCal = calculateTokenAmount(
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
-        formatInputAmount(amount),
+        amount,
         token1Name.decimals,
         token2Name.decimals
       );
@@ -115,9 +126,20 @@ export default function Pools() {
     setToken2Amount(token2AmountCal);
   };
 
-  const handleToken2AmountChange = async (amount) => {
-    setToken2Amount(formatInputAmount(amount));
-
+  const handleToken2AmountChange = (amount) => {
+    let amountSplit = amount.split('.')
+    if (amountSplit.length == 1) {
+      amount = (formatInputAmount(amount));
+    } else if (amountSplit.length >= 2) {
+      if (amountSplit[1].length > token1Name.decimals) {
+        amount = parseFloat(formatInputAmount(amount)).toFixed(token2Name.decimals);
+      } else {
+        amount = formatInputAmount(amount);
+      }
+    } else {
+      amount = formatInputAmount(amount);
+    }
+    setToken2Amount(amount)
     if (!token1Name.address || !token2Name.address || !poolInfo || poolInfo.reserve2 == "0")
       return;
     let token1AmountCal = BigNumber.from(0)
@@ -126,7 +148,7 @@ export default function Pools() {
       token1AmountCal = calculateTokenAmount(
         poolInfo.token2 === config[selectChain].wrapAddress ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
-        formatInputAmount(amount),
+        amount,
         token2Name.decimals,
         token1Name.decimals
       );
@@ -134,7 +156,7 @@ export default function Pools() {
       token1AmountCal = calculateTokenAmount(
         poolInfo.token2 === token1Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === config[selectChain].wrapAddress ? poolInfo.reserve1 : poolInfo.reserve2,
-        formatInputAmount(amount),
+        amount,
         token2Name.decimals,
         token1Name.decimals
       );
@@ -142,7 +164,7 @@ export default function Pools() {
       token1AmountCal = calculateTokenAmount(
         poolInfo.token2 === token2Name.address ? poolInfo.reserve2 : poolInfo.reserve1,
         poolInfo.token1 === token1Name.address ? poolInfo.reserve1 : poolInfo.reserve2,
-        formatInputAmount(amount),
+        amount,
         token2Name.decimals,
         token1Name.decimals
       );
@@ -244,9 +266,7 @@ export default function Pools() {
       } else if (pools.matrix[token1Name.address] && pools.matrix[token1Name.address][tokenName.address]) {
         poolInfo = pools.matrix[token1Name.address][tokenName.address][0];
       }
-
       setPoolInfo(poolInfo);
-
       if (poolInfo && token1Amount) {
         const reserve1 =
           poolInfo.token2 == tokenName.address ? poolInfo.reserve1 : poolInfo.reserve2;

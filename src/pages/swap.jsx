@@ -46,14 +46,19 @@ export default function SwapPage() {
   const [bIn, setBIn] = useState(BigNumber.from(0));
   const [bOut, setBOut] = useState(BigNumber.from(0));
   const [amountIn, setAmountIn] = useState('0');
+
   const [tokenOut, setTokenOut] = useState(emptyToken);
   const [amountOut, setAmountOut] = useState('0');
+  const [basicAmountOut, setBasicAmountOut] = useState('0');
+
   const [swapSteps, setSwapSteps] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [slippage, setSlippage] = useState(2);
   const [slippageMsg, setSlippageMsg] = useState('');
   const [deadlineTime, setDeadlineTime] = useState(10);
   const [deadlineMsg, setDeadlineMsg] = useState('');
+  const [slippagErr, setSlippageErr] = useState('');
+
   const toast = useToast();
   const { pools, tokens, loaded, dex } = useSelector((state) => state.dex);
   const { account, selectedChain } = useSelector((state) => state.chain);
@@ -82,6 +87,45 @@ export default function SwapPage() {
     setBtnDisable(true);
     setBtnText('Insufficient balance');
   };
+
+  const handleGetBasicAmountOut = useCallback(
+    (tIn, tOut, aXIn, steps) => {
+      let selectChain = selectedChain ? selectedChain : 'base';
+      if (
+        (tIn.address == noneAddress &&
+          tOut.address == config[selectChain].wrapAddress) ||
+        (tIn.address == config[selectChain].wrapAddress &&
+          tOut.address == noneAddress)
+      ) {
+        setBasicAmountOut(aXIn);
+      } else if (
+        tIn.address &&
+        tOut.address &&
+        aXIn !== '0' &&
+        tIn.address != tOut.address
+      ) {
+        if (steps.length >= 2) {
+          try {
+            let cAIn = ethers.utils.parseUnits(aXIn, tIn.decimals)
+            for (let i = 1; i < steps.length; i++) {
+              let poolX = pools.matrix[steps[i - 1]][steps[i]][0];
+              let reserve1 = steps[i - 1] == poolX.token1 ? poolX.reserve1 : poolX.reserve2
+              let reserve2 = steps[i] == poolX.token2 ? poolX.reserve2 : poolX.reserve1
+              console.log(cAIn, reserve2, reserve1, poolX)
+              cAIn = cAIn.mul(reserve2).div(reserve1)
+            }
+            setBasicAmountOut(
+              ethers.utils.formatUnits(cAIn, tOut.decimals)
+            );
+          } catch (e) {
+            setBasicAmountOut('0');
+            console.log(e);
+          }
+        }
+      }
+    },
+    [selectedChain, pools]
+  );
 
   const handleGetAmountIn = useCallback(
     async (tIn, tOut, aXOut) => {
@@ -566,6 +610,26 @@ export default function SwapPage() {
       setDeadlineMsg('');
     }
   }, [deadlineTime]);
+
+  useEffect(() => {
+    if (tokenIn.address && tokenOut.address && amountIn > 0 && amountOut > 0 && swapSteps.length >= 2) {
+      handleGetBasicAmountOut(tokenIn, tokenOut, amountIn, swapSteps)
+    } else {
+      setBasicAmountOut("0")
+    }
+  }, [tokenIn, tokenOut, amountIn, amountOut, swapSteps])
+
+  useEffect(() => {
+    if (amountOut > 0 && basicAmountOut > 0) {
+      let priceImpact = 100 - parseFloat(amountOut) * 100 / parseFloat(basicAmountOut)
+      priceImpact <= slippage
+        ? setSlippageErr("")
+        : setSlippageErr(`Price impact warning: -${priceImpact.toFixed(2)}`)
+    } else {
+      setSlippageErr("")
+    }
+  }, [amountOut, basicAmountOut, slippage])
+
   if (!tokens.loaded || !pools.loaded) {
     return (
       <Box
@@ -798,6 +862,7 @@ export default function SwapPage() {
               )}
             </Box>
           </VStack>
+          <Text align='left' fontWeight={700} color={'red'} fontSize={'xl'} w='full'>{slippagErr}</Text>
           <Button
             colorScheme='facebook'
             w={'full'}

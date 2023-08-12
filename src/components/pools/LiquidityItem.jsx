@@ -164,10 +164,10 @@ export default function LiquidityItem({
         <PoolDetail
           label={`Pooled ${token1Info.symbol}:`}
           value={
-            lpToken.reverses._reserve0 &&
+            lpToken.reserves._reserve0 &&
             currencyFormat(
               ethers.utils.formatUnits(
-                lpToken.reverses._reserve0,
+                lpToken.reserves._reserve0,
                 token1Info.decimals
               )
             )
@@ -176,10 +176,10 @@ export default function LiquidityItem({
         <PoolDetail
           label={`Pooled ${token2Info.symbol}:`}
           value={
-            lpToken.reverses._reserve1 &&
+            lpToken.reserves._reserve1 &&
             currencyFormat(
               ethers.utils.formatUnits(
-                lpToken.reverses._reserve1,
+                lpToken.reserves._reserve1,
                 token2Info.decimals
               )
             )

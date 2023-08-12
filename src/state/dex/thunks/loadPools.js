@@ -29,7 +29,7 @@ const loadPools = createAsyncThunk("dex/pool", async (_payload, { getState }) =>
             }
 
             let listResult = await Promise.all(pairPromises)
-            listResult = listResult.filter(item => (!item.reverses._reserve0.isZero() || !item.reverses._reserve1.isZero()))
+            listResult = listResult.filter(item => (!item.reserves._reserve0.isZero() || !item.reserves._reserve1.isZero()))
             let objResult = {}
             for (let i = 0; i < pairs.length; i++) {
                 objResult[pairs[i]] = listResult[i]
@@ -59,8 +59,8 @@ const mapPools = async (data) => {
                 pair: item.pair,
                 token1: token1,
                 token2: token2,
-                reserve1: item.reverses._reserve0,
-                reserve2: item.reverses._reserve1,
+                reserve1: item.reserves._reserve0,
+                reserve2: item.reserves._reserve1,
             };
             if (poolMatrix.hasOwnProperty(token1)) {
                 if (poolMatrix[token1].hasOwnProperty(token2)) {
@@ -121,13 +121,13 @@ function getPairContract(address) {
 async function getPairData(pairAddress) {
     try {
         const pairContract = getPairContract(pairAddress);
-        const [token0, token1, reverses] = await Promise.all([
+        const [token0, token1, reserves] = await Promise.all([
             pairContract.token0(),
             pairContract.token1(),
             pairContract.getReserves(),
         ]);
 
-        return { pair: pairAddress, token0: token0, token1: token1, reverses: reverses };
+        return { pair: pairAddress, token0: token0, token1: token1, reserves: reserves };
     } catch (error) {
         console.error('Error fetching token data:', error);
         throw error;
