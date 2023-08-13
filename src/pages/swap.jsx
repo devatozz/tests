@@ -93,8 +93,8 @@ export default function SwapPage() {
       let selectChain = selectedChain ? selectedChain : 'base';
       if (
         (tIn.address == noneAddress &&
-          tOut.address == config[selectChain].wrapAddress) ||
-        (tIn.address == config[selectChain].wrapAddress &&
+          tOut.address == forwardConfig[selectChain].wrapAddress) ||
+        (tIn.address == forwardConfig[selectChain].wrapAddress &&
           tOut.address == noneAddress)
       ) {
         setBasicAmountOut(aXIn);
