@@ -159,7 +159,7 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
           fontSize={{ base: 'md', md: '2xl' }}
         >
           {dataTask !== undefined && dataTask.type === 'MINT_NFT'
-            ? 'FREE MINT NFT'
+            ? 'AIR MINT'
             : dataTask !== undefined && dataTask.type === 'SWAP'
             ? 'SWAP'
             : dataTask !== undefined && dataTask.type === 'ADD_LIQUIDITY'
