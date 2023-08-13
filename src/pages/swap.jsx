@@ -624,7 +624,7 @@ export default function SwapPage() {
       let priceImpact = 100 - parseFloat(amountOut) * 100 / parseFloat(basicAmountOut)
       priceImpact <= slippage
         ? setSlippageErr("")
-        : setSlippageErr(`Price impact warning: -${priceImpact.toFixed(2)}`)
+        : setSlippageErr(`Price impact warning: -${priceImpact.toFixed(2)} %`)
     } else {
       setSlippageErr("")
     }

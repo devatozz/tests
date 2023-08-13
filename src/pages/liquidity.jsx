@@ -787,26 +787,26 @@ export default function Pools() {
           reserve1,
           reserve2,
           tokenAmount,
-          token1Name.decimals,
-          token2Name.decimals
+          token2Name.decimals,
+          token1Name.decimals
         );
       } else if (token1Name.address == noneAddress) {
-        let [reserve1, reserve2] = poolInfo.token1 === token1Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        let [reserve1, reserve2] = poolInfo.token1 === token2Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
         tokenAmounCal = calculateTokenAmount(
           reserve1,
           reserve2,
           tokenAmount,
-          token1Name.decimals,
-          token2Name.decimals
+          token2Name.decimals,
+          token1Name.decimals
         );
       } else {
-        let [reserve1, reserve2] = poolInfo.token1 === token1Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
+        let [reserve1, reserve2] = poolInfo.token1 === token2Name.address ? [poolInfo.reserve1, poolInfo.reserve2] : [poolInfo.reserve2, poolInfo.reserve1]
         tokenAmounCal = calculateTokenAmount(
           reserve1,
           reserve2,
           tokenAmount,
-          token1Name.decimals,
-          token2Name.decimals
+          token2Name.decimals,
+          token1Name.decimals
         );
       }
       setToken1Amount(tokenAmounCal);
