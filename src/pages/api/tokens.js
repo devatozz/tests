@@ -69,7 +69,7 @@ const mainnetTokensList = [
     {
         address: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
         name: "USD Base Coin",
-        symbol: "USDCbC",
+        symbol: "USDbC",
         decimals: 6,
         icon: "/usdc.png",
         disable: false
