@@ -73,15 +73,15 @@ const mainnetTokensList = [
         decimals: 6,
         icon: "/usdc.png",
         disable: false
-    },
-    {
-        address: "0x7133d274BA9BC6980f31cCBD2cc4E975D6E04879",
-        name: "FLU Bot",
-        symbol: "FLUB",
-        decimals: 18,
-        icon: "/flu.png",
-        disable: false
     }
+    // {
+    //     address: "0x7133d274BA9BC6980f31cCBD2cc4E975D6E04879",
+    //     name: "FLU Bot",
+    //     symbol: "FLUB",
+    //     decimals: 18,
+    //     icon: "/flu.png",
+    //     disable: false
+    // }
 ]
 
 const tokensList = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? mainnetTokensList : testnetTokensList
