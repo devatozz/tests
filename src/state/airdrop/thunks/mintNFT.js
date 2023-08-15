@@ -1,11 +1,14 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import ABI_MINT_NFT from 'src/abis/MintNft.json';
-import { ethers } from 'ethers';
-import BaseTestnetConfig from 'src/state/config/base-testnet.json';
-import BaseMainnetConfig from 'src/state/config/base-mainnet.json';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import ABI_MINT_NFT from "src/abis/MintNft.json";
+import { ethers } from "ethers";
+import BaseTestnetConfig from "src/state/config/base-testnet.json";
+import BaseMainnetConfig from "src/state/config/base-mainnet.json";
 
-const MINT_FEE = '0.0015';
-const BaseConfig = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? BaseMainnetConfig : BaseTestnetConfig
+const MINT_FEE = "0.0015";
+const BaseConfig =
+  process.env.NEXT_PUBLIC_NETWORK == "mainnet"
+    ? BaseMainnetConfig
+    : BaseTestnetConfig;
 
 const handleMintNft = async () => {
   const mintNftContractWithSigner = (address) => {
@@ -21,15 +24,16 @@ const handleMintNft = async () => {
       value: ethers.utils.parseEther(MINT_FEE),
     });
     const txResult = await tx.wait();
+    return true;
   } catch (error) {
-    console.error(error);
+    return false;
   }
 };
-const mintNFT = createAsyncThunk('airdrop/minNFT', async (refetchTask) => {
+const mintNFT = createAsyncThunk("airdrop/minNFT", async (refetchTask) => {
   //HANDLE MINT NFT HERE
-  await handleMintNft();
+  const isSuccess = await handleMintNft();
   setTimeout(() => refetchTask(), 4000);
 
-  return null;
+  return { isSuccess };
 });
 export default mintNFT;

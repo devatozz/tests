@@ -26,6 +26,7 @@ import mintNFT from "src/state/airdrop/thunks/mintNFT";
 import claimTask from "src/state/airdrop/thunks/claimTask";
 import { useRouter } from "next/router";
 import updateRef from "src/state/airdrop/thunks/updateRef";
+import airdropSlice, { clearMintError } from "../../state/airdrop/slice";
 
 const AirdropPage = () => {
   const router = useRouter();
@@ -33,12 +34,29 @@ const AirdropPage = () => {
 
   const dispatch = useDispatch();
   const address = useSelector((state) => state.chain.account);
-  const { overview, isLoading } = useSelector((state) => state.airdrop);
+
+  const { overview, isLoading, mintError } = useSelector(
+    (state) => state.airdrop
+  );
+
   const addressMemo = useMemo(() => address, [address]);
   const FE_DOMAIN = process.env.NEXT_PUBLIC_FE_DOMAIN;
   //for copy
   const { onCopy, setValue: setCopyValue } = useClipboard("");
   const toast = useToast();
+
+  const showMintError = () => {
+    toast({
+      title: "Insufficient funds !",
+      status: "error",
+      duration: 1000,
+    });
+    dispatch(clearMintError());
+  };
+
+  useUpdateEffect(() => {
+    mintError && showMintError();
+  }, [mintError]);
 
   useEffect(() => {}, [overview, isLoading]);
 

@@ -1,10 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-import loadTaskList from './thunks/getTaskList';
-import claimTask from './thunks/claimTask';
-import mintNFT from './thunks/mintNFT';
+import loadTaskList from "./thunks/getTaskList";
+import claimTask from "./thunks/claimTask";
+import mintNFT from "./thunks/mintNFT";
 
 const initialState = {
+  mintError: false,
   overview: {
     earningTokens: 0,
     referralTokens: 0,
@@ -18,11 +19,14 @@ const initialState = {
 };
 
 export const slice = createSlice({
-  name: 'airdrop',
+  name: "airdrop",
   initialState,
   reducers: {
     select: (state, action) => {
       state.airdrop = action.airdrop;
+    },
+    clearMintError: (state) => {
+      state.mintError = false;
     },
   },
   extraReducers(builder) {
@@ -54,22 +58,23 @@ export const slice = createSlice({
 
     builder.addCase(claimTask.rejected, (state, action) => {
       state.isLoading = false;
-      console.error('Error message:', action.error.message);
+      console.error("Error message:", action.error.message);
     });
 
     builder.addCase(mintNFT.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(mintNFT.fulfilled, (state) => {
+    builder.addCase(mintNFT.fulfilled, (state, action) => {
+      state.mintError = !action.payload.isSuccess;
       state.isLoading = false;
     });
 
     builder.addCase(mintNFT.rejected, (state, action) => {
       state.isLoading = false;
-      console.error('Error message:', action.error.message);
+      console.error("Error message:", action.error.message);
     });
   },
 });
 
-export const {} = slice.actions;
+export const { clearMintError } = slice.actions;
 export default slice.reducer;
