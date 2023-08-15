@@ -25,11 +25,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   getSteps,
   loadBalance,
-  createFtContractWithSigner,
+  createFtContract,
   createWETHContractWithSigner,
+  approveABI,
 } from 'src/utils/helper';
-
-// import { metadatas } from "src/utils/utils";
 import { currencyFormat, formatInputAmount } from 'src/utils/stringUtil';
 import { BigNumber, ethers } from 'ethers';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,6 +39,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { LuArrowUpDown } from 'react-icons/lu';
 import SlippageOptions from 'src/components/swap/SlippageOptions';
 import loadPools from 'src/state/forward/thunks/loadPools';
+import { useAccount, usePrepareContractWrite } from 'wagmi';
 
 export default function SwapPage() {
   const [tokenIn, setTokenIn] = useState(emptyToken);
@@ -60,8 +60,9 @@ export default function SwapPage() {
   const [slippagErr, setSlippageErr] = useState('');
 
   const toast = useToast();
-  const { pools, tokens, loaded, dex } = useSelector((state) => state.forward);
-  const { account, selectedChain } = useSelector((state) => state.chain);
+  const { pools, tokens, dex } = useSelector((state) => state.forward);
+  const { selectedChain } = useSelector((state) => state.chain);
+  const { address: account} = useAccount()
   const dispatch = useDispatch();
   const { isOpen: openSettings, onToggle: toggleSettings } = useDisclosure();
 
@@ -342,7 +343,7 @@ export default function SwapPage() {
 
   const handleSwapTokensForETH = useCallback(
     async (minAmountOut, deadline) => {
-      let erc20 = createFtContractWithSigner(tokenIn.address);
+      let erc20 = createFtContract(tokenIn.address);
       let aIn = ethers.utils.parseUnits(amountIn, tokenIn.decimals);
       let currentApproval = await erc20.allowance(
         account,

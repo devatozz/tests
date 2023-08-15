@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BigNumber, ethers } from "ethers";
 import PiraPair from "src/abis/PiraPair.json";
+import { config } from "src/state/chain/config";
 
 const testnetPools = ["0x6e5d28ee7579b46e8b8a26a0b1832b465a4bbefa", "0x9d8c1ed350dca116be79d4e43ecc51b05ab2f759", "0x1D7D6f01e666ffd6C377cB8318A4dAcb7939eD95", "0xa9cccf283330b13e29729c4b1ec24db6b2b5eb0a"]
 const mainnetPools = ["0x9A0b05F3cF748A114A4f8351802b3BFfE07100D4", "0x41d160033C222E6f3722EC97379867324567d883", "0xFEd728615B00DF7b7Fe3E7FB043622332aFd4adC"]
@@ -108,7 +109,7 @@ const mapPools = async (data) => {
 }
 
 function getPairContract(address) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(config.base.rpcAddress);
     return new ethers.Contract(address, PiraPair.abi, provider);
 }
 

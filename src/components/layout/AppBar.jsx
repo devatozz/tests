@@ -12,11 +12,8 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  DrawerHeader,
   DrawerBody,
-  Input,
   Show,
-  DrawerFooter,
   useMediaQuery,
   VStack,
 } from "@chakra-ui/react";
@@ -25,6 +22,7 @@ import NextLink from "next/link";
 import Network from "./Network";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import PiraText from "../icons/PiraText";
+
 const NAV_ITEMS = [
   {
     label: "Swap",

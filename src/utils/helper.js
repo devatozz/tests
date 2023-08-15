@@ -40,7 +40,7 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
 };
 
 function getTokenContract(address) {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const provider = new ethers.providers.Web3Provider(config.base.rpcAddress);
   return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 
