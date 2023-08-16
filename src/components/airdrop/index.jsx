@@ -22,6 +22,7 @@ import LeaderBoard from "./LeaderBoard";
 import { useDispatch, useSelector } from "react-redux";
 import { CicularLoading } from "./CircularLoading";
 import loadTaskList from "src/state/airdrop/thunks/getTaskList";
+import loadLeaderboard from "src/state/airdrop/thunks/getLeaderboard";
 import mintNFT from "src/state/airdrop/thunks/mintNFT";
 import claimTask from "src/state/airdrop/thunks/claimTask";
 import { useRouter } from "next/router";
@@ -79,6 +80,10 @@ const AirdropPage = () => {
     dispatch(mintNFT(handleFetchTask));
   };
 
+  const handleFetchLeaderBoard = () => {
+    dispatch(loadLeaderboard());
+  };
+
   const handleClaim = (data) => {
     dispatch(
       claimTask({
@@ -100,6 +105,7 @@ const AirdropPage = () => {
       );
     }
     handleFetchTask();
+    handleFetchLeaderBoard();
   }, [address, ref]);
 
   useUpdateEffect(() => {

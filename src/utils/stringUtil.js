@@ -29,3 +29,7 @@ export function formatInputAmount(amount) {
 
   return tokenAmount;
 }
+
+export function shortenAddress(address, chars = 8) {
+  return address.slice(0, chars) + "..." + address.slice(-chars);
+}

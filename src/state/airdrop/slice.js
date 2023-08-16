@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import loadTaskList from "./thunks/getTaskList";
+import loadLeaderboard from "./thunks/getLeaderboard";
 import claimTask from "./thunks/claimTask";
 import mintNFT from "./thunks/mintNFT";
 
@@ -13,6 +14,7 @@ const initialState = {
   },
   totalTokenClaimed: 0,
   taskList: [],
+  leaderBoard: [],
   countDownMintNFT: 0,
   inviteFriendTaskTokenEarn: 0,
   isLoading: true,
@@ -47,6 +49,14 @@ export const slice = createSlice({
       state.countDownMintNFT =
         action.payload?.taskListResult?.data?.nftTask?.countDownInMS;
       state.isLoading = false;
+    });
+
+    builder.addCase(loadLeaderboard.pending, (state) => {
+      // state.isLoading = true;
+    });
+    builder.addCase(loadLeaderboard.fulfilled, (state, action) => {
+      console.log("test", action.payload?.leaderboardResult);
+      state.leaderBoard = action.payload?.leaderboardResult || [];
     });
 
     builder.addCase(claimTask.pending, (state) => {
