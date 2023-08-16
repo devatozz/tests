@@ -89,6 +89,7 @@ const AirdropPage = () => {
       claimTask({
         data,
         handleFetchTask,
+        handleFetchLeaderBoard,
       })
     );
   };
