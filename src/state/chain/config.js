@@ -94,16 +94,20 @@ export const forwardConfig = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? Forw
 
 const ChainInfosTestnet = {
   base: {
-    label: "Base Goerli",
-    logo: "/base-logo-in-blue.png",
+    //label: "Base Goerli",
+    // logo: "/base-logo-in-blue.png",
+    label: "Metamask",
+    logo: "/metamask-icon.png",
     disabled: false,
   },
 };
 
 const ChainInfosMainnet = {
   base: {
-    label: "Base",
-    logo: "/base-logo-in-blue.png",
+    // label: "Base",
+    // logo: "/base-logo-in-blue.png",
+    label: "Metamask",
+    logo: "/metamask-icon.png",
     disabled: false,
   },
 };
