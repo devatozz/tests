@@ -32,6 +32,8 @@ import { useSelector } from "react-redux";
 import { config } from "src/state/chain/config";
 import { emptyToken } from "src/utils/utils";
 import { getTokenData } from "src/utils/helper";
+import { usePublicClient, useWalletClient } from 'wagmi';
+import { usePairContract } from 'src/utils/hooks';
 
 export default function LiquidityItem({
   lpToken,
@@ -48,6 +50,11 @@ export default function LiquidityItem({
   const [token1Info, setToken1Info] = useState(emptyToken)
   const [token2Info, setToken2Info] = useState(emptyToken)
   const selectChain = useMemo(() => selectedChain ? selectedChain : "base", [selectedChain]);
+
+  const { data: walletClient } = useWalletClient()
+  const { data: publicClient } = usePublicClient()
+  const pairContract = useMemo(() => usePairContract(lpToken.pair, walletClient, publicClient), [walletClient, publicClient])
+
   const handleOpenModal = () => {
     onOpen();
   };
@@ -72,7 +79,7 @@ export default function LiquidityItem({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleRemoveLiquidity(removeAmount, lpToken);
+    await handleRemoveLiquidity(removeAmount, lpToken, pairContract);
     setRemoveAmount("0");
     onClose();
   };

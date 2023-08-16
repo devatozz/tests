@@ -17,10 +17,6 @@ import {
   Text,
   useDisclosure,
   Accordion,
-  AccordionIcon,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
   InputGroup,
   InputRightElement,
   useToast,
@@ -30,21 +26,25 @@ import { BigNumber, ethers } from "ethers";
 
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createPairContractWithSigner, loadBalance } from "src/utils/helper";
+import { createFtContract, createPairContract, loadBalance } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
-import { createFtContractWithSigner } from "src/utils/helper";
 import { config, noneAddress } from "src/state/chain/config";
 import loadTokens from "src/state/dex/thunks/loadTokens";
 import loadPools from "src/state/dex/thunks/loadPools";
 import { emptyToken } from "src/utils/utils";
 import TokenModal from "src/components/pools/TokensModal";
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
+import { useERC20Contract, useRouterMainContract, useWETHContract } from 'src/utils/hooks';
+import { waitForTransaction } from '@wagmi/core'
 
 export default function Pools() {
   const dispatch = useDispatch();
 
-  const { tokens, pools, dex } = useSelector((state) => state.dex);
-  const { account, selectedChain } = useSelector((state) => state.chain);
+  const { tokens, pools } = useSelector((state) => state.dex);
+  const { selectedChain } = useSelector((state) => state.chain);
+  const { address: account } = useAccount()
+
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [token1Name, setToken1Name] = useState(emptyToken);
@@ -59,6 +59,11 @@ export default function Pools() {
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState("Add Liquidity");
   const selectChain = useMemo(() => selectedChain ? selectedChain : "base", [selectedChain]);
+  const { data: walletClient } = useWalletClient()
+  const { data: publicClient } = usePublicClient()
+  const swapContract = useMemo(() => useRouterMainContract(walletClient, publicClient), [walletClient, publicClient])
+  const erc20InContract = useMemo(() => useERC20Contract(token1Name.address, walletClient, publicClient), [token1Name, walletClient, publicClient])
+  const erc20OutContract = useMemo(() => useERC20Contract(token2Name.address, walletClient, publicClient), [token2Name, walletClient, publicClient])
 
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabsChange = (index) => {
@@ -488,7 +493,7 @@ export default function Pools() {
       if (tokenName) {
         setLoading(true);
         if (account && selectChain) {
-          result = await loadBalance(account, selectChain, tokenName);
+          result = await loadBalance(account, tokenName);
         }
         setLoading(false);
       }
@@ -519,7 +524,7 @@ export default function Pools() {
             ? token1Amount
             : token2Amount;
 
-        let erc20 = createFtContractWithSigner(tokenAddr);
+        let erc20 = createFtContract(tokenAddr);
         let aDesired = ethers.utils.parseUnits(
           amountIn,
           tokens.obj[tokenAddr]?.decimals
@@ -529,26 +534,40 @@ export default function Pools() {
           config[selectChain].dexAddress
         );
         if (currentApproval.lt(aDesired)) {
-          let approveTx = await erc20.approve(
-            config[selectChain].dexAddress,
-            ethers.constants.MaxUint256
-          );
-          await approveTx.wait();
+          if (tokenAddr == token1Name.address) {
+            let approveTx = await erc20InContract?.write?.approve(
+              [config[selectChain].dexAddress,
+              ethers.constants.MaxUint256]
+            );
+            await waitForTransaction(
+              { hash: approveTx }
+            )
+          } else {
+            let approveTx = await erc20OutContract?.write?.approve(
+              [config[selectChain].dexAddress,
+              ethers.constants.MaxUint256]
+            );
+            await waitForTransaction(
+              { hash: approveTx }
+            )
+          }
         }
 
-        let addLiquidTx = await dex.signer.addLiquidityETH(
-          tokenAddr,
+        let addLiquidTx = await swapContract?.write?.addLiquidityETH(
+          [tokenAddr,
           aDesired,
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline,
+          deadline],
           { value: ethers.utils.parseEther(amountETH) }
         );
-        await addLiquidTx.wait();
+        await waitForTransaction(
+          { hash: addLiquidTx }
+        )
       } else {
-        let erc20In = createFtContractWithSigner(token1Name.address);
-        let erc20Out = createFtContractWithSigner(token2Name.address);
+        let erc20In = createFtContract(token1Name.address);
+        let erc20Out = createFtContract(token2Name.address);
         let approvePromises = [];
 
         let aDesired = ethers.utils.parseUnits(
@@ -570,7 +589,7 @@ export default function Pools() {
 
         if (currentApproval1.lt(aDesired)) {
           approvePromises.push(
-            erc20In.approve(
+            erc20InContract?.write?.approve(
               config[selectChain].dexAddress,
               ethers.constants.MaxUint256
             )
@@ -578,7 +597,7 @@ export default function Pools() {
         }
         if (currentApproval2.lt(bDesired)) {
           approvePromises.push(
-            erc20Out.approve(
+            erc20OutContract?.write?.approve(
               config[selectChain].dexAddress,
               ethers.constants.MaxUint256
             )
@@ -586,22 +605,26 @@ export default function Pools() {
         }
         let approveRes = await Promise.all(approvePromises);
         approvePromises = [];
-        approveRes.forEach((item) => approvePromises.push(item.wait()));
+        approveRes.forEach((item) => approvePromises.push(waitForTransaction(
+          { hash: item }
+        )));
         if (approvePromises.length) {
           await Promise.all(approvePromises);
         }
 
-        let addLiquidTx = await dex.signer.addLiquidity(
-          token1Name.address,
+        let addLiquidTx = await swapContract?.write?.addLiquidity(
+          [token1Name.address,
           token2Name.address,
           aDesired,
           bDesired,
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline
+          deadline]
         );
-        await addLiquidTx.wait();
+        waitForTransaction(
+          { hash: addLiquidTx }
+        )
       }
       toast({
         status: "success",
@@ -628,7 +651,7 @@ export default function Pools() {
     setLoading(false);
   };
 
-  const handleRemoveLiquidity = async (removeAmount, pool) => {
+  const handleRemoveLiquidity = async (removeAmount, pool, pairContract) => {
     const currentTimeUnix = Math.floor(Date.now() / 1000);
     // Calculate the Unix time for the next 30 minutes
     const next30MinutesUnix = currentTimeUnix + 30 * 60;
@@ -636,18 +659,20 @@ export default function Pools() {
     setLoading(true);
 
     try {
-      const pairContract = createPairContractWithSigner(pool.pair);
+      const pairContractRead = createPairContract(pool.pair);
       let liquidity = ethers.utils.parseEther(removeAmount);
-      let currentApproval = await pairContract.allowance(
+      let currentApproval = await pairContractRead.allowance(
         account,
         config[selectChain].dexAddress
       );
       if (currentApproval.lt(liquidity)) {
-        let tx = await pairContract.approve(
-          config[selectChain].dexAddress,
-          ethers.constants.MaxUint256
+        let tx = await pairContract?.write?.approve(
+          [config[selectChain].dexAddress,
+          ethers.constants.MaxUint256]
         );
-        await tx.wait();
+        await waitForTransaction(
+          { hash: tx }
+        )
       }
 
       if (
@@ -662,26 +687,30 @@ export default function Pools() {
             ? pool.token1
             : pool.token0;
 
-        let rmLiquidTx = await dex.signer.removeLiquidityETH(
-          tokenAddr,
+        let rmLiquidTx = await swapContract?.write?.removeLiquidityETH(
+          [tokenAddr,
           liquidity,
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline
+          deadline]
         );
-        await rmLiquidTx.wait();
+        await waitForTransaction(
+          { hash: rmLiquidTx }
+        )
       } else {
-        let rmLiquidTx = await dex.signer.removeLiquidity(
-          pool.token0,
+        let rmLiquidTx = await swapContract?.write?.removeLiquidity(
+          [pool.token0,
           pool.token1,
           liquidity,
           BigNumber.from(0),
           BigNumber.from(0),
           account,
-          deadline
+          deadline]
         );
-        await rmLiquidTx.wait();
+        await waitForTransaction(
+          { hash: rmLiquidTx }
+        )
       }
       toast({
         status: "success",
@@ -815,10 +844,10 @@ export default function Pools() {
   const getMyLpTokens = async () => {
     const lpTokens = [];
     //rewrite this
-    if (pools.loaded && pools.list.length && selectChain && account) {
+    if (pools.loaded && pools.list.length && account) {
       await Promise.all(
         pools.list.map(async (item) => {
-          const balance = await loadBalance(account, selectChain, item.pair);
+          const balance = await loadBalance(account, item.pair);
           if (!balance.isZero()) {
             lpTokens.push({
               ...item,

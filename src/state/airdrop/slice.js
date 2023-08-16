@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import loadTaskList from './thunks/getTaskList';
 import claimTask from './thunks/claimTask';
-import mintNFT from './thunks/mintNFT';
 
 const initialState = {
   overview: {
@@ -53,18 +52,6 @@ export const slice = createSlice({
     });
 
     builder.addCase(claimTask.rejected, (state, action) => {
-      state.isLoading = false;
-      console.error('Error message:', action.error.message);
-    });
-
-    builder.addCase(mintNFT.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(mintNFT.fulfilled, (state) => {
-      state.isLoading = false;
-    });
-
-    builder.addCase(mintNFT.rejected, (state, action) => {
       state.isLoading = false;
       console.error('Error message:', action.error.message);
     });

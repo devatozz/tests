@@ -22,6 +22,7 @@ const TestnetConfig = {
     factoryAddress: baseTestnetConfig.factory,
     dexAddress: baseTestnetConfig.router,
     wrapAddress: baseTestnetConfig.wrap,
+    nftAddress: baseTestnetConfig.nft
   }
 };
 
@@ -43,6 +44,8 @@ const MainnetConfig = {
     factoryAddress: baseMainnetConfig.factory,
     dexAddress: baseMainnetConfig.router,
     wrapAddress: baseMainnetConfig.wrap,
+    nftAddress: baseMainnetConfig.nft
+
   }
 };
 
@@ -64,6 +67,7 @@ const ForwardTestnetConfig = {
     factoryAddress: baseForwardTestnetConfig.factory,
     dexAddress: baseForwardTestnetConfig.router,
     wrapAddress: baseForwardTestnetConfig.wrap,
+    nftAddress: baseForwardTestnetConfig.nft
   }
 };
 
@@ -85,6 +89,7 @@ const ForwardMainnetConfig = {
     factoryAddress: baseForwardMainnetConfig.factory,
     dexAddress: baseForwardMainnetConfig.router,
     wrapAddress: baseForwardMainnetConfig.wrap,
+    nftAddress: baseForwardMainnetConfig.nft
   }
 };
 

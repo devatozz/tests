@@ -57,6 +57,7 @@ export const slice = createSlice({
         builder.addCase(loadContracts.fulfilled, (state, action) => {
             state.dex.contract = action.payload.dex;
             state.factory.contract = action.payload.factory;
+            state.loaded = true;
         })
         builder.addCase(loadTokens.pending, (state) => {
             state.isLoading = true

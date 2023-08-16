@@ -17,29 +17,36 @@ import {
 import Progress from "./Progress";
 import TaskTable from "./TaskTable";
 import { CopyIcon, InfoOutlineIcon } from "@chakra-ui/icons";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LeaderBoard from "./LeaderBoard";
 import { useDispatch, useSelector } from "react-redux";
 import { CicularLoading } from "./CircularLoading";
 import loadTaskList from "src/state/airdrop/thunks/getTaskList";
-import mintNFT from "src/state/airdrop/thunks/mintNFT";
 import claimTask from "src/state/airdrop/thunks/claimTask";
 import { useRouter } from "next/router";
 import updateRef from "src/state/airdrop/thunks/updateRef";
+import { useNftContract } from 'src/utils/hooks';
+import { usePublicClient, useWalletClient, useAccount } from 'wagmi';
+import { waitForTransaction } from '@wagmi/core'
+import { ethers } from "ethers";
+
+const MINT_FEE = '0.0015';
 
 const AirdropPage = () => {
   const router = useRouter();
   const { ref } = router.query;
-
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
-  const address = useSelector((state) => state.chain.account);
+  const {address} = useAccount();
   const { overview, isLoading } = useSelector((state) => state.airdrop);
   const addressMemo = useMemo(() => address, [address]);
   const FE_DOMAIN = process.env.NEXT_PUBLIC_FE_DOMAIN;
   //for copy
   const { onCopy, setValue: setCopyValue } = useClipboard("");
   const toast = useToast();
-
+  const { data: walletClient } = useWalletClient()
+  const { data: publicClient } = usePublicClient()
+  const nftContract = useMemo(() => useNftContract(walletClient, publicClient), [walletClient, publicClient]) 
   useEffect(() => {}, [overview, isLoading]);
 
   const copyRefLink = () => {
@@ -57,8 +64,21 @@ const AirdropPage = () => {
     address !== "" && dispatch(loadTaskList(address));
   };
 
-  const handleMintNFT = () => {
-    dispatch(mintNFT(handleFetchTask));
+  const handleMintNFT = async () => {
+    setLoading(true)
+    try {
+      const tx = await nftContract?.write?.mint([], {
+        value: ethers.utils.parseEther(MINT_FEE),
+      });
+      await waitForTransaction(
+        { hash: tx }
+      )
+      setTimeout(() => handleFetchTask(), 4000);
+
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false)
   };
 
   const handleClaim = (data) => {
@@ -119,7 +139,7 @@ const AirdropPage = () => {
           pb={4}
         >
           <>
-            {isLoading && <CicularLoading />}
+            {isLoading || loading && <CicularLoading />}
             <>
               <Text
                 fontSize={{ base: "2xl", md: "5xl" }}

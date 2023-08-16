@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { config } from "src/state/chain/config";
 import {
+  connectNetwork,
   disconnectNetwork,
 } from "src/state/chain/slice";
 import loadContracts from "src/state/dex/thunks/loadContract";
@@ -37,7 +38,12 @@ export default function Network() {
     dispatch(disconnectNetwork());
   }, []);
 
+  const handleConnectNetwork = useCallback(async () => {
+    dispatch(connectNetwork());
+  }, []);
+
   const { isConnected } = useAccount({
+    onConnect: handleConnectNetwork,
     onDisconnect: handleDisconnectNetwork
   })
 
@@ -62,7 +68,7 @@ export default function Network() {
   useEffect(() => {
     if (!contractLoaded) {
       dispatch(loadContracts());
-    } else if (contractLoaded) {
+    } else {
       dispatch(loadPools());
     }
   }, [contractLoaded]);

@@ -107,14 +107,14 @@ const mapPools = async (data) => {
             if (index == array.length - 1) resolve();
         });
     });
-    
+
     await matrixP.finally();
 
     return { tokens: Array.from(tokenSet), poolMap: poolMatrix }
 }
 
 function getPairContract(address) {
-    const provider = new ethers.providers.JsonRpcProvider(config[selectedChain].rpcAddress);
+    const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
     return new ethers.Contract(address, PiraPair.abi, provider);
 }
 

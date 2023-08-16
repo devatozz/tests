@@ -381,7 +381,7 @@ export default function SwapPage() {
 
   const handleSwapTokensForTokens = useCallback(
     async (minAmountOut, deadline) => {
-      let erc20 = createFtContractWithSigner(tokenIn.address);
+      let erc20 = createFtContract(tokenIn.address);
       let aIn = ethers.utils.parseUnits(amountIn, tokenIn.decimals);
       let currentApproval = await erc20.allowance(
         account,
