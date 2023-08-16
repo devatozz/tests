@@ -19,52 +19,11 @@ import {
 
 const data = [
   {
-    position: "-",
-    name: "-",
+    address: "-",
+    totalTokens: "-",
+    earningTokens: "-",
+    referralTokens: "-",
     boost: "-",
-    referralToken: "-",
-    earningToken: "-",
-    totalPiraEarn: "-",
-  },
-  {
-    position: "-",
-    name: "-",
-    boost: "-",
-    referralToken: "-",
-    earningToken: "-",
-    totalPiraEarn: "-",
-  },
-  {
-    position: "-",
-    name: "-",
-    boost: "-",
-    referralToken: "-",
-    earningToken: "-",
-    totalPiraEarn: "-",
-  },
-  {
-    position: "-",
-    name: "-",
-    boost: "-",
-    referralToken: "-",
-    earningToken: "-",
-    totalPiraEarn: "-",
-  },
-  {
-    position: "-",
-    name: "-",
-    boost: "-",
-    referralToken: "-",
-    earningToken: "-",
-    totalPiraEarn: "-",
-  },
-  {
-    position: "-",
-    name: "-",
-    boost: "-",
-    referralToken: "-",
-    earningToken: "-",
-    totalPiraEarn: "-",
   },
 ];
 
@@ -81,6 +40,7 @@ import { shortenAddress } from "src/utils/stringUtil";
 
 export default function LeaderBoard() {
   const { leaderBoard } = useSelector((state) => state.airdrop);
+  const leaderBoardData = leaderBoard.length ? leaderBoard : data;
 
   const getColor = (boost) => {
     if (boost >= 2) {
@@ -123,7 +83,7 @@ export default function LeaderBoard() {
             </Tr>
           </Thead>
           <Tbody>
-            {leaderBoard.map((row, index) => {
+            {leaderBoardData.map((row, index) => {
               return (
                 <Tr key={index} borderBottomWidth={1}>
                   <Td
@@ -139,7 +99,9 @@ export default function LeaderBoard() {
                       fontSize={{ base: "xs", md: "xl" }}
                       borderRightWidth={1}
                     >
-                      {shortenAddress(row.address, 8)}
+                      {row.address.length > 8
+                        ? shortenAddress(row.address, 8)
+                        : row.address}
                     </Td>
                   </Tooltip>
                   <Td
