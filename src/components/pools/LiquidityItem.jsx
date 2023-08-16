@@ -33,7 +33,7 @@ import { config } from "src/state/chain/config";
 import { emptyToken } from "src/utils/utils";
 import { getTokenData } from "src/utils/helper";
 import { usePublicClient, useWalletClient } from 'wagmi';
-import { usePairContract } from 'src/utils/hooks';
+import { getPairContract } from 'src/utils/hooks';
 
 export default function LiquidityItem({
   lpToken,
@@ -53,7 +53,7 @@ export default function LiquidityItem({
 
   const { data: walletClient } = useWalletClient()
   const { data: publicClient } = usePublicClient()
-  const pairContract = useMemo(() => usePairContract(lpToken.pair, walletClient, publicClient), [walletClient, publicClient])
+  const pairContract = useMemo(() => getPairContract(lpToken.pair, walletClient, publicClient), [walletClient, publicClient])
 
   const handleOpenModal = () => {
     onOpen();

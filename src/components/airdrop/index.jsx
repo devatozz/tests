@@ -25,20 +25,23 @@ import loadTaskList from "src/state/airdrop/thunks/getTaskList";
 import claimTask from "src/state/airdrop/thunks/claimTask";
 import { useRouter } from "next/router";
 import updateRef from "src/state/airdrop/thunks/updateRef";
-import { useNftContract } from 'src/utils/hooks';
+import { getNftContract } from 'src/utils/hooks';
 import { usePublicClient, useWalletClient, useAccount } from 'wagmi';
 import { waitForTransaction } from '@wagmi/core'
 import { ethers } from "ethers";
-
+import loadLeaderboard from "src/state/airdrop/thunks/getLeaderboard";
 const MINT_FEE = '0.0015';
 
 const AirdropPage = () => {
   const router = useRouter();
   const { ref } = router.query;
   const [loading, setLoading] = useState(false)
+  const [mintError, setMintError] = useState(false)
+
   const dispatch = useDispatch();
   const {address} = useAccount();
   const { overview, isLoading } = useSelector((state) => state.airdrop);
+  
   const addressMemo = useMemo(() => address, [address]);
   const FE_DOMAIN = process.env.NEXT_PUBLIC_FE_DOMAIN;
   //for copy
@@ -46,7 +49,21 @@ const AirdropPage = () => {
   const toast = useToast();
   const { data: walletClient } = useWalletClient()
   const { data: publicClient } = usePublicClient()
-  const nftContract = useMemo(() => useNftContract(walletClient, publicClient), [walletClient, publicClient]) 
+  const nftContract = useMemo(() => getNftContract(walletClient, publicClient), [walletClient, publicClient]) 
+
+  const showMintError = () => {
+    toast({
+      title: "Insufficient funds !",
+      status: "error",
+      duration: 1000,
+    });
+    setMintError("")
+  };
+
+  useUpdateEffect(() => {
+    mintError && showMintError();
+  }, [mintError]);
+
   useEffect(() => {}, [overview, isLoading]);
 
   const copyRefLink = () => {
@@ -76,9 +93,13 @@ const AirdropPage = () => {
       setTimeout(() => handleFetchTask(), 4000);
 
     } catch (error) {
-      console.log(error);
+      setMintError(error.message)
     }
     setLoading(false)
+  };
+
+  const handleFetchLeaderBoard = () => {
+    dispatch(loadLeaderboard());
   };
 
   const handleClaim = (data) => {
@@ -86,6 +107,7 @@ const AirdropPage = () => {
       claimTask({
         data,
         handleFetchTask,
+        handleFetchLeaderBoard,
       })
     );
   };
@@ -102,6 +124,7 @@ const AirdropPage = () => {
       );
     }
     handleFetchTask();
+    handleFetchLeaderBoard();
   }, [address, ref]);
 
   useUpdateEffect(() => {

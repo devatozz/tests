@@ -35,7 +35,7 @@ import loadPools from "src/state/dex/thunks/loadPools";
 import { emptyToken } from "src/utils/utils";
 import TokenModal from "src/components/pools/TokensModal";
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
-import { useERC20Contract, useRouterMainContract, useWETHContract } from 'src/utils/hooks';
+import { getERC20Contract, getRouterMainContract, getWETHContract } from 'src/utils/hooks';
 import { waitForTransaction } from '@wagmi/core'
 
 export default function Pools() {
@@ -61,9 +61,9 @@ export default function Pools() {
   const selectChain = useMemo(() => selectedChain ? selectedChain : "base", [selectedChain]);
   const { data: walletClient } = useWalletClient()
   const { data: publicClient } = usePublicClient()
-  const swapContract = useMemo(() => useRouterMainContract(walletClient, publicClient), [walletClient, publicClient])
-  const erc20InContract = useMemo(() => useERC20Contract(token1Name.address, walletClient, publicClient), [token1Name, walletClient, publicClient])
-  const erc20OutContract = useMemo(() => useERC20Contract(token2Name.address, walletClient, publicClient), [token2Name, walletClient, publicClient])
+  const swapContract = useMemo(() => getRouterMainContract(walletClient, publicClient), [walletClient, publicClient])
+  const erc20InContract = useMemo(() => getERC20Contract(token1Name.address, walletClient, publicClient), [token1Name, walletClient, publicClient])
+  const erc20OutContract = useMemo(() => getERC20Contract(token2Name.address, walletClient, publicClient), [token2Name, walletClient, publicClient])
 
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabsChange = (index) => {

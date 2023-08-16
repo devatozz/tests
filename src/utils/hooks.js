@@ -26,7 +26,7 @@ export const getContract = ({
     }
 }
 
-export function useContract(
+export function prepareContract(
     address,
     abi,
     walletClient,
@@ -47,26 +47,26 @@ export function useContract(
     }
 }
 
-export function useRouterMainContract(walletClient, publicClient) {
-    return useContract(config.base.dexAddress, PiraRouter.abi, walletClient, publicClient)
+export function getRouterMainContract(walletClient, publicClient) {
+    return prepareContract(config.base.dexAddress, PiraRouter.abi, walletClient, publicClient)
 }
 
-export function useRouterForwardContract(walletClient, publicClient) {
-    return useContract(forwardConfig.base.dexAddress, PiraRouter.abi, walletClient, publicClient)
+export function getRouterForwardContract(walletClient, publicClient) {
+    return prepareContract(forwardConfig.base.dexAddress, PiraRouter.abi, walletClient, publicClient)
 }
 
-export function useERC20Contract(address, walletClient, publicClient) {
-    return useContract(address, PiraERC20.abi, walletClient, publicClient)
+export function getERC20Contract(address, walletClient, publicClient) {
+    return prepareContract(address, PiraERC20.abi, walletClient, publicClient)
 }
 
-export function usePairContract(address, walletClient, publicClient) {
-    return useContract(address, PiraPair.abi, walletClient, publicClient)
+export function getPairContract(address, walletClient, publicClient) {
+    return prepareContract(address, PiraPair.abi, walletClient, publicClient)
 }
 
-export function useWETHContract(walletClient, publicClient) {
-    return useContract(config.base.wrapAddress, PiraWETH.abi, walletClient, publicClient)
+export function getWETHContract(walletClient, publicClient) {
+    return prepareContract(config.base.wrapAddress, PiraWETH.abi, walletClient, publicClient)
 }
 
-export function useNftContract(walletClient, publicClient) {
-    return useContract(config.base.nftAddress, ABI_MINT_NFT, walletClient, publicClient)
+export function getNftContract(walletClient, publicClient) {
+    return prepareContract(config.base.nftAddress, ABI_MINT_NFT, walletClient, publicClient)
 }

@@ -1,9 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 import loadTaskList from './thunks/getTaskList';
 import claimTask from './thunks/claimTask';
+import loadLeaderboard from "./thunks/getLeaderboard";
 
 const initialState = {
+  mintError: false,
   overview: {
     earningTokens: 0,
     referralTokens: 0,
@@ -11,17 +13,21 @@ const initialState = {
   },
   totalTokenClaimed: 0,
   taskList: [],
+  leaderBoard: [],
   countDownMintNFT: 0,
   inviteFriendTaskTokenEarn: 0,
   isLoading: true,
 };
 
 export const slice = createSlice({
-  name: 'airdrop',
+  name: "airdrop",
   initialState,
   reducers: {
     select: (state, action) => {
       state.airdrop = action.airdrop;
+    },
+    clearMintError: (state) => {
+      state.mintError = false;
     },
   },
   extraReducers(builder) {
@@ -44,6 +50,14 @@ export const slice = createSlice({
       state.isLoading = false;
     });
 
+    builder.addCase(loadLeaderboard.pending, (state) => {
+      // state.isLoading = true;
+    });
+    builder.addCase(loadLeaderboard.fulfilled, (state, action) => {
+      console.log("test", action.payload?.leaderboardResult);
+      state.leaderBoard = action.payload?.leaderboardResult || [];
+    });
+
     builder.addCase(claimTask.pending, (state) => {
       state.isLoading = true;
     });
@@ -53,10 +67,10 @@ export const slice = createSlice({
 
     builder.addCase(claimTask.rejected, (state, action) => {
       state.isLoading = false;
-      console.error('Error message:', action.error.message);
+      console.error("Error message:", action.error.message);
     });
   },
 });
 
-export const {} = slice.actions;
+export const { clearMintError } = slice.actions;
 export default slice.reducer;

@@ -38,7 +38,7 @@ import { LuArrowUpDown } from 'react-icons/lu';
 import SlippageOptions from 'src/components/swap/SlippageOptions';
 import loadPools from 'src/state/forward/thunks/loadPools';
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
-import { useERC20Contract, useRouterForwardContract, useWETHContract } from 'src/utils/hooks';
+import { getERC20Contract, getRouterForwardContract, getWETHContract } from 'src/utils/hooks';
 import { waitForTransaction } from '@wagmi/core'
 
 export default function SwapPage() {
@@ -80,9 +80,9 @@ export default function SwapPage() {
   const [btnText, setBtnText] = useState('Swap');
   const { data: walletClient } = useWalletClient()
   const { data: publicClient } = usePublicClient()
-  const swapContract = useMemo(() => useRouterForwardContract(walletClient, publicClient), [walletClient, publicClient]) 
-  const erc20Contract = useMemo(() => useERC20Contract(tokenIn.address, walletClient, publicClient), [tokenIn, walletClient, publicClient])
-  const wethContract = useMemo(() => useWETHContract(walletClient, publicClient), [walletClient, publicClient])
+  const swapContract = useMemo(() => getRouterForwardContract(walletClient, publicClient), [walletClient, publicClient])
+  const erc20Contract = useMemo(() => getERC20Contract(tokenIn.address, walletClient, publicClient), [tokenIn, walletClient, publicClient])
+  const wethContract = useMemo(() => getWETHContract(walletClient, publicClient), [walletClient, publicClient])
 
   const handleSwapAvailable = () => {
     setBtnDisable(false);
