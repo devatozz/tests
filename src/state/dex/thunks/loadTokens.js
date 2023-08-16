@@ -35,7 +35,7 @@ const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) 
 })
 
 function getTokenContract(address) {
-    const provider = new ethers.providers.Web3Provider(config.base.rpcAddress);
+    const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
     return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 

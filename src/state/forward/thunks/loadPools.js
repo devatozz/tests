@@ -109,7 +109,7 @@ const mapPools = async (data) => {
 }
 
 function getPairContract(address) {
-    const provider = new ethers.providers.Web3Provider(config.base.rpcAddress);
+    const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
     return new ethers.Contract(address, PiraPair.abi, provider);
 }
 

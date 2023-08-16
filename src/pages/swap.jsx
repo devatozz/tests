@@ -21,13 +21,11 @@ import {
   IconButton,
   Icon,
 } from '@chakra-ui/react';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   getSteps,
   loadBalance,
   createFtContract,
-  createWETHContractWithSigner,
-  approveABI,
 } from 'src/utils/helper';
 import { currencyFormat, formatInputAmount } from 'src/utils/stringUtil';
 import { BigNumber, ethers } from 'ethers';
@@ -39,7 +37,9 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { LuArrowUpDown } from 'react-icons/lu';
 import SlippageOptions from 'src/components/swap/SlippageOptions';
 import loadPools from 'src/state/forward/thunks/loadPools';
-import { useAccount, usePrepareContractWrite } from 'wagmi';
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
+import { useERC20Contract, useRouterForwardContract, useWETHContract } from 'src/utils/hooks';
+import { waitForTransaction } from '@wagmi/core'
 
 export default function SwapPage() {
   const [tokenIn, setTokenIn] = useState(emptyToken);
@@ -78,6 +78,11 @@ export default function SwapPage() {
   } = useDisclosure();
   const [btnDisable, setBtnDisable] = useState(false);
   const [btnText, setBtnText] = useState('Swap');
+  const { data: walletClient } = useWalletClient()
+  const { data: publicClient } = usePublicClient()
+  const swapContract = useMemo(() => useRouterForwardContract(walletClient, publicClient), [walletClient, publicClient]) 
+  const erc20Contract = useMemo(() => useERC20Contract(tokenIn.address, walletClient, publicClient), [tokenIn, walletClient, publicClient])
+  const wethContract = useMemo(() => useWETHContract(walletClient, publicClient), [walletClient, publicClient])
 
   const handleSwapAvailable = () => {
     setBtnDisable(false);
@@ -112,7 +117,6 @@ export default function SwapPage() {
               let poolX = pools.matrix[steps[i - 1]][steps[i]][0];
               let reserve1 = steps[i - 1] == poolX.token1 ? poolX.reserve1 : poolX.reserve2
               let reserve2 = steps[i] == poolX.token2 ? poolX.reserve2 : poolX.reserve1
-              console.log(cAIn, reserve2, reserve1, poolX)
               cAIn = cAIn.mul(reserve2).div(reserve1)
             }
             setBasicAmountOut(
@@ -317,7 +321,7 @@ export default function SwapPage() {
       setIsLoading(true);
       let result = BigNumber.from(0);
       if (account && selectedChain) {
-        result = await loadBalance(account, selectedChain, token);
+        result = await loadBalance(account, token);
       }
       setIsLoading(false);
       return result;
@@ -327,16 +331,18 @@ export default function SwapPage() {
 
   const handleSwapETHForTokens = useCallback(
     async (minAmountOut, deadline) => {
-      let swapTx = await dex.signer.swapExactETHForTokens(
-        minAmountOut,
+      let swapTx = await swapContract?.write?.swapExactETHForTokens(
+        [minAmountOut,
         swapSteps,
         account,
-        deadline,
+        deadline],
         {
           value: ethers.utils.parseEther(amountIn),
         }
       );
-      await swapTx.wait();
+      await waitForTransaction(
+        { hash: swapTx }
+      )
     },
     [amountIn, account, swapSteps]
   );
@@ -350,21 +356,25 @@ export default function SwapPage() {
         forwardConfig[selectedChain].dexAddress
       );
       if (currentApproval.lt(aIn)) {
-        let approveTx = await erc20.approve(
-          forwardConfig[selectedChain].dexAddress,
-          ethers.constants.MaxUint256
+        let approveTx = await erc20Contract?.write?.approve(
+          [forwardConfig[selectedChain].dexAddress,
+            ethers.constants.MaxUint256]
         );
-        await approveTx.wait();
+        await waitForTransaction(
+          { hash: approveTx }
+        )
       }
 
-      let swapTx = await dex.signer.swapExactTokensForETH(
-        aIn,
+      let swapTx = await swapContract?.write?.swapExactTokensForETH(
+        [aIn,
         minAmountOut,
         swapSteps,
         account,
-        deadline
+        deadline]
       );
-      await swapTx.wait();
+      await waitForTransaction(
+        { hash: swapTx }
+      )
     },
     [tokenIn, amountIn, account, selectedChain, swapSteps]
   );
@@ -378,38 +388,44 @@ export default function SwapPage() {
         forwardConfig[selectedChain].dexAddress
       );
       if (currentApproval.lt(aIn)) {
-        let approveTx = await erc20.approve(
-          forwardConfig[selectedChain].dexAddress,
-          ethers.constants.MaxUint256
+        let approveTx = await erc20Contract?.write?.approve(
+          [forwardConfig[selectedChain].dexAddress,
+          ethers.constants.MaxUint256]
         );
-        await approveTx.wait();
+        await waitForTransaction(
+          { hash: approveTx }
+        )
       }
-      let swapTx = await dex.signer.swapExactTokensForTokens(
-        aIn,
+      let swapTx = await swapContract?.write?.swapExactTokensForTokens(
+        [aIn,
         minAmountOut,
         swapSteps,
         account,
-        deadline
+        deadline]
       );
-      await swapTx.wait();
+      await waitForTransaction(
+        { hash: swapTx }
+      )
     },
     [tokenIn, tokenOut, amountIn, account, selectedChain, swapSteps]
   );
 
   const handleDepositETH = useCallback(async () => {
-    let weth = createWETHContractWithSigner(forwardConfig[selectedChain].wrapAddress);
     let aIn = ethers.utils.parseEther(amountIn);
 
-    let swapTx = await weth.deposit({ value: aIn });
-    await swapTx.wait();
+    let tx = await wethContract?.write?.deposit([], { value: aIn });
+    await waitForTransaction(
+      { hash: tx }
+    )
   }, [amountIn, selectedChain]);
 
   const handleWithdrawETH = useCallback(async () => {
-    let weth = createWETHContractWithSigner(forwardConfig[selectedChain].wrapAddress);
     let aIn = ethers.utils.parseEther(amountIn);
 
-    let swapTx = await weth.withdraw(aIn);
-    await swapTx.wait();
+    let tx = await wethContract?.write?.withdraw([aIn]);
+    await waitForTransaction(
+      { hash: tx }
+    )
   }, [amountIn, selectedChain]);
 
   const handleSwap = async (e) => {

@@ -40,7 +40,7 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
 };
 
 function getTokenContract(address) {
-  const provider = new ethers.providers.Web3Provider(config.base.rpcAddress);
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
   return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 
@@ -60,7 +60,7 @@ export async function getTokenData(tokenAddress) {
   }
 }
 
-export const loadBalance = async (account, chain, tokenAddress) => {
+export const loadBalance = async (account, tokenAddress) => {
   try {
     let result = BigNumber.from(0)
     if (tokenAddress ==noneAddress) {
