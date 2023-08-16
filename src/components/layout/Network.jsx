@@ -60,12 +60,6 @@ export default function Network() {
   }, [isConnected, switchNetwork]);
 
   useEffect(() => {
-    if (lastConnected && !isOpen) {
-      open()
-    }
-  }, [lastConnected]);
-
-  useEffect(() => {
     if (!contractLoaded) {
       dispatch(loadContracts());
     } else {
