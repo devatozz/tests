@@ -23,7 +23,7 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { base, baseGoerli } from 'wagmi/chains'
 
 const chains =  process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? [base] : [baseGoerli]
-const projectId = "96bcecdf82d8249323221c7fa8ac7707"
+const projectId = "5017c09986c1d07d0cf9c57fcef20ceb"
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiConfig = createConfig({
