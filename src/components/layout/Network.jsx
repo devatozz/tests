@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { config, walletInfos } from "src/state/chain/config";
 import {
@@ -16,7 +16,6 @@ import {
   Image,
   MenuList,
   MenuItem,
-  Avatar,
   Menu,
   MenuButton,
   useClipboard,
@@ -41,8 +40,8 @@ export default function Network() {
   const { chain } = useNetwork()
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect()
-  const { disconnect } = useDisconnect()
-
+  const { disconnect, isLoading: isDisconnecting } = useDisconnect()
+  
   const {
     loaded: contractLoaded,
     tokens: { loaded: tokenLoaded },
@@ -95,14 +94,14 @@ export default function Network() {
   }, [isConnected, switchNetwork]);
 
   useEffect(() => {
-    if (lastConnected && !isConnected) {
+    if (lastConnected && !isConnected && !isDisconnecting) {
       let lastConnector = connectors.find(item => item.id === lastConnected)
       if (lastConnector) {
         connect({connector: lastConnector})
       }
       connect()
     }
-  }, [isConnected, lastConnected])
+  }, [lastConnected, isConnected, isDisconnecting])
 
   useEffect(() => {
     if (!contractLoaded) {
