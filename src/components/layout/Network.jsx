@@ -142,7 +142,6 @@ export default function Network() {
         fontSize={"sm"}
         fontWeight={700}
         colorScheme="whiteAlpha"
-        isLoading={isConnecting || isReconnecting}
       >
         {address
           ? address
@@ -184,7 +183,7 @@ export default function Network() {
         variant="solid"
         fontWeight={700}
         colorScheme="whiteAlpha"
-        isLoading={(isConnecting || isReconnecting) && !error}
+        isLoading={isConnecting || isReconnecting}
       >
         Connect wallet
       </MenuButton>
