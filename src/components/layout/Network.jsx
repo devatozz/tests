@@ -202,7 +202,8 @@ export default function Network() {
             }
           >
             {connector.name}
-            {!connector.ready && ' (unsupported)'}
+            {/* {!connector.ready && ' (unsupported)'} */}
+            {!connector.ready && '(conflict Coin98)'}
             {isLoading &&
               connector.id === pendingConnector?.id &&
               ' (connecting)'}
