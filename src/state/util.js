@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import { config } from './chain/config';
 // import PNFT from "src/abis/PNFT.json";
 // import FungibleToken from "src/abis/FungibleToken.json";
 
@@ -54,7 +55,7 @@ export const uploadMetadata = async (values) => {
 //mint nft
 
 export const createNftContract = (address) => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
   return new ethers.Contract(address, PNFT.abi, provider);
 };
 
@@ -65,7 +66,7 @@ export const createNftContractWithSigner = (address) => {
 };
 
 export const createFtContract = (address) => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
   return new ethers.Contract(address, FungibleToken.abi, provider);
 };
 

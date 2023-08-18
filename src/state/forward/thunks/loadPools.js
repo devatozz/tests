@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BigNumber, ethers } from "ethers";
 import PiraPair from "src/abis/PiraPair.json";
+import { config } from "src/state/chain/config";
 
 const testnetPools = ["0x6e5d28ee7579b46e8b8a26a0b1832b465a4bbefa", "0x9d8c1ed350dca116be79d4e43ecc51b05ab2f759", "0x1D7D6f01e666ffd6C377cB8318A4dAcb7939eD95", "0xa9cccf283330b13e29729c4b1ec24db6b2b5eb0a"]
 const mainnetPools = ["0x9A0b05F3cF748A114A4f8351802b3BFfE07100D4", "0x41d160033C222E6f3722EC97379867324567d883", "0xFEd728615B00DF7b7Fe3E7FB043622332aFd4adC"]
@@ -26,7 +27,7 @@ const loadPools = createAsyncThunk("forward/pool", async (_payload, { getState }
             }
 
             let listResult = await Promise.all(pairPromises)
-            listResult = listResult.filter(item => (!item.reverses._reserve0.isZero() || !item.reverses._reserve1.isZero()))
+            listResult = listResult.filter(item => (!item.reserves._reserve0.isZero() || !item.reserves._reserve1.isZero()))
             let objResult = {}
             for (let i = 0; i < pairs.length; i++) {
                 objResult[pairs[i]] = listResult[i]
@@ -54,8 +55,8 @@ const mapPools = async (data) => {
                 pair: item.pair,
                 token1: token1,
                 token2: token2,
-                reserve1: item.reverses._reserve0,
-                reserve2: item.reverses._reserve1,
+                reserve1: item.reserves._reserve0,
+                reserve2: item.reserves._reserve1,
             };
             if (poolMatrix.hasOwnProperty(token1)) {
                 if (poolMatrix[token1].hasOwnProperty(token2)) {
@@ -108,7 +109,7 @@ const mapPools = async (data) => {
 }
 
 function getPairContract(address) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
     return new ethers.Contract(address, PiraPair.abi, provider);
 }
 
@@ -116,13 +117,13 @@ function getPairContract(address) {
 async function getPairData(pairAddress) {
     try {
         const pairContract = getPairContract(pairAddress);
-        const [token0, token1, reverses] = await Promise.all([
+        const [token0, token1, reserves] = await Promise.all([
             pairContract.token0(),
             pairContract.token1(),
             pairContract.getReserves(),
         ]);
 
-        return { pair: pairAddress, token0: token0, token1: token1, reverses: reverses };
+        return { pair: pairAddress, token0: token0, token1: token1, reserves: reserves };
     } catch (error) {
         console.error('Error fetching token data:', error);
         throw error;

@@ -40,7 +40,7 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
 };
 
 function getTokenContract(address) {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
   return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 
@@ -60,37 +60,25 @@ export async function getTokenData(tokenAddress) {
   }
 }
 
-export const loadBalance = async (account, chain, tokenAddress) => {
+export const loadBalance = async (account, tokenAddress) => {
   try {
     let result = BigNumber.from(0)
-    if (tokenAddress ==noneAddress) {
-      let ethBalance = await window.ethereum.request({
-        "method": "eth_getBalance",
-        "params": [
-          account
-        ]
-      })
-      return BigNumber.from(ethBalance)
-    }
     const tokenContract = getTokenContract(tokenAddress);
     result = await tokenContract.balanceOf(account)
     return result;
   } catch (error) {
-    console.error('Error fetching token data:', error);
-    throw error;
+    return BigNumber.from("0")
   }
 };
 
-export const createFtContractWithSigner = (address) => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  return new ethers.Contract(address, PiraERC20.abi, signer);
-}
+export const createFtContract = (address) => {
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
+  return new ethers.Contract(address, PiraERC20.abi, provider);
+};
 
-export const createPairContractWithSigner = (address) => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  return new ethers.Contract(address, PiraPair.abi, signer);
+export const createPairContract = (address) => {
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
+  return new ethers.Contract(address, PiraPair.abi, provider);
 }
 
 export const createWETHContractWithSigner = (address) => {

@@ -7,9 +7,6 @@ const clientSideEmotionCache = createEmotionCache();
 import '../styles/global.css';
 import theme from 'src/styles/theme';
 import {
-  Box,
-  SkeletonCircle,
-  SkeletonText,
   ChakraProvider,
   CircularProgress,
   Center,
@@ -20,17 +17,23 @@ import { store, persistor } from 'src/state/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppBar from 'src/components/layout/AppBar';
 import Footer from 'src/components/layout/Footer';
+import { WagmiConfig } from 'wagmi'
+import { wagmiConfig } from 'src/utils/wallet';
+
 export default function App(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
   const Router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     Router.events.on('routeChangeStart', () => setIsLoading(true));
     Router.events.on('routeChangeComplete', () => setIsLoading(false));
   }, [Router]);
 
+  useEffect(() => {
+    setReady(true);
+  }, []);
   const actualPageMarkup = <Component {...pageProps} />;
 
   const loadingPageMarkup = (
@@ -47,7 +50,7 @@ export default function App(props) {
     </Center>
   );
 
-  const pageMarkup = isLoading ? loadingPageMarkup : actualPageMarkup;
+  const pageMarkup = isLoading || !ready ? loadingPageMarkup : actualPageMarkup;
 
   return (
     <CacheProvider value={emotionCache}>
@@ -62,13 +65,15 @@ export default function App(props) {
         <title>Pira Finance</title>
       </Head>
       <ChakraProvider theme={theme}>
+        <WagmiConfig config={wagmiConfig}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <AppBar />
             {pageMarkup}
             <Footer />
-          </PersistGate>
-        </Provider>
+            </PersistGate>
+          </Provider>
+        </WagmiConfig>
       </ChakraProvider>
     </CacheProvider>
   );

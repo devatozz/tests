@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import PiraERC20 from "src/abis/PiraERC20.json";
 import { ethers } from "ethers";
+import { config } from "src/state/chain/config";
 const loadTokens = createAsyncThunk("forward/token", async (_payload, { getState }) => {
     try {
         let listResultReq = await fetch("/api/tokens")
@@ -17,7 +18,7 @@ const loadTokens = createAsyncThunk("forward/token", async (_payload, { getState
 })
 
 function getTokenContract(address) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
     return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 

@@ -6,7 +6,6 @@ const noneAddress = "0x0000000000000000000000000000000000000000"
 const initialState = {
     dex: {
         contract: null,
-        signer: null,
     },
     factory: {
         contract: null,
@@ -58,11 +57,7 @@ export const slice = createSlice({
         builder.addCase(loadContracts.fulfilled, (state, action) => {
             state.dex.contract = action.payload.dex;
             state.factory.contract = action.payload.factory;
-
             state.loaded = true;
-            if (action.payload.isSigner) {
-                state.dex.signer = action.payload.dex;
-            }
         })
         builder.addCase(loadTokens.pending, (state) => {
             state.isLoading = true

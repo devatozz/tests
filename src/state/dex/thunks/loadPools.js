@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BigNumber, ethers } from "ethers";
 import PiraPair from "src/abis/PiraPair.json";
+import { config } from "src/state/chain/config";
 
 const loadPools = createAsyncThunk("dex/pool", async (_payload, { getState }) => {
     const state = await getState();
@@ -106,14 +107,14 @@ const mapPools = async (data) => {
             if (index == array.length - 1) resolve();
         });
     });
-    
+
     await matrixP.finally();
 
     return { tokens: Array.from(tokenSet), poolMap: poolMatrix }
 }
 
 function getPairContract(address) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
     return new ethers.Contract(address, PiraPair.abi, provider);
 }
 
