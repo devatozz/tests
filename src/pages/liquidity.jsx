@@ -37,7 +37,7 @@ import TokenModal from "src/components/pools/TokensModal";
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
 import { getERC20Contract, getRouterMainContract, getWETHContract } from 'src/utils/hooks';
 import { waitForTransaction } from '@wagmi/core'
-
+import { useViemClient } from 'src/utils/client';
 export default function Pools() {
   const dispatch = useDispatch();
 
@@ -64,7 +64,7 @@ export default function Pools() {
   const swapContract = useMemo(() => getRouterMainContract(walletClient, publicClient), [walletClient, publicClient])
   const erc20InContract = useMemo(() => getERC20Contract(token1Name.address, walletClient, publicClient), [token1Name, walletClient, publicClient])
   const erc20OutContract = useMemo(() => getERC20Contract(token2Name.address, walletClient, publicClient), [token2Name, walletClient, publicClient])
-
+  const viemClient = useViemClient()
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabsChange = (index) => {
     setTabIndex(index);
@@ -489,14 +489,18 @@ export default function Pools() {
 
   const handleLoadBalance = useCallback(
     async (tokenName) => {
+      setLoading(true);
       let result = BigNumber.from(0);
-      if (tokenName) {
-        setLoading(true);
-        if (account && selectChain) {
+      if (account && selectChain) {
+        if (tokenName == noneAddress) {
+          result = BigNumber.from(await viemClient.getBalance({
+            address: account
+          }))
+        } else {
           result = await loadBalance(account, tokenName);
         }
-        setLoading(false);
       }
+      setLoading(false);
       return result;
     },
     [account, selectChain]

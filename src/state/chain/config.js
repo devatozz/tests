@@ -118,3 +118,18 @@ const ChainInfosMainnet = {
 };
 
 export const chainInfos = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? ChainInfosMainnet : ChainInfosTestnet
+
+export const walletInfos = {
+  metaMask: {
+    logo: "/metamask-icon.png"
+  },
+  coinbaseWallet: {
+    logo: "/coinbase-wallet-logo.png"
+  },
+  walletConnect: {
+    logo: "/wallet-connect-logo.png"
+  },
+  injected: {
+    logo: "/white-wallet-photos.png"
+  },
+}

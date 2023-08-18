@@ -2,18 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     selectedChain: "base",
-    lastConnected: false,
+    lastConnected: "",
 }
 
 export const slice = createSlice({
     name: 'chain',
     initialState,
     reducers: {
-        connectNetwork: (state, _action) => {
-            state.lastConnected = true
+        connectNetwork: (state, action) => {
+            state.lastConnected = action.payload
         },
         disconnectNetwork: (state, _action) => {
-            state.lastConnected = false
+            state.lastConnected = ""
         },
     },
 })

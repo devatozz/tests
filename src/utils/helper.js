@@ -63,15 +63,6 @@ export async function getTokenData(tokenAddress) {
 export const loadBalance = async (account, tokenAddress) => {
   try {
     let result = BigNumber.from(0)
-    if (tokenAddress ==noneAddress) {
-      let ethBalance = await window.ethereum.request({
-        "method": "eth_getBalance",
-        "params": [
-          account
-        ]
-      })
-      return BigNumber.from(ethBalance)
-    }
     const tokenContract = getTokenContract(tokenAddress);
     result = await tokenContract.balanceOf(account)
     return result;

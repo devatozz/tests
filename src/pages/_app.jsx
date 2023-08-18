@@ -17,21 +17,8 @@ import { store, persistor } from 'src/state/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppBar from 'src/components/layout/AppBar';
 import Footer from 'src/components/layout/Footer';
-import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { Web3Modal } from '@web3modal/react'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { base, baseGoerli } from 'wagmi/chains'
-
-const chains =  process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? [base] : [baseGoerli]
-const projectId = "5017c09986c1d07d0cf9c57fcef20ceb"
-
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
-  publicClient
-})
-const ethereumClient = new EthereumClient(wagmiConfig, chains)
+import { WagmiConfig } from 'wagmi'
+import { wagmiConfig } from 'src/utils/wallet';
 
 export default function App(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -88,13 +75,6 @@ export default function App(props) {
           </Provider>
         </WagmiConfig>
       </ChakraProvider>
-      <Web3Modal projectId={projectId} ethereumClient={ethereumClient}
-        explorerRecommendedWalletIds={[
-          'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
-          'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa',
-          '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0'
-        ]}
-      />
     </CacheProvider>
   );
 }

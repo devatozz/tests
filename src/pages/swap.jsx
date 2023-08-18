@@ -40,6 +40,7 @@ import loadPools from 'src/state/forward/thunks/loadPools';
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
 import { getERC20Contract, getRouterForwardContract, getWETHContract } from 'src/utils/hooks';
 import { waitForTransaction } from '@wagmi/core'
+import { useViemClient } from 'src/utils/client';
 
 export default function SwapPage() {
   const [tokenIn, setTokenIn] = useState(emptyToken);
@@ -83,7 +84,7 @@ export default function SwapPage() {
   const swapContract = useMemo(() => getRouterForwardContract(walletClient, publicClient), [walletClient, publicClient])
   const erc20Contract = useMemo(() => getERC20Contract(tokenIn.address, walletClient, publicClient), [tokenIn, walletClient, publicClient])
   const wethContract = useMemo(() => getWETHContract(walletClient, publicClient), [walletClient, publicClient])
-
+  const viemClient = useViemClient();
   const handleSwapAvailable = () => {
     setBtnDisable(false);
     setBtnText('Swap');
@@ -320,8 +321,15 @@ export default function SwapPage() {
     async (token) => {
       setIsLoading(true);
       let result = BigNumber.from(0);
+      
       if (account && selectedChain) {
-        result = await loadBalance(account, token);
+        if (token == noneAddress) {
+          result = BigNumber.from(await viemClient.getBalance({
+            address: account
+          }))
+        } else {
+          result = await loadBalance(account, token);
+        }
       }
       setIsLoading(false);
       return result;

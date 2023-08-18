@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { config } from "src/state/chain/config";
+import { config, walletInfos } from "src/state/chain/config";
 import {
   connectNetwork,
   disconnectNetwork,
@@ -8,12 +8,30 @@ import {
 import loadContracts from "src/state/dex/thunks/loadContract";
 import loadPools from "src/state/dex/thunks/loadPools";
 import loadTokens from "src/state/dex/thunks/loadTokens";
-import loadForwardContracts  from "src/state/forward/thunks/loadContract";
+import loadForwardContracts from "src/state/forward/thunks/loadContract";
 import loadForwardPools from "src/state/forward/thunks/loadPools";
 import loadForwardTokens from "src/state/forward/thunks/loadTokens";
-import { Web3Button } from '@web3modal/react'
-import { useAccount, useNetwork, useConnect, useSwitchNetwork } from 'wagmi'
-import { useWeb3Modal } from "@web3modal/react";
+import {
+  Button,
+  Image,
+  MenuList,
+  MenuItem,
+  Avatar,
+  Menu,
+  MenuButton,
+  useClipboard,
+  useToast
+} from "@chakra-ui/react";
+import WalletIcon from "../icons/Wallet";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useSwitchNetwork,
+  useNetwork
+} from 'wagmi'
+import { CopyIcon, SmallCloseIcon } from "@chakra-ui/icons";
+
 export default function Network() {
   const dispatch = useDispatch();
   const { lastConnected } = useSelector(
@@ -21,7 +39,9 @@ export default function Network() {
   );
   const { switchNetwork } = useSwitchNetwork()
   const { chain } = useNetwork()
-  const { open, isOpen } = useWeb3Modal()
+  const { connect, connectors, error, isLoading, pendingConnector } =
+    useConnect()
+  const { disconnect } = useDisconnect()
 
   const {
     loaded: contractLoaded,
@@ -38,14 +58,25 @@ export default function Network() {
     dispatch(disconnectNetwork());
   }, []);
 
-  const handleConnectNetwork = useCallback(async () => {
-    dispatch(connectNetwork());
+  const handleConnectNetwork = useCallback(async ({connector}) => {
+    dispatch(connectNetwork(connector.id));
   }, []);
 
-  const { isConnected } = useAccount({
+  const { isConnected, connector: currentConnector, address, isConnecting, isReconnecting } = useAccount({
     onConnect: handleConnectNetwork,
     onDisconnect: handleDisconnectNetwork
   })
+  const { onCopy, setValue: setCopyValue } = useClipboard("");
+  const toast = useToast();
+
+  const copyAddress = () => {
+    onCopy();
+    toast({
+      title: "Address is copied",
+      status: "success",
+      duration: 1000,
+    });
+  };
 
   const handleCheckChain = useCallback(async () => {
     if (chain.id !== config.base.chainId) {
@@ -54,10 +85,24 @@ export default function Network() {
   }, [config, switchNetwork, chain]);
 
   useEffect(() => {
+    setCopyValue(address)
+  }, [address])
+
+  useEffect(() => {
     if (isConnected && switchNetwork) {
       handleCheckChain();
     }
   }, [isConnected, switchNetwork]);
+
+  useEffect(() => {
+    if (lastConnected && !isConnected) {
+      let lastConnector = connectors.find(item => item.id === lastConnected)
+      if (lastConnector) {
+        connect({connector: lastConnector})
+      }
+      connect()
+    }
+  }, [isConnected, lastConnected])
 
   useEffect(() => {
     if (!contractLoaded) {
@@ -87,7 +132,84 @@ export default function Network() {
     }
   }, [forwardContractLoaded, forwardPoolLoaded, fowardTokenLoaded]);
 
+  if (isConnected) return (
+    <Menu matchWidth>
+      <MenuButton
+        as={Button}
+        leftIcon={
+          <Image src={walletInfos[currentConnector?.id]?.logo} w={"20px"} h={"20px"} />
+        }
+        variant="solid"
+        fontSize={"sm"}
+        fontWeight={700}
+        colorScheme="whiteAlpha"
+        isLoading={isConnecting || isReconnecting}
+      >
+        {address
+          ? address
+            .slice(0, 6)
+            .concat("...")
+            .concat(address.slice(address.length - 6, address.length))
+          : ""}
+      </MenuButton>
+      <MenuList zIndex={100}>
+        <MenuItem
+          as={Button}
+          variant="ghost"
+          leftIcon={<CopyIcon />}
+          sx={{ fontWeight: 500, justifyContent: "start", px: 4 }}
+          onClick={copyAddress}
+        >
+          Copy address
+        </MenuItem>
+        <MenuItem
+          as={Button}
+          variant="ghost"
+          leftIcon={<SmallCloseIcon />}
+          sx={{ fontWeight: 500, justifyContent: "start", px: 4 }}
+          onClick={disconnect}
+        >
+          Disconnect
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  )
+
   return (
-    <Web3Button balance='show' themeMode='light' icon='hide' />
+    <Menu matchWidth>
+      <MenuButton
+        as={Button}
+        leftIcon={
+          <WalletIcon />
+        }
+        variant="solid"
+        fontWeight={700}
+        colorScheme="whiteAlpha"
+        isLoading={(isConnecting || isReconnecting) && !error}
+      >
+        Connect wallet
+      </MenuButton>
+      <MenuList zIndex={100}>
+        {connectors.map((connector) => (
+          <MenuItem
+            as={Button}
+            isDisabled={!connector.ready}
+            variant="ghost"
+            key={connector.id}
+            onClick={() => connect({ connector })}
+            sx={{ fontWeight: 500, justifyContent: "start", px: 4 }}
+            leftIcon={
+              <Image src={walletInfos[connector.id].logo} w={"20px"} h={"20px"} />
+            }
+          >
+            {connector.name}
+            {!connector.ready && ' (unsupported)'}
+            {isLoading &&
+              connector.id === pendingConnector?.id &&
+              ' (connecting)'}
+          </MenuItem>
+        ))}
+      </MenuList>
+    </Menu>
   );
 }
