@@ -5,6 +5,7 @@ import PiraERC20 from "src/abis/PiraERC20.json";
 import PiraPair from "src/abis/PiraPair.json";
 import PiraWETH from "src/abis/PiraWETH.json";
 import ABI_MINT_NFT from 'src/abis/MintNft.json';
+import ABI_MULTI_MINT_NFT from 'src/abis/MultiMintNft.json';
 
 export const getContract = ({
     abi,
@@ -69,4 +70,8 @@ export function getWETHContract(walletClient, publicClient) {
 
 export function getNftContract(walletClient, publicClient) {
     return prepareContract(config.base.nftAddress, ABI_MINT_NFT, walletClient, publicClient)
+}
+
+export function getMultiNftContract(walletClient, publicClient) {
+    return prepareContract(config.base.multiNftAddress, ABI_MULTI_MINT_NFT, walletClient, publicClient)
 }
