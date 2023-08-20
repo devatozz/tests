@@ -104,10 +104,9 @@ const AirdropPage = () => {
   };
 
   const handleMintMultiNft = async () => {
-    console.log("ehe");
     setLoading(true);
     try {
-      const tx = await multiNftContract?.write?.multiMint(10, {
+      const tx = await multiNftContract?.write?.multiMint([10], {
         value: ethers.utils.parseEther(MINT_MULTI_FEE),
       });
       await waitForTransaction({ hash: tx });

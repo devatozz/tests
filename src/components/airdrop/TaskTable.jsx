@@ -20,7 +20,12 @@ import CooldownButton from "./CooldownButton";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 
-const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
+const TaskTable = ({
+  copyRefLink,
+  handleMintNFT,
+  handleClaim,
+  handleMintMultiNft,
+}) => {
   const { taskList, inviteFriendTaskTokenEarn } = useSelector(
     (state) => state.airdrop
   );
@@ -86,6 +91,7 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
                     key={index}
                     dataTask={dataTaskTable}
                     handleMintNFT={handleMintNFT}
+                    handleMintMultiNft={handleMintMultiNft}
                     handleClaim={handleClaim}
                   />
                 )
