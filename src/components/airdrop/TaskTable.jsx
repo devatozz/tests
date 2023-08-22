@@ -256,7 +256,7 @@ const TaskTab = ({
                 color={"#18215D"}
                 onClick={handleMintMultiNft}
               >
-                <Text fontSize={{ base: "xs", md: "xl" }}>Mint 10</Text>
+                <Text fontSize={{ base: "xs", md: "xl" }}>Mint 10⚡️</Text>
               </Button>
             </VStack>
           ) : dataTask !== undefined && dataTask.type === "SWAP" ? (
