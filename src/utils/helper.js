@@ -71,6 +71,17 @@ export const loadBalance = async (account, tokenAddress) => {
   }
 };
 
+export const loadSupply = async (tokenAddress) => {
+  try {
+    let result = BigNumber.from(0)
+    const tokenContract = getTokenContract(tokenAddress);
+    result = await tokenContract.totalSupply()
+    return result;
+  } catch (error) {
+    return BigNumber.from("0")
+  }
+};
+
 export const createFtContract = (address) => {
   const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
   return new ethers.Contract(address, PiraERC20.abi, provider);

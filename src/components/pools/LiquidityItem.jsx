@@ -55,6 +55,22 @@ export default function LiquidityItem({
   const { data: publicClient } = usePublicClient()
   const pairContract = useMemo(() => getPairContract(lpToken.pair, walletClient, publicClient), [walletClient, publicClient])
 
+  const pooledToken1 = useMemo(() => {
+    return BigNumber.from(lpToken.balance).mul(lpToken.reserves._reserve0).div(lpToken.supply)
+  }, [lpToken])
+
+  const pooledToken2 = useMemo(() => {
+    return BigNumber.from(lpToken.balance).mul(lpToken.reserves._reserve1).div(lpToken.supply)
+  }, [lpToken])
+
+  const removeToken1 = useMemo(() => {
+    return ethers.utils.parseUnits(removeAmount).mul(lpToken.reserves._reserve0).div(lpToken.supply)
+  }, [lpToken, removeAmount])
+
+  const removeToken2 = useMemo(() => {
+    return ethers.utils.parseUnits(removeAmount).mul(lpToken.reserves._reserve1).div(lpToken.supply)
+  }, [lpToken, removeAmount])
+
   const handleOpenModal = () => {
     onOpen();
   };
@@ -169,24 +185,24 @@ export default function LiquidityItem({
           }
         />
         <PoolDetail
-          label={`Pooled ${token1Info.symbol}:`}
+          label={`Your pooled ${token1Info.symbol}:`}
           value={
             lpToken.reserves._reserve0 &&
             currencyFormat(
               ethers.utils.formatUnits(
-                lpToken.reserves._reserve0,
+                pooledToken1,
                 token1Info.decimals
               )
             )
           }
         />
         <PoolDetail
-          label={`Pooled ${token2Info.symbol}:`}
+          label={`Your pooled ${token2Info.symbol}:`}
           value={
             lpToken.reserves._reserve1 &&
             currencyFormat(
               ethers.utils.formatUnits(
-                lpToken.reserves._reserve1,
+                pooledToken2,
                 token2Info.decimals
               )
             )
@@ -249,7 +265,15 @@ export default function LiquidityItem({
                     name={token1Info.symbol}
                     src={token1Info.icon}
                   />
-                  <Text ml={2}>{token1Info.symbol}</Text>
+                  <Text ml={2}>{
+                    lpToken.reserves._reserve0 &&
+                      currencyFormat(
+                        ethers.utils.formatUnits(
+                          removeToken1,
+                          token1Info.decimals
+                        )
+                      )
+                  } {token1Info.symbol}</Text>
                 </Flex>
                 <Flex alignItems="center" m={2}>
                   <Avatar
@@ -257,7 +281,15 @@ export default function LiquidityItem({
                     name={token2Info.symbol}
                     src={token2Info.icon}
                   />
-                  <Text ml={2}>{token2Info.symbol}</Text>
+                  <Text ml={2}>{
+                    lpToken.reserves._reserve1 &&
+                    currencyFormat(
+                      ethers.utils.formatUnits(
+                        removeToken2,
+                        token2Info.decimals
+                      )
+                    )
+                  } {token2Info.symbol}</Text>
                 </Flex>
               </Flex>
             </Box>

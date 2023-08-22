@@ -26,7 +26,7 @@ import { BigNumber, ethers } from "ethers";
 
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createFtContract, createPairContract, loadBalance } from "src/utils/helper";
+import { createFtContract, createPairContract, loadBalance, loadSupply } from "src/utils/helper";
 import LiquidityItem from "src/components/pools/LiquidityItem";
 import { currencyFormat, formatInputAmount } from "src/utils/stringUtil";
 import { config, noneAddress } from "src/state/chain/config";
@@ -849,19 +849,27 @@ export default function Pools() {
     const lpTokens = [];
     //rewrite this
     if (pools.loaded && pools.list.length && account) {
-      await Promise.all(
-        pools.list.map(async (item) => {
-          const balance = await loadBalance(account, item.pair);
-          if (!balance.isZero()) {
-            lpTokens.push({
-              ...item,
-              balance: balance.toString(),
-            });
-          }
-        })
-      );
+      let pairPromises = [] 
+      for (let i = 0; i < pools.list.length; i++) {
+        pairPromises.push(loadBalance(account, pools.list[i].pair))
+      }
+      let curBalances = await Promise.all(pairPromises);
+      for (let i = 0; i < pools.list.length; i++) {
+        if (!curBalances[i].isZero()) {
+          lpTokens.push({
+            ...pools.list[i],
+            balance: curBalances[i].toString(),
+          });
+        }
+      }
+      pairPromises = [] 
+      for (let i = 0; i < lpTokens.length; i++) {
+        pairPromises.push(loadSupply(lpTokens[i].pair))
+      }
+      let curSupplies = await Promise.all(pairPromises)
+      
+      setMyLpTokens(lpTokens.map((item, index) => ({...item, supply: curSupplies[index]})))
     }
-    setMyLpTokens(lpTokens);
   };
 
   useEffect(() => {
