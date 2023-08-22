@@ -22,8 +22,9 @@ const TestnetConfig = {
     factoryAddress: baseTestnetConfig.factory,
     dexAddress: baseTestnetConfig.router,
     wrapAddress: baseTestnetConfig.wrap,
-    nftAddress: baseTestnetConfig.nft
-  }
+    nftAddress: baseTestnetConfig.nft,
+    multiNftAddress: baseTestnetConfig.multiNft,
+  },
 };
 
 const MainnetConfig = {
@@ -44,9 +45,9 @@ const MainnetConfig = {
     factoryAddress: baseMainnetConfig.factory,
     dexAddress: baseMainnetConfig.router,
     wrapAddress: baseMainnetConfig.wrap,
-    nftAddress: baseMainnetConfig.nft
-
-  }
+    nftAddress: baseMainnetConfig.nft,
+    multiNftAddress: baseMainnetConfig.multiNft,
+  },
 };
 
 const ForwardTestnetConfig = {
@@ -67,8 +68,9 @@ const ForwardTestnetConfig = {
     factoryAddress: baseForwardTestnetConfig.factory,
     dexAddress: baseForwardTestnetConfig.router,
     wrapAddress: baseForwardTestnetConfig.wrap,
-    nftAddress: baseForwardTestnetConfig.nft
-  }
+    nftAddress: baseForwardTestnetConfig.nft,
+    multiNftAddress: baseForwardTestnetConfig.multiNft,
+  },
 };
 
 const ForwardMainnetConfig = {
@@ -89,13 +91,18 @@ const ForwardMainnetConfig = {
     factoryAddress: baseForwardMainnetConfig.factory,
     dexAddress: baseForwardMainnetConfig.router,
     wrapAddress: baseForwardMainnetConfig.wrap,
-    nftAddress: baseForwardMainnetConfig.nft
-  }
+    nftAddress: baseForwardMainnetConfig.nft,
+    multiNftAddress: baseForwardMainnetConfig.multiNft,
+  },
 };
 
-export const config = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? MainnetConfig : TestnetConfig
+export const config =
+  process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? MainnetConfig : TestnetConfig;
 
-export const forwardConfig = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? ForwardMainnetConfig : ForwardTestnetConfig
+export const forwardConfig =
+  process.env.NEXT_PUBLIC_NETWORK == "mainnet"
+    ? ForwardMainnetConfig
+    : ForwardTestnetConfig;
 
 const ChainInfosTestnet = {
   base: {
@@ -117,19 +124,22 @@ const ChainInfosMainnet = {
   },
 };
 
-export const chainInfos = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? ChainInfosMainnet : ChainInfosTestnet
+export const chainInfos =
+  process.env.NEXT_PUBLIC_NETWORK == "mainnet"
+    ? ChainInfosMainnet
+    : ChainInfosTestnet;
 
 export const walletInfos = {
   metaMask: {
-    logo: "/metamask-icon.png"
+    logo: "/metamask-icon.png",
   },
   coinbaseWallet: {
-    logo: "/coinbase-wallet-logo.png"
+    logo: "/coinbase-wallet-logo.png",
   },
   walletConnect: {
-    logo: "/wallet-connect-logo.png"
+    logo: "/wallet-connect-logo.png",
   },
   injected: {
-    logo: "/white-wallet-photos.png"
+    logo: "/white-wallet-photos.png",
   },
-}
+};
