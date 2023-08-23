@@ -38,7 +38,7 @@ const Progress = () => {
               color='blue.700'
               textAlign={'center'}
             >
-              {`${percent}%`}
+              {/* {`${percent}%`} */}
             </Text>
             <Text
               fontSize={{ base: '1xl', md: '3xl' }}
