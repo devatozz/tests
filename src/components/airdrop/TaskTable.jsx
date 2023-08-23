@@ -251,13 +251,13 @@ const TaskTab = ({
               <CooldownButton cooldownTime={cooldown} onClick={handleMintNFT}>
                 <Text fontSize={{ base: "xs", md: "xl" }}>Mint</Text>
               </CooldownButton>
-              <Button
+              {/* <Button
                 background={"#00F0FF"}
                 color={"#18215D"}
                 onClick={handleMintMultiNft}
               >
                 <Text fontSize={{ base: "xs", md: "xl" }}>Mint 10⚡️</Text>
-              </Button>
+              </Button> */}
             </VStack>
           ) : dataTask !== undefined && dataTask.type === "SWAP" ? (
             <Button background="#00F0FF" onClick={() => router.push("/swap")}>
