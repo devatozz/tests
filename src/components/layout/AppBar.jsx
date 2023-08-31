@@ -35,6 +35,10 @@ const NAV_ITEMS = [
     href: "/liquidity",
   },
   {
+    label: "Staking",
+    href: "/staking",
+  },
+  {
     label: "Airdrop🔥",
     href: "/airdrop",
   },
@@ -132,7 +136,7 @@ export default function AppBar() {
                       passHref
                       target={
                         navItem.label === "Bridge" ||
-                          navItem.label === "Whitepaper"
+                        navItem.label === "Whitepaper"
                           ? "_blank"
                           : undefined
                       }
