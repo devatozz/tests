@@ -15,6 +15,7 @@ import {
   TableContainer,
   Tooltip,
   useClipboard,
+  Center
 } from '@chakra-ui/react';
 
 const data = [
@@ -57,7 +58,12 @@ export default function LeaderBoard() {
       <Text fontSize={{ base: '2xl', md: '5xl' }} color={'#5EEDFF'}>
         24H LEADERBOARD
       </Text>
-      <TableContainer
+
+      <Center fontSize={{ base: 'md', md: '2xl'}} color={'white'}>
+      We are upgrading our system for better performance and security on Sep 1st. Minimal disruption is expected during 24 hours. Thank you for your patience!
+      </Center>
+
+      {/* <TableContainer
         width='full'
         rounded='lg'
         borderWidth={2}
@@ -134,7 +140,7 @@ export default function LeaderBoard() {
             })}
           </Tbody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
     </VStack>
   );
 }
