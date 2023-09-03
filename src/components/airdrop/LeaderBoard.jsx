@@ -59,11 +59,11 @@ export default function LeaderBoard() {
         24H LEADERBOARD
       </Text>
 
-      <Center fontSize={{ base: 'md', md: '2xl'}} color={'white'} textAlign="center">
+      {/* <Center fontSize={{ base: 'md', md: '2xl'}} color={'white'} textAlign="center">
       We are upgrading our system for better performance and security on Sep 1st. Minimal disruption is expected during 24 hours. Thank you for your patience!
-      </Center>
+      </Center> */}
 
-      {/* <TableContainer
+      <TableContainer
         width='full'
         rounded='lg'
         borderWidth={2}
@@ -140,7 +140,7 @@ export default function LeaderBoard() {
             })}
           </Tbody>
         </Table>
-      </TableContainer> */}
+      </TableContainer>
     </VStack>
   );
 }
