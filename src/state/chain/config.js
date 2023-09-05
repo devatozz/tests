@@ -21,7 +21,9 @@ const TestnetConfig = {
     factoryAddress: baseTestnetConfig.factory,
     dexAddress: baseTestnetConfig.router,
     wrapAddress: baseTestnetConfig.wrap,
-  }
+    stakeNft: baseTestnetConfig.stakeNft,
+    nft: baseTestnetConfig.nft,
+  },
 };
 
 const MainnetConfig = {
@@ -42,10 +44,11 @@ const MainnetConfig = {
     factoryAddress: baseMainnetConfig.factory,
     dexAddress: baseMainnetConfig.router,
     wrapAddress: baseMainnetConfig.wrap,
-  }
+  },
 };
 
-export const config = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? MainnetConfig : TestnetConfig
+export const config =
+  process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? MainnetConfig : TestnetConfig;
 
 const ChainInfosTestnet = {
   base: {
@@ -63,4 +66,7 @@ const ChainInfosMainnet = {
   },
 };
 
-export const chainInfos = process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? ChainInfosMainnet : ChainInfosTestnet
+export const chainInfos =
+  process.env.NEXT_PUBLIC_NETWORK == "mainnet"
+    ? ChainInfosMainnet
+    : ChainInfosTestnet;

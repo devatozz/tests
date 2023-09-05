@@ -6,6 +6,7 @@ import storage from "redux-persist/lib/storage";
 import chainReducer from "./chain/slice";
 import dexReducer from "./dex/slice";
 import airdropReducer from "./airdrop/slice";
+import stakeReducer from "./stake/slice";
 
 const chainPersistConfig = {
   key: "chain",
@@ -20,6 +21,7 @@ export const store = configureStore({
     chain: chainPersist,
     dex: dexReducer,
     airdrop: airdropReducer,
+    stake: stakeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

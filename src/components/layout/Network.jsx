@@ -135,7 +135,7 @@ export default function Network() {
         fontSize={"sm"}
         fontWeight={700}
         colorScheme="whiteAlpha"
-        isLoading={isConnecting}
+        // isLoading={isConnecting}
       >
         {selectedChain ? (
           <Text>
