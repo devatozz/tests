@@ -47,13 +47,15 @@ export default function Staking() {
   const [unstakeAmount, setUnstakeAmount] = useState(0);
   const { account, selectedChain } = useSelector((state) => state.chain);
   const address = useSelector((state) => state.chain.account);
-
   const [isStakeModalOpen, setIsStakeModalOpen] = useState(false);
   const [isUnStakeModalOpen, setIsUnStakeModalOpen] = useState(false);
+  const [buttonStatuses, setButtonStatuses] = useState([]);
+
   const { totalRewards, totalNftStacked } = useSelector((state) => state.stake);
   const harvestingRewards = useSelector(
     (state) => state.stake.harvestingRewards
   );
+
   const poolsInfor = [
     {
       pool: 10,
@@ -86,6 +88,18 @@ export default function Staking() {
       need: 150 - totalNftStacked,
     },
   ];
+  useEffect(() => {
+    const minimumStakedValues = [10, 30, 60, 100, 150];
+    const activePoolIndex = minimumStakedValues.findIndex(
+      (value, index, array) =>
+        totalNftStacked < value &&
+        (index === 0 || totalNftStacked >= array[index - 1])
+    );
+    const btStatus = poolsInfor.map((poolInfo, index) => {
+      return index === activePoolIndex;
+    });
+    setButtonStatuses(btStatus);
+  }, [totalNftStacked]);
 
   const handleLoadBalance = useCallback(
     async (token) => {
@@ -197,74 +211,89 @@ export default function Staking() {
                 marginTop="8"
               >
                 <Text fontSize="32px" color="#fff">
-                  Balance NFT:
+                  Your NFT Balance:
                   <Box as="span" color="#39ACFF" margin={"0px 20px"}>
                     {balanceNFT}
                   </Box>
-                </Text>
-              </Box>
-              <Box
-                border="2px solid #D4FFF2 "
-                textAlign="center"
-                padding="15px "
-                borderRadius="10px"
-                marginTop="8"
-              >
-                <Text fontSize="32px" color="#fff">
-                  Total rewards:
-                  <Box as="span" color="#39ACFF" margin={"0px 20px"}>
-                    {Number(totalRewards).toFixed(2)}
-                  </Box>
-                </Text>
-              </Box>
-              <Box
-                border="2px solid #D4FFF2 "
-                textAlign="center"
-                padding="15px "
-                borderRadius="10px"
-                marginTop="8"
-              >
-                <Text fontSize="32px" color="#fff">
-                  <button
-                    onClick={handleHarvestRewards}
-                    disabled={harvestingRewards}
-                  >
-                    {harvestingRewards
-                      ? "Harvesting rewards..."
-                      : "Harvest rewards"}
-                  </button>
-                </Text>
-              </Box>
-              <Box
-                border="2px solid #D4FFF2 "
-                textAlign="center"
-                padding="15px "
-                borderRadius="10px"
-                marginTop="8"
-              >
-                <Text fontSize="32px" color="#fff">
-                  <button
-                    onClick={() => setIsUnStakeModalOpen(true)}
-                    disabled={harvestingRewards}
-                  >
-                    Unstake
-                  </button>
                 </Text>
               </Box>
             </Stack>
           </SimpleGrid>
           <Container maxW={"5xl"} py={12}>
             <Center marginTop={24}>
-              <Text
-                color={"#fff"}
-                fontSize={"48px"}
-                border="3px solid #D4FFF2"
-                padding={8}
-                width={"full"}
-                textAlign={"Center"}
-              >
-                Total NFTs Staked: {totalNftStacked}
-              </Text>
+              <Box width={"full"} border="3px solid #D4FFF2">
+                <Center>
+                  <Flex flexDirection={"column"}>
+                    <Box>
+                      <Text
+                        color={"#fff"}
+                        fontSize={"48px"}
+                        paddingTop={"30px"}
+                        width={"full"}
+                        textAlign={"Start"}
+                      >
+                        Total NFTs Staked: {totalNftStacked}
+                      </Text>
+                    </Box>
+                    <Box textAlign="center">
+                      <Text
+                        color={"#fff"}
+                        fontSize={"48px"}
+                        width={"full"}
+                        textAlign={"Start"}
+                      >
+                        Total Rewards:
+                        <Box as="span" color="#39ACFF" margin={"0px 20px"}>
+                          {Number(totalRewards).toFixed(2)} xPira
+                        </Box>
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Center>
+
+                <Flex
+                  textAlign="center"
+                  justifyContent={"center"}
+                  paddingBottom={"30px"}
+                  gap={8}
+                >
+                  <Box textAlign="center" borderRadius="10px" marginTop="8">
+                    <Text fontSize="32px" color="#fff">
+                      <Button
+                        onClick={handleHarvestRewards}
+                        disabled={harvestingRewards}
+                        padding={"0px 40px"}
+                        css={{
+                          ":hover": {
+                            color: "green",
+                            // background: "#cacfd5",
+                          },
+                        }}
+                      >
+                        {harvestingRewards
+                          ? "Harvesting Rewards..."
+                          : "Harvest Rewards"}
+                      </Button>
+                    </Text>
+                  </Box>
+                  <Box textAlign="center" borderRadius="10px" marginTop="8">
+                    <Text fontSize="32px" color="#fff">
+                      <Button
+                        onClick={() => setIsUnStakeModalOpen(true)}
+                        padding={"0px 40px"}
+                        css={{
+                          ":hover": {
+                            color: "green",
+                            // background: "#cacfd5",
+                          },
+                        }}
+                      >
+                        Unstake
+                      </Button>
+                    </Text>
+                  </Box>
+                </Flex>
+              </Box>
             </Center>
 
             <Center marginTop={24} justifyContent="flex-start">
@@ -317,7 +346,7 @@ export default function Staking() {
                       borderRadius="10px"
                       flex={"3"}
                     >
-                      {el.need <= 0 ? (
+                      {el.staked >= el.pool ? (
                         <>
                           <Button
                             justifyContent="center"
@@ -325,7 +354,7 @@ export default function Staking() {
                             variant="outline"
                             aria-label="Options token out"
                             onClick={() => setIsStakeModalOpen(true)}
-                            isDisabled="true"
+                            isDisabled={true}
                             css={{
                               background: "#1E2A76",
                               padding: "10px",
@@ -340,7 +369,7 @@ export default function Staking() {
                               },
                             }}
                           >
-                            <Text>Stake</Text>
+                            <Text> Staked {el.pool} NFT</Text>
                           </Button>
                         </>
                       ) : (
@@ -351,6 +380,7 @@ export default function Staking() {
                             variant="outline"
                             aria-label="Options token out"
                             onClick={() => setIsStakeModalOpen(true)}
+                            isDisabled={!buttonStatuses[index]}
                             css={{
                               background: "#1E2A76",
                               padding: "10px",
