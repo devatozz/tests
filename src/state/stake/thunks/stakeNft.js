@@ -1,11 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  STAKE_SUCCESS,
-  stakeFailure,
-  stakePending,
-  stakeSuccess,
-  approveAllTokens,
-} from "../slice";
+import { approveAllTokens } from "../slice";
 import { ethers } from "ethers";
 import stakeNftAbi from "src/abis/PiraStakingNFT.json";
 import BaseTestnetConfig from "src/state/config/base-testnet.json";
@@ -16,11 +10,10 @@ const BaseConfig =
     ? BaseMainnetConfig
     : BaseTestnetConfig;
 
-export const stake = createAsyncThunk(
+export const stakeNft = createAsyncThunk(
   "stake/stakeNft",
-  async ({ amount }, { dispatch }) => {
+  async ({ amount }) => {
     try {
-      dispatch(stakePending());
       const approvedTxHash = await approveAllTokens();
       const stakingAddress = BaseConfig.stakeNft;
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -32,21 +25,12 @@ export const stake = createAsyncThunk(
       );
       const BigNumber = ethers.BigNumber;
       const amountToStake = BigNumber.from(amount);
-      const stakeTxHash = await nftStaking.stakeByAmount(amountToStake, {
-        gasLimit: 1000000,
-      });
-      const tx = stakeTxHash.wait();
-      dispatch(stakeSuccess());
-      return { approvedTxHash, stakeTxHash };
+      const stakeTxHash = await nftStaking.stakeByAmount(amountToStake);
+      const tx = await stakeTxHash.wait();
     } catch (error) {
       console.log("error", error);
 
-      dispatch(stakeFailure(error.message));
-      throw error;
+      throw Error("Failed to stake nft");
     }
   }
 );
-
-export const handleStakeSuccess = () => {
-  return { type: STAKE_SUCCESS };
-};

@@ -16,6 +16,7 @@ import {
   ModalBody,
   ModalFooter,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +31,7 @@ import {
   fetchTotalRewards,
   getNFTBalance,
 } from "src/state/stake/slice";
-import { stake } from "src/state/stake/thunks/stakeNft";
+import { stakeNft } from "src/state/stake/thunks/stakeNft";
 import { unstake } from "src/state/stake/thunks/unstake";
 //
 const BaseConfig =
@@ -40,8 +41,7 @@ const BaseConfig =
 
 export default function Staking() {
   const dispatch = useDispatch();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
   const [balanceNFT, setBalanceNFT] = useState(0);
   const [amount, setAmount] = useState(0);
   const [unstakeAmount, setUnstakeAmount] = useState(0);
@@ -50,12 +50,14 @@ export default function Staking() {
   const [isStakeModalOpen, setIsStakeModalOpen] = useState(false);
   const [isUnStakeModalOpen, setIsUnStakeModalOpen] = useState(false);
   const [buttonStatuses, setButtonStatuses] = useState([]);
-
+  const [isHarvestingRewards, setIsHarvestingRewards] = useState(false);
+  // state
   const { totalRewards, totalNftStacked } = useSelector((state) => state.stake);
   const harvestingRewards = useSelector(
     (state) => state.stake.harvestingRewards
   );
-
+  const stakingNft = useSelector((state) => state.stake.stakingNft);
+  const unstakingNft = useSelector((state) => state.stake.unstaking);
   const poolsInfor = [
     {
       pool: 10,
@@ -103,17 +105,15 @@ export default function Staking() {
 
   const handleLoadBalance = useCallback(
     async (token) => {
-      setIsLoading(true);
       let result = BigNumber.from(0);
-      if (account && selectedChain) {
-        result = await loadNftBalance(account, selectedChain, token);
+      if (address && selectedChain) {
+        result = await loadNftBalance(address, selectedChain, token);
       }
-      setIsLoading(false);
       const nftBalance = result.toString();
       setBalanceNFT(nftBalance);
       return result;
     },
-    [account, selectedChain]
+    [address, selectedChain]
   );
   // load balance NFT
   useEffect(() => {
@@ -121,36 +121,91 @@ export default function Staking() {
   }, []);
 
   const handleApproveAllTokens = async () => {
-    dispatch(approveAllTokens(account));
+    dispatch(approveAllTokens(address));
   };
-
+  // stake
   const handleSubmitStake = async (e) => {
     e.preventDefault();
     try {
-      handleApproveAllTokens();
-      const response = await dispatch(stake({ amount }));
+      await handleApproveAllTokens();
+      const response = await dispatch(stakeNft({ amount }));
+      // close the modal
+      setIsStakeModalOpen(false);
+      setAmount(0);
+      dispatch(getNFTBalance());
+      toast({
+        title: "Success!",
+        description: "Your NFTs have been staked successfully!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: "Error!",
+        description: "An error occurred while staking NFTs.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
   // get total reward
   useEffect(() => {
     dispatch(fetchTotalRewards());
-  }, [account, dispatch]);
+  }, [address, dispatch]);
   useEffect(() => {
     dispatch(getNFTBalance());
-  }, [account, dispatch]);
+  }, [address, dispatch]);
   // havest rewards
-  const handleHarvestRewards = () => {
-    dispatch(harvestRewards());
+  const handleHarvestRewards = async () => {
+    setIsHarvestingRewards(true);
+    try {
+      const response = await dispatch(harvestRewards());
+      // close the modal
+      toast({
+        title: "Success!",
+        description: "Havest successfully!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error!",
+        description: "An error occurred while havest.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsHarvestingRewards(false);
+    }
   };
   // unstake
   const handleSubmitUnStake = async (e) => {
     e.preventDefault();
     try {
       const response = await dispatch(unstake({ unstakeAmount }));
+      // close the modal
+      setIsUnStakeModalOpen(false);
+      setUnstakeAmount(0);
+      dispatch(getNFTBalance());
+      toast({
+        title: "Success!",
+        description: "Your NFTs have been unstake successfully!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: "Error!",
+        description: "An error occurred while unstaking NFTs.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -227,10 +282,11 @@ export default function Staking() {
                     <Box>
                       <Text
                         color={"#fff"}
-                        fontSize={"48px"}
+                        fontSize={{ base: "32px", md: "48px" }}
                         paddingTop={"30px"}
                         width={"full"}
                         textAlign={"Start"}
+                        padding={{ base: "30px 10px", md: "30px 0px 0px" }}
                       >
                         Total NFTs Staked: {totalNftStacked}
                       </Text>
@@ -238,7 +294,7 @@ export default function Staking() {
                     <Box textAlign="center">
                       <Text
                         color={"#fff"}
-                        fontSize={"48px"}
+                        fontSize={{ base: "32px", md: "48px" }}
                         width={"full"}
                         textAlign={"Start"}
                       >
@@ -261,7 +317,8 @@ export default function Staking() {
                     <Text fontSize="32px" color="#fff">
                       <Button
                         onClick={handleHarvestRewards}
-                        disabled={harvestingRewards}
+                        isLoading={isHarvestingRewards}
+                        isDisabled={isHarvestingRewards}
                         padding={"0px 40px"}
                         css={{
                           ":hover": {
@@ -270,7 +327,7 @@ export default function Staking() {
                           },
                         }}
                       >
-                        {harvestingRewards
+                        {isHarvestingRewards
                           ? "Harvesting Rewards..."
                           : "Harvest Rewards"}
                       </Button>
@@ -317,7 +374,10 @@ export default function Staking() {
                   padding="10px 20px"
                 >
                   <Flex justifyContent="space-between">
-                    <Text fontSize="42px" color="#1F2B7A">
+                    <Text
+                      color="#1F2B7A"
+                      fontSize={{ base: "32px", md: "42px" }}
+                    >
                       {el.pool} Pira NFTs
                     </Text>
                     <Box
@@ -326,7 +386,11 @@ export default function Staking() {
                       textAlign="center"
                       borderRadius="10px"
                     >
-                      <Text color="#00FF85" padding="0px" fontSize="36px">
+                      <Text
+                        color="#00FF85"
+                        padding="0px"
+                        fontSize={{ base: "28px", md: "36px" }}
+                      >
                         APR: {el.apr}{" "}
                       </Text>
                     </Box>
@@ -350,7 +414,7 @@ export default function Staking() {
                         <>
                           <Button
                             justifyContent="center"
-                            size="lg"
+                            size={{ base: "md", md: "lg" }}
                             variant="outline"
                             aria-label="Options token out"
                             onClick={() => setIsStakeModalOpen(true)}
@@ -405,38 +469,43 @@ export default function Staking() {
               </Center>
             ))}
           </Container>
+
           <Modal
             isOpen={isStakeModalOpen}
             onClose={() => setIsStakeModalOpen(false)}
+            isCentered
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Stake Your NFT</ModalHeader>
+              <ModalHeader fontSize="3xl">Stake Your NFT</ModalHeader>
               <ModalBody>
                 <form onSubmit={handleSubmitStake}>
-                  <label>Amount:</label>
-                  <Input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                  <br />
-                  <Button
-                    type="submit"
-                    css={{
-                      background: "#1E2A76",
-                      border: "none",
-                      textAlign: "center",
-                      margin: "20px 0px",
-                      color: "#D4FFF2",
-                      ":hover": {
-                        background: "#2e3ea5",
-                      },
-                    }}
-                    marginTop={4}
-                  >
-                    Stake
-                  </Button>
+                  <Stack spacing={4}>
+                    <Box>
+                      <label htmlFor="amount" fontSize="xl">
+                        Amount:
+                      </label>
+                      <Input
+                        type="number"
+                        id="amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        fontSize="lg"
+                        marginTop={2}
+                      />
+                    </Box>
+                    <Box>
+                      <Text fontSize="lg">Your Balance NFT: {balanceNFT}</Text>
+                    </Box>
+                    <Button
+                      type="submit"
+                      isLoading={stakingNft}
+                      isDisabled={stakingNft}
+                      colorScheme="green"
+                    >
+                      {stakingNft ? "Staking your NFTs..." : "Stake"}
+                    </Button>
+                  </Stack>
                 </form>
               </ModalBody>
               <ModalFooter>
@@ -446,40 +515,45 @@ export default function Staking() {
               </ModalFooter>
             </ModalContent>
           </Modal>
+
           <Modal
             isOpen={isUnStakeModalOpen}
             onClose={() => setIsUnStakeModalOpen(false)}
+            isCentered
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Un Stake Your NFT</ModalHeader>
+              <ModalHeader fontSize="3xl">Unstake Your NFT</ModalHeader>
               <ModalBody>
                 <form onSubmit={handleSubmitUnStake}>
-                  <label>
-                    Amount:
-                    <Input
-                      type="number"
-                      value={unstakeAmount}
-                      onChange={(e) => setUnstakeAmount(e.target.value)}
-                    />
-                  </label>
-                  <br />
-                  <Button
-                    type="submit"
-                    css={{
-                      background: "#1E2A76",
-                      border: "none",
-                      textAlign: "center",
-                      margin: "20px 0px",
-                      color: "#D4FFF2",
-                      ":hover": {
-                        background: "#2e3ea5",
-                      },
-                    }}
-                    marginTop={4}
-                  >
-                    Unstake
-                  </Button>
+                  <Stack spacing={4}>
+                    <Box>
+                      <label htmlFor="unstake-amount" fontSize="xl">
+                        Amount:
+                      </label>
+                      <Input
+                        type="number"
+                        id="unstake-amount"
+                        value={unstakeAmount}
+                        onChange={(e) => setUnstakeAmount(e.target.value)}
+                        fontSize="lg"
+                        marginTop={2}
+                      />
+                    </Box>
+                    <Box>
+                      <Text fontSize="lg">
+                        Your Staked NFT: {totalNftStacked}
+                      </Text>
+                    </Box>
+                    <Button
+                      type="submit"
+                      isLoading={unstakingNft}
+                      isDisabled={unstakingNft}
+                      colorScheme="red"
+                    >
+                      {unstakingNft ? "Unstaking your NFTs..." : "Unstake"}
+                    </Button>
+                  </Stack>
                 </form>
               </ModalBody>
               <ModalFooter>

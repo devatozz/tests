@@ -57,7 +57,7 @@ const NAV_ITEMS = [
       },
       {
         label: "XY Finance",
-        href: "https://www.xy.finance",
+        href: "https://app.xy.finance/",
         target: "_blank",
       },
     ],
@@ -66,6 +66,7 @@ const NAV_ITEMS = [
   {
     label: "Whitepaper",
     href: "https://docs.pira.finance/",
+    target: "_blank",
   },
 ];
 
@@ -126,10 +127,7 @@ export default function AppBar() {
                           color: "gray",
                         }}
                         isExternal={
-                          navItem.label === "Bridge" ||
-                          navItem.label === "Whitepaper"
-                            ? true
-                            : false
+                          navItem.label === "Whitepaper" ? true : false
                         }
                       >
                         {navItem.label}
@@ -202,10 +200,7 @@ export default function AppBar() {
                                 color: "gray",
                               }}
                               isExternal={
-                                navItem.label === "Bridge" ||
-                                navItem.label === "Whitepaper"
-                                  ? true
-                                  : false
+                                navItem.label === "Whitepaper" ? true : false
                               }
                             >
                               {navItem.label}
@@ -238,16 +233,12 @@ export default function AppBar() {
                             color: "gray",
                           }}
                           target={
-                            navItem.label === "Bridge" ||
                             navItem.label === "Whitepaper"
                               ? "_blank"
                               : undefined
                           }
                           isExternal={
-                            navItem.label === "Bridge" ||
-                            navItem.label === "Whitepaper"
-                              ? true
-                              : false
+                            navItem.label === "Whitepaper" ? true : false
                           }
                         >
                           {navItem.label}
@@ -267,23 +258,25 @@ export default function AppBar() {
 
 const DesktopSuvNav = ({ label, href }) => {
   return (
-    <Box
-      // as="a"
-      href={href}
-      role="group"
-      display={"block"}
-      p={2}
-      rounded={"md"}
-      cursor={"pointer"}
-      _hover={{ bg: "#212B6B ", color: "white " }}
-    >
-      <Stack direction={"row"} align={"center"}>
-        <Box>
-          <Text transition={"all 0.3s ease"} fontWeight={200}>
-            {label}
-          </Text>
-        </Box>
-      </Stack>
-    </Box>
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      <Box
+        // as="a"
+        href={href}
+        role="group"
+        display={"block"}
+        p={2}
+        rounded={"md"}
+        cursor={"pointer"}
+        _hover={{ bg: "#212B6B ", color: "white " }}
+      >
+        <Stack direction={"row"} align={"center"}>
+          <Box>
+            <Text transition={"all 0.3s ease"} fontWeight={200}>
+              {label}
+            </Text>
+          </Box>
+        </Stack>
+      </Box>
+    </a>
   );
 };

@@ -1,10 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  UNSTAKE_SUCCESS,
-  unstakeFailure,
-  unstakePending,
-  unstakeSuccess,
-} from "../slice";
+
 import { ethers } from "ethers";
 import stakeNftAbi from "src/abis/PiraStakingNFT.json";
 import BaseTestnetConfig from "src/state/config/base-testnet.json";
@@ -17,9 +12,8 @@ const BaseConfig =
 
 export const unstake = createAsyncThunk(
   "stake/unstake",
-  async ({ unstakeAmount }, { dispatch }) => {
+  async ({ unstakeAmount }) => {
     try {
-      dispatch(unstakePending());
       const stakingAddress = BaseConfig.stakeNft;
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
@@ -30,21 +24,13 @@ export const unstake = createAsyncThunk(
       );
       const BigNumber = ethers.BigNumber;
       const amountToUnStake = BigNumber.from(unstakeAmount);
-      const unstakeTxHash = await nftStaking.unstake(amountToUnStake, {
-        gasLimit: 1000000,
-      });
-      const tx = unstakeTxHash.wait();
-      dispatch(unstakeSuccess());
+      const unstakeTxHash = await nftStaking.unstake(amountToUnStake);
+      const tx = await unstakeTxHash.wait();
       return { unstakeTxHash };
     } catch (error) {
       console.log("error", error);
 
-      dispatch(unstakeFailure(error.message));
-      throw error;
+      throw Error("Failed to unstake nft");
     }
   }
 );
-
-export const handleunStakeSuccess = () => {
-  return { type: UNSTAKE_SUCCESS };
-};
