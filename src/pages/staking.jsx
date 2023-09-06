@@ -55,7 +55,6 @@ export default function Staking() {
   const [isStaking, setIsStaking] = useState(false);
   const [isHarvest, setIsHarvest] = useState(false);
   const [reward, setReward] = useState(0);
-
   // state
   const { totalRewards, totalNftStacked } = useSelector((state) => state.stake);
 
@@ -199,7 +198,7 @@ export default function Staking() {
   }, [address, dispatch, amount, unstakeAmount]);
   useEffect(() => {
     dispatch(getNFTBalance());
-  }, [address, dispatch]);
+  }, [address, dispatch, amount, unstakeAmount]);
   // havest rewards
   const handleHarvestRewards = async () => {
     setIsHarvest(true);
