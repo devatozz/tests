@@ -51,13 +51,14 @@ export default function Staking() {
   const [isUnStakeModalOpen, setIsUnStakeModalOpen] = useState(false);
   const [buttonStatuses, setButtonStatuses] = useState([]);
   const [isHarvestingRewards, setIsHarvestingRewards] = useState(false);
+  const [isUnstaking, setIsUnstaking] = useState(false);
+  const [isStaking, setIsStaking] = useState(false);
+  const [isHarvest, setIsHarvest] = useState(false);
+  const [reward, setReward] = useState(0);
+
   // state
   const { totalRewards, totalNftStacked } = useSelector((state) => state.stake);
-  const harvestingRewards = useSelector(
-    (state) => state.stake.harvestingRewards
-  );
-  const stakingNft = useSelector((state) => state.stake.stakingNft);
-  const unstakingNft = useSelector((state) => state.stake.unstaking);
+
   const poolsInfor = [
     {
       pool: 10,
@@ -126,20 +127,59 @@ export default function Staking() {
   // stake
   const handleSubmitStake = async (e) => {
     e.preventDefault();
-    try {
-      await handleApproveAllTokens();
-      const response = await dispatch(stakeNft({ amount }));
-      // close the modal
-      setIsStakeModalOpen(false);
-      setAmount(0);
-      dispatch(getNFTBalance());
+    const amountError = validateAmount(amount, balanceNFT);
+    if (amountError !== "") {
       toast({
-        title: "Success!",
-        description: "Your NFTs have been staked successfully!",
-        status: "success",
+        title: "Error!",
+        description: amountError,
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
+      return;
+    }
+
+    await handleApproveAllTokens();
+
+    setIsStaking(true);
+    try {
+      const response = await dispatch(stakeNft({ amount }));
+      if (response.meta.requestStatus === "fulfilled") {
+        setIsStakeModalOpen(false);
+        setAmount(0);
+        dispatch(getNFTBalance());
+        dispatch(fetchTotalRewards());
+        toast({
+          title: "Success!",
+          description: "Your NFTs have been staked successfully!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        const error = response.error;
+        if (error && error.message === "Failed to stake nft") {
+          toast({
+            title: "Error!",
+            description: "Failed to stake NFTs. Please try again!",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setIsStaking(false);
+          setIsStakeModalOpen(false);
+        } else {
+          toast({
+            title: "Error!",
+            description: "An error occurred while staking NFTs.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setIsStaking(false);
+          setIsStakeModalOpen(false);
+        }
+      }
     } catch (error) {
       toast({
         title: "Error!",
@@ -148,56 +188,123 @@ export default function Staking() {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsStaking(false);
+      setIsStakeModalOpen(false);
     }
   };
   // get total reward
   useEffect(() => {
     dispatch(fetchTotalRewards());
-  }, [address, dispatch]);
+  }, [address, dispatch, amount, unstakeAmount]);
   useEffect(() => {
     dispatch(getNFTBalance());
   }, [address, dispatch]);
   // havest rewards
   const handleHarvestRewards = async () => {
-    setIsHarvestingRewards(true);
+    setIsHarvest(true);
     try {
       const response = await dispatch(harvestRewards());
-      // close the modal
-      toast({
-        title: "Success!",
-        description: "Havest successfully!",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      if (response.meta.requestStatus === "fulfilled") {
+        dispatch(fetchTotalRewards());
+        toast({
+          title: "Success!",
+          description: "Harvest successfully!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        const error = response.error;
+        if (error && error.message === "Failed to harvest rewards") {
+          toast({
+            title: "Error!",
+            description: "Failed to harvest. Please try again!",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setIsHarvest(false);
+        } else {
+          toast({
+            title: "Error!",
+            description: "An error occurred while harvest.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setIsHarvest(false);
+        }
+      }
     } catch (error) {
       toast({
         title: "Error!",
-        description: "An error occurred while havest.",
+        description: "An error occurred while harvest.",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     } finally {
-      setIsHarvestingRewards(false);
+      setIsHarvest(false);
     }
   };
   // unstake
+
   const handleSubmitUnStake = async (e) => {
     e.preventDefault();
-    try {
-      const response = await dispatch(unstake({ unstakeAmount }));
-      // close the modal
-      setIsUnStakeModalOpen(false);
-      setUnstakeAmount(0);
-      dispatch(getNFTBalance());
+    const unstakeAmountError = validateUnstakeAmount(
+      unstakeAmount,
+      totalNftStacked
+    );
+    if (unstakeAmountError !== "") {
       toast({
-        title: "Success!",
-        description: "Your NFTs have been unstake successfully!",
-        status: "success",
+        title: "Error!",
+        description: unstakeAmountError,
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
+      return;
+    }
+    setIsUnstaking(true);
+    try {
+      const response = await dispatch(unstake({ unstakeAmount }));
+      if (response.meta.requestStatus === "fulfilled") {
+        setIsUnStakeModalOpen(false);
+        setUnstakeAmount(0);
+        dispatch(getNFTBalance());
+        dispatch(fetchTotalRewards());
+        toast({
+          title: "Success!",
+          description: "Your NFTs have been unstaked successfully!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        const error = response.error;
+        if (error && error.message === "Failed to unstake nft") {
+          toast({
+            title: "Error!",
+            description: "Failed to unstake NFTs. Please try again!",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setIsUnstaking(false);
+          setIsUnStakeModalOpen(false);
+        } else {
+          toast({
+            title: "Error!",
+            description: "An error occurred while unstaking NFTs.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setIsUnstaking(false);
+          setIsUnStakeModalOpen(false);
+        }
+      }
     } catch (error) {
       toast({
         title: "Error!",
@@ -206,9 +313,33 @@ export default function Staking() {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsUnstaking(false);
+      setIsUnStakeModalOpen(false);
     }
   };
+  // validate input
+  const validateAmount = (value, balance) => {
+    const num = parseFloat(value);
+    if (isNaN(num) || num <= 0) {
+      return "Amount must be a valid number greater than zero";
+    }
+    if (num > parseFloat(balance)) {
+      return "Amount cannot be greater than your NFT balance";
+    }
+    return "";
+  };
 
+  const validateUnstakeAmount = (value, staked) => {
+    const num = parseFloat(value);
+    if (isNaN(num) || num <= 0) {
+      return "Unstake amount must be a valid number greater than zero";
+    }
+    if (num > parseFloat(staked)) {
+      return "Unstake amount cannot be greater than your staked NFT balance";
+    }
+    return "";
+  };
   return (
     <Box
       bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
@@ -317,8 +448,8 @@ export default function Staking() {
                     <Text fontSize="32px" color="#fff">
                       <Button
                         onClick={handleHarvestRewards}
-                        isLoading={isHarvestingRewards}
-                        isDisabled={isHarvestingRewards}
+                        isLoading={isHarvest}
+                        isDisabled={isHarvest}
                         padding={"0px 40px"}
                         css={{
                           ":hover": {
@@ -327,7 +458,7 @@ export default function Staking() {
                           },
                         }}
                       >
-                        {isHarvestingRewards
+                        {isHarvest
                           ? "Harvesting Rewards..."
                           : "Harvest Rewards"}
                       </Button>
@@ -499,11 +630,11 @@ export default function Staking() {
                     </Box>
                     <Button
                       type="submit"
-                      isLoading={stakingNft}
-                      isDisabled={stakingNft}
+                      isLoading={isStaking}
+                      isDisabled={isStaking}
                       colorScheme="green"
                     >
-                      {stakingNft ? "Staking your NFTs..." : "Stake"}
+                      {isStaking ? "Staking your NFTs..." : "Stake"}
                     </Button>
                   </Stack>
                 </form>
@@ -547,11 +678,11 @@ export default function Staking() {
                     </Box>
                     <Button
                       type="submit"
-                      isLoading={unstakingNft}
-                      isDisabled={unstakingNft}
+                      isLoading={isUnstaking}
+                      isDisabled={isUnstaking}
                       colorScheme="red"
                     >
-                      {unstakingNft ? "Unstaking your NFTs..." : "Unstake"}
+                      {isUnstaking ? "Unstaking your NFTs..." : "Unstake"}
                     </Button>
                   </Stack>
                 </form>
