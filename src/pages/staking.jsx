@@ -33,6 +33,7 @@ import {
 } from "src/state/stake/slice";
 import { stakeNft } from "src/state/stake/thunks/stakeNft";
 import { unstake } from "src/state/stake/thunks/unstake";
+import { isApprovedTokens } from "../state/stake/thunks/isApprovedTokens";
 //
 const BaseConfig =
   process.env.NEXT_PUBLIC_NETWORK == "mainnet"
@@ -57,7 +58,7 @@ export default function Staking() {
   const [reward, setReward] = useState(0);
   // state
   const { totalRewards, totalNftStacked } = useSelector((state) => state.stake);
-
+  const isApproved = useSelector((state) => state.stake.isApproved);
   const poolsInfor = [
     {
       pool: 10,
@@ -123,75 +124,93 @@ export default function Staking() {
   const handleApproveAllTokens = async () => {
     dispatch(approveAllTokens(address));
   };
+  const handleCheckIsApprove = async () => {
+    await dispatch(isApprovedTokens({ owner: address }));
+  };
   // stake
-  const handleSubmitStake = async (e) => {
-    e.preventDefault();
-    const amountError = validateAmount(amount, balanceNFT);
-    if (amountError !== "") {
-      toast({
-        title: "Error!",
-        description: amountError,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    await handleApproveAllTokens();
-
-    setIsStaking(true);
-    try {
-      const response = await dispatch(stakeNft({ amount }));
-      if (response.meta.requestStatus === "fulfilled") {
-        setIsStakeModalOpen(false);
-        setAmount(0);
-        dispatch(getNFTBalance());
-        dispatch(fetchTotalRewards());
+  const handleSubmitStake = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const amountError = validateAmount(amount, balanceNFT);
+      if (amountError !== "") {
         toast({
-          title: "Success!",
-          description: "Your NFTs have been staked successfully!",
-          status: "success",
+          title: "Error!",
+          description: amountError,
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
-      } else {
-        const error = response.error;
-        if (error && error.message === "Failed to stake nft") {
-          toast({
-            title: "Error!",
-            description: "Failed to stake NFTs. Please try again!",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-          setIsStaking(false);
-          setIsStakeModalOpen(false);
-        } else {
-          toast({
-            title: "Error!",
-            description: "An error occurred while staking NFTs.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-          setIsStaking(false);
-          setIsStakeModalOpen(false);
-        }
+        return;
       }
-    } catch (error) {
-      toast({
-        title: "Error!",
-        description: "An error occurred while staking NFTs.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setIsStaking(false);
-      setIsStakeModalOpen(false);
+
+      setIsStaking(true);
+      try {
+        // Wait for isApprovedTokens to complete and update state
+        await handleCheckIsApprove();
+
+        if (!isApproved) {
+          await handleApproveAllTokens();
+        }
+
+        const response = await dispatch(stakeNft({ amount }));
+        if (response.meta.requestStatus === "fulfilled") {
+          setIsStakeModalOpen(false);
+          setAmount(0);
+          dispatch(getNFTBalance());
+          dispatch(fetchTotalRewards());
+          toast({
+            title: "Success!",
+            description: "Your NFTs have been staked successfully!",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        } else {
+          const error = response.error;
+          if (error && error.message === "Failed to stake nft") {
+            toast({
+              title: "Error!",
+              description: "Failed to stake NFTs. Please try again!",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            setIsStaking(false);
+            setIsStakeModalOpen(false);
+          } else {
+            toast({
+              title: "Error!",
+              description: "An error occurred while staking NFTs.",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            setIsStaking(false);
+            setIsStakeModalOpen(false);
+          }
+        }
+      } catch (error) {
+        toast({
+          title: "Error!",
+          description: "An error occurred while staking NFTs.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } finally {
+        setIsStaking(false);
+        setIsStakeModalOpen(false);
+      }
+    },
+    [dispatch, toast, address, amount, isApproved, balanceNFT]
+  );
+  // Check if the user has already approved the contract
+  useEffect(() => {
+    if (address && !isApproved) {
+      dispatch(isApprovedTokens({ owner: address }));
     }
-  };
+  }, [address, dispatch, isApproved]);
+  console.log("isApprove", isApproved);
   // get total reward
   useEffect(() => {
     dispatch(fetchTotalRewards());
@@ -199,6 +218,12 @@ export default function Staking() {
   useEffect(() => {
     dispatch(getNFTBalance());
   }, [address, dispatch, amount, unstakeAmount]);
+  useEffect(() => {
+    handleLoadBalance(BaseConfig.nft);
+  }, [address, dispatch, amount, unstakeAmount]);
+  useEffect(() => {
+    handleCheckIsApprove();
+  }, [address, dispatch]);
   // havest rewards
   const handleHarvestRewards = async () => {
     setIsHarvest(true);
@@ -625,7 +650,7 @@ export default function Staking() {
                       />
                     </Box>
                     <Box>
-                      <Text fontSize="lg">Your Balance NFT: {balanceNFT}</Text>
+                      <Text fontSize="lg">Your NFT Balance : {balanceNFT}</Text>
                     </Box>
                     <Button
                       type="submit"
@@ -672,7 +697,7 @@ export default function Staking() {
                     </Box>
                     <Box>
                       <Text fontSize="lg">
-                        Your Staked NFT: {totalNftStacked}
+                        Your NFT Staked : {totalNftStacked}
                       </Text>
                     </Box>
                     <Button

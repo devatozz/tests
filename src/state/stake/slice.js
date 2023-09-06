@@ -4,6 +4,7 @@ import { fetchTotalRewards } from "./thunks/fetchTotalRewards";
 import { getNFTBalance } from "./thunks/getNFTBalance";
 import { formatEther } from "ethers/lib/utils";
 import { harvestRewards } from "./thunks/harvestRewards";
+import { isApprovedTokens } from "./thunks/isApprovedTokens";
 import { stakeNft } from "./thunks/stakeNft";
 import { unstake } from "./thunks/unstake";
 
@@ -14,9 +15,12 @@ const stakeSlice = createSlice({
     approvalError: null,
     approvalSuccess: false,
     approvalTxHash: null,
-
     totalRewards: "0",
     totalNftStacked: "0",
+    isApproved: false,
+    isApprovingTokens: false,
+    approvalTokensError: null,
+    approvalTokensTxHash: null,
   },
   reducers: {
     approveAllTokensPending: (state) => {
@@ -50,7 +54,7 @@ const stakeSlice = createSlice({
     builder.addCase(getNFTBalance.rejected, (state, action) => {
       state.totalNftStacked = "0";
     });
-    // havest
+    // harvest
     builder.addCase(harvestRewards.pending, (state) => {
       state.harvestingRewards = true;
     });
@@ -80,6 +84,19 @@ const stakeSlice = createSlice({
     builder.addCase(unstake.rejected, (state) => {
       state.unstaking = true;
     });
+
+    // check if approved for all tokens
+    builder.addCase(isApprovedTokens.pending, (state) => {
+      state.isApprovingTokens = true;
+    });
+    builder.addCase(isApprovedTokens.fulfilled, (state, action) => {
+      state.isApprovingTokens = false;
+      state.isApproved = action.payload;
+    });
+    builder.addCase(isApprovedTokens.rejected, (state) => {
+      state.isApprovingTokens = false;
+      state.isApproved = false;
+    });
   },
 });
 
@@ -96,6 +113,7 @@ export {
   fetchTotalRewards,
   harvestRewards,
   getNFTBalance,
+  isApprovedTokens,
   stakeNft,
   unstake,
 };
