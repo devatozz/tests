@@ -1,8 +1,4 @@
-import {
-  approveAllTokensPending,
-  approveAllTokensSuccess,
-  approveAllTokensFailure,
-} from "../slice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ethers } from "ethers";
 import stakeNftAbi from "src/abis/PiraStakingNFT.json";
 import nftAbi from "src/abis/MintNft.json";
@@ -14,28 +10,27 @@ const BaseConfig =
     ? BaseMainnetConfig
     : BaseTestnetConfig;
 
-const approveAllTokens = (owner) => async (dispatch) => {
-  try {
-    dispatch(approveAllTokensPending());
+export const approveAllTokens = createAsyncThunk(
+  "stake/approveAllTokens",
+  async () => {
+    try {
+      const nftAddress = BaseConfig.nft;
+      const stakingAddress = BaseConfig.stakeNft;
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const nftContract = new ethers.Contract(nftAddress, nftAbi, signer);
+      const nftStaking = new ethers.Contract(
+        stakingAddress,
+        stakeNftAbi,
+        signer
+      );
 
-    const nftAddress = BaseConfig.nft;
-    const stakingAddress = BaseConfig.stakeNft;
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const nftContract = new ethers.Contract(nftAddress, nftAbi, signer);
-    const nftStaking = new ethers.Contract(stakingAddress, stakeNftAbi, signer);
-
-    // Set approval for all tokens
-    const tx = await nftContract.setApprovalForAll(nftStaking.address, true);
-
-    console.log(
-      `All NFT tokens owned by ${owner} have been approved for the staking contract.`
-    );
-    dispatch(approveAllTokensSuccess());
-  } catch (err) {
-    console.error(err);
-    dispatch(approveAllTokensFailure(err));
+      // Set approval for all tokens
+      const tx = await nftContract.setApprovalForAll(nftStaking.address, true);
+      await tx.wait();
+    } catch (err) {
+      console.error(err);
+      throw Error("Failed to approve all token");
+    }
   }
-};
-export { approveAllTokens };
+);

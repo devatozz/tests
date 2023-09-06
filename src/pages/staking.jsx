@@ -30,10 +30,10 @@ import {
   harvestRewards,
   fetchTotalRewards,
   getNFTBalance,
+  isApprovedTokens,
 } from "src/state/stake/slice";
 import { stakeNft } from "src/state/stake/thunks/stakeNft";
 import { unstake } from "src/state/stake/thunks/unstake";
-import { isApprovedTokens } from "../state/stake/thunks/isApprovedTokens";
 //
 const BaseConfig =
   process.env.NEXT_PUBLIC_NETWORK == "mainnet"
@@ -51,11 +51,11 @@ export default function Staking() {
   const [isStakeModalOpen, setIsStakeModalOpen] = useState(false);
   const [isUnStakeModalOpen, setIsUnStakeModalOpen] = useState(false);
   const [buttonStatuses, setButtonStatuses] = useState([]);
-  const [isHarvestingRewards, setIsHarvestingRewards] = useState(false);
   const [isUnstaking, setIsUnstaking] = useState(false);
   const [isStaking, setIsStaking] = useState(false);
   const [isHarvest, setIsHarvest] = useState(false);
-  const [reward, setReward] = useState(0);
+  const [approvalAllToken, setAprovalAllToken] = useState(false);
+
   // state
   const { totalRewards, totalNftStacked } = useSelector((state) => state.stake);
   const isApproved = useSelector((state) => state.stake.isApproved);
@@ -91,6 +91,7 @@ export default function Staking() {
       need: 150 - totalNftStacked,
     },
   ];
+
   useEffect(() => {
     const minimumStakedValues = [10, 30, 60, 100, 150];
     const activePoolIndex = minimumStakedValues.findIndex(
@@ -121,12 +122,6 @@ export default function Staking() {
     handleLoadBalance(BaseConfig.nft);
   }, []);
 
-  const handleApproveAllTokens = async () => {
-    dispatch(approveAllTokens(address));
-  };
-  const handleCheckIsApprove = async () => {
-    await dispatch(isApprovedTokens({ owner: address }));
-  };
   // stake
   const handleSubmitStake = useCallback(
     async (e) => {
@@ -142,16 +137,8 @@ export default function Staking() {
         });
         return;
       }
-
       setIsStaking(true);
       try {
-        // Wait for isApprovedTokens to complete and update state
-        await handleCheckIsApprove();
-
-        if (!isApproved) {
-          await handleApproveAllTokens();
-        }
-
         const response = await dispatch(stakeNft({ amount }));
         if (response.meta.requestStatus === "fulfilled") {
           setIsStakeModalOpen(false);
@@ -202,28 +189,68 @@ export default function Staking() {
         setIsStakeModalOpen(false);
       }
     },
-    [dispatch, toast, address, amount, isApproved, balanceNFT]
+    [dispatch, toast, address, amount, balanceNFT]
   );
-  // Check if the user has already approved the contract
-  useEffect(() => {
-    if (address && !isApproved) {
-      dispatch(isApprovedTokens({ owner: address }));
+  // separate
+  const handleApprove = async () => {
+    setAprovalAllToken(true);
+    try {
+      const response = await dispatch(approveAllTokens(address));
+      if (response.meta.requestStatus === "fulfilled") {
+        dispatch(isApprovedTokens({ owner: address }));
+        toast({
+          title: "Success!",
+          description: "Approved successfully!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        const error = response.error;
+        if (error && error.message === "Failed to approve all token") {
+          toast({
+            title: "Error!",
+            description: "Failed to approve all token. Please try again!",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setAprovalAllToken(false);
+        } else {
+          toast({
+            title: "Error!",
+            description: "An error occurred while harvest.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          setAprovalAllToken(false);
+        }
+      }
+    } catch (error) {
+      toast({
+        title: "Error!",
+        description: "An error occurred while approve.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setAprovalAllToken(false);
     }
-  }, [address, dispatch, isApproved]);
-  console.log("isApprove", isApproved);
-  // get total reward
-  useEffect(() => {
-    dispatch(fetchTotalRewards());
-  }, [address, dispatch, amount, unstakeAmount]);
-  useEffect(() => {
-    dispatch(getNFTBalance());
-  }, [address, dispatch, amount, unstakeAmount]);
-  useEffect(() => {
-    handleLoadBalance(BaseConfig.nft);
-  }, [address, dispatch, amount, unstakeAmount]);
-  useEffect(() => {
-    handleCheckIsApprove();
-  }, [address, dispatch]);
+  };
+  const handleApproveAllTokens = async () => {
+    dispatch(approveAllTokens(address));
+  };
+  const handleCheckIsApprove = async () => {
+    try {
+      const response = await dispatch(isApprovedTokens({ owner: address }));
+      if (response.meta.requestStatus === "fulfilled") {
+      } else {
+      }
+    } catch (error) {}
+  };
+
   // havest rewards
   const handleHarvestRewards = async () => {
     setIsHarvest(true);
@@ -364,6 +391,24 @@ export default function Staking() {
     }
     return "";
   };
+
+  // get total reward
+  useEffect(() => {
+    dispatch(fetchTotalRewards());
+  }, [address, dispatch, amount, unstakeAmount]);
+  useEffect(() => {
+    dispatch(getNFTBalance());
+  }, [address, dispatch, amount, unstakeAmount]);
+  useEffect(() => {
+    handleLoadBalance(BaseConfig.nft);
+  }, [address, dispatch, amount, unstakeAmount]);
+  useEffect(() => {
+    handleCheckIsApprove();
+  }, [address, dispatch]);
+  useEffect(() => {
+    handleCheckIsApprove();
+  }, []);
+
   return (
     <Box
       bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
@@ -593,29 +638,58 @@ export default function Staking() {
                         </>
                       ) : (
                         <>
-                          <Button
-                            justifyContent="center"
-                            size="lg"
-                            variant="outline"
-                            aria-label="Options token out"
-                            onClick={() => setIsStakeModalOpen(true)}
-                            isDisabled={!buttonStatuses[index]}
-                            css={{
-                              background: "#1E2A76",
-                              padding: "10px",
-                              fontSize: "28px",
-                              border: "none",
-                              width: "100%",
-                              height: "100%",
-                              margin: "0px",
-                              color: "#D4FFF2",
-                              ":hover": {
-                                background: "#2e3ea5",
-                              },
-                            }}
-                          >
-                            <Text>Need More {el.need} to Stake</Text>
-                          </Button>
+                          {isApproved ? (
+                            <Button
+                              justifyContent="center"
+                              size="lg"
+                              variant="outline"
+                              aria-label="Stake NFT"
+                              onClick={() => setIsStakeModalOpen(true)}
+                              isDisabled={!buttonStatuses[index]}
+                              css={{
+                                background: "#1E2A76",
+                                padding: "10px",
+                                fontSize: "28px",
+                                border: "none",
+                                width: "100%",
+                                height: "100%",
+                                margin: "0px",
+                                color: "#D4FFF2",
+                                ":hover": {
+                                  background: "#2e3ea5",
+                                },
+                              }}
+                            >
+                              <Text>Need More {el.need} to Stake</Text>
+                            </Button>
+                          ) : (
+                            <Button
+                              justifyContent="center"
+                              size="lg"
+                              variant="outline"
+                              aria-label="Approve NFT"
+                              onClick={handleApprove}
+                              isDisabled={approvalAllToken}
+                              isLoading={approvalAllToken}
+                              css={{
+                                background: "#1E2A76",
+                                padding: "10px",
+                                fontSize: "28px",
+                                border: "none",
+                                width: "100%",
+                                height: "100%",
+                                margin: "0px",
+                                color: "#D4FFF2",
+                                ":hover": {
+                                  background: "#2e3ea5",
+                                },
+                              }}
+                            >
+                              {approvalAllToken
+                                ? "Approving..."
+                                : "Approve Your NFTs"}
+                            </Button>
+                          )}
                         </>
                       )}
                     </Box>

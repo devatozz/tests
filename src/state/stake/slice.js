@@ -21,6 +21,7 @@ const stakeSlice = createSlice({
     isApprovingTokens: false,
     approvalTokensError: null,
     approvalTokensTxHash: null,
+    approvingAllToken: false,
   },
   reducers: {
     approveAllTokensPending: (state) => {
@@ -54,15 +55,16 @@ const stakeSlice = createSlice({
     builder.addCase(getNFTBalance.rejected, (state, action) => {
       state.totalNftStacked = "0";
     });
-    // harvest
-    builder.addCase(harvestRewards.pending, (state) => {
-      state.harvestingRewards = true;
+
+    // approve for all token
+    builder.addCase(approveAllTokens.pending, (state) => {
+      state.approvingAllToken = true;
     });
-    builder.addCase(harvestRewards.fulfilled, (state) => {
-      state.harvestingRewards = false;
+    builder.addCase(approveAllTokens.fulfilled, (state) => {
+      state.approvingAllToken = false;
     });
-    builder.addCase(harvestRewards.rejected, (state) => {
-      state.harvestingRewards = true;
+    builder.addCase(approveAllTokens.rejected, (state) => {
+      state.approvingAllToken = true;
     });
     // stake nft
     builder.addCase(stakeNft.pending, (state) => {
@@ -84,7 +86,16 @@ const stakeSlice = createSlice({
     builder.addCase(unstake.rejected, (state) => {
       state.unstaking = true;
     });
-
+    // harvest
+    builder.addCase(harvestRewards.pending, (state) => {
+      state.harvestingRewards = true;
+    });
+    builder.addCase(harvestRewards.fulfilled, (state) => {
+      state.harvestingRewards = false;
+    });
+    builder.addCase(harvestRewards.rejected, (state) => {
+      state.harvestingRewards = true;
+    });
     // check if approved for all tokens
     builder.addCase(isApprovedTokens.pending, (state) => {
       state.isApprovingTokens = true;

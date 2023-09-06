@@ -4,7 +4,6 @@ import stakeNftAbi from "src/abis/PiraStakingNFT.json";
 import nftAbi from "src/abis/MintNft.json";
 import BaseTestnetConfig from "src/state/config/base-testnet.json";
 import BaseMainnetConfig from "src/state/config/base-mainnet.json";
-import { isApproved } from "../slice";
 
 const BaseConfig =
   process.env.NEXT_PUBLIC_NETWORK == "mainnet"
@@ -15,8 +14,6 @@ export const isApprovedTokens = createAsyncThunk(
   "nft/isApprovedTokens",
   async ({ owner }) => {
     try {
-      console.log("isApprovedTokens thunk called with owner:", owner);
-
       const nftAddress = BaseConfig.nft;
       const stakingAddress = BaseConfig.stakeNft;
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -31,8 +28,6 @@ export const isApprovedTokens = createAsyncThunk(
         owner,
         nftStaking.address
       );
-
-      console.log("isApprovedTokens thunk result:", approved);
 
       return approved;
     } catch (err) {
