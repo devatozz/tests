@@ -24,6 +24,7 @@ import { loadNftBalance } from "src/utils/helper";
 import { BigNumber, ethers } from "ethers";
 import BaseTestnetConfig from "src/state/config/base-testnet.json";
 import BaseMainnetConfig from "src/state/config/base-mainnet.json";
+import { usePublicClient, useWalletClient, useAccount } from "wagmi";
 // state
 import {
   approveAllTokens,
@@ -47,7 +48,7 @@ export default function Staking() {
   const [amount, setAmount] = useState(0);
   const [unstakeAmount, setUnstakeAmount] = useState(0);
   const { account, selectedChain } = useSelector((state) => state.chain);
-  const address = useSelector((state) => state.chain.account);
+  const { address } = useAccount();
   const [isStakeModalOpen, setIsStakeModalOpen] = useState(false);
   const [isUnStakeModalOpen, setIsUnStakeModalOpen] = useState(false);
   const [buttonStatuses, setButtonStatuses] = useState([]);
@@ -91,7 +92,7 @@ export default function Staking() {
       need: 150 - totalNftStacked,
     },
   ];
-
+  console.log("account", account);
   useEffect(() => {
     const minimumStakedValues = [10, 30, 60, 100, 150];
     const activePoolIndex = minimumStakedValues.findIndex(
