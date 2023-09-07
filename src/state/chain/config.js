@@ -26,7 +26,6 @@ const TestnetConfig = {
     nft: baseTestnetConfig.nft,
     nftAddress: baseTestnetConfig.nft,
     multiNftAddress: baseTestnetConfig.multiNft,
-
   },
 };
 
@@ -48,7 +47,9 @@ const MainnetConfig = {
     factoryAddress: baseMainnetConfig.factory,
     dexAddress: baseMainnetConfig.router,
     wrapAddress: baseMainnetConfig.wrap,
+    stakeNft: baseMainnetConfig.stakeNft,
     nftAddress: baseMainnetConfig.nft,
+    nft: baseMainnetConfig.nft,
     multiNftAddress: baseMainnetConfig.multiNft,
   },
 };
@@ -71,7 +72,9 @@ const ForwardTestnetConfig = {
     factoryAddress: baseForwardTestnetConfig.factory,
     dexAddress: baseForwardTestnetConfig.router,
     wrapAddress: baseForwardTestnetConfig.wrap,
+    stakeNft: baseForwardTestnetConfig.stakeNft,
     nftAddress: baseForwardTestnetConfig.nft,
+    nft: baseForwardTestnetConfig.nft,
     multiNftAddress: baseForwardTestnetConfig.multiNft,
   },
 };
@@ -94,21 +97,20 @@ const ForwardMainnetConfig = {
     factoryAddress: baseForwardMainnetConfig.factory,
     dexAddress: baseForwardMainnetConfig.router,
     wrapAddress: baseForwardMainnetConfig.wrap,
+    stakeNft: baseForwardMainnetConfig.stakeNft,
     nftAddress: baseForwardMainnetConfig.nft,
+    nft: baseForwardMainnetConfig.nft,
     multiNftAddress: baseForwardMainnetConfig.multiNft,
-
   },
 };
 
 export const config =
   process.env.NEXT_PUBLIC_NETWORK == "mainnet" ? MainnetConfig : TestnetConfig;
 
-
 export const forwardConfig =
   process.env.NEXT_PUBLIC_NETWORK == "mainnet"
     ? ForwardMainnetConfig
     : ForwardTestnetConfig;
-
 
 const ChainInfosTestnet = {
   base: {
@@ -135,7 +137,6 @@ export const chainInfos =
     ? ChainInfosMainnet
     : ChainInfosTestnet;
 
-
 export const walletInfos = {
   metaMask: {
     logo: "/metamask-icon.png",
@@ -150,4 +151,3 @@ export const walletInfos = {
     logo: "/white-wallet-photos.png",
   },
 };
-
