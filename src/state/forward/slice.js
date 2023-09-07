@@ -42,7 +42,7 @@ const initialState = {
     },
 }
 export const slice = createSlice({
-    name: 'dex',
+    name: 'forward',
     initialState,
     reducers: {
         select: (state, action) => {

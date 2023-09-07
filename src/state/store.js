@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage";
 // import cacheReducer from "./cache/slice";
 import chainReducer from "./chain/slice";
 import dexReducer from "./dex/slice";
+import forwardReducer from "./forward/slice";
 import airdropReducer from "./airdrop/slice";
 import stakeReducer from "./stake/slice";
 
@@ -20,6 +21,7 @@ export const store = configureStore({
     // cache: cacheReducer,
     chain: chainPersist,
     dex: dexReducer,
+    forward: forwardReducer,
     airdrop: airdropReducer,
     stake: stakeReducer,
   },

@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import { Container, Icon, createIcon } from "@chakra-ui/react";
+'use client';
+import React, { useEffect } from 'react';
+import { Container, Icon, createIcon } from '@chakra-ui/react';
 import {
   Stack,
   Text,
@@ -15,28 +15,29 @@ import {
   TableContainer,
   Tooltip,
   useClipboard,
-} from "@chakra-ui/react";
+  Center
+} from '@chakra-ui/react';
 
 const data = [
   {
-    address: "-",
-    totalTokens: "-",
-    earningTokens: "-",
-    referralTokens: "-",
-    boost: "-",
+    address: '-',
+    totalTokens: '-',
+    earningTokens: '-',
+    referralTokens: '-',
+    boost: '-',
   },
 ];
 
 const Theads = [
-  "Position",
-  "Name",
-  "Boost",
-  "Referral Token",
-  "Earning Token",
-  "Total PIRA Earn",
+  'Position',
+  'Name',
+  'Boost',
+  'Referral Token',
+  'Earning Token',
+  'Total PIRA Earn',
 ];
-import { useSelector } from "react-redux";
-import { shortenAddress } from "src/utils/stringUtil";
+import { useSelector } from 'react-redux';
+import { shortenAddress } from 'src/utils/stringUtil';
 
 export default function LeaderBoard() {
   const { leaderBoard } = useSelector((state) => state.airdrop);
@@ -44,40 +45,45 @@ export default function LeaderBoard() {
 
   const getColor = (boost) => {
     if (boost >= 2) {
-      return "#00E0EE";
+      return '#00E0EE';
     } else if (boost >= 1.5 && boost < 2) {
-      return "#F90";
+      return '#F90';
     } else {
-      return "";
+      return '';
     }
   };
 
   return (
-    <VStack spacing="30px" width="full">
-      <Text fontSize={{ base: "2xl", md: "5xl" }} color={"#5EEDFF"}>
+    <VStack spacing='30px' width='full'>
+      <Text fontSize={{ base: '2xl', md: '5xl' }} color={'#5EEDFF'}>
         24H LEADERBOARD
       </Text>
+
+      {/* <Center fontSize={{ base: 'md', md: '2xl'}} color={'white'} textAlign="center">
+      We are upgrading our system for better performance and security on Sep 1st. Minimal disruption is expected during 24 hours. Thank you for your patience!
+      </Center> */}
+
       <TableContainer
-        width="full"
-        rounded="lg"
+        width='full'
+        rounded='lg'
         borderWidth={2}
-        borderColor="cyan.400"
-        backgroundColor="blue.900"
+        borderColor='cyan.400'
+        backgroundColor='blue.900'
+        maxHeight={'630px'}
+        overflowY={'auto'}
       >
-        <Table variant="unstyled" color="white">
+        <Table variant='unstyled' color='white'>
           <Thead>
             <Tr borderBottomWidth={1}>
               {Theads.map((thead, index) => (
-                <Th key={index} borderRightWidth={1}>
-                  <Text
-                    width="fit-content"
-                    color="white"
-                    borderColor="cyan.400"
-                    textAlign="center"
-                    fontSize={{ base: "xs", md: "xl" }}
-                  >
-                    {thead}
-                  </Text>
+                <Th
+                  fontFamily={'Pixellari'}
+                  key={index}
+                  borderRightWidth={1}
+                  textAlign='center'
+                  fontSize={{ base: 'xs', md: 'xl' }}
+                >
+                  {thead}
                 </Th>
               ))}
             </Tr>
@@ -87,49 +93,47 @@ export default function LeaderBoard() {
               return (
                 <Tr key={index} borderBottomWidth={1}>
                   <Td
-                    textAlign="center"
-                    fontSize={{ base: "xs", md: "xl" }}
+                    textAlign='center'
+                    fontSize={{ base: 'xs', md: 'xl' }}
                     borderRightWidth={1}
                   >
-                    {index + 1}
+                    {index === 0 && row.rank === -1 ? 'UNRANKED' : row.rank}
                   </Td>
-                  <Tooltip label={row.address} fontSize="md" placement="top">
+                  <Tooltip label={row.address} fontSize='md' placement='top'>
                     <Td
-                      textAlign="center"
-                      fontSize={{ base: "xs", md: "xl" }}
+                      textAlign='center'
+                      fontSize={{ base: 'xs', md: 'xl' }}
                       borderRightWidth={1}
                     >
-                      {row.address.length > 8
-                        ? shortenAddress(row.address, 8)
-                        : row.address}
+                      {index === 0 ? 'You' : shortenAddress(row.address, 8)}
                     </Td>
                   </Tooltip>
                   <Td
                     borderRightWidth={1}
-                    textAlign="center"
-                    fontSize={{ base: "xs", md: "xl" }}
+                    textAlign='center'
+                    fontSize={{ base: 'xs', md: 'xl' }}
                     color={getColor(row.boost)}
                   >{`${row.boost}`}</Td>
                   <Td
-                    textAlign="center"
-                    fontSize={{ base: "xs", md: "xl" }}
+                    textAlign='center'
+                    fontSize={{ base: 'xs', md: 'xl' }}
                     borderRightWidth={1}
                   >
                     {row.referralTokens}
                   </Td>
                   <Td
-                    textAlign="center"
-                    fontSize={{ base: "xs", md: "xl" }}
+                    textAlign='center'
+                    fontSize={{ base: 'xs', md: 'xl' }}
                     borderRightWidth={1}
                   >
                     {row.earningTokens}
                   </Td>
                   <Td
-                    textAlign="center"
-                    fontSize={{ base: "xs", md: "xl" }}
+                    textAlign='center'
+                    fontSize={{ base: 'xs', md: 'xl' }}
                     borderRightWidth={1}
                   >
-                    {row.totalTokens}
+                    {row.totalTokens === null ? 0 : row.totalTokens}
                   </Td>
                 </Tr>
               );

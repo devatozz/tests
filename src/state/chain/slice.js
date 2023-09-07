@@ -1,58 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { noneAddress } from "./config";
-import connectToWallet from "./thunks/connectWallet";
 
 const initialState = {
-    isConnecting: false,
-    selectedChain: "",
-    availableChains: ["base"],
-    account: "",
-    web3Loaded: false,
-    infoLoaded: false,
-    registered: false,
-    isInstalledMetamask: false
+    selectedChain: "base",
+    lastConnected: "",
 }
 
 export const slice = createSlice({
     name: 'chain',
     initialState,
     reducers: {
-        select: (state, action) => {
-            state.chain = action.payload;
-        },
-        setIsConnecting: (state, action) => {
-            state.isConnecting = action.payload;
+        connectNetwork: (state, action) => {
+            state.lastConnected = action.payload
         },
         disconnectNetwork: (state, _action) => {
-            state.account = "";
-            state.web3Loaded = false;
-            state.selectedChain = "";
-        },
-        setIsInstalledMetamask: (state, action) => {
-            state.isInstalledMetamask = action.payload;
-        },
-        handleEthereumAccountChange: (state, action) => {
-            state.account = action.payload;
+            state.lastConnected = ""
         },
     },
-    extraReducers(builder) {
-        builder.addCase(connectToWallet.fulfilled, (state, action) => {
-            if (action.payload.account) {
-                state.web3Loaded = true;
-            } else {
-                state.web3Loaded = false;
-            }
-            state.account = action.payload.account;
-            state.selectedChain = action.payload.chain;
-        })
-    }
 })
-
 export const {
-    select,
-    setIsConnecting,
-    setIsInstalledMetamask,
+    connectNetwork,
     disconnectNetwork,
-    handleEthereumAccountChange
 } = slice.actions;
 export default slice.reducer;

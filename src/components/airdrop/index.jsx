@@ -17,34 +17,47 @@ import {
 import Progress from "./Progress";
 import TaskTable from "./TaskTable";
 import { CopyIcon, InfoOutlineIcon } from "@chakra-ui/icons";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LeaderBoard from "./LeaderBoard";
 import { useDispatch, useSelector } from "react-redux";
 import { CicularLoading } from "./CircularLoading";
 import loadTaskList from "src/state/airdrop/thunks/getTaskList";
-import loadLeaderboard from "src/state/airdrop/thunks/getLeaderboard";
-import mintNFT from "src/state/airdrop/thunks/mintNFT";
 import claimTask from "src/state/airdrop/thunks/claimTask";
 import { useRouter } from "next/router";
 import updateRef from "src/state/airdrop/thunks/updateRef";
-import airdropSlice, { clearMintError } from "../../state/airdrop/slice";
+import { getNftContract, getMultiNftContract } from "src/utils/hooks";
+import { usePublicClient, useWalletClient, useAccount } from "wagmi";
+import { waitForTransaction } from "@wagmi/core";
+import { ethers } from "ethers";
+import loadLeaderboard from "src/state/airdrop/thunks/getLeaderboard";
+const MINT_FEE = "0.0015";
+const MINT_MULTI_FEE = "0.015";
 
 const AirdropPage = () => {
   const router = useRouter();
   const { ref } = router.query;
+  const [loading, setLoading] = useState(false);
+  const [mintError, setMintError] = useState(false);
 
   const dispatch = useDispatch();
-  const address = useSelector((state) => state.chain.account);
-
-  const { overview, isLoading, mintError } = useSelector(
-    (state) => state.airdrop
-  );
+  const { address } = useAccount();
+  const { overview, isLoading } = useSelector((state) => state.airdrop);
 
   const addressMemo = useMemo(() => address, [address]);
   const FE_DOMAIN = process.env.NEXT_PUBLIC_FE_DOMAIN;
   //for copy
   const { onCopy, setValue: setCopyValue } = useClipboard("");
   const toast = useToast();
+  const { data: walletClient } = useWalletClient();
+  const { data: publicClient } = usePublicClient();
+  const nftContract = useMemo(
+    () => getNftContract(walletClient, publicClient),
+    [walletClient, publicClient]
+  );
+  const multiNftContract = useMemo(
+    () => getMultiNftContract(walletClient, publicClient),
+    [walletClient, publicClient]
+  );
 
   const showMintError = () => {
     toast({
@@ -52,7 +65,7 @@ const AirdropPage = () => {
       status: "error",
       duration: 1000,
     });
-    dispatch(clearMintError());
+    setMintError("");
   };
 
   useUpdateEffect(() => {
@@ -76,12 +89,36 @@ const AirdropPage = () => {
     address !== "" && dispatch(loadTaskList(address));
   };
 
-  const handleMintNFT = () => {
-    dispatch(mintNFT(handleFetchTask));
+  const handleMintNFT = async () => {
+    setLoading(true);
+    try {
+      const tx = await nftContract?.write?.mint([], {
+        value: ethers.utils.parseEther(MINT_FEE),
+      });
+      await waitForTransaction({ hash: tx });
+      setTimeout(() => handleFetchTask(), 4000);
+    } catch (error) {
+      setMintError(error.message);
+    }
+    setLoading(false);
   };
 
-  const handleFetchLeaderBoard = () => {
-    dispatch(loadLeaderboard());
+  const handleMintMultiNft = async () => {
+    setLoading(true);
+    try {
+      const tx = await multiNftContract?.write?.multiMint([10], {
+        value: ethers.utils.parseEther(MINT_MULTI_FEE),
+      });
+      await waitForTransaction({ hash: tx });
+      setTimeout(() => handleFetchTask(), 4000);
+    } catch (error) {
+      setMintError(error.message);
+    }
+    setLoading(false);
+  };
+
+  const handleFetchLeaderBoard = (address) => {
+    dispatch(loadLeaderboard(address));
   };
 
   const handleClaim = (data) => {
@@ -106,7 +143,7 @@ const AirdropPage = () => {
       );
     }
     handleFetchTask();
-    handleFetchLeaderBoard();
+    handleFetchLeaderBoard(address);
   }, [address, ref]);
 
   useUpdateEffect(() => {
@@ -125,7 +162,7 @@ const AirdropPage = () => {
       }}
       pt={"30px"}
     >
-      {address === "" ? (
+      {address === undefined ? (
         <Text
           textAlign="center"
           fontSize={"3xl"}
@@ -144,7 +181,7 @@ const AirdropPage = () => {
           pb={4}
         >
           <>
-            {isLoading && <CicularLoading />}
+            {isLoading || (loading && <CicularLoading />)}
             <>
               <Text
                 fontSize={{ base: "2xl", md: "5xl" }}
@@ -377,6 +414,7 @@ const AirdropPage = () => {
                 <TaskTable
                   copyRefLink={copyRefLink}
                   handleMintNFT={handleMintNFT}
+                  handleMintMultiNft={handleMintMultiNft}
                   handleClaim={handleClaim}
                 />
                 <LeaderBoard />

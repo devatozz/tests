@@ -1,9 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import loadTaskList from "./thunks/getTaskList";
-import loadLeaderboard from "./thunks/getLeaderboard";
-import claimTask from "./thunks/claimTask";
-import mintNFT from "./thunks/mintNFT";
+import loadTaskList from './thunks/getTaskList';
+import claimTask from './thunks/claimTask';
+import loadLeaderboard from './thunks/getLeaderboard';
 
 const initialState = {
   mintError: false,
@@ -21,7 +20,7 @@ const initialState = {
 };
 
 export const slice = createSlice({
-  name: "airdrop",
+  name: 'airdrop',
   initialState,
   reducers: {
     select: (state, action) => {
@@ -55,7 +54,6 @@ export const slice = createSlice({
       // state.isLoading = true;
     });
     builder.addCase(loadLeaderboard.fulfilled, (state, action) => {
-      console.log("test", action.payload?.leaderboardResult);
       state.leaderBoard = action.payload?.leaderboardResult || [];
     });
 
@@ -68,20 +66,7 @@ export const slice = createSlice({
 
     builder.addCase(claimTask.rejected, (state, action) => {
       state.isLoading = false;
-      console.error("Error message:", action.error.message);
-    });
-
-    builder.addCase(mintNFT.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(mintNFT.fulfilled, (state, action) => {
-      state.mintError = !action.payload.isSuccess;
-      state.isLoading = false;
-    });
-
-    builder.addCase(mintNFT.rejected, (state, action) => {
-      state.isLoading = false;
-      console.error("Error message:", action.error.message);
+      console.error('Error message:', action.error.message);
     });
   },
 });

@@ -1,26 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import PiraERC20 from "src/abis/PiraERC20.json";
-import { config } from "src/state/chain/config";
 import { ethers } from "ethers";
-const loadTokens = createAsyncThunk("dex/token", async (_payload, { getState }) => {
-    // const state = await getState();
-    // const selectedChain = state.chain.selectedChain ? state.chain.selectedChain : "base";
-    // const dexLoaded = state.dex.loaded;
-    // if (!dexLoaded) {
-    //     return { error: true, message: 'not enough loaded' };
-    // }
+import { config } from "src/state/chain/config";
+const loadTokens = createAsyncThunk("forward/token", async (_payload, { getState }) => {
     try {
-        // let tokenSet = state.dex.tokens.set;
-        // let tokenPromises = []
-        // for (let i = 0; i < tokenSet.length; i++) {
-        //     tokenPromises.push(getTokenData(tokenSet[i]));
-        // }
-        // let listResult = await Promise.all(tokenPromises);
-        // let itemIndex = listResult.findIndex(item => item.address.toLocaleLowerCase() == config[selectedChain].wrapAddress.toLocaleLowerCase())
-        // if (itemIndex != -1) {
-        //     listResult[itemIndex].name = "ETH"
-        //     listResult[itemIndex].symbol = "ETH"
-        // }
         let listResultReq = await fetch("/api/tokens")
         let listResult = (await listResultReq.json()).result
         let tokenObj = {}

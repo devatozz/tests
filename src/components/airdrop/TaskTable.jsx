@@ -11,14 +11,21 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
 } from "@chakra-ui/react";
 
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import CooldownButton from "./CooldownButton";
 import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
-const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
+const TaskTable = ({
+  copyRefLink,
+  handleMintNFT,
+  handleClaim,
+  handleMintMultiNft,
+}) => {
   const { taskList, inviteFriendTaskTokenEarn } = useSelector(
     (state) => state.airdrop
   );
@@ -84,6 +91,7 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
                     key={index}
                     dataTask={dataTaskTable}
                     handleMintNFT={handleMintNFT}
+                    handleMintMultiNft={handleMintMultiNft}
                     handleClaim={handleClaim}
                   />
                 )
@@ -146,8 +154,13 @@ const TaskTable = ({ copyRefLink, handleMintNFT, handleClaim }) => {
 
 export default TaskTable;
 
-const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
-  const address = useSelector((state) => state.chain.account);
+const TaskTab = ({
+  dataTask,
+  handleMintNFT,
+  handleClaim,
+  handleMintMultiNft,
+}) => {
+  const { address } = useAccount();
   const cooldown = useSelector((state) => state.airdrop.countDownMintNFT);
   const router = useRouter();
 
@@ -234,9 +247,18 @@ const TaskTab = ({ dataTask, handleMintNFT, handleClaim }) => {
       <Td borderRightWidth={1}>
         <Center>
           {dataTask !== undefined && dataTask.type === "MINT_NFT" ? (
-            <CooldownButton cooldownTime={cooldown} onClick={handleMintNFT}>
-              <Text fontSize={{ base: "xs", md: "xl" }}>Mint</Text>
-            </CooldownButton>
+            <VStack gap={"20px"}>
+              <CooldownButton cooldownTime={cooldown} onClick={handleMintNFT}>
+                <Text fontSize={{ base: "xs", md: "xl" }}>Mint</Text>
+              </CooldownButton>
+              <Button
+                background={"#00F0FF"}
+                color={"#18215D"}
+                onClick={handleMintMultiNft}
+              >
+                <Text fontSize={{ base: "xs", md: "xl" }}>Mint 10⚡️</Text>
+              </Button>
+            </VStack>
           ) : dataTask !== undefined && dataTask.type === "SWAP" ? (
             <Button background="#00F0FF" onClick={() => router.push("/swap")}>
               <Text fontSize={{ base: "xs", md: "xl" }}>Swap</Text>

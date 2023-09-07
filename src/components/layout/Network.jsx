@@ -1,82 +1,108 @@
-import {
-  Button,
-  Text,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  Menu,
-  MenuButton,
-  Image,
-  Stack,
-} from "@chakra-ui/react";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import connectToWallet from "src/state/chain/thunks/connectWallet";
-import { config, chainInfos } from "src/state/chain/config";
-import { useRouter } from "next/router";
-import WalletIcon from "src/components/icons/Wallet";
+import { config, walletInfos } from "src/state/chain/config";
 import {
+  connectNetwork,
   disconnectNetwork,
-  setIsConnecting,
-  handleEthereumAccountChange,
 } from "src/state/chain/slice";
-import NavItem from "./NavItem";
-// import loadTokens from 'src/state/dex/thunks/loadTokens';
 import loadContracts from "src/state/dex/thunks/loadContract";
 import loadPools from "src/state/dex/thunks/loadPools";
 import loadTokens from "src/state/dex/thunks/loadTokens";
+import loadForwardContracts from "src/state/forward/thunks/loadContract";
+import loadForwardPools from "src/state/forward/thunks/loadPools";
+import loadForwardTokens from "src/state/forward/thunks/loadTokens";
+import {
+  Button,
+  Image,
+  MenuList,
+  MenuItem,
+  Menu,
+  MenuButton,
+  useClipboard,
+  useToast
+} from "@chakra-ui/react";
+import WalletIcon from "../icons/Wallet";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useSwitchNetwork,
+  useNetwork
+} from 'wagmi'
+import { CopyIcon, SmallCloseIcon } from "@chakra-ui/icons";
 
 export default function Network() {
-  const router = useRouter();
   const dispatch = useDispatch();
-  const { isConnecting, selectedChain, account } = useSelector(
+  const { lastConnected } = useSelector(
     (state) => state.chain
   );
+  const { switchNetwork } = useSwitchNetwork()
+  const { chain } = useNetwork()
+  const { connect, connectors, error, isLoading, pendingConnector } =
+    useConnect()
+  const { disconnect, isLoading: isDisconnecting } = useDisconnect()
+  
   const {
     loaded: contractLoaded,
     tokens: { loaded: tokenLoaded },
     pools: { loaded: poolLoaded },
   } = useSelector((state) => state.dex);
-
-  const handleConnectNetwork = useCallback(
-    async (chain) => {
-      dispatch(setIsConnecting(true));
-
-      await dispatch(connectToWallet(chain));
-
-      dispatch(setIsConnecting(false));
-    },
-    [router]
-  );
+  const {
+    loaded: forwardContractLoaded,
+    tokens: { loaded: fowardTokenLoaded },
+    pools: { loaded: forwardPoolLoaded },
+  } = useSelector((state) => state.forward);
 
   const handleDisconnectNetwork = useCallback(async () => {
-    // handle disconnect here
-    dispatch(setIsConnecting(true));
     dispatch(disconnectNetwork());
-    dispatch(setIsConnecting(false));
-  }, [selectedChain]);
-
-  const handleCheckChain = useCallback(async () => {
-    //@ts-ignore
-    const chainId = await window.ethereum.request({ method: "eth_chainId" });
-    if (chainId !== config[selectedChain].chainId) {
-      dispatch(setIsConnecting(true));
-      await dispatch(connectToWallet(selectedChain));
-      dispatch(setIsConnecting(false));
-    }
-  }, [selectedChain]);
-
-  useEffect(() => {
-    if (selectedChain && window.ethereum) {
-      handleCheckChain();
-    }
   }, []);
 
-  // useEffect(() => {
-  //     if (selectedChain || !loaded) {
-  //         dispatch(loadTokens());
-  //     }
-  // }, [selectedChain, loaded]);
+  const handleConnectNetwork = useCallback(async ({connector}) => {
+    dispatch(connectNetwork(connector.id));
+  }, []);
+
+  const { isConnected, connector: currentConnector, address, isConnecting, isReconnecting } = useAccount({
+    onConnect: handleConnectNetwork,
+    onDisconnect: handleDisconnectNetwork
+  })
+  const { onCopy, setValue: setCopyValue } = useClipboard("");
+  const toast = useToast();
+
+  const copyAddress = () => {
+    onCopy();
+    toast({
+      title: "Address is copied",
+      status: "success",
+      duration: 1000,
+    });
+  };
+
+  const handleCheckChain = useCallback(async () => {
+    if (chain.id !== config.base.chainId) {
+      switchNetwork?.(config.base.chainId)
+    }
+  }, [config, switchNetwork, chain]);
+
+  useEffect(() => {
+    setCopyValue(address)
+  }, [address])
+
+  useEffect(() => {
+    if (isConnected && switchNetwork) {
+      handleCheckChain();
+    }
+  }, [isConnected, switchNetwork]);
+
+  useEffect(() => {
+    if (lastConnected && !isConnected && !isDisconnecting) {
+      let lastConnector = connectors.find(item => item.id === lastConnected)
+      if (lastConnector) {
+        connect({connector: lastConnector})
+      }
+      connect()
+    }
+  }, [lastConnected, isConnected, isDisconnecting])
+
   useEffect(() => {
     if (!contractLoaded) {
       dispatch(loadContracts());
@@ -86,99 +112,104 @@ export default function Network() {
   }, [contractLoaded]);
 
   useEffect(() => {
+    if (!forwardContractLoaded) {
+      dispatch(loadForwardContracts());
+    } else {
+      dispatch(loadForwardPools());
+    }
+  }, [forwardContractLoaded]);
+
+  useEffect(() => {
     if (contractLoaded && poolLoaded && !tokenLoaded) {
       dispatch(loadTokens());
     }
   }, [contractLoaded, poolLoaded, tokenLoaded]);
 
   useEffect(() => {
-    if (selectedChain && account) {
-      dispatch(loadContracts());
+    if (forwardContractLoaded && forwardPoolLoaded && !fowardTokenLoaded) {
+      dispatch(loadForwardTokens());
     }
-  }, [selectedChain, account]);
+  }, [forwardContractLoaded, forwardPoolLoaded, fowardTokenLoaded]);
 
-  useEffect(() => {
-    // Check metamask account is disconnected
-    if (window.ethereum) {
-      //@ts-ignore
-      window.ethereum.on("accountsChanged", (accounts) => {
-        dispatch(handleEthereumAccountChange(accounts[0]));
-      });
-      //@ts-ignore
-      window.ethereum.on("chainChanged", (chainId) => {
-        let realChainId = parseInt(chainId, 16);
-        console.log(realChainId);
-        // todo handle chain changed
-      });
-    }
-  }, []);
-
-  return (
-    <Menu>
+  if (isConnected) return (
+    <Menu matchWidth>
       <MenuButton
         as={Button}
         leftIcon={
-          selectedChain ? (
-            <Image
-              bgColor={"white"}
-              borderRadius={"20px"}
-              p={1}
-              src={chainInfos[selectedChain].logo}
-              w={"25px"}
-              h={"25px"}
-            />
-          ) : (
-            <WalletIcon />
-          )
+          <Image src={walletInfos[currentConnector?.id]?.logo} w={"20px"} h={"20px"} />
         }
         variant="solid"
         fontSize={"sm"}
         fontWeight={700}
         colorScheme="whiteAlpha"
-        // isLoading={isConnecting}
       >
-        {selectedChain ? (
-          <Text>
-            {account
-              ? account
-                  .slice(0, 7)
-                  .concat("...")
-                  .concat(account.slice(account.length - 7, account.length))
-              : ""}
-          </Text>
-        ) : (
-          <Text>
-            <span>Connect wallet</span>
-          </Text>
-        )}
+        {address
+          ? address
+            .slice(0, 6)
+            .concat("...")
+            .concat(address.slice(address.length - 6, address.length))
+          : ""}
       </MenuButton>
       <MenuList zIndex={100}>
-        <MenuDivider />
-        {Object.keys(chainInfos).map((key) => (
+        <MenuItem
+          as={Button}
+          variant="ghost"
+          leftIcon={<CopyIcon />}
+          sx={{ fontWeight: 500, justifyContent: "start", px: 4 }}
+          onClick={copyAddress}
+        >
+          Copy address
+        </MenuItem>
+        <MenuItem
+          as={Button}
+          variant="ghost"
+          leftIcon={<SmallCloseIcon />}
+          sx={{ fontWeight: 500, justifyContent: "start", px: 4 }}
+          onClick={disconnect}
+        >
+          Disconnect
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  )
+
+  return (
+    <Menu matchWidth>
+      <MenuButton
+        as={Button}
+        leftIcon={
+          <WalletIcon />
+        }
+        variant="solid"
+        fontWeight={700}
+        colorScheme="whiteAlpha"
+
+        isLoading={isConnecting || isReconnecting}
+
+      >
+        Connect wallet
+      </MenuButton>
+      <MenuList zIndex={100}>
+        {connectors.map((connector) => (
           <MenuItem
             as={Button}
-            isDisabled={chainInfos[key].disabled}
-            leftIcon={
-              <Image src={chainInfos[key].logo} w={"20px"} h={"20px"} />
-            }
+            isDisabled={!connector.ready}
             variant="ghost"
-            key={`network-${key}`}
-            onClick={() => handleConnectNetwork(key)}
+            key={connector.id}
+            onClick={() => connect({ connector })}
             sx={{ fontWeight: 500, justifyContent: "start", px: 4 }}
+            leftIcon={
+              <Image src={walletInfos[connector.id].logo} w={"20px"} h={"20px"} />
+            }
           >
-            {chainInfos[key].label}
+            {connector.name}
+            {/* {!connector.ready && ' (unsupported)'} */}
+            {!connector.ready && '(conflict Coin98)'}
+            {isLoading &&
+              connector.id === pendingConnector?.id &&
+              ' (connecting)'}
           </MenuItem>
         ))}
-        <MenuDivider />
-        {account && (
-          <MenuItem
-            as={Button}
-            variant="ghost"
-            onClick={() => handleDisconnectNetwork()}
-          >
-            Disconnect
-          </MenuItem>
-        )}
       </MenuList>
     </Menu>
   );

@@ -21,11 +21,9 @@ import { useSelector } from 'react-redux'
 import { SearchIcon } from '@chakra-ui/icons'
 import { getTokenData } from 'src/utils/helper'
 import { emptyToken } from "src/utils/utils";
-import { config } from 'src/state/chain/config'
 
 export default function SwapTokenModal({ handleChoseToken, isOpen, onClose, selectedAddr }) {
-    const { list, loaded, obj } = useSelector(state => state.dex.tokens)
-    const { selectedChain } = useSelector(state => state.chain)
+    const { list, loaded, obj } = useSelector(state => state.forward.tokens)
 
     const [tokenList, setTokenList] = useState([])
     const [defaultTokenList, setDefaultTokenList] = useState([])

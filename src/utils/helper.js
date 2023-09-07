@@ -41,7 +41,7 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
 };
 
 function getTokenContract(address) {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
   return new ethers.Contract(address, PiraERC20.abi, provider);
 }
 function getNftContract(address) {
@@ -65,7 +65,7 @@ export async function getTokenData(tokenAddress) {
   }
 }
 
-export const loadBalance = async (account, chain, tokenAddress) => {
+export const loadBalance = async (account, tokenAddress) => {
   try {
     let result = BigNumber.from(0);
     if (tokenAddress == noneAddress) {
@@ -112,6 +112,27 @@ export const createPairContractWithSigner = (address) => {
   const signer = provider.getSigner();
   return new ethers.Contract(address, PiraPair.abi, signer);
 };
+
+export const loadSupply = async (tokenAddress) => {
+  try {
+    let result = BigNumber.from(0)
+    const tokenContract = getTokenContract(tokenAddress);
+    result = await tokenContract.totalSupply()
+    return result;
+  } catch (error) {
+    return BigNumber.from("0")
+  }
+};
+
+export const createFtContract = (address) => {
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
+  return new ethers.Contract(address, PiraERC20.abi, provider);
+};
+
+export const createPairContract = (address) => {
+  const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
+  return new ethers.Contract(address, PiraPair.abi, provider);
+}
 
 export const createWETHContractWithSigner = (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
