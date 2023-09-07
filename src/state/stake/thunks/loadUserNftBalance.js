@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ethers } from "ethers";
-import stakeNftAbi from "src/abis/PiraStakingNFT.json";
+import { BigNumber } from "ethers";
+import nftAbi from "src/abis/MintNft.json";
 import BaseTestnetConfig from "src/state/config/base-testnet.json";
 import BaseMainnetConfig from "src/state/config/base-mainnet.json";
 
@@ -9,23 +10,19 @@ const BaseConfig =
     ? BaseMainnetConfig
     : BaseTestnetConfig;
 
-export const getNFTBalance = createAsyncThunk(
-  "stake/getNFTBalance",
+export const loadUserNftBalance = createAsyncThunk(
+  "stake/loadUserNftBalance",
   async (account) => {
     try {
-      // const { account } = getState().chain;
-      const stakingAddress = BaseConfig.stakeNft;
+      let result = BigNumber.from(0);
+      const nftAddress = BaseConfig.nft;
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const nftStaking = new ethers.Contract(
-        stakingAddress,
-        stakeNftAbi,
-        signer
-      );
-      const totalNftStacked = await nftStaking.getNFTBalance(account);
-      return totalNftStacked;
+      const nftContract = new ethers.Contract(nftAddress, nftAbi, signer);
+      result = await nftContract.balanceOf(account);
+      return result;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error("Error fetching NFT balance:", error);
     }
   }
 );

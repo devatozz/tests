@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { approveAllTokens } from "./thunks/approveAllTokens";
 import { fetchTotalRewards } from "./thunks/fetchTotalRewards";
-import { getNFTBalance } from "./thunks/getNFTBalance";
+import { getNFTStakedBalance } from "./thunks/getNFTStakedBalance";
+import { loadUserNftBalance } from "./thunks/loadUserNftBalance";
 import { formatEther } from "ethers/lib/utils";
 import { harvestRewards } from "./thunks/harvestRewards";
 import { isApprovedTokens } from "./thunks/isApprovedTokens";
@@ -17,6 +18,7 @@ const stakeSlice = createSlice({
     approvalTxHash: null,
     totalRewards: "0",
     totalNftStacked: "0",
+    userBalance: "0",
     isApproved: false,
     isApprovingTokens: false,
     approvalTokensError: null,
@@ -48,12 +50,19 @@ const stakeSlice = createSlice({
     builder.addCase(fetchTotalRewards.rejected, (state, action) => {
       state.totalRewards = "0";
     });
-    // get balance
-    builder.addCase(getNFTBalance.fulfilled, (state, action) => {
-      state.totalNftStacked = action.payload.toString();
+    // get balance nft staked
+    builder.addCase(getNFTStakedBalance.fulfilled, (state, action) => {
+      state.totalNftStacked = action.payload?.toString();
     });
-    builder.addCase(getNFTBalance.rejected, (state, action) => {
+    builder.addCase(getNFTStakedBalance.rejected, (state, action) => {
       state.totalNftStacked = "0";
+    });
+    // get user balance nft
+    builder.addCase(loadUserNftBalance.fulfilled, (state, action) => {
+      state.userBalance = action.payload?.toString();
+    });
+    builder.addCase(loadUserNftBalance.rejected, (state, action) => {
+      state.userBalance = "0";
     });
 
     // approve for all token
@@ -123,7 +132,8 @@ export {
   approveAllTokens,
   fetchTotalRewards,
   harvestRewards,
-  getNFTBalance,
+  getNFTStakedBalance,
+  loadUserNftBalance,
   isApprovedTokens,
   stakeNft,
   unstake,

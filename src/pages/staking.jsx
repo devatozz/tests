@@ -18,36 +18,28 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loadNftBalance } from "src/utils/helper";
 import { BigNumber, ethers } from "ethers";
-import BaseTestnetConfig from "src/state/config/base-testnet.json";
-import BaseMainnetConfig from "src/state/config/base-mainnet.json";
-import { usePublicClient, useWalletClient, useAccount } from "wagmi";
+import { useAccount } from "wagmi";
 // state
 import {
   approveAllTokens,
   harvestRewards,
   fetchTotalRewards,
-  getNFTBalance,
+  getNFTStakedBalance,
   isApprovedTokens,
+  loadUserNftBalance,
 } from "src/state/stake/slice";
 import { stakeNft } from "src/state/stake/thunks/stakeNft";
 import { unstake } from "src/state/stake/thunks/unstake";
-//
-const BaseConfig =
-  process.env.NEXT_PUBLIC_NETWORK == "mainnet"
-    ? BaseMainnetConfig
-    : BaseTestnetConfig;
 
 export default function Staking() {
   const dispatch = useDispatch();
   const toast = useToast();
-  const [balanceNFT, setBalanceNFT] = useState(0);
   const [amount, setAmount] = useState(0);
   const [unstakeAmount, setUnstakeAmount] = useState(0);
-  const { account, selectedChain } = useSelector((state) => state.chain);
+  const { selectedChain } = useSelector((state) => state.chain);
   const { address } = useAccount();
   const [isStakeModalOpen, setIsStakeModalOpen] = useState(false);
   const [isUnStakeModalOpen, setIsUnStakeModalOpen] = useState(false);
@@ -56,9 +48,17 @@ export default function Staking() {
   const [isStaking, setIsStaking] = useState(false);
   const [isHarvest, setIsHarvest] = useState(false);
   const [approvalAllToken, setAprovalAllToken] = useState(false);
+  const [pools, setPools] = useState(10);
+  const selectChain = useMemo(
+    () => (selectedChain ? selectedChain : "base"),
+    [selectedChain]
+  );
+  const addressMemo = useMemo(() => address, [address]);
 
   // state
-  const { totalRewards, totalNftStacked } = useSelector((state) => state.stake);
+  const { totalRewards, totalNftStacked, userBalance } = useSelector(
+    (state) => state.stake
+  );
   const isApproved = useSelector((state) => state.stake.isApproved);
   const poolsInfor = [
     {
@@ -92,8 +92,7 @@ export default function Staking() {
       need: 150 - totalNftStacked,
     },
   ];
-  console.log("account", account);
-  console.log("address", address);
+
   useEffect(() => {
     const minimumStakedValues = [10, 30, 60, 100, 150];
     const activePoolIndex = minimumStakedValues.findIndex(
@@ -107,28 +106,11 @@ export default function Staking() {
     setButtonStatuses(btStatus);
   }, [totalNftStacked]);
 
-  const handleLoadBalance = useCallback(
-    async (token) => {
-      let result = BigNumber.from(0);
-      if (address && selectedChain) {
-        result = await loadNftBalance(address, selectedChain, token);
-      }
-      const nftBalance = result.toString();
-      setBalanceNFT(nftBalance);
-      return result;
-    },
-    [address, selectedChain]
-  );
-  // load balance NFT
-  useEffect(() => {
-    handleLoadBalance(BaseConfig.nft);
-  }, []);
-
   // stake
   const handleSubmitStake = useCallback(
-    async (e) => {
+    async (e, pool) => {
       e.preventDefault();
-      const amountError = validateAmount(amount, balanceNFT);
+      const amountError = validateAmount(amount, userBalance, pool);
       if (amountError !== "") {
         toast({
           title: "Error!",
@@ -145,8 +127,9 @@ export default function Staking() {
         if (response.meta.requestStatus === "fulfilled") {
           setIsStakeModalOpen(false);
           setAmount(0);
-          dispatch(getNFTBalance(address));
+          dispatch(getNFTStakedBalance(address));
           dispatch(fetchTotalRewards(address));
+          dispatch(loadUserNftBalance(address));
           toast({
             title: "Success!",
             description: "Your NFTs have been staked successfully!",
@@ -191,7 +174,7 @@ export default function Staking() {
         setIsStakeModalOpen(false);
       }
     },
-    [dispatch, toast, address, amount, balanceNFT]
+    [dispatch, toast, address, amount, userBalance]
   );
   // separate
   const handleApprove = async () => {
@@ -245,12 +228,7 @@ export default function Staking() {
     dispatch(approveAllTokens(address));
   };
   const handleCheckIsApprove = async () => {
-    try {
-      const response = await dispatch(isApprovedTokens({ owner: address }));
-      if (response.meta.requestStatus === "fulfilled") {
-      } else {
-      }
-    } catch (error) {}
+    const response = await dispatch(isApprovedTokens({ owner: address }));
   };
 
   // havest rewards
@@ -325,8 +303,9 @@ export default function Staking() {
       if (response.meta.requestStatus === "fulfilled") {
         setIsUnStakeModalOpen(false);
         setUnstakeAmount(0);
-        dispatch(getNFTBalance(address));
+        dispatch(getNFTStakedBalance(address));
         dispatch(fetchTotalRewards(address));
+        dispatch(loadUserNftBalance(address));
         toast({
           title: "Success!",
           description: "Your NFTs have been unstaked successfully!",
@@ -372,7 +351,8 @@ export default function Staking() {
     }
   };
   // validate input
-  const validateAmount = (value, balance) => {
+  const validateAmount = (value, balance, pool) => {
+    const maxStake = 150 - totalNftStacked;
     const num = parseFloat(value);
     if (isNaN(num) || num <= 0) {
       return "Amount must be a valid number greater than zero";
@@ -380,9 +360,16 @@ export default function Staking() {
     if (num > parseFloat(balance)) {
       return "Amount cannot be greater than your NFT balance";
     }
+    if (num < parseFloat(pool - totalNftStacked)) {
+      return `Amount must be greater than or equal to ${
+        pool - totalNftStacked
+      }`;
+    }
+    if (num > maxStake) {
+      return `You cannot stake more than ${maxStake} NFTs`;
+    }
     return "";
   };
-
   const validateUnstakeAmount = (value, staked) => {
     const num = parseFloat(value);
     if (isNaN(num) || num <= 0) {
@@ -393,24 +380,23 @@ export default function Staking() {
     }
     return "";
   };
-
   // get total reward
   useEffect(() => {
     dispatch(fetchTotalRewards(address));
-  }, [address, dispatch, amount, unstakeAmount]);
+  }, [address, dispatch, amount, unstakeAmount, selectChain]);
   useEffect(() => {
-    dispatch(getNFTBalance(address));
-  }, [address, dispatch, amount, unstakeAmount]);
+    dispatch(getNFTStakedBalance(address));
+  }, [address, dispatch, amount, unstakeAmount, selectChain]);
   useEffect(() => {
-    handleLoadBalance(BaseConfig.nft);
-  }, [address, dispatch, amount, unstakeAmount]);
+    dispatch(loadUserNftBalance(address));
+  }, [address, dispatch, amount, unstakeAmount, selectChain]);
+
   useEffect(() => {
     handleCheckIsApprove();
   }, [address, dispatch]);
   useEffect(() => {
     handleCheckIsApprove();
   }, []);
-
   return (
     <Box
       bg="linear-gradient(180deg, rgba(48,69,195,1) 0%, rgba(24,33,93,1) 90%)"
@@ -420,7 +406,7 @@ export default function Staking() {
         md: "calc(100vh - 170px)",
       }}
     >
-      {address === "" ? (
+      {address === undefined ? (
         <Text
           textAlign="center"
           fontSize={"3xl"}
@@ -470,7 +456,7 @@ export default function Staking() {
                 <Text fontSize="32px" color="#fff">
                   Your NFT Balance:
                   <Box as="span" color="#39ACFF" margin={"0px 20px"}>
-                    {balanceNFT}
+                    {userBalance}
                   </Box>
                 </Text>
               </Box>
@@ -646,7 +632,10 @@ export default function Staking() {
                               size="lg"
                               variant="outline"
                               aria-label="Stake NFT"
-                              onClick={() => setIsStakeModalOpen(true)}
+                              onClick={() => {
+                                setPools(el.pool);
+                                setIsStakeModalOpen(true);
+                              }}
                               isDisabled={!buttonStatuses[index]}
                               css={{
                                 background: "#1E2A76",
@@ -726,13 +715,16 @@ export default function Staking() {
                       />
                     </Box>
                     <Box>
-                      <Text fontSize="lg">Your NFT Balance : {balanceNFT}</Text>
+                      <Text fontSize="lg">
+                        Your NFT Balance : {userBalance}
+                      </Text>
                     </Box>
                     <Button
                       type="submit"
                       isLoading={isStaking}
                       isDisabled={isStaking}
                       colorScheme="green"
+                      onClick={(e) => handleSubmitStake(e, pools)}
                     >
                       {isStaking ? "Staking your NFTs..." : "Stake"}
                     </Button>
