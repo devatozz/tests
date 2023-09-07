@@ -183,7 +183,9 @@ export default function Network() {
         variant="solid"
         fontWeight={700}
         colorScheme="whiteAlpha"
+
         isLoading={isConnecting || isReconnecting}
+
       >
         Connect wallet
       </MenuButton>

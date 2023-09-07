@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import PiraERC20 from "src/abis/PiraERC20.json";
 import PiraPair from "src/abis/PiraPair.json";
 import PiraWETH from "src/abis/PiraWETH.json";
+import PiraNFT from "src/abis/MintNft.json";
 
 export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
   try {
@@ -34,14 +35,18 @@ export const getSteps = (tokenIn, tokenOut, poolMatrix) => {
     steps.reverse();
     return steps;
   } catch (e) {
-    console.log(e)
-    return []
+    console.log(e);
+    return [];
   }
 };
 
 function getTokenContract(address) {
   const provider = new ethers.providers.JsonRpcProvider(config.base.rpcAddress);
   return new ethers.Contract(address, PiraERC20.abi, provider);
+}
+function getNftContract(address) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  return new ethers.Contract(address, PiraNFT, provider);
 }
 
 export async function getTokenData(tokenAddress) {
@@ -55,20 +60,57 @@ export async function getTokenData(tokenAddress) {
 
     return { address: tokenAddress, name, symbol, decimals };
   } catch (error) {
-    console.error('Error fetching token data:', error);
+    console.error("Error fetching token data:", error);
     throw error;
   }
 }
 
 export const loadBalance = async (account, tokenAddress) => {
   try {
-    let result = BigNumber.from(0)
+    let result = BigNumber.from(0);
+    if (tokenAddress == noneAddress) {
+      let ethBalance = await window.ethereum.request({
+        method: "eth_getBalance",
+        params: [account],
+      });
+      return BigNumber.from(ethBalance);
+    }
     const tokenContract = getTokenContract(tokenAddress);
-    result = await tokenContract.balanceOf(account)
+    result = await tokenContract.balanceOf(account);
     return result;
   } catch (error) {
-    return BigNumber.from("0")
+    console.error("Error fetching token data:", error);
+    throw error;
   }
+};
+export const loadNftBalance = async (account, chain, tokenAddress) => {
+  try {
+    let result = BigNumber.from(0);
+    if (tokenAddress == noneAddress) {
+      let ethBalance = await window.ethereum.request({
+        method: "eth_getBalance",
+        params: [account],
+      });
+      return BigNumber.from(ethBalance);
+    }
+    const nftContract = getNftContract(tokenAddress);
+    result = await nftContract.balanceOf(account);
+    return result;
+  } catch (error) {
+    console.error("Error fetching NFT data:", error);
+    throw error;
+  }
+};
+export const createFtContractWithSigner = (address) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  return new ethers.Contract(address, PiraERC20.abi, signer);
+};
+
+export const createPairContractWithSigner = (address) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  return new ethers.Contract(address, PiraPair.abi, signer);
 };
 
 export const loadSupply = async (tokenAddress) => {
@@ -96,4 +138,4 @@ export const createWETHContractWithSigner = (address) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   return new ethers.Contract(address, PiraWETH.abi, signer);
-}
+};

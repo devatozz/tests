@@ -7,6 +7,7 @@ import chainReducer from "./chain/slice";
 import dexReducer from "./dex/slice";
 import forwardReducer from "./forward/slice";
 import airdropReducer from "./airdrop/slice";
+import stakeReducer from "./stake/slice";
 
 const chainPersistConfig = {
   key: "chain",
@@ -22,6 +23,7 @@ export const store = configureStore({
     dex: dexReducer,
     forward: forwardReducer,
     airdrop: airdropReducer,
+    stake: stakeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
