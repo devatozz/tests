@@ -145,7 +145,7 @@ export default function Staking() {
         if (response.meta.requestStatus === "fulfilled") {
           setIsStakeModalOpen(false);
           setAmount(0);
-          dispatch(getNFTBalance(adress));
+          dispatch(getNFTBalance(address));
           dispatch(fetchTotalRewards(address));
           toast({
             title: "Success!",
