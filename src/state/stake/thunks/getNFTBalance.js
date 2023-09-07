@@ -11,9 +11,9 @@ const BaseConfig =
 
 export const getNFTBalance = createAsyncThunk(
   "stake/getNFTBalance",
-  async (_, { getState, rejectWithValue }) => {
+  async (account) => {
     try {
-      const { account } = getState().chain;
+      // const { account } = getState().chain;
       const stakingAddress = BaseConfig.stakeNft;
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();

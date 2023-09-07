@@ -93,6 +93,7 @@ export default function Staking() {
     },
   ];
   console.log("account", account);
+  console.log("address", address);
   useEffect(() => {
     const minimumStakedValues = [10, 30, 60, 100, 150];
     const activePoolIndex = minimumStakedValues.findIndex(
@@ -144,8 +145,8 @@ export default function Staking() {
         if (response.meta.requestStatus === "fulfilled") {
           setIsStakeModalOpen(false);
           setAmount(0);
-          dispatch(getNFTBalance());
-          dispatch(fetchTotalRewards());
+          dispatch(getNFTBalance(adress));
+          dispatch(fetchTotalRewards(address));
           toast({
             title: "Success!",
             description: "Your NFTs have been staked successfully!",
@@ -258,7 +259,7 @@ export default function Staking() {
     try {
       const response = await dispatch(harvestRewards());
       if (response.meta.requestStatus === "fulfilled") {
-        dispatch(fetchTotalRewards());
+        dispatch(fetchTotalRewards(address));
         toast({
           title: "Success!",
           description: "Harvest successfully!",
@@ -324,8 +325,8 @@ export default function Staking() {
       if (response.meta.requestStatus === "fulfilled") {
         setIsUnStakeModalOpen(false);
         setUnstakeAmount(0);
-        dispatch(getNFTBalance());
-        dispatch(fetchTotalRewards());
+        dispatch(getNFTBalance(address));
+        dispatch(fetchTotalRewards(address));
         toast({
           title: "Success!",
           description: "Your NFTs have been unstaked successfully!",
@@ -395,10 +396,10 @@ export default function Staking() {
 
   // get total reward
   useEffect(() => {
-    dispatch(fetchTotalRewards());
+    dispatch(fetchTotalRewards(address));
   }, [address, dispatch, amount, unstakeAmount]);
   useEffect(() => {
-    dispatch(getNFTBalance());
+    dispatch(getNFTBalance(address));
   }, [address, dispatch, amount, unstakeAmount]);
   useEffect(() => {
     handleLoadBalance(BaseConfig.nft);
