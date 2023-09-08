@@ -586,7 +586,7 @@ export default function Staking() {
                   <Flex>
                     <Text color="#1F2B7A" fontSize="24px">
                       {" "}
-                      Balance: {el.staked > el.pool
+                      Staked: {el.staked > el.pool
                         ? el.pool
                         : el.staked} / {el.pool}
                     </Text>
