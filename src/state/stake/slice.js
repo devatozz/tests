@@ -16,9 +16,9 @@ const stakeSlice = createSlice({
     approvalError: null,
     approvalSuccess: false,
     approvalTxHash: null,
-    totalRewards: "0",
-    totalNftStacked: "0",
-    userBalance: "0",
+    totalRewards: { value: "0", isLoading: false },
+    totalNftStacked: { value: "0", isLoading: false },
+    userBalance: { value: "0", isLoading: false },
     isApproved: false,
     isApprovingTokens: false,
     approvalTokensError: null,
@@ -44,25 +44,40 @@ const stakeSlice = createSlice({
   },
   extraReducers: (builder) => {
     // get total reward
+    builder.addCase(fetchTotalRewards.pending, (state) => {
+      state.totalRewards.isLoading = true;
+    });
     builder.addCase(fetchTotalRewards.fulfilled, (state, action) => {
-      state.totalRewards = formatEther(action.payload);
+      state.totalRewards.isLoading = false;
+      state.totalRewards.value = formatEther(action.payload);
     });
     builder.addCase(fetchTotalRewards.rejected, (state, action) => {
-      state.totalRewards = "0";
+      state.totalRewards.isLoading = false;
+      state.totalRewards.value = "0";
     });
     // get balance nft staked
+    builder.addCase(getNFTStakedBalance.pending, (state) => {
+      state.totalNftStacked.isLoading = true;
+    });
     builder.addCase(getNFTStakedBalance.fulfilled, (state, action) => {
-      state.totalNftStacked = action.payload?.toString();
+      state.totalNftStacked.isLoading = false;
+      state.totalNftStacked.value = action.payload?.toString();
     });
     builder.addCase(getNFTStakedBalance.rejected, (state, action) => {
-      state.totalNftStacked = "0";
+      state.totalNftStacked.isLoading = false;
+      state.totalNftStacked.value = "0";
     });
     // get user balance nft
+    builder.addCase(loadUserNftBalance.pending, (state) => {
+      state.userBalance.isLoading = true;
+    });
     builder.addCase(loadUserNftBalance.fulfilled, (state, action) => {
-      state.userBalance = action.payload?.toString();
+      state.userBalance.isLoading = false;
+      state.userBalance.value = action.payload?.toString();
     });
     builder.addCase(loadUserNftBalance.rejected, (state, action) => {
-      state.userBalance = "0";
+      state.userBalance.isLoading = false;
+      state.userBalance.value = "0";
     });
 
     // approve for all token

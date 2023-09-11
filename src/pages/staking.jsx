@@ -17,6 +17,7 @@ import {
   ModalFooter,
   Input,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,37 +60,46 @@ export default function Staking() {
   const { totalRewards, totalNftStacked, userBalance } = useSelector(
     (state) => state.stake
   );
+  // show loading spinner while totalRewards is being fetched
+  const totalRewardsValue = totalRewards.value
+    ? Number(totalRewards.value).toFixed(2)
+    : "0";
+  const totalRewardsLoading = totalRewards.isLoading;
+  const totalNftStackedValue = totalNftStacked.value || "0";
+  const totalNftStackedLoading = totalNftStacked.isLoading;
+  const userBalanceValue = userBalance.value || "0";
+  const userBalanceLoading = userBalance.isLoading;
   const isApproved = useSelector((state) => state.stake.isApproved);
   const poolsInfor = [
     {
       pool: 10,
-      staked: totalNftStacked,
+      staked: totalNftStackedValue,
       apr: "100%",
-      need: 10 - totalNftStacked,
+      need: 10 - totalNftStackedValue,
     },
     {
       pool: 30,
-      staked: totalNftStacked,
+      staked: totalNftStackedValue,
       apr: "200%",
-      need: 30 - totalNftStacked,
+      need: 30 - totalNftStackedValue,
     },
     {
       pool: 60,
-      staked: totalNftStacked,
+      staked: totalNftStackedValue,
       apr: "300%",
-      need: 60 - totalNftStacked,
+      need: 60 - totalNftStackedValue,
     },
     {
       pool: 100,
-      staked: totalNftStacked,
+      staked: totalNftStackedValue,
       apr: "500%",
-      need: 100 - totalNftStacked,
+      need: 100 - totalNftStackedValue,
     },
     {
       pool: 150,
-      staked: totalNftStacked,
+      staked: totalNftStackedValue,
       apr: "800%",
-      need: 150 - totalNftStacked,
+      need: 150 - totalNftStackedValue,
     },
   ];
 
@@ -97,20 +107,20 @@ export default function Staking() {
     const minimumStakedValues = [10, 30, 60, 100, 150];
     const activePoolIndex = minimumStakedValues.findIndex(
       (value, index, array) =>
-        totalNftStacked < value &&
-        (index === 0 || totalNftStacked >= array[index - 1])
+        totalNftStackedValue < value &&
+        (index === 0 || totalNftStackedValue >= array[index - 1])
     );
     const btStatus = poolsInfor.map((poolInfo, index) => {
       return index === activePoolIndex;
     });
     setButtonStatuses(btStatus);
-  }, [totalNftStacked]);
+  }, [totalNftStackedValue]);
 
   // stake
   const handleSubmitStake = useCallback(
     async (e, pool) => {
       e.preventDefault();
-      const amountError = validateAmount(amount, userBalance, pool);
+      const amountError = validateAmount(amount, userBalanceValue, pool);
       if (amountError !== "") {
         toast({
           title: "Error!",
@@ -174,7 +184,7 @@ export default function Staking() {
         setIsStakeModalOpen(false);
       }
     },
-    [dispatch, toast, address, amount, userBalance]
+    [dispatch, toast, address, amount, userBalanceValue]
   );
   // separate
   const handleApprove = async () => {
@@ -285,7 +295,7 @@ export default function Staking() {
     e.preventDefault();
     const unstakeAmountError = validateUnstakeAmount(
       unstakeAmount,
-      totalNftStacked
+      totalNftStackedValue
     );
     if (unstakeAmountError !== "") {
       toast({
@@ -352,7 +362,7 @@ export default function Staking() {
   };
   // validate input
   const validateAmount = (value, balance, pool) => {
-    const maxStake = 150 - totalNftStacked;
+    const maxStake = 150 - totalNftStackedValue;
     const num = parseFloat(value);
     if (isNaN(num) || num <= 0) {
       return "Amount must be a valid number greater than zero";
@@ -360,9 +370,9 @@ export default function Staking() {
     if (num > parseFloat(balance)) {
       return "Amount cannot be greater than your NFT balance";
     }
-    if (num < parseFloat(pool - totalNftStacked)) {
+    if (num < parseFloat(pool - totalNftStackedValue)) {
       return `Amount must be greater than or equal to ${
-        pool - totalNftStacked
+        pool - totalNftStackedValue
       }`;
     }
     if (num > maxStake) {
@@ -383,13 +393,13 @@ export default function Staking() {
   // get total reward
   useEffect(() => {
     dispatch(fetchTotalRewards(address));
-  }, [address, dispatch, amount, unstakeAmount, selectChain]);
+  }, [address, dispatch, selectChain]);
   useEffect(() => {
     dispatch(getNFTStakedBalance(address));
-  }, [address, dispatch, amount, unstakeAmount, selectChain]);
+  }, [address, dispatch, selectChain]);
   useEffect(() => {
     dispatch(loadUserNftBalance(address));
-  }, [address, dispatch, amount, unstakeAmount, selectChain]);
+  }, [address, dispatch, selectChain]);
 
   useEffect(() => {
     handleCheckIsApprove();
@@ -446,49 +456,63 @@ export default function Staking() {
                   fun!
                 </Text>
               </Stack>
-              <Box
-                border="2px solid #D4FFF2 "
-                textAlign="center"
-                padding="15px "
-                borderRadius="10px"
-                marginTop="8"
+
+              <Text
+                color={"#fff"}
+                fontSize={{ base: "32px", md: "48px" }}
+                width={"auto"}
+                textAlign={"Start"}
               >
-                <Text fontSize="32px" color="#fff">
-                  Your NFT Balance:
+                Your NFT Balance:{" "}
+                {userBalanceLoading ? (
+                  <Spinner color="pink.500" />
+                ) : (
                   <Box as="span" color="#39ACFF" margin={"0px 20px"}>
-                    {userBalance}
+                    {userBalanceValue}
                   </Box>
-                </Text>
-              </Box>
+                )}
+              </Text>
             </Stack>
           </SimpleGrid>
           <Container maxW={"5xl"} py={12}>
             <Center marginTop={24}>
               <Box width={"full"} border="3px solid #D4FFF2">
-                <Center>
+                <Center marginTop={8}>
                   <Flex flexDirection={"column"}>
                     <Box>
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "32px", md: "48px" }}
-                        paddingTop={"30px"}
-                        width={"full"}
+                        width={"auto"}
                         textAlign={"Start"}
-                        padding={{ base: "30px 10px", md: "30px 0px 0px" }}
                       >
-                        Total NFTs Staked: {totalNftStacked}
+                        Total NFTs Staked:{" "}
+                        {totalNftStackedLoading ? (
+                          <Spinner color="pink.500" />
+                        ) : (
+                          <Box as="span" color="#39ACFF" margin={"0px 20px"}>
+                            {totalNftStackedValue}
+                          </Box>
+                        )}
                       </Text>
                     </Box>
+
                     <Box textAlign="center">
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "32px", md: "48px" }}
-                        width={"full"}
+                        width={"auto"}
                         textAlign={"Start"}
                       >
                         Total Rewards:
                         <Box as="span" color="#39ACFF" margin={"0px 20px"}>
-                          {Number(totalRewards).toFixed(2)} xPira
+                          {totalRewardsLoading ? (
+                            <Spinner color="pink.500" />
+                          ) : (
+                            <Box as="span" color="#39ACFF" margin={"0px 20px"}>
+                              {totalRewardsValue} xPira
+                            </Box>
+                          )}
                         </Box>
                       </Text>
                     </Box>
@@ -586,9 +610,8 @@ export default function Staking() {
                   <Flex>
                     <Text color="#1F2B7A" fontSize="24px">
                       {" "}
-                      Staked: {el.staked > el.pool
-                        ? el.pool
-                        : el.staked} / {el.pool}
+                      Staked: {el.staked > el.pool ? el.pool : el.staked} /{" "}
+                      {el.pool}
                     </Text>
                   </Flex>
                   <Flex justifyContent="space-between" marginTop={6} gap={16}>
@@ -705,18 +728,40 @@ export default function Staking() {
                       <label htmlFor="amount" fontSize="xl">
                         Amount:
                       </label>
-                      <Input
-                        type="number"
-                        id="amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        fontSize="lg"
-                        marginTop={2}
-                      />
+                      <Flex alignItems="center" mt={2}>
+                        <Input
+                          type="number"
+                          id="amount"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          placeholder="Input amount"
+                          fontSize="lg"
+                          mr={2}
+                          borderRadius="md"
+                          py={2}
+                          px={3}
+                          _focus={{ boxShadow: "none" }}
+                        />
+                        <Button
+                          onClick={() => setAmount(userBalanceValue)}
+                          size="sm"
+                          fontSize="sm"
+                          variant="ghost"
+                          border="1px"
+                          borderColor="gray.400"
+                          borderRadius="md"
+                          px={3}
+                          py={2}
+                          _focus={{ outline: "none" }}
+                          _hover={{ background: "#1F2B7A", color: "white" }}
+                        >
+                          Max
+                        </Button>
+                      </Flex>
                     </Box>
                     <Box>
                       <Text fontSize="lg">
-                        Your NFT Balance : {userBalance}
+                        Your NFT Balance : {userBalanceValue}
                       </Text>
                     </Box>
                     <Button
@@ -751,21 +796,43 @@ export default function Staking() {
                 <form onSubmit={handleSubmitUnStake}>
                   <Stack spacing={4}>
                     <Box>
-                      <label htmlFor="unstake-amount" fontSize="xl">
+                      <label htmlFor="amount" fontSize="xl">
                         Amount:
                       </label>
-                      <Input
-                        type="number"
-                        id="unstake-amount"
-                        value={unstakeAmount}
-                        onChange={(e) => setUnstakeAmount(e.target.value)}
-                        fontSize="lg"
-                        marginTop={2}
-                      />
+                      <Flex alignItems="center" mt={2}>
+                        <Input
+                          type="number"
+                          id="amount"
+                          value={unstakeAmount}
+                          onChange={(e) => setUnstakeAmount(e.target.value)}
+                          placeholder="Input amount"
+                          fontSize="lg"
+                          mr={2}
+                          borderRadius="md"
+                          py={2}
+                          px={3}
+                          _focus={{ boxShadow: "none" }}
+                        />
+                        <Button
+                          onClick={() => setUnstakeAmount(totalNftStackedValue)}
+                          size="sm"
+                          fontSize="sm"
+                          variant="ghost"
+                          border="1px"
+                          borderColor="gray.400"
+                          borderRadius="md"
+                          px={3}
+                          py={2}
+                          _focus={{ outline: "none" }}
+                          _hover={{ background: "#1F2B7A", color: "white" }}
+                        >
+                          Max
+                        </Button>
+                      </Flex>
                     </Box>
                     <Box>
                       <Text fontSize="lg">
-                        Your NFT Staked : {totalNftStacked}
+                        Your NFT Staked : {totalNftStackedValue}
                       </Text>
                     </Box>
                     <Button
