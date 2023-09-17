@@ -57,6 +57,11 @@ const NAV_ITEMS = [
         href: "https://app.xy.finance/",
         target: "_blank",
       },
+      {
+        label: "WOOFi",
+        href: "https://fi.woo.org/swap/",
+        target: "_blank",
+      },
     ],
   },
 
