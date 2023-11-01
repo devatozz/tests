@@ -12,6 +12,7 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  DrawerHeader,
   DrawerBody,
   Show,
   useMediaQuery,
@@ -23,52 +24,35 @@ import {
 } from "@chakra-ui/react";
 
 import NextLink from "next/link";
-import Network from "./Network";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import PiraText from "../icons/PiraText";
-
+import ZkText from "../icons/ZkText";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 const NAV_ITEMS = [
   {
-    label: "Swap",
-    href: "/swap",
+    label: "About",
+    href: "#about",
+    icons: "",
   },
   {
-    label: "Liquidity",
-    href: "/liquidity",
+    label: "Alpha Testnet",
+    href: "#alphatestnet",
+    icons: "",
   },
   {
-    label: "Staking",
-    href: "/staking",
+    label: "zkPass",
+    href: "https://linktr.ee/zkperp",
+    icons: "",
   },
   {
-    label: "Airdrop🔥",
-    href: "/airdrop",
+    label: "Social",
+    href: "https://linktr.ee/zkperp",
+    icons: "",
   },
   {
-    label: "Bridge",
-    children: [
-      {
-        label: "Orbiter",
-        href: "https://www.orbiter.finance/?source=Ethereum&dest=Base",
-        target: "_blank",
-      },
-      {
-        label: "XY Finance",
-        href: "https://app.xy.finance/",
-        target: "_blank",
-      },
-      {
-        label: "WOOFi",
-        href: "https://fi.woo.org/swap/",
-        target: "_blank",
-      },
-    ],
-  },
-
-  {
-    label: "Whitepaper",
-    href: "https://docs.pira.finance/",
+    label: "Docs",
+    href: "https://docs.zkperp.tech/",
     target: "_blank",
+    icons: <ExternalLinkIcon />,
   },
 ];
 
@@ -79,9 +63,13 @@ export default function AppBar() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
-        color={useColorModeValue("gray.600", "white")}
-        minH={"60px"}
+        style={{
+          backgroundImage:
+            "linear-gradient(90.07deg, #EBDE8E -8.17%, #F3E4AC 7.41%, #F4E6B2 10.41%, #FFEEDA 31.13%, #FFF0DD 31.14%, #FFF2E3 36.77%, #FFFFFF 53.39%, #CBFDF6 61.33%, #93FBED 69.86%, #8AF7E8 76.91%, #62E6D4 106.87%)",
+        }}
+        bg={useColorModeValue("red", "gray.800")}
+        color={useColorModeValue("gray.900", "red")}
+        minH={"72px"}
         py={{ base: 2 }}
         px={{ base: 4, md: 20 }}
         borderBottom={1}
@@ -90,20 +78,13 @@ export default function AppBar() {
         justifyContent={"space-between"}
         w="full"
         align={"center"}
-        bgColor={"#212B6B"}
+        id="top"
       >
-        {!isDesktop && (
-          <Button ref={btnRef} bg="#18215d" color="white" onClick={onOpen}>
-            <HamburgerIcon />
-          </Button>
-        )}
-
         <NextLink href={"/"}>
           <Flex gap={2} alignItems={"center"}>
-            <Image src={"/piralogo.svg"} alt="pira.finance" h={30} />
-            <Show above="md">
-              <PiraText />
-            </Show>
+            <Image src={"/zkperplogo.svg"} alt="zk perp" h={30} />
+
+            <ZkText />
           </Flex>
         </NextLink>
         <Flex
@@ -121,9 +102,8 @@ export default function AppBar() {
                       <Link
                         pr={2}
                         py={2}
-                        fontSize={"22px"}
-                        fontWeight={700}
-                        color="white"
+                        fontSize={"24px"}
+                        color="rgba(16, 16, 16, 1)"
                         _hover={{
                           textDecoration: "none",
                           color: "gray",
@@ -133,20 +113,35 @@ export default function AppBar() {
                         }
                       >
                         {navItem.label}
+                        {navItem.icons}
                       </Link>
                     ) : (
                       <NextLink href={navItem.href} passHref>
                         <Text
                           pr={2}
-                          fontSize={"22px"}
-                          fontWeight={700}
-                          color="white"
+                          fontSize={"24px"}
+                          textAlign="center"
+                          color="rgba(16, 16, 16, 1)"
                           _hover={{
                             textDecoration: "none",
                             color: "gray",
                           }}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
                         >
                           {navItem.label}
+                          <span
+                            style={{
+                              marginLeft: "5px",
+                              fontSize: "24px",
+                              paddingBottom: "5px",
+                            }}
+                          >
+                            {navItem.icons}
+                          </span>
                         </Text>
                       </NextLink>
                     )}
@@ -171,21 +166,76 @@ export default function AppBar() {
             ))}
           </Stack>
         </Flex>
-        <Network />
+
+        {isDesktop && (
+          <Button
+            size="md"
+            color="#FBFBFB"
+            backgroundImage="linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)"
+            transition="background-color 0.3s ease-out"
+            style={{
+              fontWeight: "bold",
+              fontSize: "16px",
+              borderRadius: "8px",
+              padding: "16px 32px",
+            }}
+          >
+            Launch App
+          </Button>
+        )}
+        {!isDesktop && (
+          <Button
+            ref={btnRef}
+            bg="none"
+            color="rgba(16, 16, 16, 1)"
+            onClick={onOpen}
+          >
+            <HamburgerIcon fontSize={"32px"} />
+          </Button>
+        )}
       </Flex>
       {!isDesktop && (
-        <Drawer
-          isOpen={isOpen}
-          placement="left"
-          onClose={onClose}
-          finalFocusRef={btnRef}
-        >
-          <DrawerOverlay />
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerBody bg="#3045c3">
-              <Flex h="full" w="full" align={"center"}>
-                <VStack w="full" direction={"row"} spacing={4} align="center">
+        <>
+          <Drawer
+            isOpen={isOpen}
+            placement="top"
+            onClose={onClose}
+            finalFocusRef={btnRef}
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton size="lg" />
+              <DrawerHeader
+                style={{
+                  backgroundImage:
+                    "linear-gradient(90.07deg, #EBDE8E -8.17%, #F3E4AC 7.41%, #F4E6B2 10.41%, #FFEEDA 31.13%, #FFF0DD 31.14%, #FFF2E3 36.77%, #FFFFFF 53.39%, #CBFDF6 61.33%, #93FBED 69.86%, #8AF7E8 76.91%, #62E6D4 106.87%)",
+                }}
+              >
+                <NextLink href={"/"}>
+                  <Flex gap={2} alignItems={"center"} w="full" h="full">
+                    <Image src={"/zkperplogo.svg"} alt="zk perp" h={30} />
+                    <ZkText />
+                  </Flex>
+                </NextLink>
+              </DrawerHeader>
+              <DrawerBody
+                position="relative"
+                backgroundImage="url('./Card.png') "
+                backgroundSize="cover"
+                backgroundPosition="center"
+                p={0}
+              >
+                <VStack
+                  w="full"
+                  direction={"row"}
+                  spacing={4}
+                  alignItems="left"
+                  bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
+                  backgroundBlendMode="overlay"
+                  px={8}
+                  pt={8}
+                  pb={4}
+                >
                   {NAV_ITEMS.map((navItem, index) => (
                     <Box key={index}>
                       {navItem.children ? (
@@ -201,9 +251,6 @@ export default function AppBar() {
                                 textDecoration: "none",
                                 color: "gray",
                               }}
-                              isExternal={
-                                navItem.label === "Whitepaper" ? true : false
-                              }
                             >
                               {navItem.label}
                             </Link>
@@ -211,7 +258,7 @@ export default function AppBar() {
                           <PopoverContent
                             border={0}
                             boxShadow={"xl"}
-                            p={4}
+                            // p={4}
                             rounded={"xl"}
                             width={"max-content"}
                           >
@@ -234,14 +281,6 @@ export default function AppBar() {
                             textDecoration: "none",
                             color: "gray",
                           }}
-                          target={
-                            navItem.label === "Whitepaper"
-                              ? "_blank"
-                              : undefined
-                          }
-                          isExternal={
-                            navItem.label === "Whitepaper" ? true : false
-                          }
                         >
                           {navItem.label}
                         </Link>
@@ -249,10 +288,10 @@ export default function AppBar() {
                     </Box>
                   ))}
                 </VStack>
-              </Flex>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </>
       )}
     </Box>
   );
