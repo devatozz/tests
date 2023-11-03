@@ -1,4 +1,5 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import {
   Box,
   Flex,
@@ -19,10 +20,15 @@ import {
   VStack,
   PopoverTrigger,
   PopoverContent,
-  Popover,
   Text,
+  Heading,
 } from "@chakra-ui/react";
-
+const Popover = dynamic(
+  () => import("@chakra-ui/react").then((chakra) => chakra.Popover),
+  {
+    ssr: false,
+  }
+);
 import NextLink from "next/link";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import ZkText from "../icons/ZkText";
@@ -35,7 +41,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Alpha Testnet",
-    href: "#alphatestnet",
+    href: "https://docs.zkperp.tech/introduction/alpha-testnet",
     icons: "",
   },
   {
@@ -75,125 +81,140 @@ export default function AppBar() {
         borderBottom={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.900")}
-        justifyContent={"space-between"}
+        id="top"
+        justifyContent={"center"}
         w="full"
         align={"center"}
-        id="top"
       >
-        <NextLink href={"/"}>
-          <Flex gap={2} alignItems={"center"}>
-            <Image src={"/zkperplogo.svg"} alt="zk perp" h={30} />
-
-            <ZkText />
-          </Flex>
-        </NextLink>
         <Flex
-          display={{
-            base: "none",
-            md: "flex",
-          }}
+          maxW={"1200px"}
+          justifyContent={"space-between"}
+          w="full"
+          align={"center"}
         >
-          <Stack direction={"row"} spacing={4}>
-            {NAV_ITEMS.map((navItem, index) => (
-              <Box key={index}>
-                <Popover trigger={"hover"} placement={"bottom-start"}>
-                  <PopoverTrigger>
-                    {navItem.children ? (
-                      <Link
-                        pr={2}
-                        py={2}
-                        fontSize={"24px"}
-                        color="rgba(16, 16, 16, 1)"
-                        _hover={{
-                          textDecoration: "none",
-                          color: "gray",
-                        }}
-                        isExternal={
-                          navItem.label === "Whitepaper" ? true : false
-                        }
-                      >
-                        {navItem.label}
-                        {navItem.icons}
-                      </Link>
-                    ) : (
-                      <NextLink href={navItem.href} passHref>
-                        <Text
-                          pr={2}
-                          fontSize={"24px"}
-                          textAlign="center"
-                          color="rgba(16, 16, 16, 1)"
-                          _hover={{
-                            textDecoration: "none",
-                            color: "gray",
-                          }}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {navItem.label}
-                          <span
-                            style={{
-                              marginLeft: "5px",
-                              fontSize: "24px",
-                              paddingBottom: "5px",
+          <Flex justifyContent={"center"} align={"center"}>
+            <NextLink href={"/"}>
+              <Flex gap={2} alignItems={"center"}>
+                <Image src={"/logo.svg"} alt="zk perp" h={30} />
+
+                <ZkText />
+              </Flex>
+            </NextLink>
+            <Flex
+              display={{
+                base: "none",
+                md: "flex",
+              }}
+              mx={24}
+            >
+              <Stack direction={"row"} spacing={4} justifyContent={"center"}>
+                {NAV_ITEMS.map((navItem, index) => (
+                  <Box key={index}>
+                    <Popover trigger={"hover"} placement={"bottom-start"}>
+                      <PopoverTrigger>
+                        {navItem.children ? (
+                          <Link
+                            pr={2}
+                            py={2}
+                            fontSize={"16px"}
+                            fontFamily="body"
+                            color="rgba(16, 16, 16, 1)"
+                            _hover={{
+                              textDecoration: "none",
+                              color: "gray",
                             }}
                           >
+                            {navItem.label}
                             {navItem.icons}
-                          </span>
-                        </Text>
-                      </NextLink>
-                    )}
-                  </PopoverTrigger>
-                  {navItem.children && (
-                    <PopoverContent
-                      border={0}
-                      boxShadow={"xl"}
-                      p={4}
-                      rounded={"xl"}
-                      width={"xs"}
-                    >
-                      <Stack>
-                        {navItem.children.map((child) => (
-                          <DesktopSuvNav key={child.label} {...child} />
-                        ))}
-                      </Stack>
-                    </PopoverContent>
-                  )}
-                </Popover>
-              </Box>
-            ))}
-          </Stack>
-        </Flex>
+                          </Link>
+                        ) : (
+                          <NextLink href={navItem.href} passHref>
+                            <Text
+                              pr={2}
+                              fontSize={"16px"}
+                              fontFamily="body"
+                              textAlign="center"
+                              color="rgba(16, 16, 16, 1)"
+                              _hover={{
+                                textDecoration: "none",
+                                color: "gray",
+                              }}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {navItem.label}
+                              <Text
+                                position={"relative"}
+                                top={0}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                {navItem.icons}
+                              </Text>
+                            </Text>
+                          </NextLink>
+                        )}
+                      </PopoverTrigger>
+                      {navItem.children && (
+                        <PopoverContent
+                          border={0}
+                          boxShadow={"xl"}
+                          p={4}
+                          rounded={"xl"}
+                          width={"xs"}
+                        >
+                          <Stack>
+                            {navItem.children.map((child) => (
+                              <DesktopSuvNav key={child.label} {...child} />
+                            ))}
+                          </Stack>
+                        </PopoverContent>
+                      )}
+                    </Popover>
+                  </Box>
+                ))}
+              </Stack>
+            </Flex>
+          </Flex>
 
-        {isDesktop && (
-          <Button
-            size="md"
-            color="#FBFBFB"
-            backgroundImage="linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)"
-            transition="background-color 0.3s ease-out"
-            style={{
-              fontWeight: "bold",
-              fontSize: "16px",
-              borderRadius: "8px",
-              padding: "16px 32px",
-            }}
-          >
-            Launch App
-          </Button>
-        )}
-        {!isDesktop && (
-          <Button
-            ref={btnRef}
-            bg="none"
-            color="rgba(16, 16, 16, 1)"
-            onClick={onOpen}
-          >
-            <HamburgerIcon fontSize={"32px"} />
-          </Button>
-        )}
+          {isDesktop && (
+            <NextLink href={"https://app.zkperp.tech/"}>
+              <Button
+                size="md"
+                color="#FBFBFB"
+                fontFamily="body"
+                backgroundImage="linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)"
+                transition="background-color 0.3s ease-out"
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  borderRadius: "8px",
+                  padding: "16px 32px",
+                  fontFamily: "body",
+                }}
+              >
+                Launch App
+              </Button>
+            </NextLink>
+          )}
+          {!isDesktop && (
+            <Button
+              ref={btnRef}
+              bg="none"
+              color="rgba(16, 16, 16, 1)"
+              onClick={onOpen}
+            >
+              <HamburgerIcon fontSize={"32px"} />
+            </Button>
+          )}
+        </Flex>
       </Flex>
+
       {!isDesktop && (
         <>
           <Drawer
@@ -245,6 +266,7 @@ export default function AppBar() {
                               pr={2}
                               py={2}
                               fontSize={"base"}
+                              fontFamily="body"
                               fontWeight={700}
                               color="white"
                               _hover={{
@@ -270,19 +292,34 @@ export default function AppBar() {
                           </PopoverContent>
                         </Popover>
                       ) : (
-                        <Link
-                          href={navItem.href}
-                          pr={2}
-                          py={2}
-                          fontSize={"base"}
-                          fontWeight={700}
-                          color="white"
-                          _hover={{
-                            textDecoration: "none",
-                            color: "gray",
-                          }}
-                        >
-                          {navItem.label}
+                        <Link href={navItem.href}>
+                          <Text
+                            pr={2}
+                            fontSize={"16px"}
+                            fontFamily="body"
+                            color="#fbfbfb"
+                            _hover={{
+                              textDecoration: "none",
+                              color: "gray",
+                            }}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "flex-start",
+                            }}
+                          >
+                            {navItem.label}
+                            <Text
+                              position={"relative"}
+                              top={0}
+                              style={{
+                                marginLeft: "10px",
+                                fontSize: "16px",
+                              }}
+                            >
+                              {navItem.icons}
+                            </Text>
+                          </Text>
                         </Link>
                       )}
                     </Box>
@@ -312,7 +349,11 @@ const DesktopSuvNav = ({ label, href }) => {
       >
         <Stack direction={"row"} align={"center"}>
           <Box>
-            <Text transition={"all 0.3s ease"} fontWeight={200}>
+            <Text
+              transition={"all 0.3s ease"}
+              fontWeight={200}
+              fontFamily="body"
+            >
               {label}
             </Text>
           </Box>

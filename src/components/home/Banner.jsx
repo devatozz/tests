@@ -8,6 +8,7 @@ import {
   Container,
   SimpleGrid,
   Image,
+  Heading,
 } from "@chakra-ui/react";
 import { ChevronUpIcon } from "@chakra-ui/icons";
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -42,7 +43,7 @@ export default function Banner() {
     },
     {
       id: "3",
-      label: " Real Worl Assets",
+      label: " Real World Assets",
       icons_dark: "/bank_dark.png",
       icons_light: "/bank_light.png",
       backgroundImage:
@@ -93,10 +94,11 @@ export default function Banner() {
           justifyContent="center"
           width="50px"
           height="50px"
-          background={"pink.400"}
+          backgroundImage="linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)"
           borderRadius="8px"
+          cursor="pointer"
         >
-          <ChevronUpIcon boxSize={{ md: "8", base: "6" }} />
+          <ChevronUpIcon boxSize={{ md: "8", base: "6" }} color={"#fbfbfb"} />
         </Box>
       </Link>
     );
@@ -112,39 +114,55 @@ export default function Banner() {
       <Flex
         alignItems={"center"}
         position={"relative"}
-        p={{ base: "50px 0", md: "100px 0" }}
+        p={{ base: "40px 0", md: "100px 0" }}
         backgroundImage="url('./bgSection2.png') "
         backgroundSize="cover"
         backgroundPosition="center"
       >
-        <Container maxW={"8xl"}>
+        <Container maxW={"100%"}>
           <Stack
             as={Box}
-            textAlign={"center"}
-            spacing={{ base: 8, md: 14 }}
+            spacing={{ base: 8, md: 12 }}
             py={{ base: 20, md: 36 }}
           >
-            <Text
-              fontWeight={300}
-              fontSize={{ base: "6xl", md: "96px" }}
-              lineHeight={{ md: "106px", base: "70px" }}
-              color={"#62E6D4"}
-            >
-              Trade Without Boundaries <br />
-              Powered by{" "}
-              <Text as={"span"} color={"#FFEEDA"}>
-                Scroll
+            <Box align={"center"}>
+              <Heading
+                fontWeight={300}
+                fontSize={{ base: "40px", md: "82px" }}
+                lineHeight={{ md: "106px", base: "44px" }}
+                color={"#62E6D4"}
+                textAlign={"center"}
+                maxW={{ md: "1482px", base: "350px" }}
+              >
+                Trade Without Boundaries <br /> Powered by{" "}
+                <Heading
+                  as={"span"}
+                  color={"#FFEEDA"}
+                  fontWeight={300}
+                  fontSize={{ base: "40px", md: "96px" }}
+                  lineHeight={{ md: "106px", base: "44px" }}
+                >
+                  Scroll
+                </Heading>
+              </Heading>
+            </Box>
+
+            <Box align={"center"}>
+              <Text
+                color={"#FBFBFB"}
+                fontSize={{ base: "16px", md: "32px" }}
+                fontWeight={{ base: "300", md: "400" }}
+                lineHeight={{ base: "19px", md: "38px" }}
+                fontFamily="body"
+                maxW={{ md: "1092px", base: "350px" }}
+                fontStyle={"normal"}
+              >
+                Trade with up to 200x leverage on crypto, stocks, commodities,
+                and indices on the Scroll-native Decentralized Perpetual
+                Exchange
               </Text>
-            </Text>
-            <Text
-              color={"#FBFBFB"}
-              fontSize={{ base: "20px", md: "32px" }}
-              fontWeight={{ base: "300", md: "400" }}
-              lineHeight={{ base: "24px", md: "46px" }}
-            >
-              Trade with up to 200x leverage on crypto, stocks, commodities, and
-              indices on the Scroll-native Decentralized Perpetual Exchange
-            </Text>
+            </Box>
+
             <Flex
               align="center"
               justify="center"
@@ -156,11 +174,14 @@ export default function Banner() {
                   size="md"
                   backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
                   transition="background-color 0.3s ease-out"
-                  fontWeight="bold"
-                  fontSize="16px"
-                  borderRadius="8px"
-                  padding="16px 26px"
                   minWidth="180px"
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    borderRadius: "8px",
+                    padding: "16px 26px",
+                    fontFamily: "body",
+                  }}
                   mb={{ base: 6, md: 0 }}
                   mr={{ base: 0, md: 6 }}
                   width={{ base: "100%", md: "auto" }}
@@ -177,11 +198,14 @@ export default function Banner() {
                   colorScheme="orange"
                   bg="transparent"
                   transition="background-color 0.3s ease-out"
-                  fontWeight="bold"
-                  fontSize="16px"
                   minWidth="180px"
-                  borderRadius="8px"
-                  padding="16px 26px"
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    borderRadius: "8px",
+                    padding: "16px 26px",
+                    fontFamily: "body",
+                  }}
                   width={{ base: "100%", md: "auto" }}
                 >
                   <Text color={"#FBFBFB"}>Documentation</Text>
@@ -214,33 +238,41 @@ export default function Banner() {
       >
         {/* Trade swap */}
         <Box id="about" position={"relative"}>
-          <Box
-            position={"absolute"}
-            display={{ base: "none", md: "block" }}
-            right={-30}
-            bottom={-50}
-          >
-            <Image src={"./tradebg.png"} alt="zk perp" w="full" />
-          </Box>
-          <Container maxW={"8xl"} py={24}>
-            <Text
-              fontWeight={200}
-              fontSize={{ base: "5xl", md: "56px" }}
-              lineHeight={{ md: "80px" }}
+          <Container maxW={"8xl"} py={{ md: "24", base: "16" }} align="center">
+            <Heading
+              fontWeight={300}
+              fontSize={{ base: "28px", md: "56px" }}
+              lineHeight={{ md: "62px", base: "42px" }}
+              maxW={{ base: "312px", md: "1200px" }}
               color={"#FBFBFB"}
               textAlign="center"
             >
-              Trade. Swap. Add Liquidity <br />
+              Trade. Swap. Add Liquidity. <br />
               Optimized With{" "}
-              <Text as={"span"} color={"#62E6D4"}>
+              <Heading
+                as={"span"}
+                color={"#62E6D4"}
+                fontWeight={300}
+                fontSize={{ base: "28px", md: "56px" }}
+                lineHeight={{ md: "62px", base: "42px" }}
+                maxW={{ base: "312px", md: "1200px" }}
+              >
                 Zero-knowledge
-              </Text>
-            </Text>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mt={24}>
-              <Stack spacing={8}>
+              </Heading>
+            </Heading>
+            <SimpleGrid
+              columns={{ base: 1, md: 2 }}
+              spacing={10}
+              mt={{ md: "24", base: "12" }}
+            >
+              <Stack spacing={8} justifyContent={"space-between"}>
                 {feature_items.map((items, index) => (
                   <>
-                    <Flex spacing={4} key={items.id}>
+                    <Flex
+                      spacing={4}
+                      key={items.id}
+                      justifyContent={{ md: "flex-end", base: "center" }}
+                    >
                       <Flex
                         size="md"
                         color="rgba(235, 194, 142, 1)"
@@ -281,9 +313,10 @@ export default function Banner() {
 
                         <Text
                           color={items.isActive ? "#fbfbfb" : "#101010"}
-                          fontSize="32px"
-                          lineHeight="39px"
+                          fontSize={{ md: "32px", base: "20px" }}
+                          lineHeight={{ md: "39px", base: "24px" }}
                           fontWeight={500}
+                          fontFamily="body"
                         >
                           {items.label}
                         </Text>
@@ -309,7 +342,8 @@ export default function Banner() {
                           border="solid"
                           borderWidth="0.3px"
                           color="#FBFBFB"
-                          p={12}
+                          p={{ md: "12", base: "6" }}
+                          align="left"
                         >
                           {feature_items.map(
                             (items, index) =>
@@ -343,9 +377,10 @@ export default function Banner() {
 
                                     <Text
                                       color={"#FBFBFB"}
-                                      fontSize={{ md: "32px", base: "22px" }}
-                                      lineHeight="39px"
+                                      fontSize={{ md: "32px", base: "20px" }}
+                                      lineHeight={{ md: "39px", base: "24px" }}
                                       fontWeight={500}
+                                      fontFamily="body"
                                     >
                                       {items.title}
                                     </Text>
@@ -353,18 +388,17 @@ export default function Banner() {
                                   <Box>
                                     <Text
                                       color={"#FBFBFB"}
-                                      fontSize={{ md: "24px", base: "18px" }}
-                                      lineHeight="29px"
+                                      fontSize={{ md: "24px", base: "16px" }}
+                                      lineHeight={{ md: "39px", base: "24px" }}
                                       fontWeight={400}
                                       pt={8}
+                                      fontFamily="body"
                                     >
                                       {items.description}
                                     </Text>
                                   </Box>
 
                                   <Flex
-                                    align="center"
-                                    justify="center"
                                     pt={8}
                                     flexDirection={{
                                       base: "column",
@@ -376,17 +410,23 @@ export default function Banner() {
                                         size="md"
                                         backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
                                         transition="background-color 0.3s ease-out"
-                                        fontWeight="bold"
-                                        fontSize="24px"
-                                        borderRadius="8px"
-                                        padding="16px 52px"
-                                        mb={{ base: 4, md: 0 }}
-                                        mr={{ base: 0, md: 4 }}
-                                        width={{ base: "100%", md: "auto" }}
+                                        minWidth="180px"
+                                        fontFamily="body"
+                                        style={{
+                                          fontWeight: "bold",
+                                          fontSize: "16px",
+                                          borderRadius: "8px",
+                                          padding: "16px 51px",
+                                          fontFamily: "body",
+                                        }}
+                                        mb={{ base: 6, md: 0 }}
+                                        mr={{ base: 0, md: 6 }}
+                                        width={{ base: "200px", md: "auto" }}
                                       >
                                         Trade Now
                                       </Button>{" "}
                                     </NextLink>
+
                                     <NextLink
                                       href={"https://docs.zkperp.tech/"}
                                     >
@@ -398,11 +438,15 @@ export default function Banner() {
                                         colorScheme="orange"
                                         bg="transparent"
                                         transition="background-color 0.3s ease-out"
-                                        fontWeight="bold"
-                                        fontSize="24px"
-                                        borderRadius="8px"
-                                        padding="16px 52px"
-                                        width={{ base: "100%", md: "auto" }}
+                                        minWidth="180px"
+                                        style={{
+                                          fontWeight: "bold",
+                                          fontSize: "16px",
+                                          borderRadius: "8px",
+                                          padding: "16px 51px",
+                                          fontFamily: "body",
+                                        }}
+                                        width={{ base: "200px", md: "auto" }}
                                       >
                                         <Text color={"#FBFBFB"}>
                                           Learn More
@@ -438,12 +482,20 @@ export default function Banner() {
                   border="solid"
                   borderWidth="0.3px"
                   color="#FBFBFB"
-                  p={12}
+                  p={8}
+                  align="left"
+                  width={{ md: "800px" }}
+                  height={{ md: "440px" }}
                 >
                   {feature_items.map(
                     (items, index) =>
                       items.isActive && (
-                        <Box width={{ base: "100%", md: "70%" }} key={items.id}>
+                        <Box
+                          width={{ base: "100%", md: "80%" }}
+                          key={items.id}
+                          align="left"
+                          pb={8}
+                        >
                           <Flex
                             size="md"
                             bg="transparent"
@@ -469,20 +521,22 @@ export default function Banner() {
 
                             <Text
                               color={"#FBFBFB"}
-                              fontSize={{ md: "32px", base: "22px" }}
-                              lineHeight="39px"
+                              fontSize={{ md: "32px", base: "20px" }}
+                              lineHeight={{ md: "39px", base: "24px" }}
                               fontWeight={500}
+                              fontFamily="body"
                             >
                               {items.title}
                             </Text>
                           </Flex>
-                          <Box>
+                          <Box py={8}>
                             <Text
                               color={"#FBFBFB"}
                               fontSize={{ md: "24px", base: "18px" }}
                               lineHeight="29px"
                               fontWeight={400}
                               pt={8}
+                              fontFamily={"body"}
                             >
                               {items.description}
                             </Text>
@@ -499,17 +553,23 @@ export default function Banner() {
                                 size="md"
                                 backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
                                 transition="background-color 0.3s ease-out"
-                                fontWeight="bold"
-                                fontSize="24px"
-                                borderRadius="8px"
-                                padding="16px 52px"
-                                mb={{ base: 4, md: 0 }}
-                                mr={{ base: 0, md: 4 }}
-                                width={{ base: "100%", md: "auto" }}
+                                minWidth="180px"
+                                fontFamily="body"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "16px",
+                                  borderRadius: "8px",
+                                  padding: "16px 51px",
+                                  fontFamily: "body",
+                                }}
+                                mb={{ base: 6, md: 0 }}
+                                mr={{ base: 0, md: 6 }}
+                                width={{ base: "200px", md: "auto" }}
                               >
                                 Trade Now
                               </Button>{" "}
                             </NextLink>
+
                             <NextLink href={"https://docs.zkperp.tech/"}>
                               <Button
                                 size="md"
@@ -519,11 +579,15 @@ export default function Banner() {
                                 colorScheme="orange"
                                 bg="transparent"
                                 transition="background-color 0.3s ease-out"
-                                fontWeight="bold"
-                                fontSize="24px"
-                                borderRadius="8px"
-                                padding="16px 52px"
-                                width={{ base: "100%", md: "auto" }}
+                                minWidth="180px"
+                                style={{
+                                  fontWeight: "bold",
+                                  fontSize: "16px",
+                                  borderRadius: "8px",
+                                  padding: "16px 51px",
+                                  fontFamily: "body",
+                                }}
+                                width={{ base: "200px", md: "auto" }}
                               >
                                 <Text color={"#FBFBFB"}>Learn More</Text>
                               </Button>
@@ -539,28 +603,27 @@ export default function Banner() {
         </Box>
         {/* two token */}
         <Box id="alphatestnet" position={"relative"}>
-          <Box
-            position={"absolute"}
-            display={{ base: "none", md: "block" }}
-            left={30}
-            bottom={-50}
-          >
-            <Image src={"./two.png"} alt="zk perp" w="full" />
-          </Box>
-
-          <Container maxW={"8xl"} py={24}>
-            <Text
+          <Container maxW={"8xl"} py={{ md: "24", base: "8" }} align="center">
+            <Heading
               fontWeight={300}
-              lineHeight={{ md: "62px" }}
-              fontSize={{ base: "5xl", md: "56px" }}
+              fontSize={{ base: "28px", md: "56px" }}
+              lineHeight={{ md: "62px", base: "42px" }}
+              maxW={{ base: "312px", md: "1200px" }}
               color={"#FBFBFB"}
               textAlign="center"
             >
               Two Tokens That Shape The{" "}
-              <Text as={"span"} color={"#62E6D4"}>
+              <Heading
+                as={"span"}
+                color={"#62E6D4"}
+                fontWeight={300}
+                fontSize={{ base: "28px", md: "56px" }}
+                lineHeight={{ md: "62px", base: "42px" }}
+                maxW={{ base: "312px", md: "1200px" }}
+              >
                 Protocol
-              </Text>
-            </Text>
+              </Heading>
+            </Heading>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mt={24}>
               <Flex
                 position="relative"
@@ -611,13 +674,14 @@ export default function Banner() {
                         ZKP
                       </Text>
                     </Flex>
-                    <Box>
+                    <Box align={"left"}>
                       <Text
                         color={"#FBFBFB"}
-                        fontSize="24px"
-                        lineHeight="29px"
+                        fontSize={{ md: "24px", base: "16px" }}
+                        lineHeight={{ md: "29px", base: "24px" }}
                         fontWeight={400}
                         pt={4}
+                        fontFamily="body"
                       >
                         ZKP serves as both the utility and governance token and
                         accumulates 30% of the fees generated by the protocol.
@@ -641,10 +705,14 @@ export default function Banner() {
                         colorScheme="orange"
                         bg="transparent"
                         transition="background-color 0.3s ease-out"
-                        fontWeight="bold"
-                        fontSize="24px"
-                        borderRadius="8px"
-                        padding="16px 52px"
+                        minWidth="180px"
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          borderRadius: "8px",
+                          padding: "16px 26px",
+                          fontFamily: "body",
+                        }}
                         width={{ base: "100%", md: "auto" }}
                       >
                         <Text color={"#FBFBFB"}>Learn More</Text>
@@ -703,13 +771,14 @@ export default function Banner() {
                         ZLP
                       </Text>
                     </Flex>
-                    <Box>
+                    <Box align={"left"}>
                       <Text
                         color={"#FBFBFB"}
-                        fontSize="24px"
-                        lineHeight="29px"
+                        fontSize={{ md: "24px", base: "16px" }}
+                        lineHeight={{ md: "29px", base: "24px" }}
                         fontWeight={400}
                         pt={4}
+                        fontFamily="body"
                       >
                         ZLP functions as the liquidity provider token for zkPerp
                         markets and accumulates 70% of the fees generated by
@@ -734,10 +803,14 @@ export default function Banner() {
                         colorScheme="orange"
                         bg="transparent"
                         transition="background-color 0.3s ease-out"
-                        fontWeight="bold"
-                        fontSize="24px"
-                        borderRadius="8px"
-                        padding="16px 52px"
+                        minWidth="180px"
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          borderRadius: "8px",
+                          padding: "16px 26px",
+                          fontFamily: "body",
+                        }}
                         width={{ base: "100%", md: "auto" }}
                       >
                         <Text color={"#FBFBFB"}>Learn More</Text>
@@ -750,40 +823,56 @@ export default function Banner() {
           </Container>
         </Box>
         {/* alpha testnet */}
-
-        <Container maxW={"8xl"} py={12}>
+        <Box align="center" py={{ md: 12, base: "4" }}>
+          <Image alt={"Line image"} src="/Line.png" objectFit={"cover"} />
+        </Box>
+        <Container maxW={"8xl"} py={{ md: 24, base: "12" }}>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
             <Stack
               spacing={6}
               justifyContent="center"
               textAlign={{ md: "left", base: "center" }}
+              align={{ base: "center", md: "left" }}
             >
-              <Text
+              <Heading
                 color={"#FFDCB1"}
-                fontSize={{ base: "xl", sm: "2xl", md: "40px" }}
+                fontSize={{ base: "24px", md: "32px" }}
+                lineHeight={{ md: "62px", base: "32px" }}
                 fontWeight={300}
               >
                 Alpha Testnet (Comming Soon)
-              </Text>
-              <Text
+              </Heading>
+              <Heading
                 fontWeight={300}
-                lineHeight={{ md: "80px" }}
-                fontSize={{ base: "5xl", md: "56px" }}
+                fontSize={{ base: "28px", md: "48px" }}
+                lineHeight={{ md: "78px", base: "42px" }}
+                maxW={{ base: "312px", md: "1200px" }}
                 color={"#FBFBFB"}
               >
                 Trade, Win, and Share <br />
-                <Text as={"span"} color={"#62E6D4"}>
+                <Heading
+                  as={"span"}
+                  color={"#62E6D4"}
+                  fontWeight={300}
+                  fontSize={{ base: "28px", md: "48px" }}
+                  lineHeight={{ md: "62px", base: "42px" }}
+                  maxW={{ base: "312px", md: "1200px" }}
+                >
                   100,000,000 ZKP
-                </Text>
-              </Text>
+                </Heading>
+              </Heading>
             </Stack>
             <Flex justifyContent={{ base: "center", md: "flex-start" }}>
-              <Image
-                alt={"feature image"}
-                src="/alphatestnet.png"
-                objectFit={"cover"}
-                maxW={"400px"}
-              />
+              <Box>
+                <Image
+                  alt={"feature image"}
+                  src="/alphatestnet.png"
+                  objectFit={"cover"}
+                  maxW={{ md: "600px", base: "350px" }}
+                  top={0}
+                  left={0}
+                />
+              </Box>
             </Flex>
             <Flex
               pt={4}
@@ -796,18 +885,23 @@ export default function Banner() {
                   size="md"
                   backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
                   transition="background-color 0.3s ease-out"
-                  fontWeight="bold"
-                  fontSize="24px"
-                  borderRadius="8px"
-                  padding="16px 52px"
-                  mb={{ base: 4, md: 0 }}
-                  mr={{ base: 0, md: 4 }}
-                  width={{ base: "100%", md: "auto" }}
-                  w="180px"
+                  minWidth="180px"
+                  fontFamily="body"
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    borderRadius: "8px",
+                    padding: "16px 51px",
+                    fontFamily: "body",
+                  }}
+                  mb={{ base: 6, md: 0 }}
+                  mr={{ base: 0, md: 6 }}
+                  width={{ base: "200px", md: "auto" }}
                 >
                   Join Now
                 </Button>{" "}
               </NextLink>
+
               <NextLink
                 href={"https://docs.zkperp.tech/introduction/alpha-testnet"}
               >
@@ -819,12 +913,15 @@ export default function Banner() {
                   colorScheme="orange"
                   bg="transparent"
                   transition="background-color 0.3s ease-out"
-                  fontWeight="bold"
-                  fontSize="24px"
-                  borderRadius="8px"
-                  padding="16px 52px"
-                  width={{ base: "100%", md: "auto" }}
-                  w="180px"
+                  minWidth="180px"
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    borderRadius: "8px",
+                    padding: "16px 51px",
+                    fontFamily: "body",
+                  }}
+                  width={{ base: "200px", md: "auto" }}
                 >
                   <Text color={"#FBFBFB"}>Discover</Text>
                 </Button>
@@ -832,224 +929,224 @@ export default function Banner() {
             </Flex>
           </SimpleGrid>
         </Container>
+        <Box align="center" py={{ md: 12, base: "4" }}>
+          <Image alt={"Line image"} src="/Line.png" objectFit={"cover"} />
+        </Box>
         {/* comunity */}
         <Box>
-          <Container maxW={"8xl"} py={24} position={"relative"}>
+          <Container
+            maxW={"8xl"}
+            py={{ md: "24", base: "16" }}
+            align="center"
+            position="relative"
+          >
             <Box
               width={"full"}
               position={"absolute"}
-              bottom={350}
+              bottom={270}
               display={{ base: "none", md: "block" }}
             >
-              <Image src={"./comm.png"} alt="zk perp" w="full" />
+              <Image src={"./image131.png"} alt="zk perp" w="full" />
             </Box>
-            <Text
+            <Heading
               fontWeight={300}
-              lineHeight={{ md: "62px" }}
-              fontSize={{ base: "4xl", md: "56px" }}
+              fontSize={{ base: "28px", md: "56px" }}
+              lineHeight={{ md: "62px", base: "42px" }}
+              maxW={{ base: "312px", md: "1200px" }}
               color={"#FBFBFB"}
               textAlign="center"
             >
               Join The Most United <br />
               Community In The{" "}
-              <Text as={"span"} color={"#62E6D4"}>
+              <Heading
+                as={"span"}
+                color={"#62E6D4"}
+                fontWeight={300}
+                fontSize={{ base: "28px", md: "56px" }}
+                lineHeight={{ md: "62px", base: "42px" }}
+                maxW={{ base: "312px", md: "1200px" }}
+              >
                 Ecosystem
-              </Text>
-            </Text>
+              </Heading>
+            </Heading>
             <Text
               textAlign="center"
               color={"#fbfbfb"}
-              mt={8}
-              fontSize={{ base: "xl", md: "32px" }}
+              mt={{ md: "12", base: "8" }}
+              fontSize={{ base: "16px", md: "24px" }}
+              fontWeight={400}
+              fontFamily="body"
             >
               zkPerp was build by Scrollers , for the Scrollers
             </Text>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mt={24}>
-              <NextLink href={"https://twitter.com/zkPerp"}>
+              <NextLink href={"https://twitter.com/zkPerp"} target="self_">
                 <Flex
                   position="relative"
-                  backgroundImage="url('./Card.png') "
-                  backgroundSize="cover"
-                  backgroundPosition="center"
-                  p={0}
-                  minHeight="290px"
+                  bgImage={{
+                    md: "url('/Card.png', radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%))",
+                    base: "url('/Card.png')",
+                  }}
+                  bgSize={"cover"}
+                  bgBlendMode="overlay, normal"
+                  backdropFilter="blur(40px)"
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  borderColor="gray.200"
+                  overflow="hidden"
+                  minHeight={{ md: "240px", base: "200px" }}
                 >
-                  <Box
-                    w="full"
-                    direction={"row"}
-                    spacing={4}
-                    alignItems="left"
-                    bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
-                    backgroundBlendMode="overlay"
-                    borderRadius="8px"
-                    border="solid"
-                    borderWidth="0.3px"
-                    color="#FBFBFB"
-                    p={8}
-                  >
-                    <Box width={"full"} py={4}>
-                      <Flex
-                        size="md"
-                        bg="transparent"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        gap={4}
-                        px={0}
+                  <Box width={"full"} pt={4} pb={8}>
+                    <Flex
+                      size="md"
+                      bg="transparent"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={4}
+                      px={8}
+                      py={4}
+                    >
+                      <Text
+                        color={"#FBFBFB"}
+                        fontSize="32px"
+                        lineHeight="39px"
+                        fontWeight={500}
                       >
-                        <Text
-                          color={"#FBFBFB"}
-                          fontSize="32px"
-                          lineHeight="39px"
-                          fontWeight={500}
-                        >
-                          X
-                        </Text>
-
-                        <Flex
-                          bg="transparent"
-                          width={"32px"}
-                          height={"32px"}
-                          alignItems="center"
-                          justifyContent="center"
-                          borderRadius="8px"
-                        >
-                          <Image src={"/Vector.png"} alt="zk perp" w="full" />
-                        </Flex>
-                      </Flex>
-                      <Box
-                        width={"100px"}
+                        X
+                      </Text>
+                      <Flex
+                        bg="transparent"
+                        width={"32px"}
+                        height={"32px"}
                         alignItems="center"
                         justifyContent="center"
-                        pt={12}
+                        borderRadius="8px"
                       >
-                        <Image src={"/X.png"} alt="zk perp" w="full" />
-                      </Box>
+                        <Image src={"/Vector.png"} alt="zk perp" w="full" />
+                      </Flex>
+                    </Flex>
+                    <Box
+                      width={{ md: "160px", base: "100px" }}
+                      position="absolute"
+                      bottom={0}
+                      left={30}
+                    >
+                      <Image src={"/x1.png"} alt="zk perp" w="full" />
                     </Box>
                   </Box>
                 </Flex>
               </NextLink>
-              <NextLink href={"https://discord.com/invite/zfAjX8pmsz"}>
+              <NextLink
+                href={"https://discord.com/invite/zfAjX8pmsz"}
+                target="self_"
+              >
                 <Flex
                   position="relative"
-                  backgroundImage="url('./Card.png') "
-                  backgroundSize="cover"
-                  backgroundPosition="center"
-                  p={0}
-                  minHeight="290px"
+                  bgImage={{
+                    md: "url('/Card.png', radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%))",
+                    base: "url('/Card.png')",
+                  }}
+                  bgSize={"cover"}
+                  bgBlendMode="overlay, normal"
+                  backdropFilter="blur(40px)"
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  borderColor="gray.200"
+                  overflow="hidden"
+                  minHeight={{ md: "240px", base: "200px" }}
                 >
-                  <Box
-                    w="full"
-                    direction={"row"}
-                    spacing={4}
-                    alignItems="left"
-                    bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
-                    backgroundBlendMode="overlay"
-                    borderRadius="8px"
-                    border="solid"
-                    borderWidth="0.3px"
-                    color="#FBFBFB"
-                    p={8}
-                  >
-                    <Box width={"full"} py={4}>
-                      <Flex
-                        size="md"
-                        bg="transparent"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        gap={4}
-                        px={0}
+                  <Box width={"full"} pt={4} pb={8}>
+                    <Flex
+                      size="md"
+                      bg="transparent"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={4}
+                      px={8}
+                      py={4}
+                    >
+                      <Text
+                        color={"#FBFBFB"}
+                        fontSize="32px"
+                        lineHeight="39px"
+                        fontWeight={500}
                       >
-                        <Text
-                          color={"#FBFBFB"}
-                          fontSize="32px"
-                          lineHeight="39px"
-                          fontWeight={500}
-                        >
-                          Discord
-                        </Text>
-
-                        <Flex
-                          bg="transparent"
-                          width={"32px"}
-                          height={"32px"}
-                          alignItems="center"
-                          justifyContent="center"
-                          borderRadius="8px"
-                        >
-                          <Image src={"/Vector.png"} alt="zk perp" w="full" />
-                        </Flex>
-                      </Flex>
-                      <Box
-                        width={"100px"}
+                        Discord
+                      </Text>
+                      <Flex
+                        bg="transparent"
+                        width={"32px"}
+                        height={"32px"}
                         alignItems="center"
                         justifyContent="center"
-                        pt={12}
+                        borderRadius="8px"
                       >
-                        <Image src={"/Discord.png"} alt="zk perp" w="full" />
-                      </Box>
+                        <Image src={"/Vector.png"} alt="zk perp" w="full" />
+                      </Flex>
+                    </Flex>
+                    <Box
+                      width={{ md: "160px", base: "100px" }}
+                      position="absolute"
+                      bottom={0}
+                      left={30}
+                    >
+                      <Image src={"/d1.png"} alt="zk perp" w="full" />
                     </Box>
                   </Box>
                 </Flex>
               </NextLink>
-              <NextLink href={"https://t.me/zkperp"}>
+              <NextLink href={"https://t.me/zkperp"} target="self_">
                 <Flex
                   position="relative"
-                  backgroundImage="url('./Card.png') "
-                  backgroundSize="cover"
-                  backgroundPosition="center"
-                  p={0}
-                  minHeight="290px"
+                  bgImage={{
+                    md: "url('/Card.png', radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%))",
+                    base: "url('/Card.png')",
+                  }}
+                  bgSize={"cover"}
+                  bgBlendMode="overlay, normal"
+                  backdropFilter="blur(40px)"
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  borderColor="gray.200"
+                  overflow="hidden"
+                  minHeight={{ md: "240px", base: "200px" }}
                 >
-                  <Box
-                    w="full"
-                    direction={"row"}
-                    spacing={4}
-                    alignItems="left"
-                    bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
-                    backgroundBlendMode="overlay"
-                    borderRadius="8px"
-                    border="solid"
-                    borderWidth="0.3px"
-                    color="#FBFBFB"
-                    p={8}
-                  >
-                    <Box width={"full"} py={4}>
-                      <Flex
-                        size="md"
-                        bg="transparent"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        gap={4}
-                        px={0}
+                  <Box width={"full"} pt={4} pb={8}>
+                    <Flex
+                      size="md"
+                      bg="transparent"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      gap={4}
+                      px={8}
+                      py={4}
+                    >
+                      <Text
+                        color={"#FBFBFB"}
+                        fontSize="32px"
+                        lineHeight="39px"
+                        fontWeight={500}
                       >
-                        <Text
-                          color={"#FBFBFB"}
-                          fontSize="32px"
-                          lineHeight="39px"
-                          fontWeight={500}
-                        >
-                          Telegram
-                        </Text>
-
-                        <Flex
-                          bg="transparent"
-                          width={"32px"}
-                          height={"32px"}
-                          alignItems="center"
-                          justifyContent="center"
-                          borderRadius="8px"
-                        >
-                          <Image src={"/Vector.png"} alt="zk perp" w="full" />
-                        </Flex>
-                      </Flex>
-                      <Box
-                        width={"100px"}
+                        Telegram
+                      </Text>
+                      <Flex
+                        bg="transparent"
+                        width={"32px"}
+                        height={"32px"}
                         alignItems="center"
                         justifyContent="center"
-                        pt={12}
+                        borderRadius="8px"
                       >
-                        <Image src={"/Telegram.png"} alt="zk perp" w="full" />
-                      </Box>
+                        <Image src={"/Vector.png"} alt="zk perp" w="full" />
+                      </Flex>
+                    </Flex>
+                    <Box
+                      width={{ md: "160px", base: "100px" }}
+                      position="absolute"
+                      bottom={0}
+                      left={30}
+                    >
+                      <Image src={"/t1.png"} alt="zk perp" w="full" />
                     </Box>
                   </Box>
                 </Flex>

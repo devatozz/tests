@@ -20,12 +20,12 @@ const TradingViewWidget = () => {
             "title": "Ethereum"
           },
           {
-            "description": "Chainlink",
-            "proName": "BINANCE:LINKUSDT"
+            "description": "Dogecoin",
+            "proName": "COINBASE:DOGEUSD"
           },
           {
-            "description": "DogeCoin",
-            "proName": "BINANCE:DOGEUSDT"
+            "description": "Chainlink",
+            "proName": "BINANCE:LINKUSD"
           }
         ],
         "showSymbolLogo": true,

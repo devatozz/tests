@@ -18,15 +18,26 @@ import {
   ModalBody,
   ModalCloseButton,
   Lorem,
+  Heading,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 export const TermOfUse = () => {
   return (
     <>
-      <Text color="#fbfbfb">1. MODIFICATIONS TO THESE TERMS</Text>
+      <Text
+        fontFamily="body"
+        fontSize={{ md: "24px", base: "18px" }}
+        color="#fbfbfb"
+      >
+        1. MODIFICATIONS TO THESE TERMS
+      </Text>
       <br />
-      <Text color="#fbfbfb">
+      <Text
+        fontSize={{ md: "24px", base: "18px" }}
+        fontFamily="body"
+        color="#fbfbfb"
+      >
         Vertex reserves the right, in its sole discretion, to modify these Terms
         from time to time. If Vertex makes changes, Vertex will provide you with
         notice of such changes, such as by providing notice through the Services
@@ -38,9 +49,19 @@ export const TermOfUse = () => {
         stop using the Site and the Services.
       </Text>
       <br />
-      <Text color="#fbfbfb">2. USE OF SERVICES</Text>
+      <Text
+        fontFamily="body"
+        fontSize={{ md: "24px", base: "18px" }}
+        color="#fbfbfb"
+      >
+        2. USE OF SERVICES
+      </Text>
       <br />
-      <Text color="#fbfbfb">
+      <Text
+        fontFamily="body"
+        fontSize={{ md: "24px", base: "18px" }}
+        color="#fbfbfb"
+      >
         2.1. As a condition to accessing or using the Services or the Site, you
         represent and warrant to Vertex the following: <br /> <br />
         if you are entering into these Terms as an individual, then you are of
@@ -72,80 +93,177 @@ export default function LargeWithLogoLeft() {
         // minHeight: "100vh",
       }}
     >
-      <Container as={Stack} maxW={"8xl"} py={10} w="full">
+      <Container
+        as={Stack}
+        maxW={"1440px"}
+        w="full"
+        maxHeight={{ md: "400px", base: "auto" }}
+      >
         <SimpleGrid
           templateColumns={{ sm: " 1fr 1fr", md: " 1fr 1fr" }}
           spacing={8}
+          py={{ md: "100px", base: "40px" }}
         >
           <Stack spacing={6}>
             <Box>
               <Flex gap={2} alignItems={"center"} w="full" h="full">
-                <Image src={"/zkperplogo.svg"} alt="zk perp" h={30} />
-                <Text fontSize={{ base: "3xl", md: 32 }} fontWeight={600}>
+                <Image
+                  src={"/logo.svg"}
+                  alt="zk perp"
+                  width={{ md: "40px", base: "28px" }}
+                />
+                <Text
+                  fontSize={{ base: "24px", md: "36px" }}
+                  fontWeight={500}
+                  fontFamily="logo"
+                >
                   zkPerp
                 </Text>
               </Flex>
             </Box>
-            <Text fontSize={{ base: "xl", md: "24px" }}>
-              ©2023 zkPerp Inc. All rights reserved
-            </Text>
-            <Text fontSize={{ base: "xl", md: "24px" }}>
+            <Text
+              fontFamily="body"
+              fontSize={{ base: "16px", md: "24px" }}
+              lineHeight={{ base: "24px", md: "29px" }}
+            >
+              ©2023 zkPerp Inc. All rights reserved <br />
               contact@zkperp.tech
             </Text>
           </Stack>
-
+          <Box align="center" display={{ md: "none", base: "block" }}>
+            <Image
+              alt={"Line image"}
+              src="/lineblack.png"
+              objectFit={"cover"}
+            />
+          </Box>
           <SimpleGrid
-            fontSize={{ base: "xl", md: "24px" }}
+            fontSize={{ base: "16px", md: "24px" }}
+            lineHeight={{ base: "24px", md: "29px" }}
             columns={{ base: 2, sm: 2, md: 3 }}
             spacing={8}
           >
             <Stack align={"flex-start"} spacing={3}>
               <NextLink href={"https://twitter.com/zkPerp"} className="link">
-                <Box>X</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  X
+                </Text>
               </NextLink>
               <NextLink
                 href={"https://discord.com/invite/zfAjX8pmsz"}
                 className="link"
               >
-                <Box>Discord</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Discord
+                </Text>
               </NextLink>
               <NextLink href={"https://t.me/zkperp"} className="link">
-                <Box>Telegram</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Telegram
+                </Text>
               </NextLink>
               <NextLink
                 href={"https://mirror.xyz/zkperptech.eth"}
                 className="link"
               >
-                <Box>Blog</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Blog
+                </Text>
               </NextLink>
             </Stack>
             <Stack align={"flex-start"} spacing={3}>
               <NextLink href={"#"}>
-                <Box>Trade</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Trade
+                </Text>
               </NextLink>
               <NextLink href={"#"}>
-                <Box>Faucet</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Faucet
+                </Text>
               </NextLink>
               <NextLink href={"#"}>
-                <Box>Add Liquidity</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Add liquidity
+                </Text>
               </NextLink>
               <NextLink href={"#"}>
-                <Box>Alpha Testnet</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Alpha Tesnet
+                </Text>
               </NextLink>
             </Stack>
             <Stack align={"flex-start"} spacing={3}>
               <NextLink href={"#"}>
-                <Box>Docs</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Docs
+                </Text>
               </NextLink>
               <Box>
                 {/* Trigger the modal */}
-                <Text onClick={onOpen}>Term of Use</Text>
+                <Text
+                  onClick={onOpen}
+                  fontFamily="body"
+                  cursor={"pointer"}
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Term of Use
+                </Text>
               </Box>
               <NextLink href={"#"}>
-                <Box>Privacy Policy</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Private Policy
+                </Text>
               </NextLink>
               <NextLink href={"#"}>
-                <Box>Media Kit</Box>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Media Kit
+                </Text>
               </NextLink>
             </Stack>
           </SimpleGrid>
@@ -156,22 +274,22 @@ export default function LargeWithLogoLeft() {
         blockScrollOnMount={false}
         isOpen={isOpen}
         onClose={onClose}
-        size={{ base: "sm", md: "lg" }}
+        size={{ base: "sm", md: "xl" }}
       >
         <ModalOverlay />
         <ModalContent motion="slideInBottom" alignContent="flex-end">
           <ModalHeader
             sx={{
-              fontSize: "40px",
-              fontWeight: "300",
+              fontSize: "34px",
+              // fontWeight: "300",
               backgroundColor: "#93FBED",
               lineHeight: "44px",
               "@media(max-width: 768px)": {
-                fontSize: "32px",
+                fontSize: "28px",
               },
             }}
           >
-            Terms of Service
+            <Heading>Terms of Service</Heading>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody

@@ -1,6 +1,7 @@
-@import url('https://fonts.cdnfonts.com/css/pixellari');
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
+@import url('https://fonts.cdnfonts.com/css/neue-metana');
+@import url('https://fonts.cdnfonts.com/css/product-sans');
 
-
-* {
-  font-family: "Helvetica Neue, Neue Metana Mono Free Personal",;
+body {
+  font-family: 'Helvetica Neue','Product Sans', 'Neue Metana' , sans-serif;
 }

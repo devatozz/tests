@@ -54,7 +54,7 @@ export default function App(props) {
           name="description"
           content="Trade without boundaries powered by Scroll"
         />
-        <title>ZkPerp Dex</title>
+        <title>ZkPerp</title>
       </Head>
       <ChakraProvider theme={theme}>
         <AppBar />
