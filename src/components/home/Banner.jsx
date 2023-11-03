@@ -104,13 +104,7 @@ export default function Banner() {
     );
   };
   return (
-    <Box
-      //   bgGradient="linear-gradient(90deg, #666666 14.6%, #FFFFFF 101.23%)"
-      m={0}
-      w={"100%"}
-      p={"0px"}
-      bg="#101010"
-    >
+    <Box m={0} w={"100%"} p={"0px"} bg="#101010">
       <Flex
         alignItems={"center"}
         position={"relative"}
