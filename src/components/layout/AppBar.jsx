@@ -114,6 +114,8 @@ export default function AppBar() {
                       <PopoverTrigger>
                         {navItem.children ? (
                           <Link
+                            target="_blank"
+                            rel="noopener noreferrer"
                             pr={2}
                             py={2}
                             fontSize={"16px"}
@@ -128,7 +130,7 @@ export default function AppBar() {
                             {navItem.icons}
                           </Link>
                         ) : (
-                          <NextLink href={navItem.href} passHref>
+                          <NextLink href={navItem.href} passHref target="self_">
                             <Text
                               pr={2}
                               fontSize={"16px"}
@@ -185,11 +187,11 @@ export default function AppBar() {
           {isDesktop && (
             <NextLink href={"https://app.zkperp.tech/"}>
               <Button
-                size="md"
-                color="#FBFBFB"
-                fontFamily="body"
-                backgroundImage="linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)"
-                transition="background-color 0.3s ease-out"
+                backgroundColor={"#101010"}
+                transition="background-color 0.3s ease-in-out"
+                _hover={{
+                  bg: "linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)",
+                }}
                 style={{
                   fontWeight: "bold",
                   fontSize: "16px",
@@ -198,7 +200,7 @@ export default function AppBar() {
                   fontFamily: "body",
                 }}
               >
-                Launch App
+                <Text color={"#FFEEDA"}>Launch App</Text>
               </Button>
             </NextLink>
           )}
