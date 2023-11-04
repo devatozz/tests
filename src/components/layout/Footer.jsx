@@ -144,7 +144,11 @@ export default function LargeWithLogoLeft() {
             spacing={8}
           >
             <Stack align={"flex-start"} spacing={3}>
-              <NextLink href={"https://twitter.com/zkPerp"} className="link">
+              <NextLink
+                target="self_"
+                href={"https://twitter.com/zkPerp"}
+                className="link"
+              >
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -156,6 +160,7 @@ export default function LargeWithLogoLeft() {
               <NextLink
                 href={"https://discord.com/invite/zfAjX8pmsz"}
                 className="link"
+                target="self_"
               >
                 <Text
                   fontFamily="body"
@@ -165,7 +170,11 @@ export default function LargeWithLogoLeft() {
                   Discord
                 </Text>
               </NextLink>
-              <NextLink href={"https://t.me/zkperp"} className="link">
+              <NextLink
+                target="self_"
+                href={"https://t.me/zkperp"}
+                className="link"
+              >
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -177,6 +186,7 @@ export default function LargeWithLogoLeft() {
               <NextLink
                 href={"https://mirror.xyz/zkperptech.eth"}
                 className="link"
+                target="self_"
               >
                 <Text
                   fontFamily="body"
@@ -188,7 +198,7 @@ export default function LargeWithLogoLeft() {
               </NextLink>
             </Stack>
             <Stack align={"flex-start"} spacing={3}>
-              <NextLink href={"#"}>
+              <NextLink target="self_" href={"#"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -197,7 +207,7 @@ export default function LargeWithLogoLeft() {
                   Trade
                 </Text>
               </NextLink>
-              <NextLink href={"#"}>
+              <NextLink target="self_" href={"#"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -206,7 +216,7 @@ export default function LargeWithLogoLeft() {
                   Faucet
                 </Text>
               </NextLink>
-              <NextLink href={"#"}>
+              <NextLink target="self_" href={"#"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -215,7 +225,7 @@ export default function LargeWithLogoLeft() {
                   Add liquidity
                 </Text>
               </NextLink>
-              <NextLink href={"#"}>
+              <NextLink target="self_" href={"#"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -226,7 +236,7 @@ export default function LargeWithLogoLeft() {
               </NextLink>
             </Stack>
             <Stack align={"flex-start"} spacing={3}>
-              <NextLink href={"#"}>
+              <NextLink target="self_" href={"#"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -247,7 +257,7 @@ export default function LargeWithLogoLeft() {
                   Term of Use
                 </Text>
               </Box>
-              <NextLink href={"#"}>
+              <NextLink target="self_" href={"#"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -256,7 +266,7 @@ export default function LargeWithLogoLeft() {
                   Private Policy
                 </Text>
               </NextLink>
-              <NextLink href={"#"}>
+              <NextLink target="self_" href={"#"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}

@@ -24,7 +24,9 @@ export default function Banner() {
       backgroundImage:
         "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
       isActive: false,
+      isActive: false,
       title: "With up to 200x leverage ",
+      borderColor: "#EBC28E",
       description:
         "Boost your Long/Short positions with up to 200x leverage, minimal slippage, and totally no price impact.",
     },
@@ -33,6 +35,8 @@ export default function Banner() {
       label: "Lowest Fees",
       icons_dark: "/money_dark.png",
       icons_light: "/money_light.png",
+      borderColor: "#B7F7EE",
+
       backgroundImage:
         "linear-gradient(92.68deg, #62E6D4 -19.2%, #B7F7EE 118.24%)",
 
@@ -46,6 +50,8 @@ export default function Banner() {
       label: " Real World Assets",
       icons_dark: "/bank_dark.png",
       icons_light: "/bank_light.png",
+      borderColor: "#FFA998",
+
       backgroundImage:
         "linear-gradient(92.68deg, #FF5132 -19.2%, #FFA998 118.24%)",
 
@@ -59,6 +65,8 @@ export default function Banner() {
       label: "Swap Intergration",
       icons_dark: "/swap_dark.png",
       icons_light: "/swap_light.png",
+      borderColor: "#FBFBFB",
+
       backgroundImage:
         " linear-gradient(92.68deg, #5B5B5B -19.2%, #FBFBFB 118.24%)",
 
@@ -166,8 +174,11 @@ export default function Banner() {
               <NextLink href={"https://app.zkperp.tech/"}>
                 <Button
                   size="md"
-                  backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
-                  transition="background-color 0.3s ease-out"
+                  backgroundColor={"#EBC28E"}
+                  transition="background-color 0.3s ease-in-out"
+                  _hover={{
+                    bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
+                  }}
                   minWidth="180px"
                   style={{
                     fontWeight: "bold",
@@ -189,9 +200,11 @@ export default function Banner() {
                   border="solid"
                   borderColor="rgba(235, 194, 142, 1)"
                   borderWidth="1px"
-                  colorScheme="orange"
                   bg="transparent"
                   transition="background-color 0.3s ease-out"
+                  _hover={{
+                    bg: "transparent",
+                  }}
                   minWidth="180px"
                   style={{
                     fontWeight: "bold",
@@ -269,11 +282,12 @@ export default function Banner() {
                     >
                       <Flex
                         size="md"
-                        color="rgba(235, 194, 142, 1)"
                         bg={
                           items.isActive ? "transparent" : items.backgroundImage
                         }
-                        border="solid"
+                        color={items.borderColor}
+                        boxShadow={items.isActive ? items.borderColor : "none"}
+                        border={items.isActive ? "solid" : "none"}
                         borderWidth="1px"
                         borderRadius="8px"
                         width={"600px"}
@@ -402,8 +416,11 @@ export default function Banner() {
                                     <NextLink href={"https://app.zkperp.tech/"}>
                                       <Button
                                         size="md"
-                                        backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
-                                        transition="background-color 0.3s ease-out"
+                                        backgroundColor={"#EBC28E"}
+                                        transition="background-color 0.3s ease-in-out"
+                                        _hover={{
+                                          bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
+                                        }}
                                         minWidth="180px"
                                         fontFamily="body"
                                         style={{
@@ -429,7 +446,6 @@ export default function Banner() {
                                         border="solid"
                                         borderColor="rgba(235, 194, 142, 1)"
                                         borderWidth="1px"
-                                        colorScheme="orange"
                                         bg="transparent"
                                         transition="background-color 0.3s ease-out"
                                         minWidth="180px"
@@ -439,6 +455,9 @@ export default function Banner() {
                                           borderRadius: "8px",
                                           padding: "16px 51px",
                                           fontFamily: "body",
+                                        }}
+                                        _hover={{
+                                          bg: "transparent",
                                         }}
                                         width={{ base: "200px", md: "auto" }}
                                       >
@@ -545,8 +564,11 @@ export default function Banner() {
                             <NextLink href={"https://app.zkperp.tech/"}>
                               <Button
                                 size="md"
-                                backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
-                                transition="background-color 0.3s ease-out"
+                                backgroundColor={"#EBC28E"}
+                                transition="background-color 0.3s ease-in-out"
+                                _hover={{
+                                  bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
+                                }}
                                 minWidth="180px"
                                 fontFamily="body"
                                 style={{
@@ -570,7 +592,6 @@ export default function Banner() {
                                 border="solid"
                                 borderColor="rgba(235, 194, 142, 1)"
                                 borderWidth="1px"
-                                colorScheme="orange"
                                 bg="transparent"
                                 transition="background-color 0.3s ease-out"
                                 minWidth="180px"
@@ -580,6 +601,9 @@ export default function Banner() {
                                   borderRadius: "8px",
                                   padding: "16px 51px",
                                   fontFamily: "body",
+                                }}
+                                _hover={{
+                                  bg: "transparent",
                                 }}
                                 width={{ base: "200px", md: "auto" }}
                               >
@@ -696,7 +720,6 @@ export default function Banner() {
                         border="solid"
                         borderColor="rgba(235, 194, 142, 1)"
                         borderWidth="1px"
-                        colorScheme="orange"
                         bg="transparent"
                         transition="background-color 0.3s ease-out"
                         minWidth="180px"
@@ -706,6 +729,9 @@ export default function Banner() {
                           borderRadius: "8px",
                           padding: "16px 26px",
                           fontFamily: "body",
+                        }}
+                        _hover={{
+                          bg: "transparent",
                         }}
                         width={{ base: "100%", md: "auto" }}
                       >
@@ -794,7 +820,9 @@ export default function Banner() {
                         border="solid"
                         borderColor="rgba(235, 194, 142, 1)"
                         borderWidth="1px"
-                        colorScheme="orange"
+                        _hover={{
+                          bg: "transparent",
+                        }}
                         bg="transparent"
                         transition="background-color 0.3s ease-out"
                         minWidth="180px"
@@ -877,8 +905,11 @@ export default function Banner() {
               <NextLink href={"#"}>
                 <Button
                   size="md"
-                  backgroundImage="linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)"
-                  transition="background-color 0.3s ease-out"
+                  backgroundColor={"#EBC28E"}
+                  transition="background-color 0.3s ease-in-out"
+                  _hover={{
+                    bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
+                  }}
                   minWidth="180px"
                   fontFamily="body"
                   style={{
@@ -904,7 +935,9 @@ export default function Banner() {
                   border="solid"
                   borderColor="rgba(235, 194, 142, 1)"
                   borderWidth="1px"
-                  colorScheme="orange"
+                  _hover={{
+                    bg: "transparent",
+                  }}
                   bg="transparent"
                   transition="background-color 0.3s ease-out"
                   minWidth="180px"
