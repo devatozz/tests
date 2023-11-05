@@ -22,6 +22,12 @@ import {
   PopoverContent,
   Text,
   Heading,
+  ModalOverlay,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 const Popover = dynamic(
   () => import("@chakra-ui/react").then((chakra) => chakra.Popover),
@@ -65,6 +71,11 @@ const NAV_ITEMS = [
 export default function AppBar() {
   const [isDesktop] = useMediaQuery("(min-width: 680px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: comingSoonOpen,
+    onOpen: onComingSoonOpen,
+    onClose: onComingSoonClose,
+  } = useDisclosure();
   const btnRef = React.useRef();
   return (
     <Box>
@@ -185,25 +196,30 @@ export default function AppBar() {
           </Flex>
 
           {isDesktop && (
-            <NextLink href={"https://app.zkperp.tech/"}>
-              <Button
-                backgroundColor={"#101010"}
-                transition="background-color 0.3s ease-in-out"
-                _hover={{
-                  bg: "linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)",
-                }}
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "16px",
-                  borderRadius: "8px",
-                  padding: "16px 32px",
-                  fontFamily: "body",
-                }}
-              >
-                <Text color={"#FFEEDA"}>Launch App</Text>
-              </Button>
-            </NextLink>
+            // <NextLink href={"#"}>
+            <Button
+              backgroundColor={"#101010"}
+              transition="background-color 0.3s ease-in-out"
+              _hover={{
+                bg: "linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)",
+              }}
+              style={{
+                fontWeight: "bold",
+                fontSize: "16px",
+                borderRadius: "8px",
+                padding: "16px 32px",
+                fontFamily: "body",
+              }}
+              onClick={onComingSoonOpen}
+            >
+              <Text color={"#FFEEDA"}>Launch App</Text>
+            </Button>
+            // </NextLink>
           )}
+          <ComingSoonModal
+            isOpen={comingSoonOpen}
+            onClose={onComingSoonClose}
+          />
           {!isDesktop && (
             <Button
               ref={btnRef}
@@ -362,5 +378,59 @@ const DesktopSuvNav = ({ label, href }) => {
         </Stack>
       </Box>
     </a>
+  );
+};
+const ComingSoonModal = ({ isOpen, onClose }) => (
+  <Modal
+    blockScrollOnMount={false}
+    isOpen={isOpen}
+    onClose={onClose}
+    size={{ base: "sm", md: "xl" }}
+    alignItems={"center"}
+  >
+    <ModalOverlay />
+    <ModalContent motion="slideInBottom" alignContent="center">
+      <ModalHeader
+        sx={{
+          fontSize: "34px",
+          // fontWeight: "300",
+          borderRadius: "10px",
+
+          backgroundImage:
+            "linear-gradient(90.07deg, #EBDE8E -8.17%, #F3E4AC 7.41%, #F4E6B2 10.41%, #FFEEDA 31.13%, #FFF0DD 31.14%, #FFF2E3 36.77%, #FFFFFF 53.39%, #CBFDF6 61.33%, #93FBED 69.86%, #8AF7E8 76.91%, #62E6D4 106.87%)",
+
+          lineHeight: "44px",
+          "@media(max-width: 768px)": {
+            fontSize: "28px",
+          },
+        }}
+      >
+        <Heading>Launch App</Heading>
+      </ModalHeader>
+      <ModalCloseButton />
+      <ModalBody
+        sx={{
+          backgroundColor: "#fbfbfb",
+          borderRadius: "10px",
+        }}
+      >
+        <CommingSoonModalText />
+      </ModalBody>
+    </ModalContent>
+  </Modal>
+);
+export const CommingSoonModalText = () => {
+  return (
+    <>
+      <Text
+        fontFamily="body"
+        fontSize={{ md: "24px", base: "18px" }}
+        color="#101010"
+        padding={"20px 0px"}
+        textAlign={"Center"}
+      >
+        Comming Soon!
+      </Text>
+    </>
   );
 };
