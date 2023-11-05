@@ -171,7 +171,8 @@ export default function Banner() {
               pt={8}
               flexDirection={{ base: "column", md: "row" }}
             >
-              <NextLink href={"https://app.zkperp.tech/"}>
+              {/* <NextLink href={"https://app.zkperp.tech/"}> */}
+              <NextLink href={""}>
                 <Button
                   size="md"
                   backgroundColor={"#EBC28E"}
@@ -194,7 +195,7 @@ export default function Banner() {
                   Start Trading
                 </Button>{" "}
               </NextLink>
-              <NextLink href={"https://docs.zkperp.tech/"}>
+              <NextLink href={"https://docs.zkperp.tech/"} target={"_blank"}>
                 <Button
                   size="md"
                   border="solid"
@@ -413,7 +414,8 @@ export default function Banner() {
                                       md: "row",
                                     }}
                                   >
-                                    <NextLink href={"https://app.zkperp.tech/"}>
+                                    {/* <NextLink href={"https://app.zkperp.tech/"}> */}
+                                    <NextLink href={""}>
                                       <Button
                                         size="md"
                                         backgroundColor={"#EBC28E"}
@@ -439,7 +441,8 @@ export default function Banner() {
                                     </NextLink>
 
                                     <NextLink
-                                      href={"https://docs.zkperp.tech/"}
+                                      href={"https://docs.zkperp.tech/"} 
+                                      target="_blank"
                                     >
                                       <Button
                                         size="md"
@@ -561,7 +564,8 @@ export default function Banner() {
                             pt={8}
                             flexDirection={{ base: "column", md: "row" }}
                           >
-                            <NextLink href={"https://app.zkperp.tech/"}>
+                            {/* <NextLink href={"https://app.zkperp.tech/"}> */}
+                            <NextLink href={""}>
                               <Button
                                 size="md"
                                 backgroundColor={"#EBC28E"}
@@ -586,7 +590,7 @@ export default function Banner() {
                               </Button>{" "}
                             </NextLink>
 
-                            <NextLink href={"https://docs.zkperp.tech/"}>
+                            <NextLink href={"https://docs.zkperp.tech/"} target="_blank">
                               <Button
                                 size="md"
                                 border="solid"
@@ -714,7 +718,7 @@ export default function Banner() {
                     justifyContent={"flex-end"}
                     pt={8}
                   >
-                    <NextLink href={"https://docs.zkperp.tech/tokenomics/zkp"}>
+                    <NextLink href={"https://docs.zkperp.tech/tokenomics/zkp"} target="_blank">
                       <Button
                         size="md"
                         border="solid"
@@ -814,7 +818,7 @@ export default function Banner() {
                     justifyContent={"flex-end"}
                     pt={8}
                   >
-                    <NextLink href={"https://docs.zkperp.tech/tokenomics/zlp"}>
+                    <NextLink href={"https://docs.zkperp.tech/tokenomics/zlp"} target="_blank">
                       <Button
                         size="md"
                         border="solid"
@@ -929,6 +933,7 @@ export default function Banner() {
 
               <NextLink
                 href={"https://docs.zkperp.tech/introduction/alpha-testnet"}
+                target='_blank'
               >
                 <Button
                   size="md"
