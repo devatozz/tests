@@ -186,7 +186,7 @@ export default function LargeWithLogoLeft() {
               <NextLink
                 href={"https://mirror.xyz/zkperptech.eth"}
                 className="link"
-                target="self_"
+                target="_blank"
               >
                 <Text
                   fontFamily="body"
@@ -236,7 +236,7 @@ export default function LargeWithLogoLeft() {
               </NextLink>
             </Stack>
             <Stack align={"flex-start"} spacing={3}>
-              <NextLink target="self_" href={"#"}>
+              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -245,8 +245,8 @@ export default function LargeWithLogoLeft() {
                   Docs
                 </Text>
               </NextLink>
-              <Box>
-                {/* Trigger the modal */}
+              {/* <Box>
+                /* Trigger the modal 
                 <Text
                   onClick={onOpen}
                   fontFamily="body"
@@ -256,8 +256,17 @@ export default function LargeWithLogoLeft() {
                 >
                   Term of Use
                 </Text>
-              </Box>
-              <NextLink target="self_" href={"#"}>
+              </Box> */}
+              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
+                <Text
+                  fontFamily="body"
+                  fontSize={{ base: "16px", md: "24px" }}
+                  lineHeight={{ base: "24px", md: "29px" }}
+                >
+                  Term of Use
+                </Text>
+              </NextLink>
+              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -266,7 +275,7 @@ export default function LargeWithLogoLeft() {
                   Private Policy
                 </Text>
               </NextLink>
-              <NextLink target="self_" href={"#"}>
+              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}

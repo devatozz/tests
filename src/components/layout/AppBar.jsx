@@ -48,11 +48,13 @@ const NAV_ITEMS = [
   {
     label: "Alpha Testnet",
     href: "https://docs.zkperp.tech/introduction/alpha-testnet",
+    target: "_blank",
     icons: "",
   },
   {
     label: "zkPass",
-    href: "https://linktr.ee/zkperp",
+    href: "https://docs.zkperp.tech/introduction/zkpass",
+    target: "_blank",
     icons: "",
   },
   {
