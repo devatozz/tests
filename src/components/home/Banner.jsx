@@ -413,6 +413,7 @@ export default function Banner() {
                                       base: "column",
                                       md: "row",
                                     }}
+                                    align={"left"}
                                   >
                                     {/* <NextLink href={"https://app.zkperp.tech/"}> */}
                                     <NextLink href={""}>
@@ -441,7 +442,7 @@ export default function Banner() {
                                     </NextLink>
 
                                     <NextLink
-                                      href={"https://docs.zkperp.tech/"} 
+                                      href={"https://docs.zkperp.tech/"}
                                       target="_blank"
                                     >
                                       <Button
@@ -559,8 +560,6 @@ export default function Banner() {
                           </Box>
 
                           <Flex
-                            align="center"
-                            justify="center"
                             pt={8}
                             flexDirection={{ base: "column", md: "row" }}
                           >
@@ -590,7 +589,10 @@ export default function Banner() {
                               </Button>{" "}
                             </NextLink>
 
-                            <NextLink href={"https://docs.zkperp.tech/"} target="_blank">
+                            <NextLink
+                              href={"https://docs.zkperp.tech/"}
+                              target="_blank"
+                            >
                               <Button
                                 size="md"
                                 border="solid"
@@ -658,16 +660,20 @@ export default function Banner() {
                   w="full"
                   direction={"row"}
                   spacing={4}
-                  alignItems="left"
+                  align="left"
                   bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
                   backgroundBlendMode="overlay"
                   borderRadius="8px"
                   border="solid"
                   borderWidth="0.3px"
                   color="#FBFBFB"
-                  p={8}
+                  p={{ md: 10, base: 6 }}
                 >
-                  <Box width={{ base: "100%", md: "70%" }} py={4}>
+                  <Box
+                    width={{ base: "100%", md: "100%" }}
+                    py={4}
+                    maxWidth="70%"
+                  >
                     <Flex
                       size="md"
                       bg="transparent"
@@ -692,6 +698,7 @@ export default function Banner() {
                         fontSize={{ md: "32px", base: "24px" }}
                         lineHeight="39px"
                         fontWeight={500}
+                        fontFamily={"body"}
                       >
                         ZKP
                       </Text>
@@ -716,9 +723,11 @@ export default function Banner() {
                     alignSelf={"center"}
                     position={"relative"}
                     justifyContent={"flex-end"}
-                    pt={8}
                   >
-                    <NextLink href={"https://docs.zkperp.tech/tokenomics/zkp"} target="_blank">
+                    <NextLink
+                      href={"https://docs.zkperp.tech/tokenomics/zkp"}
+                      target="_blank"
+                    >
                       <Button
                         size="md"
                         border="solid"
@@ -758,15 +767,20 @@ export default function Banner() {
                   direction={"row"}
                   spacing={4}
                   alignItems="left"
+                  align="left"
                   bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
                   backgroundBlendMode="overlay"
                   borderRadius="8px"
                   border="solid"
                   borderWidth="0.3px"
                   color="#FBFBFB"
-                  p={8}
+                  p={{ md: 10, base: 6 }}
                 >
-                  <Box width={{ base: "100%", md: "70%" }} py={4}>
+                  <Box
+                    width={{ base: "100%", md: "100%" }}
+                    maxWidth="70%"
+                    py={4}
+                  >
                     <Flex
                       size="md"
                       bg="transparent"
@@ -791,6 +805,7 @@ export default function Banner() {
                         fontSize={{ md: "32px", base: "24px" }}
                         lineHeight="39px"
                         fontWeight={400}
+                        fontFamily={"body"}
                       >
                         ZLP
                       </Text>
@@ -816,9 +831,11 @@ export default function Banner() {
                     alignSelf={"center"}
                     position={"relative"}
                     justifyContent={"flex-end"}
-                    pt={8}
                   >
-                    <NextLink href={"https://docs.zkperp.tech/tokenomics/zlp"} target="_blank">
+                    <NextLink
+                      href={"https://docs.zkperp.tech/tokenomics/zlp"}
+                      target="_blank"
+                    >
                       <Button
                         size="md"
                         border="solid"
@@ -852,7 +869,7 @@ export default function Banner() {
         <Box align="center" py={{ md: 12, base: "4" }}>
           <Image alt={"Line image"} src="/Line.png" objectFit={"cover"} />
         </Box>
-        <Container maxW={"8xl"} py={{ md: 24, base: "12" }}>
+        <Container maxW={"8xl"} py={{ base: "8", md: "0" }}>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
             <Stack
               spacing={6}
@@ -860,23 +877,28 @@ export default function Banner() {
               textAlign={{ md: "left", base: "center" }}
               align={{ base: "center", md: "left" }}
             >
-              <Heading
+              <Text
                 color={"#FFDCB1"}
+                fontWeight={300}
                 fontSize={{ base: "24px", md: "32px" }}
                 lineHeight={{ md: "62px", base: "32px" }}
-                fontWeight={300}
+                maxW={{ base: "312px", md: "650px" }}
+                pb={{ md: "20px", base: "10px" }}
+                fontFamily="heading"
+                marginLeft={{ md: "-10", base: "0" }}
               >
                 Alpha Testnet (Comming Soon)
-              </Heading>
-              <Heading
+              </Text>
+              <Text
                 fontWeight={300}
+                fontFamily="heading"
                 fontSize={{ base: "28px", md: "48px" }}
                 lineHeight={{ md: "78px", base: "42px" }}
                 maxW={{ base: "312px", md: "1200px" }}
                 color={"#FBFBFB"}
               >
                 Trade, Win, and Share <br />
-                <Heading
+                <Text
                   as={"span"}
                   color={"#62E6D4"}
                   fontWeight={300}
@@ -885,79 +907,80 @@ export default function Banner() {
                   maxW={{ base: "312px", md: "1200px" }}
                 >
                   100,000,000 ZKP
-                </Heading>
-              </Heading>
+                </Text>
+              </Text>
+              <Flex
+                pt={4}
+                flexDirection={{ base: "column", md: "row" }}
+                justifyContent={{ base: "center", md: "left" }}
+                alignItems={{ base: "center", md: "left" }}
+                width="100%"
+              >
+                <NextLink href={"#"}>
+                  <Button
+                    size="md"
+                    backgroundColor={"#EBC28E"}
+                    transition="background-color 0.3s ease-in-out"
+                    _hover={{
+                      bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
+                    }}
+                    minWidth="180px"
+                    fontFamily="body"
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                      borderRadius: "8px",
+                      padding: "16px 51px",
+                      fontFamily: "body",
+                    }}
+                    mb={{ base: 6, md: 0 }}
+                    mr={{ base: 0, md: 6 }}
+                    width={{ base: "200px", md: "auto" }}
+                  >
+                    Join Now
+                  </Button>{" "}
+                </NextLink>
+
+                <NextLink
+                  href={"https://docs.zkperp.tech/introduction/alpha-testnet"}
+                  target="_blank"
+                >
+                  <Button
+                    size="md"
+                    border="solid"
+                    borderColor="rgba(235, 194, 142, 1)"
+                    borderWidth="1px"
+                    _hover={{
+                      bg: "transparent",
+                    }}
+                    bg="transparent"
+                    transition="background-color 0.3s ease-out"
+                    minWidth="180px"
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                      borderRadius: "8px",
+                      padding: "16px 51px",
+                      fontFamily: "body",
+                    }}
+                    width={{ base: "200px", md: "auto" }}
+                  >
+                    <Text color={"#FBFBFB"}>Discover</Text>
+                  </Button>
+                </NextLink>
+              </Flex>
             </Stack>
             <Flex justifyContent={{ base: "center", md: "flex-start" }}>
               <Box>
                 <Image
                   alt={"feature image"}
-                  src="/alphatestnet.png"
+                  src="/trade.png"
                   objectFit={"cover"}
-                  maxW={{ md: "600px", base: "350px" }}
+                  maxW={{ md: "600px", base: "393px" }}
                   top={0}
                   left={0}
                 />
               </Box>
-            </Flex>
-            <Flex
-              pt={4}
-              flexDirection={{ base: "column", md: "row" }}
-              justifyContent={{ base: "center", md: "flex-start" }}
-              alignItems={{ base: "center", md: "flex-start" }}
-            >
-              <NextLink href={"#"}>
-                <Button
-                  size="md"
-                  backgroundColor={"#EBC28E"}
-                  transition="background-color 0.3s ease-in-out"
-                  _hover={{
-                    bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
-                  }}
-                  minWidth="180px"
-                  fontFamily="body"
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "16px",
-                    borderRadius: "8px",
-                    padding: "16px 51px",
-                    fontFamily: "body",
-                  }}
-                  mb={{ base: 6, md: 0 }}
-                  mr={{ base: 0, md: 6 }}
-                  width={{ base: "200px", md: "auto" }}
-                >
-                  Join Now
-                </Button>{" "}
-              </NextLink>
-
-              <NextLink
-                href={"https://docs.zkperp.tech/introduction/alpha-testnet"}
-                target='_blank'
-              >
-                <Button
-                  size="md"
-                  border="solid"
-                  borderColor="rgba(235, 194, 142, 1)"
-                  borderWidth="1px"
-                  _hover={{
-                    bg: "transparent",
-                  }}
-                  bg="transparent"
-                  transition="background-color 0.3s ease-out"
-                  minWidth="180px"
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "16px",
-                    borderRadius: "8px",
-                    padding: "16px 51px",
-                    fontFamily: "body",
-                  }}
-                  width={{ base: "200px", md: "auto" }}
-                >
-                  <Text color={"#FBFBFB"}>Discover</Text>
-                </Button>
-              </NextLink>
             </Flex>
           </SimpleGrid>
         </Container>
