@@ -44,28 +44,33 @@ const NAV_ITEMS = [
     label: "About",
     href: "#about",
     icons: "",
+    target: "",
   },
   {
     label: "Alpha Testnet",
     href: "https://docs.zkperp.tech/introduction/alpha-testnet",
-    target: "_blank",
+    target: "self_",
+
     icons: "",
   },
   {
     label: "zkPass",
     href: "https://docs.zkperp.tech/introduction/zkpass",
-    target: "_blank",
+    target: "self_",
+
     icons: "",
   },
   {
     label: "Social",
     href: "https://linktr.ee/zkperp",
     icons: "",
+    target: "self_",
   },
   {
     label: "Docs",
     href: "https://docs.zkperp.tech/",
-    target: "_blank",
+    target: "self_",
+
     icons: <ExternalLinkIcon />,
   },
 ];
@@ -127,7 +132,7 @@ export default function AppBar() {
                       <PopoverTrigger>
                         {navItem.children ? (
                           <Link
-                            target="_blank"
+                            target={navItem.target}
                             rel="noopener noreferrer"
                             pr={2}
                             py={2}
@@ -143,7 +148,11 @@ export default function AppBar() {
                             {navItem.icons}
                           </Link>
                         ) : (
-                          <NextLink href={navItem.href} passHref target="self_">
+                          <NextLink
+                            href={navItem.href}
+                            passHref
+                            target={navItem.target}
+                          >
                             <Text
                               pr={2}
                               fontSize={"16px"}
@@ -211,10 +220,11 @@ export default function AppBar() {
                 borderRadius: "8px",
                 padding: "16px 32px",
                 fontFamily: "body",
+                // fontFamily: "body",
               }}
               onClick={onComingSoonOpen}
             >
-              <Text color={"#FFEEDA"}>Launch App</Text>
+              <Text color={"#fbfbfb"}>Launch App</Text>
             </Button>
             // </NextLink>
           )}
@@ -407,7 +417,7 @@ const ComingSoonModal = ({ isOpen, onClose }) => (
           },
         }}
       >
-        <Heading>Launch App</Heading>
+        <Heading color={"fbfbfb"}>Launch App</Heading>
       </ModalHeader>
       <ModalCloseButton />
       <ModalBody
