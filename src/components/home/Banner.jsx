@@ -171,8 +171,8 @@ export default function Banner() {
               pt={8}
               flexDirection={{ base: "column", md: "row" }}
             >
-              {/* <NextLink href={"https://app.zkperp.tech/"}> */}
-              <NextLink href={""}>
+              <NextLink href={"https://app.zkperp.tech/"} target={"_blank"}>
+                {/* <NextLink href={""}> */}
                 <Button
                   size="md"
                   backgroundColor={"#EBC28E"}
@@ -250,7 +250,7 @@ export default function Banner() {
             <Heading
               fontWeight={300}
               fontSize={{ base: "28px", md: "56px" }}
-              lineHeight={{ md: "62px", base: "42px" }}
+              lineHeight={{ md: "72px", base: "42px" }}
               maxW={{ base: "312px", md: "1200px" }}
               color={"#FBFBFB"}
               textAlign="center"
@@ -415,8 +415,11 @@ export default function Banner() {
                                     }}
                                     align={"left"}
                                   >
-                                    {/* <NextLink href={"https://app.zkperp.tech/"}> */}
-                                    <NextLink href={""}>
+                                    <NextLink
+                                      href={"https://app.zkperp.tech/"}
+                                      target="_blank"
+                                    >
+                                      {/* <NextLink href={""}> */}
                                       <Button
                                         size="md"
                                         backgroundColor={"#EBC28E"}
@@ -437,7 +440,7 @@ export default function Banner() {
                                         mr={{ base: 0, md: 6 }}
                                         width={{ base: "200px", md: "auto" }}
                                       >
-                                        Trade Now
+                                        <Text>Trade Now</Text>
                                       </Button>{" "}
                                     </NextLink>
 
@@ -563,8 +566,10 @@ export default function Banner() {
                             pt={8}
                             flexDirection={{ base: "column", md: "row" }}
                           >
-                            {/* <NextLink href={"https://app.zkperp.tech/"}> */}
-                            <NextLink href={""}>
+                            <NextLink
+                              href={"https://app.zkperp.tech/"}
+                              target="_blank"
+                            >
                               <Button
                                 size="md"
                                 backgroundColor={"#EBC28E"}
@@ -630,9 +635,9 @@ export default function Banner() {
           <Container maxW={"8xl"} py={{ md: "24", base: "8" }} align="center">
             <Heading
               fontWeight={300}
-              fontSize={{ base: "28px", md: "56px" }}
+              fontSize={{ base: "28px", md: "52px" }}
               lineHeight={{ md: "62px", base: "42px" }}
-              maxW={{ base: "312px", md: "1200px" }}
+              maxW={{ base: "312px", md: "1300px" }}
               color={"#FBFBFB"}
               textAlign="center"
             >
@@ -667,12 +672,12 @@ export default function Banner() {
                   border="solid"
                   borderWidth="0.3px"
                   color="#FBFBFB"
-                  p={{ md: 10, base: 6 }}
+                  p={{ md: 8, base: 6 }}
                 >
                   <Box
                     width={{ base: "100%", md: "100%" }}
                     py={4}
-                    maxWidth="70%"
+                    maxWidth="85%"
                   >
                     <Flex
                       size="md"
@@ -709,7 +714,7 @@ export default function Banner() {
                         fontSize={{ md: "24px", base: "16px" }}
                         lineHeight={{ md: "29px", base: "24px" }}
                         fontWeight={400}
-                        pt={4}
+                        pt={{ md: 8, base: 4 }}
                         fontFamily="body"
                       >
                         ZKP serves as both the utility and governance token and
@@ -774,11 +779,11 @@ export default function Banner() {
                   border="solid"
                   borderWidth="0.3px"
                   color="#FBFBFB"
-                  p={{ md: 10, base: 6 }}
+                  p={{ md: 8, base: 6 }}
                 >
                   <Box
                     width={{ base: "100%", md: "100%" }}
-                    maxWidth="70%"
+                    maxWidth="85%"
                     py={4}
                   >
                     <Flex
@@ -816,7 +821,7 @@ export default function Banner() {
                         fontSize={{ md: "24px", base: "16px" }}
                         lineHeight={{ md: "29px", base: "24px" }}
                         fontWeight={400}
-                        pt={4}
+                        pt={{ md: 8, base: 4 }}
                         fontFamily="body"
                       >
                         ZLP functions as the liquidity provider token for zkPerp
@@ -915,6 +920,7 @@ export default function Banner() {
                 justifyContent={{ base: "center", md: "left" }}
                 alignItems={{ base: "center", md: "left" }}
                 width="100%"
+                pl={2}
               >
                 <NextLink href={"#"}>
                   <Button
