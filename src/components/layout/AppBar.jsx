@@ -207,31 +207,31 @@ export default function AppBar() {
           </Flex>
 
           {isDesktop && (
-            // <NextLink href={"#"}>
-            <Button
-              backgroundColor={"#101010"}
-              transition="background-color 0.3s ease-in-out"
-              _hover={{
-                bg: "linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)",
-              }}
-              style={{
-                fontWeight: "bold",
-                fontSize: "16px",
-                borderRadius: "8px",
-                padding: "16px 32px",
-                fontFamily: "body",
-                // fontFamily: "body",
-              }}
-              onClick={onComingSoonOpen}
-            >
-              <Text color={"#fbfbfb"}>Launch App</Text>
-            </Button>
-            // </NextLink>
+            <NextLink href={"https://app.zkperp.tech"} target="self_">
+              <Button
+                backgroundColor={"#101010"}
+                transition="background-color 0.3s ease-in-out"
+                _hover={{
+                  bg: "linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)",
+                }}
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  borderRadius: "8px",
+                  padding: "16px 32px",
+                  fontFamily: "body",
+                  // fontFamily: "body",
+                }}
+                // onClick={onComingSoonOpen}
+              >
+                <Text color={"#fbfbfb"}>Launch App</Text>
+              </Button>
+            </NextLink>
           )}
-          <ComingSoonModal
+          {/* <ComingSoonModal
             isOpen={comingSoonOpen}
             onClose={onComingSoonClose}
-          />
+          /> */}
           {!isDesktop && (
             <Button
               ref={btnRef}
@@ -406,8 +406,8 @@ const ComingSoonModal = ({ isOpen, onClose }) => (
         sx={{
           fontSize: "34px",
           // fontWeight: "300",
-          borderRadius: "10px",
-
+          // borderRadius: "10px",
+          overflow: "hidden",
           backgroundImage:
             "linear-gradient(90.07deg, #EBDE8E -8.17%, #F3E4AC 7.41%, #F4E6B2 10.41%, #FFEEDA 31.13%, #FFF0DD 31.14%, #FFF2E3 36.77%, #FFFFFF 53.39%, #CBFDF6 61.33%, #93FBED 69.86%, #8AF7E8 76.91%, #62E6D4 106.87%)",
 
