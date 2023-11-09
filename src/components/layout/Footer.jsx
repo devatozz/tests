@@ -102,7 +102,7 @@ export default function LargeWithLogoLeft() {
         <SimpleGrid
           templateColumns={{ sm: " 1fr 1fr", md: " 1fr 1fr" }}
           spacing={8}
-          py={{ md: "100px", base: "40px" }}
+          py={{ md: "60px", base: "40px" }}
         >
           <Stack spacing={6}>
             <Box>
@@ -236,7 +236,10 @@ export default function LargeWithLogoLeft() {
               </NextLink>
             </Stack>
             <Stack align={"flex-start"} spacing={3}>
-              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
+              <NextLink
+                target="_blank"
+                href={"https://docs.zkperp.tech/introduction/welcome"}
+              >
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -257,7 +260,10 @@ export default function LargeWithLogoLeft() {
                   Term of Use
                 </Text>
               </Box> */}
-              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
+              <NextLink
+                target="_blank"
+                href={"https://docs.zkperp.tech/introduction/welcome"}
+              >
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -266,7 +272,10 @@ export default function LargeWithLogoLeft() {
                   Term of Use
                 </Text>
               </NextLink>
-              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
+              <NextLink
+                target="_blank"
+                href={"https://docs.zkperp.tech/introduction/welcome"}
+              >
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}
@@ -275,7 +284,10 @@ export default function LargeWithLogoLeft() {
                   Private Policy
                 </Text>
               </NextLink>
-              <NextLink target="_blank" href={"https://docs.zkperp.tech/introduction/welcome"}>
+              <NextLink
+                target="_blank"
+                href={"https://docs.zkperp.tech/introduction/welcome"}
+              >
                 <Text
                   fontFamily="body"
                   fontSize={{ base: "16px", md: "24px" }}

@@ -186,7 +186,7 @@ export default function Banner() {
                     fontSize: "16px",
                     borderRadius: "8px",
                     padding: "16px 26px",
-                    fontFamily: "body",
+                    fontFamily: "Relative",
                   }}
                   mb={{ base: 6, md: 0 }}
                   mr={{ base: 0, md: 6 }}
@@ -212,7 +212,7 @@ export default function Banner() {
                     fontSize: "16px",
                     borderRadius: "8px",
                     padding: "16px 26px",
-                    fontFamily: "body",
+                    fontFamily: "Relative",
                   }}
                   width={{ base: "100%", md: "auto" }}
                 >
@@ -428,13 +428,12 @@ export default function Banner() {
                                           bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
                                         }}
                                         minWidth="180px"
-                                        fontFamily="body"
                                         style={{
                                           fontWeight: "bold",
                                           fontSize: "16px",
                                           borderRadius: "8px",
                                           padding: "16px 51px",
-                                          fontFamily: "body",
+                                          fontFamily: "Relative",
                                         }}
                                         mb={{ base: 6, md: 0 }}
                                         mr={{ base: 0, md: 6 }}
@@ -461,7 +460,7 @@ export default function Banner() {
                                           fontSize: "16px",
                                           borderRadius: "8px",
                                           padding: "16px 51px",
-                                          fontFamily: "body",
+                                          fontFamily: "Relative",
                                         }}
                                         _hover={{
                                           bg: "transparent",
@@ -578,13 +577,12 @@ export default function Banner() {
                                   bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
                                 }}
                                 minWidth="180px"
-                                fontFamily="body"
                                 style={{
                                   fontWeight: "bold",
                                   fontSize: "16px",
                                   borderRadius: "8px",
                                   padding: "16px 51px",
-                                  fontFamily: "body",
+                                  fontFamily: "Relative",
                                 }}
                                 mb={{ base: 6, md: 0 }}
                                 mr={{ base: 0, md: 6 }}
@@ -611,7 +609,7 @@ export default function Banner() {
                                   fontSize: "16px",
                                   borderRadius: "8px",
                                   padding: "16px 51px",
-                                  fontFamily: "body",
+                                  fontFamily: "Relative",
                                 }}
                                 _hover={{
                                   bg: "transparent",
@@ -635,7 +633,7 @@ export default function Banner() {
           <Container maxW={"8xl"} py={{ md: "24", base: "8" }} align="center">
             <Heading
               fontWeight={300}
-              fontSize={{ base: "28px", md: "52px" }}
+              fontSize={{ base: "28px", md: "56px" }}
               lineHeight={{ md: "62px", base: "42px" }}
               maxW={{ base: "312px", md: "1300px" }}
               color={"#FBFBFB"}
@@ -746,7 +744,7 @@ export default function Banner() {
                           fontSize: "16px",
                           borderRadius: "8px",
                           padding: "16px 26px",
-                          fontFamily: "body",
+                          fontFamily: "Relative",
                         }}
                         _hover={{
                           bg: "transparent",
@@ -857,7 +855,7 @@ export default function Banner() {
                           fontSize: "16px",
                           borderRadius: "8px",
                           padding: "16px 26px",
-                          fontFamily: "body",
+                          fontFamily: "Relative",
                         }}
                         width={{ base: "100%", md: "auto" }}
                       >
@@ -876,44 +874,51 @@ export default function Banner() {
         </Box>
         <Container maxW={"8xl"} py={{ base: "8", md: "0" }}>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
-            <Stack
+            <Flex
               spacing={6}
               justifyContent="center"
               textAlign={{ md: "left", base: "center" }}
-              align={{ base: "center", md: "left" }}
+              flexDirection={"column"}
             >
-              <Text
-                color={"#FFDCB1"}
-                fontWeight={300}
-                fontSize={{ base: "24px", md: "32px" }}
-                lineHeight={{ md: "62px", base: "32px" }}
-                maxW={{ base: "312px", md: "650px" }}
-                pb={{ md: "20px", base: "10px" }}
-                fontFamily="heading"
-                marginLeft={{ md: "-10", base: "0" }}
+              <Flex
+                justifyContent={{ md: "left", base: "center" }}
+                py={{ base: "4", md: "6" }}
               >
-                Alpha Testnet (Comming Soon)
-              </Text>
-              <Text
-                fontWeight={300}
-                fontFamily="heading"
-                fontSize={{ base: "28px", md: "48px" }}
-                lineHeight={{ md: "78px", base: "42px" }}
-                maxW={{ base: "312px", md: "1200px" }}
-                color={"#FBFBFB"}
-              >
-                Trade, Win, and Share <br />
                 <Text
-                  as={"span"}
-                  color={"#62E6D4"}
+                  color={"#FFDCB1"}
                   fontWeight={300}
-                  fontSize={{ base: "28px", md: "48px" }}
+                  fontSize={{ base: "24px", md: "40px" }}
                   lineHeight={{ md: "62px", base: "42px" }}
-                  maxW={{ base: "312px", md: "1200px" }}
+                  maxW={{ base: "200px", md: "650px" }}
                 >
-                  100,000,000 ZKP
+                  Alpha Testnet (Comming Soon)
                 </Text>
-              </Text>
+              </Flex>
+              <Flex
+                justifyContent={{ md: "left", base: "center" }}
+                py={{ base: "4", md: "6" }}
+              >
+                <Text
+                  fontWeight={300}
+                  fontSize={{ base: "28px", md: "56px" }}
+                  lineHeight={{ md: "78px", base: "42px" }}
+                  maxW={{ base: "312px", md: "1200px" }}
+                  color={"#FBFBFB"}
+                >
+                  Trade, Win, and Share <br />
+                  <Text
+                    as={"span"}
+                    color={"#62E6D4"}
+                    fontWeight={300}
+                    fontSize={{ base: "28px", md: "56px" }}
+                    lineHeight={{ md: "62px", base: "42px" }}
+                    maxW={{ base: "312px", md: "1200px" }}
+                  >
+                    100,000,000 ZKP
+                  </Text>
+                </Text>
+              </Flex>
+
               <Flex
                 pt={4}
                 flexDirection={{ base: "column", md: "row" }}
@@ -931,13 +936,13 @@ export default function Banner() {
                       bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
                     }}
                     minWidth="180px"
-                    fontFamily="body"
+                    fontFamily="Relative"
                     style={{
                       fontWeight: "bold",
                       fontSize: "16px",
                       borderRadius: "8px",
                       padding: "16px 51px",
-                      fontFamily: "body",
+                      fontFamily: "Relative",
                     }}
                     mb={{ base: 6, md: 0 }}
                     mr={{ base: 0, md: 6 }}
@@ -967,7 +972,7 @@ export default function Banner() {
                       fontSize: "16px",
                       borderRadius: "8px",
                       padding: "16px 51px",
-                      fontFamily: "body",
+                      fontFamily: "Relative",
                     }}
                     width={{ base: "200px", md: "auto" }}
                   >
@@ -975,7 +980,7 @@ export default function Banner() {
                   </Button>
                 </NextLink>
               </Flex>
-            </Stack>
+            </Flex>
             <Flex justifyContent={{ base: "center", md: "flex-start" }}>
               <Box>
                 <Image
@@ -1038,7 +1043,7 @@ export default function Banner() {
               fontWeight={400}
               fontFamily="body"
             >
-              zkPerp was build by Scrollers , for the Scrollers
+              zkPerp was build by Scrollers, for the Scrollers
             </Text>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mt={24}>
               <NextLink href={"https://twitter.com/zkPerp"} target="self_">

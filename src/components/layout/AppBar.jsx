@@ -105,15 +105,16 @@ export default function AppBar() {
         align={"center"}
       >
         <Flex
-          maxW={"1200px"}
+          // maxW={"1200px"}
           justifyContent={"space-between"}
+          px={{ md: "66px" }}
           w="full"
           align={"center"}
         >
           <Flex justifyContent={"center"} align={"center"}>
             <NextLink href={"/"}>
               <Flex gap={2} alignItems={"center"}>
-                <Image src={"/logo.svg"} alt="zk perp" h={30} />
+                <Image src={"/logo.svg"} alt="zk perp" height={"40px"} />
 
                 <ZkText />
               </Flex>
@@ -215,12 +216,12 @@ export default function AppBar() {
                   bg: "linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)",
                 }}
                 style={{
-                  fontWeight: "bold",
+                  // fontWeight: "bold",
                   fontSize: "16px",
-                  borderRadius: "8px",
+                  borderRadius: "4px",
                   padding: "16px 32px",
-                  fontFamily: "body",
-                  // fontFamily: "body",
+                  fontFamily: "Relative",
+                  fontWeight: "200",
                 }}
                 // onClick={onComingSoonOpen}
               >
@@ -336,6 +337,7 @@ export default function AppBar() {
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "flex-start",
+                              fontWeight: "400",
                             }}
                           >
                             {navItem.label}
