@@ -228,10 +228,10 @@ export default function AppBar() {
               </Button>
             </NextLink>
           )}
-          <ComingSoonModal
+          {/* <ComingSoonModal
             isOpen={comingSoonOpen}
             onClose={onComingSoonClose}
-          />
+          /> */}
           {!isDesktop && (
             <Button
               ref={btnRef}
