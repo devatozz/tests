@@ -281,7 +281,7 @@ export default function LargeWithLogoLeft() {
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
-                  Private Policy
+                  Privacy Policy
                 </Text>
               </NextLink>
               <NextLink
