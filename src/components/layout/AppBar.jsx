@@ -157,7 +157,7 @@ export default function AppBar() {
                             <Text
                               pr={2}
                               fontSize={"16px"}
-                              fontFamily="body"
+                              fontFamily="Relative"
                               textAlign="center"
                               color="rgba(16, 16, 16, 1)"
                               _hover={{
@@ -168,6 +168,7 @@ export default function AppBar() {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
+                                fontWeight: "600",
                               }}
                             >
                               {navItem.label}

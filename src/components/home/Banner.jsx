@@ -134,6 +134,7 @@ export default function Banner() {
                 lineHeight={{ md: "106px", base: "44px" }}
                 color={"#62E6D4"}
                 textAlign={"center"}
+                fontFamily="Relative"
                 maxW={{ md: "1482px", base: "350px" }}
               >
                 Trade Without Boundaries <br /> Powered by{" "}
@@ -141,6 +142,7 @@ export default function Banner() {
                   as={"span"}
                   color={"#FFEEDA"}
                   fontWeight={300}
+                  fontFamily="Relative"
                   fontSize={{ base: "40px", md: "96px" }}
                   lineHeight={{ md: "106px", base: "44px" }}
                 >
@@ -155,7 +157,7 @@ export default function Banner() {
                 fontSize={{ base: "16px", md: "32px" }}
                 fontWeight={{ base: "300", md: "400" }}
                 lineHeight={{ base: "19px", md: "38px" }}
-                fontFamily="body"
+                fontFamily="Relative"
                 maxW={{ md: "1092px", base: "350px" }}
                 fontStyle={"normal"}
               >
@@ -249,6 +251,7 @@ export default function Banner() {
           <Container maxW={"8xl"} py={{ md: "24", base: "16" }} align="center">
             <Heading
               fontWeight={300}
+              fontFamily="Relative"
               fontSize={{ base: "28px", md: "56px" }}
               lineHeight={{ md: "72px", base: "42px" }}
               maxW={{ base: "312px", md: "1200px" }}
@@ -261,6 +264,7 @@ export default function Banner() {
                 as={"span"}
                 color={"#62E6D4"}
                 fontWeight={300}
+                fontFamily="Relative"
                 fontSize={{ base: "28px", md: "56px" }}
                 lineHeight={{ md: "62px", base: "42px" }}
                 maxW={{ base: "312px", md: "1200px" }}
@@ -325,7 +329,7 @@ export default function Banner() {
                           fontSize={{ md: "32px", base: "20px" }}
                           lineHeight={{ md: "39px", base: "24px" }}
                           fontWeight={500}
-                          fontFamily="body"
+                          fontFamily="Relative"
                         >
                           {items.label}
                         </Text>
@@ -389,7 +393,7 @@ export default function Banner() {
                                       fontSize={{ md: "32px", base: "20px" }}
                                       lineHeight={{ md: "39px", base: "24px" }}
                                       fontWeight={500}
-                                      fontFamily="body"
+                                      fontFamily="Relative"
                                     >
                                       {items.title}
                                     </Text>
@@ -543,7 +547,7 @@ export default function Banner() {
                               fontSize={{ md: "32px", base: "20px" }}
                               lineHeight={{ md: "39px", base: "24px" }}
                               fontWeight={500}
-                              fontFamily="body"
+                              fontFamily="Relative"
                             >
                               {items.title}
                             </Text>
@@ -555,7 +559,7 @@ export default function Banner() {
                               lineHeight="29px"
                               fontWeight={400}
                               pt={8}
-                              fontFamily={"body"}
+                              fontFamily="Relative"
                             >
                               {items.description}
                             </Text>
@@ -638,12 +642,14 @@ export default function Banner() {
               maxW={{ base: "312px", md: "1300px" }}
               color={"#FBFBFB"}
               textAlign="center"
+              fontFamily="Relative"
             >
               Two Tokens That Shape The{" "}
               <Heading
                 as={"span"}
                 color={"#62E6D4"}
                 fontWeight={300}
+                fontFamily="Relative"
                 fontSize={{ base: "28px", md: "56px" }}
                 lineHeight={{ md: "62px", base: "42px" }}
                 maxW={{ base: "312px", md: "1200px" }}
@@ -701,7 +707,7 @@ export default function Banner() {
                         fontSize={{ md: "32px", base: "24px" }}
                         lineHeight="39px"
                         fontWeight={500}
-                        fontFamily={"body"}
+                        fontFamily="Relative"
                       >
                         ZKP
                       </Text>
@@ -713,7 +719,7 @@ export default function Banner() {
                         lineHeight={{ md: "29px", base: "24px" }}
                         fontWeight={400}
                         pt={{ md: 8, base: 4 }}
-                        fontFamily="body"
+                        fontFamily="Relative"
                       >
                         ZKP serves as both the utility and governance token and
                         accumulates 30% of the fees generated by the protocol.
@@ -808,7 +814,7 @@ export default function Banner() {
                         fontSize={{ md: "32px", base: "24px" }}
                         lineHeight="39px"
                         fontWeight={400}
-                        fontFamily={"body"}
+                        fontFamily="Relative"
                       >
                         ZLP
                       </Text>
@@ -820,7 +826,7 @@ export default function Banner() {
                         lineHeight={{ md: "29px", base: "24px" }}
                         fontWeight={400}
                         pt={{ md: 8, base: 4 }}
-                        fontFamily="body"
+                        fontFamily="Relative"
                       >
                         ZLP functions as the liquidity provider token for zkPerp
                         markets and accumulates 70% of the fees generated by
@@ -887,6 +893,7 @@ export default function Banner() {
                 <Text
                   color={"#FFDCB1"}
                   fontWeight={300}
+                  fontFamily="Relative"
                   fontSize={{ base: "24px", md: "40px" }}
                   lineHeight={{ md: "62px", base: "42px" }}
                   maxW={{ base: "200px", md: "650px" }}
@@ -904,6 +911,7 @@ export default function Banner() {
                   lineHeight={{ md: "78px", base: "42px" }}
                   maxW={{ base: "312px", md: "1200px" }}
                   color={"#FBFBFB"}
+                  fontFamily="Relative"
                 >
                   Trade, Win, and Share <br />
                   <Text
@@ -913,6 +921,7 @@ export default function Banner() {
                     fontSize={{ base: "28px", md: "56px" }}
                     lineHeight={{ md: "62px", base: "42px" }}
                     maxW={{ base: "312px", md: "1200px" }}
+                    fontFamily="Relative"
                   >
                     100,000,000 ZKP
                   </Text>
@@ -1021,6 +1030,7 @@ export default function Banner() {
               maxW={{ base: "312px", md: "1200px" }}
               color={"#FBFBFB"}
               textAlign="center"
+              fontFamily="Relative"
             >
               Join The Most United <br />
               Community In The{" "}
@@ -1031,6 +1041,7 @@ export default function Banner() {
                 fontSize={{ base: "28px", md: "56px" }}
                 lineHeight={{ md: "62px", base: "42px" }}
                 maxW={{ base: "312px", md: "1200px" }}
+                fontFamily="Relative"
               >
                 Ecosystem
               </Heading>
@@ -1041,7 +1052,7 @@ export default function Banner() {
               mt={{ md: "12", base: "8" }}
               fontSize={{ base: "16px", md: "24px" }}
               fontWeight={400}
-              fontFamily="body"
+              fontFamily="Relative"
             >
               zkPerp was build by Scrollers, for the Scrollers
             </Text>
@@ -1077,6 +1088,7 @@ export default function Banner() {
                         fontSize="32px"
                         lineHeight="39px"
                         fontWeight={500}
+                        fontFamily="Relative"
                       >
                         X
                       </Text>
@@ -1135,6 +1147,7 @@ export default function Banner() {
                         color={"#FBFBFB"}
                         fontSize="32px"
                         lineHeight="39px"
+                        fontFamily="Relative"
                         fontWeight={500}
                       >
                         Discord
@@ -1191,6 +1204,7 @@ export default function Banner() {
                         color={"#FBFBFB"}
                         fontSize="32px"
                         lineHeight="39px"
+                        fontFamily="Relative"
                         fontWeight={500}
                       >
                         Telegram
