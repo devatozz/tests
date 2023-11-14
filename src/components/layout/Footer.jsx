@@ -26,7 +26,7 @@ export const TermOfUse = () => {
   return (
     <>
       <Text
-        fontFamily="body"
+        fontFamily="Relative"
         fontSize={{ md: "24px", base: "18px" }}
         color="#fbfbfb"
       >
@@ -35,7 +35,7 @@ export const TermOfUse = () => {
       <br />
       <Text
         fontSize={{ md: "24px", base: "18px" }}
-        fontFamily="body"
+        fontFamily="Relative"
         color="#fbfbfb"
       >
         Vertex reserves the right, in its sole discretion, to modify these Terms
@@ -50,7 +50,7 @@ export const TermOfUse = () => {
       </Text>
       <br />
       <Text
-        fontFamily="body"
+        fontFamily="Relative"
         fontSize={{ md: "24px", base: "18px" }}
         color="#fbfbfb"
       >
@@ -58,7 +58,7 @@ export const TermOfUse = () => {
       </Text>
       <br />
       <Text
-        fontFamily="body"
+        fontFamily="Relative"
         fontSize={{ md: "24px", base: "18px" }}
         color="#fbfbfb"
       >
@@ -90,6 +90,8 @@ export default function LargeWithLogoLeft() {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
+        fontFamily: "Relative",
+
         // minHeight: "100vh",
       }}
     >
@@ -98,33 +100,33 @@ export default function LargeWithLogoLeft() {
         maxW={"1440px"}
         w="full"
         maxHeight={{ md: "400px", base: "auto" }}
+        color={"#101010"}
       >
         <SimpleGrid
           templateColumns={{ sm: " 1fr 1fr", md: " 1fr 1fr" }}
           spacing={8}
           py={{ md: "60px", base: "40px" }}
+          px={{ base: "15px" }}
         >
           <Stack spacing={6}>
-            <Box>
-              <Flex gap={2} alignItems={"center"} w="full" h="full">
-                <Image
-                  src={"/logo.svg"}
-                  alt="zk perp"
-                  width={{ md: "40px", base: "28px" }}
-                />
-                <Text
+            <NextLink href={"/"}>
+              <Box>
+                <Flex gap={2} alignItems={"center"} w="full" h="full">
+                  <Image src={"/newlogo.svg"} alt="zk perp" height="60px" />
+                  {/* <Text
                   fontSize={{ base: "24px", md: "36px" }}
                   fontWeight={500}
                   fontFamily="logo"
                 >
                   zkPerp
-                </Text>
-              </Flex>
-            </Box>
+                </Text> */}
+                </Flex>
+              </Box>
+            </NextLink>
             <Text
-              fontFamily="body"
-              fontSize={{ base: "16px", md: "24px" }}
+              fontSize={{ base: "18px", md: "24px" }}
               lineHeight={{ base: "24px", md: "29px" }}
+              fontFamily="Relative"
             >
               ©2023 zkPerp Inc. All rights reserved <br />
               contact@zkperp.tech
@@ -150,7 +152,7 @@ export default function LargeWithLogoLeft() {
                 className="link"
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -163,7 +165,7 @@ export default function LargeWithLogoLeft() {
                 target="self_"
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -176,7 +178,7 @@ export default function LargeWithLogoLeft() {
                 className="link"
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -189,7 +191,7 @@ export default function LargeWithLogoLeft() {
                 target="_blank"
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -200,7 +202,7 @@ export default function LargeWithLogoLeft() {
             <Stack align={"flex-start"} spacing={3}>
               <NextLink target="self_" href={"#"}>
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -209,7 +211,7 @@ export default function LargeWithLogoLeft() {
               </NextLink>
               <NextLink target="self_" href={"#"}>
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -218,7 +220,7 @@ export default function LargeWithLogoLeft() {
               </NextLink>
               <NextLink target="self_" href={"#"}>
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -227,7 +229,7 @@ export default function LargeWithLogoLeft() {
               </NextLink>
               <NextLink target="self_" href={"#"}>
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -241,7 +243,7 @@ export default function LargeWithLogoLeft() {
                 href={"https://docs.zkperp.tech/introduction/welcome"}
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -252,7 +254,7 @@ export default function LargeWithLogoLeft() {
                 /* Trigger the modal 
                 <Text
                   onClick={onOpen}
-                  fontFamily="body"
+                  fontFamily="Relative"
                   cursor={"pointer"}
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
@@ -265,7 +267,7 @@ export default function LargeWithLogoLeft() {
                 href={"https://docs.zkperp.tech/introduction/welcome"}
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -277,7 +279,7 @@ export default function LargeWithLogoLeft() {
                 href={"https://docs.zkperp.tech/introduction/welcome"}
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
@@ -289,7 +291,7 @@ export default function LargeWithLogoLeft() {
                 href={"https://docs.zkperp.tech/introduction/welcome"}
               >
                 <Text
-                  fontFamily="body"
+                  fontFamily="Relative"
                   fontSize={{ base: "16px", md: "24px" }}
                   lineHeight={{ base: "24px", md: "29px" }}
                 >
