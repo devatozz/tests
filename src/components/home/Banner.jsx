@@ -898,7 +898,7 @@ export default function Banner() {
                   lineHeight={{ md: "62px", base: "42px" }}
                   maxW={{ base: "200px", md: "650px" }}
                 >
-                  Alpha Testnet (Comming Soon)
+                  Alpha Testnet (Coming Soon)
                 </Text>
               </Flex>
               <Flex
@@ -1054,7 +1054,7 @@ export default function Banner() {
               fontWeight={400}
               fontFamily="Relative"
             >
-              zkPerp was build by Scrollers, for the Scrollers
+              zkPerp was built by Scrollers, for the Scrollers
             </Text>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mt={24}>
               <NextLink href={"https://twitter.com/zkPerp"} target="self_">
