@@ -1114,10 +1114,7 @@ export default function Banner() {
                   </Box>
                 </Flex>
               </NextLink>
-              <NextLink
-                href={"https://discord.com/invite/zfAjX8pmsz"}
-                target="self_"
-              >
+              <NextLink href={"https://discord.gg/zkperp"} target="self_">
                 <Flex
                   position="relative"
                   bgImage={{

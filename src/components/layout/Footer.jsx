@@ -160,7 +160,7 @@ export default function LargeWithLogoLeft() {
                 </Text>
               </NextLink>
               <NextLink
-                href={"https://discord.com/invite/zfAjX8pmsz"}
+                href={"https://discord.gg/zkperp"}
                 className="link"
                 target="self_"
               >
