@@ -62,7 +62,7 @@ export default function Banner() {
     },
     {
       id: "4",
-      label: "Swap Intergration",
+      label: "Swap Integration",
       icons_dark: "/swap_dark.png",
       icons_light: "/swap_light.png",
       borderColor: "#FBFBFB",
