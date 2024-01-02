@@ -9,84 +9,46 @@ import {
   SimpleGrid,
   Image,
   Heading,
+  Center,
 } from "@chakra-ui/react";
 import { ChevronUpIcon } from "@chakra-ui/icons";
 import { Link, animateScroll as scroll } from "react-scroll";
 import NextLink from "next/link";
 import TradingViewWidget from "src/components/home/PriceSlider";
 export default function Banner() {
-  const [feature_items, setfeature_items] = useState([
+  const TRADING_INFO = [
     {
-      id: "1",
-      label: "Derivative Trading",
-      icons_dark: "/grap_up_dark.png",
-      icons_light: "/grap_up_light.png",
-      backgroundImage:
-        "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
-      isActive: false,
-      isActive: false,
-      title: "With up to 200x leverage ",
-      borderColor: "#EBC28E",
-      description:
-        "Boost your Long/Short positions with up to 200x leverage, minimal slippage, and totally no price impact.",
+      icon: "/blast/des-user.png",
+      title: "Smart Account",
+      des: "Connect using your Web3 wallets or log in with your social accounts",
     },
     {
-      id: "2",
-      label: "Lowest Fees",
-      icons_dark: "/money_dark.png",
-      icons_light: "/money_light.png",
-      borderColor: "#B7F7EE",
-
-      backgroundImage:
-        "linear-gradient(92.68deg, #62E6D4 -19.2%, #B7F7EE 118.24%)",
-
-      isActive: false,
-      title: " In the whole ecosystem",
-      description:
-        "It costs only 0.04% of your size to open or close a position. No price impacts. No liquidation fees.",
+      icon: "/blast/des-market.png",
+      title: "Diverse Markets",
+      des: "Trade well-known digital assets, metals, and commodities with deep liquidity",
     },
     {
-      id: "3",
-      label: " Real World Assets",
-      icons_dark: "/bank_dark.png",
-      icons_light: "/bank_light.png",
-      borderColor: "#FFA998",
-
-      backgroundImage:
-        "linear-gradient(92.68deg, #FF5132 -19.2%, #FFA998 118.24%)",
-
-      isActive: true,
-      title: " Without any boundaries",
-      description:
-        "Imagine trading crypto, stocks, commodities, and indices on a decentralized platform. Powered by Zero-knowledge technology.",
+      icon: "/blast/des-yeild.png",
+      title: "Native Yield",
+      des: "Blast Trade is built on Blast - The L2 with natively rebasing ETH and USDB",
     },
     {
-      id: "4",
-      label: "Swap Integration",
-      icons_dark: "/swap_dark.png",
-      icons_light: "/swap_light.png",
-      borderColor: "#FBFBFB",
-
-      backgroundImage:
-        " linear-gradient(92.68deg, #5B5B5B -19.2%, #FBFBFB 118.24%)",
-
-      isActive: false,
-      title: "With abundant liquidity",
-      description:
-        "Swap between supported assets with low fees and get ready for your leveraged trades.",
+      icon: "/blast/des-oracle.png",
+      title: "Oracle-based Price",
+      des: "Enjoy the most accurate price for all markets thanks to the oracle technology",
     },
-  ]);
+    {
+      icon: "/blast/des-fee.png",
+      title: "Optimized Fees",
+      des: "Enter or close a position with just a 0.03% trading fee",
+    },
+    {
+      icon: "/blast/des-gov.png",
+      title: "Governance",
+      des: "You, the protocol user, decide the future of Blast Trade",
+    },
+  ];
 
-  const handleBoxClick = (id) => {
-    const updatedItems = feature_items.map((item) => {
-      if (item.id === id) {
-        return { ...item, isActive: true };
-      } else {
-        return { ...item, isActive: false };
-      }
-    });
-    setfeature_items(updatedItems);
-  };
   const ScrollToTopButton = () => {
     return (
       <Link
@@ -102,1136 +64,698 @@ export default function Banner() {
           justifyContent="center"
           width="50px"
           height="50px"
-          backgroundImage="linear-gradient(93.03deg, #101010 -7.42%, #5B5B5B 50.62%, #101010 109.79%)"
           borderRadius="8px"
           cursor="pointer"
         >
-          <ChevronUpIcon boxSize={{ md: "8", base: "6" }} color={"#fbfbfb"} />
+          <ChevronUpIcon boxSize={{ md: "8", base: "6" }} color={"#EEEE06"} />
         </Box>
       </Link>
     );
   };
   return (
-    <Box m={0} w={"100%"} p={"0px"} bg="#101010">
+    <Box
+      m={0}
+      w={"100%"}
+      p={"0px"}
+      bg="linear-gradient(180deg, #12140D 0%, #15170E 51.04%, #22281A 100%);"
+    >
+      {/* hero view  */}
+
       <Flex
         alignItems={"center"}
         position={"relative"}
-        p={{ base: "40px 0", md: "100px 0" }}
-        backgroundImage="url('./bgSection2.png') "
+        p={{ base: "40px 0", md: "0px 0" }}
+        // backgroundImage="url('./bgSection2.png') "
         backgroundSize="cover"
         backgroundPosition="center"
       >
-        <Container maxW={"100%"}>
+        <Container
+          maxW={"90%"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          flexDirection={{ md: "row", base: "column-reverse" }}
+        >
           <Stack
             as={Box}
             spacing={{ base: 8, md: 12 }}
-            py={{ base: 20, md: 36 }}
+            py={{ base: 12, md: 36 }}
           >
             <Box align={"center"}>
               <Heading
                 fontWeight={300}
-                fontSize={{ base: "40px", md: "82px" }}
-                lineHeight={{ md: "106px", base: "44px" }}
-                color={"#62E6D4"}
-                textAlign={"center"}
-                fontFamily="Relative"
-                maxW={{ md: "1482px", base: "350px" }}
+                fontSize={{ base: "32px", md: "76px" }}
+                lineHeight={{ md: "90px", base: "32px" }}
+                color={"#EEEE06"}
+                textAlign={{ md: "left", base: "left" }}
+                fontFamily="Lakes"
               >
-                Trade Without Boundaries <br /> Powered by{" "}
-                <Heading
-                  as={"span"}
-                  color={"#FFEEDA"}
-                  fontWeight={300}
-                  fontFamily="Relative"
-                  fontSize={{ base: "40px", md: "96px" }}
-                  lineHeight={{ md: "106px", base: "44px" }}
-                >
-                  Scroll
-                </Heading>
+                Decentralized <br /> Perpetual Exchange <br /> With Native Yield
               </Heading>
             </Box>
 
             <Box align={"center"}>
               <Text
-                color={"#FBFBFB"}
-                fontSize={{ base: "16px", md: "32px" }}
+                color={"#FCFDC7"}
+                fontSize={{ base: "16px", md: "22px" }}
                 fontWeight={{ base: "300", md: "400" }}
-                lineHeight={{ base: "19px", md: "38px" }}
-                fontFamily="Relative"
-                maxW={{ md: "1092px", base: "350px" }}
+                lineHeight={{ base: "19px", md: "28px" }}
+                fontFamily="Lakes"
+                maxW={{ md: "817", base: "100%" }}
                 fontStyle={"normal"}
+                textAlign={{ md: "left", base: "left" }}
               >
-                Trade with up to 200x leverage on crypto, stocks, commodities,
-                and indices on the Scroll-native Decentralized Perpetual
-                Exchange
+                Trade up to 50x leverage with USDB - The Blast's auto-rebasing
+                stablecoin while watching your assets compound automatically.
               </Text>
             </Box>
 
             <Flex
               align="center"
-              justify="center"
+              justify={{ md: "flex-start", base: "flex-start" }}
               pt={8}
-              flexDirection={{ base: "column", md: "row" }}
+              gap={30}
+              flexDirection={{ md: "row", base: "column" }}
             >
-              <NextLink href={"https://app.zkperp.tech/"} target={"_blank"}>
-                {/* <NextLink href={""}> */}
+              <NextLink href={""} target={"_blank"}>
                 <Button
-                  size="md"
-                  backgroundColor={"#EBC28E"}
+                  backgroundColor={"#FCFC05"}
                   transition="background-color 0.3s ease-in-out"
                   _hover={{
-                    bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
+                    bg: "#fff",
                   }}
-                  minWidth="180px"
                   style={{
-                    fontWeight: "bold",
+                    // fontWeight: "bold",
                     fontSize: "16px",
-                    borderRadius: "8px",
-                    padding: "16px 26px",
-                    fontFamily: "Relative",
+                    borderRadius: "4px",
+                    padding: "16px 32px",
+                    fontFamily: "Lakes",
+                    fontWeight: "200",
                   }}
-                  mb={{ base: 6, md: 0 }}
-                  mr={{ base: 0, md: 6 }}
-                  width={{ base: "100%", md: "auto" }}
+                  // onClick={onComingSoonOpen}
                 >
-                  Start Trading
-                </Button>{" "}
+                  <Text color={"#000"}>Launch App</Text>
+                </Button>
               </NextLink>
-              <NextLink href={"https://docs.zkperp.tech/"} target={"_blank"}>
+              <NextLink href={""} target={"_blank"}>
                 <Button
-                  size="md"
-                  border="solid"
-                  borderColor="rgba(235, 194, 142, 1)"
-                  borderWidth="1px"
-                  bg="transparent"
-                  transition="background-color 0.3s ease-out"
+                  backgroundColor={"transparent"}
+                  transition="background-color 0.3s ease-in-out"
+                  border={"1px solid #FCFDC7"}
                   _hover={{
-                    bg: "transparent",
+                    bg: "rgba(195, 211, 165, 0.2)",
+                    color: "#000",
                   }}
-                  minWidth="180px"
                   style={{
-                    fontWeight: "bold",
+                    // fontWeight: "bold",
                     fontSize: "16px",
-                    borderRadius: "8px",
-                    padding: "16px 26px",
-                    fontFamily: "Relative",
+                    borderRadius: "4px",
+                    padding: "16px 32px",
+                    fontFamily: "Lakes",
+                    fontWeight: "200",
                   }}
-                  width={{ base: "100%", md: "auto" }}
+                  // onClick={onComingSoonOpen}
                 >
-                  <Text color={"#FBFBFB"}>Documentation</Text>
+                  <Text color={"#FCFDC7"}> Learn More</Text>
                 </Button>
               </NextLink>
             </Flex>
           </Stack>
+          <Flex
+            width={{ md: "800px", base: "100%" }}
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="8px"
+          >
+            <Image
+              src="/blast/hero.png"
+              alt="zk perp"
+              width={{ md: "800px", base: "100%" }}
+            />
+          </Flex>
         </Container>
       </Flex>
-      {/* trading view  */}
+
+      {/* info view  */}
       <Box
-        sx={{
-          borderTop: "0.5px solid #FBFBFB",
-          borderBottom: "0.5px solid #FBFBFB",
-          height: "80px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        h={{ md: "312px", base: "100%" }}
+        py={{ md: "0px", base: "40px" }}
+        bg="#22281A"
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        gap={30}
       >
-        <div style={{ width: "100%" }}>
-          <TradingViewWidget />
-        </div>
-      </Box>
-      <Box
-        backgroundImage="url('./Stars.png') "
-        backgroundSize="cover"
-        backgroundPosition="center"
-        p={0}
-      >
-        {/* Trade swap */}
-        <Box id="about" position={"relative"}>
-          <Container maxW={"8xl"} py={{ md: "24", base: "16" }} align="center">
-            <Heading
-              fontWeight={300}
-              fontFamily="Relative"
-              fontSize={{ base: "28px", md: "56px" }}
-              lineHeight={{ md: "72px", base: "42px" }}
-              maxW={{ base: "312px", md: "1200px" }}
-              color={"#FBFBFB"}
-              textAlign="center"
-            >
-              Trade. Swap. Add Liquidity. <br />
-              Optimized With{" "}
-              <Heading
-                as={"span"}
-                color={"#62E6D4"}
-                fontWeight={300}
-                fontFamily="Relative"
-                fontSize={{ base: "28px", md: "56px" }}
-                lineHeight={{ md: "62px", base: "42px" }}
-                maxW={{ base: "312px", md: "1200px" }}
-              >
-                Zero-knowledge
-              </Heading>
-            </Heading>
-            <SimpleGrid
-              columns={{ base: 1, md: 2 }}
-              spacing={10}
-              mt={{ md: "24", base: "12" }}
-            >
-              <Stack spacing={8} justifyContent={"space-between"}>
-                {feature_items.map((items, index) => (
-                  <>
-                    <Flex
-                      spacing={4}
-                      key={items.id}
-                      justifyContent={{ md: "flex-end", base: "center" }}
-                    >
-                      <Flex
-                        size="md"
-                        bg={
-                          items.isActive ? "transparent" : items.backgroundImage
-                        }
-                        color={items.borderColor}
-                        boxShadow={items.isActive ? items.borderColor : "none"}
-                        border={items.isActive ? "solid" : "none"}
-                        borderWidth="1px"
-                        borderRadius="8px"
-                        width={"600px"}
-                        height={"80px"}
-                        alignItems="center"
-                        justifyContent="flex-start"
-                        gap={4}
-                        px={8}
-                        cursor={"pointer"}
-                        onClick={() => handleBoxClick(items.id)}
-                      >
-                        <Flex
-                          bg={items.isActive ? "#fbfbfb" : "#101010"}
-                          width={"40px"}
-                          height={"40px"}
-                          alignItems="center"
-                          justifyContent="center"
-                          borderRadius="8px"
-                        >
-                          <Image
-                            src={
-                              items.isActive
-                                ? items.icons_dark
-                                : items.icons_light
-                            }
-                            alt="zk perp"
-                            h={26}
-                            color={items.isActive ? "#fbfbfb" : "#101010"}
-                          />
-                        </Flex>
-
-                        <Text
-                          color={items.isActive ? "#fbfbfb" : "#101010"}
-                          fontSize={{ md: "32px", base: "20px" }}
-                          lineHeight={{ md: "39px", base: "24px" }}
-                          fontWeight={500}
-                          fontFamily="Relative"
-                        >
-                          {items.label}
-                        </Text>
-                      </Flex>
-                    </Flex>
-                    {items.isActive && (
-                      <Flex
-                        position="relative"
-                        backgroundImage="url('./Card.png') "
-                        backgroundSize="cover"
-                        backgroundPosition="center"
-                        p={0}
-                        display={{ md: "none" }}
-                      >
-                        <Box
-                          w="full"
-                          direction={"row"}
-                          spacing={4}
-                          alignItems="left"
-                          bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
-                          backgroundBlendMode="overlay"
-                          borderRadius="8px"
-                          border="solid"
-                          borderWidth="0.3px"
-                          color="#FBFBFB"
-                          p={{ md: "12", base: "6" }}
-                          align="left"
-                        >
-                          {feature_items.map(
-                            (items, index) =>
-                              items.isActive && (
-                                <Box
-                                  width={{ base: "100%", md: "70%" }}
-                                  key={items.id}
-                                >
-                                  <Flex
-                                    size="md"
-                                    bg="transparent"
-                                    alignItems="center"
-                                    justifyContent="flex-start"
-                                    gap={4}
-                                    px={0}
-                                  >
-                                    <Flex
-                                      bg="#FBFBFB"
-                                      width={"40px"}
-                                      height={"40px"}
-                                      alignItems="center"
-                                      justifyContent="center"
-                                      borderRadius="8px"
-                                    >
-                                      <Image
-                                        src={items.icons_dark}
-                                        alt="zk perp"
-                                        h={26}
-                                      />
-                                    </Flex>
-
-                                    <Text
-                                      color={"#FBFBFB"}
-                                      fontSize={{ md: "32px", base: "20px" }}
-                                      lineHeight={{ md: "39px", base: "24px" }}
-                                      fontWeight={500}
-                                      fontFamily="Relative"
-                                    >
-                                      {items.title}
-                                    </Text>
-                                  </Flex>
-                                  <Box>
-                                    <Text
-                                      color={"#FBFBFB"}
-                                      fontSize={{ md: "24px", base: "16px" }}
-                                      lineHeight={{ md: "39px", base: "24px" }}
-                                      fontWeight={400}
-                                      pt={8}
-                                      fontFamily="body"
-                                    >
-                                      {items.description}
-                                    </Text>
-                                  </Box>
-
-                                  <Flex
-                                    pt={8}
-                                    flexDirection={{
-                                      base: "column",
-                                      md: "row",
-                                    }}
-                                    align={"left"}
-                                  >
-                                    <NextLink
-                                      href={"https://app.zkperp.tech/"}
-                                      target="_blank"
-                                    >
-                                      {/* <NextLink href={""}> */}
-                                      <Button
-                                        size="md"
-                                        backgroundColor={"#EBC28E"}
-                                        transition="background-color 0.3s ease-in-out"
-                                        _hover={{
-                                          bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
-                                        }}
-                                        minWidth="180px"
-                                        style={{
-                                          fontWeight: "bold",
-                                          fontSize: "16px",
-                                          borderRadius: "8px",
-                                          padding: "16px 51px",
-                                          fontFamily: "Relative",
-                                        }}
-                                        mb={{ base: 6, md: 0 }}
-                                        mr={{ base: 0, md: 6 }}
-                                        width={{ base: "200px", md: "auto" }}
-                                      >
-                                        <Text>Trade Now</Text>
-                                      </Button>{" "}
-                                    </NextLink>
-
-                                    <NextLink
-                                      href={"https://docs.zkperp.tech/"}
-                                      target="_blank"
-                                    >
-                                      <Button
-                                        size="md"
-                                        border="solid"
-                                        borderColor="rgba(235, 194, 142, 1)"
-                                        borderWidth="1px"
-                                        bg="transparent"
-                                        transition="background-color 0.3s ease-out"
-                                        minWidth="180px"
-                                        style={{
-                                          fontWeight: "bold",
-                                          fontSize: "16px",
-                                          borderRadius: "8px",
-                                          padding: "16px 51px",
-                                          fontFamily: "Relative",
-                                        }}
-                                        _hover={{
-                                          bg: "transparent",
-                                        }}
-                                        width={{ base: "200px", md: "auto" }}
-                                      >
-                                        <Text color={"#FBFBFB"}>
-                                          Learn More
-                                        </Text>
-                                      </Button>
-                                    </NextLink>
-                                  </Flex>
-                                </Box>
-                              )
-                          )}
-                        </Box>
-                      </Flex>
-                    )}
-                  </>
-                ))}
-              </Stack>
-              <Flex
-                position="relative"
-                backgroundImage="url('./Card.png') "
-                backgroundSize="cover"
-                backgroundPosition="center"
-                p={0}
-                display={{ base: "none", md: "flex" }}
-              >
-                <Box
-                  w="full"
-                  direction={"row"}
-                  spacing={4}
-                  alignItems="left"
-                  bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
-                  backgroundBlendMode="overlay"
-                  borderRadius="8px"
-                  border="solid"
-                  borderWidth="0.3px"
-                  color="#FBFBFB"
-                  p={8}
-                  align="left"
-                  width={{ md: "800px" }}
-                  height={{ md: "440px" }}
-                >
-                  {feature_items.map(
-                    (items, index) =>
-                      items.isActive && (
-                        <Box
-                          width={{ base: "100%", md: "80%" }}
-                          key={items.id}
-                          align="left"
-                          pb={8}
-                        >
-                          <Flex
-                            size="md"
-                            bg="transparent"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            gap={4}
-                            px={0}
-                          >
-                            <Flex
-                              bg="#FBFBFB"
-                              width={"40px"}
-                              height={"40px"}
-                              alignItems="center"
-                              justifyContent="center"
-                              borderRadius="8px"
-                            >
-                              <Image
-                                src={items.icons_dark}
-                                alt="zk perp"
-                                h={26}
-                              />
-                            </Flex>
-
-                            <Text
-                              color={"#FBFBFB"}
-                              fontSize={{ md: "32px", base: "20px" }}
-                              lineHeight={{ md: "39px", base: "24px" }}
-                              fontWeight={500}
-                              fontFamily="Relative"
-                            >
-                              {items.title}
-                            </Text>
-                          </Flex>
-                          <Box py={8}>
-                            <Text
-                              color={"#FBFBFB"}
-                              fontSize={{ md: "24px", base: "18px" }}
-                              lineHeight="29px"
-                              fontWeight={400}
-                              pt={8}
-                              fontFamily="Relative"
-                            >
-                              {items.description}
-                            </Text>
-                          </Box>
-
-                          <Flex
-                            pt={8}
-                            flexDirection={{ base: "column", md: "row" }}
-                          >
-                            <NextLink
-                              href={"https://app.zkperp.tech/"}
-                              target="_blank"
-                            >
-                              <Button
-                                size="md"
-                                backgroundColor={"#EBC28E"}
-                                transition="background-color 0.3s ease-in-out"
-                                _hover={{
-                                  bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
-                                }}
-                                minWidth="180px"
-                                style={{
-                                  fontWeight: "bold",
-                                  fontSize: "16px",
-                                  borderRadius: "8px",
-                                  padding: "16px 51px",
-                                  fontFamily: "Relative",
-                                }}
-                                mb={{ base: 6, md: 0 }}
-                                mr={{ base: 0, md: 6 }}
-                                width={{ base: "200px", md: "auto" }}
-                              >
-                                Trade Now
-                              </Button>{" "}
-                            </NextLink>
-
-                            <NextLink
-                              href={"https://docs.zkperp.tech/"}
-                              target="_blank"
-                            >
-                              <Button
-                                size="md"
-                                border="solid"
-                                borderColor="rgba(235, 194, 142, 1)"
-                                borderWidth="1px"
-                                bg="transparent"
-                                transition="background-color 0.3s ease-out"
-                                minWidth="180px"
-                                style={{
-                                  fontWeight: "bold",
-                                  fontSize: "16px",
-                                  borderRadius: "8px",
-                                  padding: "16px 51px",
-                                  fontFamily: "Relative",
-                                }}
-                                _hover={{
-                                  bg: "transparent",
-                                }}
-                                width={{ base: "200px", md: "auto" }}
-                              >
-                                <Text color={"#FBFBFB"}>Learn More</Text>
-                              </Button>
-                            </NextLink>
-                          </Flex>
-                        </Box>
-                      )
-                  )}
-                </Box>
-              </Flex>
-            </SimpleGrid>
-          </Container>
-        </Box>
-        {/* two token */}
-        <Box id="alphatestnet" position={"relative"}>
-          <Container maxW={"8xl"} py={{ md: "24", base: "8" }} align="center">
-            <Heading
-              fontWeight={300}
-              fontSize={{ base: "28px", md: "56px" }}
-              lineHeight={{ md: "62px", base: "42px" }}
-              maxW={{ base: "312px", md: "1300px" }}
-              color={"#FBFBFB"}
-              textAlign="center"
-              fontFamily="Relative"
-            >
-              Two Tokens That Shape The{" "}
-              <Heading
-                as={"span"}
-                color={"#62E6D4"}
-                fontWeight={300}
-                fontFamily="Relative"
-                fontSize={{ base: "28px", md: "56px" }}
-                lineHeight={{ md: "62px", base: "42px" }}
-                maxW={{ base: "312px", md: "1200px" }}
-              >
-                Protocol
-              </Heading>
-            </Heading>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} mt={24}>
-              <Flex
-                position="relative"
-                backgroundImage="url('./Card.png') "
-                backgroundSize="cover"
-                backgroundPosition="center"
-                p={0}
-              >
-                <Box
-                  w="full"
-                  direction={"row"}
-                  spacing={4}
-                  align="left"
-                  bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
-                  backgroundBlendMode="overlay"
-                  borderRadius="8px"
-                  border="solid"
-                  borderWidth="0.3px"
-                  color="#FBFBFB"
-                  p={{ md: 8, base: 6 }}
-                >
-                  <Box
-                    width={{ base: "100%", md: "100%" }}
-                    py={4}
-                    maxWidth="85%"
-                  >
-                    <Flex
-                      size="md"
-                      bg="transparent"
-                      alignItems="center"
-                      justifyContent="flex-start"
-                      gap={4}
-                      px={0}
-                    >
-                      <Flex
-                        bg="transparent"
-                        width={{ md: "80px", base: "60px" }}
-                        height={{ md: "80px", base: "60px" }}
-                        alignItems="center"
-                        justifyContent="center"
-                        borderRadius="8px"
-                      >
-                        <Image src={"/zkp.png"} alt="zk perp" w="full" />
-                      </Flex>
-
-                      <Text
-                        color={"#FBFBFB"}
-                        fontSize={{ md: "32px", base: "24px" }}
-                        lineHeight="39px"
-                        fontWeight={500}
-                        fontFamily="Relative"
-                      >
-                        ZKP
-                      </Text>
-                    </Flex>
-                    <Box align={"left"}>
-                      <Text
-                        color={"#FBFBFB"}
-                        fontSize={{ md: "24px", base: "16px" }}
-                        lineHeight={{ md: "29px", base: "24px" }}
-                        fontWeight={400}
-                        pt={{ md: 8, base: 4 }}
-                        fontFamily="Relative"
-                      >
-                        ZKP serves as both the utility and governance token and
-                        accumulates 30% of the fees generated by the protocol.
-                      </Text>
-                    </Box>
-                  </Box>
-                  <Flex
-                    gap={4}
-                    align={"center"}
-                    alignSelf={"center"}
-                    position={"relative"}
-                    justifyContent={"flex-end"}
-                  >
-                    <NextLink
-                      href={"https://docs.zkperp.tech/tokenomics/zkp"}
-                      target="_blank"
-                    >
-                      <Button
-                        size="md"
-                        border="solid"
-                        borderColor="rgba(235, 194, 142, 1)"
-                        borderWidth="1px"
-                        bg="transparent"
-                        transition="background-color 0.3s ease-out"
-                        minWidth="180px"
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: "16px",
-                          borderRadius: "8px",
-                          padding: "16px 26px",
-                          fontFamily: "Relative",
-                        }}
-                        _hover={{
-                          bg: "transparent",
-                        }}
-                        width={{ base: "100%", md: "auto" }}
-                      >
-                        <Text color={"#FBFBFB"}>Learn More</Text>
-                      </Button>
-                    </NextLink>
-                  </Flex>
-                </Box>
-              </Flex>
-
-              <Flex
-                position="relative"
-                backgroundImage="url('./Card.png') "
-                backgroundSize="cover"
-                backgroundPosition="center"
-                p={0}
-              >
-                <Box
-                  w="full"
-                  direction={"row"}
-                  spacing={4}
-                  alignItems="left"
-                  align="left"
-                  bgGradient="radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%)"
-                  backgroundBlendMode="overlay"
-                  borderRadius="8px"
-                  border="solid"
-                  borderWidth="0.3px"
-                  color="#FBFBFB"
-                  p={{ md: 8, base: 6 }}
-                >
-                  <Box
-                    width={{ base: "100%", md: "100%" }}
-                    maxWidth="85%"
-                    py={4}
-                  >
-                    <Flex
-                      size="md"
-                      bg="transparent"
-                      alignItems="center"
-                      justifyContent="flex-start"
-                      gap={4}
-                      px={0}
-                    >
-                      <Flex
-                        bg="transparent"
-                        width={{ md: "80px", base: "60px" }}
-                        height={{ md: "80px", base: "60px" }}
-                        alignItems="center"
-                        justifyContent="center"
-                        borderRadius="8px"
-                      >
-                        <Image src={"/zlp.png"} alt="zk perp" w="full" />
-                      </Flex>
-
-                      <Text
-                        color={"#FBFBFB"}
-                        fontSize={{ md: "32px", base: "24px" }}
-                        lineHeight="39px"
-                        fontWeight={400}
-                        fontFamily="Relative"
-                      >
-                        ZLP
-                      </Text>
-                    </Flex>
-                    <Box align={"left"}>
-                      <Text
-                        color={"#FBFBFB"}
-                        fontSize={{ md: "24px", base: "16px" }}
-                        lineHeight={{ md: "29px", base: "24px" }}
-                        fontWeight={400}
-                        pt={{ md: 8, base: 4 }}
-                        fontFamily="Relative"
-                      >
-                        ZLP functions as the liquidity provider token for zkPerp
-                        markets and accumulates 70% of the fees generated by
-                        these markets.
-                      </Text>
-                    </Box>
-                  </Box>
-                  <Flex
-                    gap={4}
-                    align={"center"}
-                    alignSelf={"center"}
-                    position={"relative"}
-                    justifyContent={"flex-end"}
-                  >
-                    <NextLink
-                      href={"https://docs.zkperp.tech/tokenomics/zlp"}
-                      target="_blank"
-                    >
-                      <Button
-                        size="md"
-                        border="solid"
-                        borderColor="rgba(235, 194, 142, 1)"
-                        borderWidth="1px"
-                        _hover={{
-                          bg: "transparent",
-                        }}
-                        bg="transparent"
-                        transition="background-color 0.3s ease-out"
-                        minWidth="180px"
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: "16px",
-                          borderRadius: "8px",
-                          padding: "16px 26px",
-                          fontFamily: "Relative",
-                        }}
-                        width={{ base: "100%", md: "auto" }}
-                      >
-                        <Text color={"#FBFBFB"}>Learn More</Text>
-                      </Button>
-                    </NextLink>
-                  </Flex>
-                </Box>
-              </Flex>
-            </SimpleGrid>
-          </Container>
-        </Box>
-        {/* alpha testnet */}
-        <Box align="center" py={{ md: 12, base: "4" }}>
-          <Image alt={"Line image"} src="/Line.png" objectFit={"cover"} />
-        </Box>
-        <Container maxW={"8xl"} py={{ base: "8", md: "0" }}>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
-            <Flex
-              spacing={6}
-              justifyContent="center"
-              textAlign={{ md: "left", base: "center" }}
+        <Box
+          width={"90%"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          gap={30}
+          flexDirection={{ md: "row", base: "column" }}
+        >
+          <Box
+            borderRadius={"8px"}
+            border={"1px solid #FCFDC7"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={30}
+            height={"170px"}
+            width={"100%"}
+          >
+            <Box>
+              <Image src="/blast/chart.png" alt="zk infor" />
+            </Box>
+            <Box
+              display={"flex"}
+              alignItems={"left"}
               flexDirection={"column"}
+              gap={"10px"}
             >
-              <Flex
-                justifyContent={{ md: "left", base: "center" }}
-                py={{ base: "4", md: "6" }}
+              <Text
+                color={"#FCFDC7"}
+                fontSize={{ base: "16px", md: "18px" }}
+                fontWeight={{ base: "300", md: "400" }}
+                lineHeight={{ base: "19px", md: "28px" }}
+                fontFamily="Lakes"
+                width={{ md: "284px", base: "180px" }}
+                fontStyle={"normal"}
               >
-                <Text
-                  color={"#FFDCB1"}
-                  fontWeight={300}
-                  fontFamily="Relative"
-                  fontSize={{ base: "24px", md: "40px" }}
-                  lineHeight={{ md: "62px", base: "42px" }}
-                  maxW={{ base: "200px", md: "650px" }}
-                >
-                  Alpha Testnet (Coming Soon)
-                </Text>
-              </Flex>
-              <Flex
-                justifyContent={{ md: "left", base: "center" }}
-                py={{ base: "4", md: "6" }}
+                Total Trading Volume
+              </Text>
+              <Text
+                color={"#FCFDC7"}
+                fontSize={{ base: "16px", md: "28px" }}
+                fontWeight={{ base: "300", md: "400" }}
+                lineHeight={{ base: "16px", md: "28px" }}
+                fontFamily="Lakes"
+                width={{ md: "284px", base: "180px" }}
+                fontStyle={"normal"}
               >
-                <Text
-                  fontWeight={300}
-                  fontSize={{ base: "28px", md: "56px" }}
-                  lineHeight={{ md: "78px", base: "42px" }}
-                  maxW={{ base: "312px", md: "1200px" }}
-                  color={"#FBFBFB"}
-                  fontFamily="Relative"
-                >
-                  Trade, Win, and Share <br />
-                  <Text
-                    as={"span"}
-                    color={"#62E6D4"}
-                    fontWeight={300}
-                    fontSize={{ base: "28px", md: "56px" }}
-                    lineHeight={{ md: "62px", base: "42px" }}
-                    maxW={{ base: "312px", md: "1200px" }}
-                    fontFamily="Relative"
-                  >
-                    100,000,000 ZKP
-                  </Text>
-                </Text>
-              </Flex>
+                $157,644,372
+              </Text>
+            </Box>
+          </Box>
 
-              <Flex
-                pt={4}
-                flexDirection={{ base: "column", md: "row" }}
-                justifyContent={{ base: "center", md: "left" }}
-                alignItems={{ base: "center", md: "left" }}
-                width="100%"
-                pl={2}
+          <Box
+            borderRadius={"8px"}
+            border={"1px solid #FCFDC7"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={30}
+            height={"170px"}
+            width={"100%"}
+          >
+            <Box>
+              <Image src="/blast/volume.png" alt="zk infor" />
+            </Box>
+            <Box
+              display={"flex"}
+              alignItems={"left"}
+              flexDirection={"column"}
+              gap={"10px"}
+            >
+              <Text
+                color={"#FCFDC7"}
+                fontSize={{ base: "16px", md: "18px" }}
+                fontWeight={{ base: "300", md: "400" }}
+                lineHeight={{ base: "19px", md: "28px" }}
+                fontFamily="Lakes"
+                width={{ md: "284px", base: "180px" }}
+                fontStyle={"normal"}
               >
-                <NextLink href={"#"}>
-                  <Button
-                    size="md"
-                    backgroundColor={"#EBC28E"}
-                    transition="background-color 0.3s ease-in-out"
-                    _hover={{
-                      bg: "linear-gradient(93.03deg, #EBC28E -7.42%, #FFEEDA 50.62%, #EBC28E 109.79%)",
-                    }}
-                    minWidth="180px"
-                    fontFamily="Relative"
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      padding: "16px 51px",
-                      fontFamily: "Relative",
-                    }}
-                    mb={{ base: 6, md: 0 }}
-                    mr={{ base: 0, md: 6 }}
-                    width={{ base: "200px", md: "auto" }}
-                  >
-                    Join Now
-                  </Button>{" "}
-                </NextLink>
+                Open Interest
+              </Text>
+              <Text
+                color={"#FCFDC7"}
+                fontSize={{ base: "16px", md: "28px" }}
+                fontWeight={{ base: "300", md: "400" }}
+                lineHeight={{ base: "19px", md: "28px" }}
+                fontFamily="Lakes"
+                fontStyle={"normal"}
+              >
+                $214,690,655
+              </Text>
+            </Box>
+          </Box>
 
-                <NextLink
-                  href={"https://docs.zkperp.tech/introduction/alpha-testnet"}
-                  target="_blank"
-                >
-                  <Button
-                    size="md"
-                    border="solid"
-                    borderColor="rgba(235, 194, 142, 1)"
-                    borderWidth="1px"
-                    _hover={{
-                      bg: "transparent",
-                    }}
-                    bg="transparent"
-                    transition="background-color 0.3s ease-out"
-                    minWidth="180px"
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "16px",
-                      borderRadius: "8px",
-                      padding: "16px 51px",
-                      fontFamily: "Relative",
-                    }}
-                    width={{ base: "200px", md: "auto" }}
-                  >
-                    <Text color={"#FBFBFB"}>Discover</Text>
-                  </Button>
-                </NextLink>
-              </Flex>
-            </Flex>
-            <Flex justifyContent={{ base: "center", md: "flex-start" }}>
-              <Box>
-                <Image
-                  alt={"feature image"}
-                  src="/trade.png"
-                  objectFit={"cover"}
-                  maxW={{ md: "600px", base: "393px" }}
-                  top={0}
-                  left={0}
-                />
-              </Box>
-            </Flex>
-          </SimpleGrid>
-        </Container>
-        <Box align="center" py={{ md: 12, base: "4" }}>
-          <Image alt={"Line image"} src="/Line.png" objectFit={"cover"} />
+          <Box
+            borderRadius={"8px"}
+            border={"1px solid #FCFDC7"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={30}
+            height={"170px"}
+            width={"100%"}
+          >
+            <Box>
+              <Image src="/blast/user.png" alt="zk infor" />
+            </Box>
+            <Box
+              display={"flex"}
+              alignItems={"left"}
+              flexDirection={"column"}
+              gap={"10px"}
+            >
+              <Text
+                color={"#FCFDC7"}
+                fontSize={{ base: "16px", md: "18px" }}
+                fontWeight={{ base: "300", md: "400" }}
+                lineHeight={{ base: "19px", md: "28px" }}
+                fontFamily="Lakes"
+                width={{ md: "284px", base: "180px" }}
+                fontStyle={"normal"}
+              >
+                Total Users
+              </Text>
+              <Text
+                color={"#FCFDC7"}
+                fontSize={{ base: "16px", md: "28px" }}
+                fontWeight={{ base: "300", md: "400" }}
+                lineHeight={{ base: "19px", md: "28px" }}
+                fontFamily="Lakes"
+                fontStyle={"normal"}
+              >
+                342,212
+              </Text>
+            </Box>
+          </Box>
         </Box>
-        {/* comunity */}
+      </Box>
+      {/* Trading, the way it should be */}
+      <Box width={"90%"} margin={"0px auto"}>
+        <Text
+          color={"#FCFDC7"}
+          fontSize={{ base: "20px", md: "30px" }}
+          fontWeight={{ base: "300", md: "400" }}
+          lineHeight={{ base: "26px", md: "30px" }}
+          fontFamily="Lakes"
+          fontStyle={"normal"}
+          paddingTop={{ md: "60px", base: "40px" }}
+        >
+          Trading, the way it should be
+        </Text>
+        <Text
+          color={"#C3D3A5"}
+          fontSize={{ base: "16px", md: "26px" }}
+          lineHeight={{ base: "19px", md: "26px" }}
+          fontFamily="Lakes"
+          fontStyle={"normal"}
+          paddingTop={{ md: "20px", base: "10px" }}
+        >
+          Pov: You are etering the trading platform designed for all.
+        </Text>
         <Box>
-          <Container
-            maxW={"8xl"}
-            py={{ md: "24", base: "16" }}
-            align="center"
-            position="relative"
+          <SimpleGrid
+            columns={{ md: "3", base: "1" }}
+            spacing={{ md: "40px", base: "10px" }}
+            paddingTop={{ md: "60px", base: "40px" }}
+            paddingBottom={{ md: "60px", base: "40px" }}
+          >
+            {TRADING_INFO.map((item, index) => (
+              <Box key={item.title}>
+                <Box
+                  display={"flex"}
+                  justifyContent={"flex-start"}
+                  alignItems={"center"}
+                  gap={"20px"}
+                >
+                  <Image
+                    src={item.icon}
+                    alt="blast icon"
+                    width={{ md: "45px", base: "30px" }}
+                  />
+                  <Text
+                    color={"#FCFDC7"}
+                    fontSize={{ base: "16px", md: "30px" }}
+                    fontWeight={{ base: "300", md: "400" }}
+                    lineHeight={{ base: "19px", md: "30px" }}
+                    fontFamily="Lakes"
+                    fontStyle={"normal"}
+                  >
+                    {item.title}
+                  </Text>
+                </Box>
+                <Text
+                  color={"#C3D3A5"}
+                  fontSize={{ base: "14px", md: "18px" }}
+                  lineHeight={{ base: "16px", md: "20px" }}
+                  fontFamily="Lakes"
+                  fontStyle={"normal"}
+                  paddingTop={{ md: "20px", base: "10px" }}
+                  paddingBottom={"30px"}
+                  width={{ md: "80%", base: "100%" }}
+                >
+                  {item.des}
+                </Text>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Box>
+      </Box>
+      {/* Multiple market */}
+      <Box
+        width={"90%"}
+        margin={"0px auto"}
+        textAlign={"center"}
+        paddingY={{ base: "40px", md: "60px" }}
+      >
+        <Text
+          color={"#FCFDC7"}
+          fontSize={{ base: "16px", md: "30px" }}
+          fontWeight={{ base: "300", md: "400" }}
+          lineHeight={{ base: "19px", md: "30px" }}
+          fontFamily="Lakes"
+          fontStyle={"normal"}
+          paddingTop={{ md: "60px", base: "10px" }}
+          paddingBottom={{ md: "20px", base: "10px" }}
+        >
+          MULTIPLE MARKETS
+        </Text>
+        <Text
+          color={"#FCFC05"}
+          fontSize={{ base: "34px", md: "55px" }}
+          lineHeight={{ base: "36px", md: "60px" }}
+          fontFamily="Lakes"
+          fontStyle={"normal"}
+          paddingTop={{ md: "20px", base: "10px" }}
+          paddingBottom={{ md: "60px", base: "20px" }}
+        >
+          Secured by industry-leading oracles
+        </Text>
+        {/* trading view  */}
+        <Box
+          sx={{
+            borderTop: "0.5px solid #C3D3A5",
+            borderBottom: "0.5px solid #C3D3A5",
+            height: "120px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              width: "80%",
+            }}
+          >
+            <TradingViewWidget />
+          </div>
+        </Box>
+      </Box>
+      {/* earn 4 time */}
+      <Box
+        width={"90%"}
+        margin={"0px auto"}
+        textAlign={{ md: "left", base: "center" }}
+        paddingY={{ base: "20px", md: "60px" }}
+      >
+        <Text
+          color={"#FCFDC7"}
+          fontSize={{ base: "26px", md: "30px" }}
+          fontWeight={{ base: "300", md: "400" }}
+          lineHeight={{ base: "30px", md: "30px" }}
+          fontFamily="Lakes"
+          fontStyle={"normal"}
+          paddingTop={{ md: "60px", base: "40px" }}
+        >
+          Earn 4 times yield on Blast Trade
+        </Text>
+        <Text
+          color={"#C3D3A5"}
+          fontSize={{ base: "16px", md: "26px" }}
+          lineHeight={{ base: "19px", md: "26px" }}
+          fontFamily="Lakes"
+          fontStyle={"normal"}
+          paddingTop={{ md: "20px", base: "10px" }}
+        >
+          Big brains know how to maximize their yields with the protocol.
+        </Text>
+        <Box padding={{ base: "40px 0px", md: "80px 0px" }}>
+          <Image src="/blast/tokennomics.png" alt="blast chart" />
+          <Image
+            paddingY={{ md: "80px", base: "20px" }}
+            src="/blast/line.png"
+            alt="blast chart"
+          />
+        </Box>
+      </Box>
+      {/* here come */}
+      <Box
+        width={"90%"}
+        margin={"0px auto"}
+        textAlign={{ md: "left", base: "center" }}
+        paddingY={{ base: "20px", md: "20px" }}
+      >
+        <Text
+          color={"#FCFDC7"}
+          fontSize={{ base: "26px", md: "30px" }}
+          fontWeight={{ base: "300", md: "400" }}
+          lineHeight={{ base: "30px", md: "30px" }}
+          fontFamily="Lakes"
+          fontStyle={"normal"}
+        >
+          Here comes the Governance and LP tokens
+        </Text>
+
+        <SimpleGrid
+          columns={{ md: "2", base: "1" }}
+          spacing={{ md: "40px", base: "30px" }}
+          paddingTop={{ md: "60px", base: "40px" }}
+          paddingBottom={{ md: "60px", base: "40px" }}
+        >
+          <Box
+            border={"1px solid #FCFDC7"}
+            padding={{ md: "40px", base: "20px" }}
+            borderRadius={"12px"}
           >
             <Box
-              width={"full"}
-              position={"absolute"}
-              bottom={270}
-              display={{ base: "none", md: "block" }}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
             >
-              <Image src={"./image131.png"} alt="zk perp" w="full" />
+              <Box>
+                <Image
+                  src="/blast/bmx.png"
+                  alt="blast icon"
+                  width={{ base: "80%", md: "100%" }}
+                />
+              </Box>
+              <NextLink href={""} target={"_blank"}>
+                <Button
+                  backgroundColor={"transparent"}
+                  transition="background-color 0.3s ease-in-out"
+                  border={"1px solid #FCFDC7"}
+                  _hover={{
+                    bg: "rgba(195, 211, 165, 0.2)",
+                  }}
+                  display={{ md: "flex", base: "none" }}
+                  padding={{ base: "8px 20px", md: "16px 32px" }}
+                  style={{
+                    // fontWeight: "bold",
+                    fontSize: "16px",
+                    borderRadius: "4px",
+                    fontFamily: "Lakes",
+                    fontWeight: "200",
+                  }}
+                  // onClick={onComingSoonOpen}
+                >
+                  <Text color={"#FCFDC7"}> Learn More</Text>
+                </Button>
+              </NextLink>
             </Box>
-            <Heading
-              fontWeight={300}
-              fontSize={{ base: "28px", md: "56px" }}
-              lineHeight={{ md: "62px", base: "42px" }}
-              maxW={{ base: "312px", md: "1200px" }}
-              color={"#FBFBFB"}
-              textAlign="center"
-              fontFamily="Relative"
-            >
-              Join The Most United <br />
-              Community In The{" "}
-              <Heading
-                as={"span"}
-                color={"#62E6D4"}
-                fontWeight={300}
-                fontSize={{ base: "28px", md: "56px" }}
-                lineHeight={{ md: "62px", base: "42px" }}
-                maxW={{ base: "312px", md: "1200px" }}
-                fontFamily="Relative"
-              >
-                Ecosystem
-              </Heading>
-            </Heading>
             <Text
-              textAlign="center"
-              color={"#fbfbfb"}
-              mt={{ md: "12", base: "8" }}
-              fontSize={{ base: "16px", md: "24px" }}
-              fontWeight={400}
-              fontFamily="Relative"
+              color={"#C3D3A5"}
+              fontSize={{ base: "14px", md: "18px" }}
+              lineHeight={{ base: "16px", md: "20px" }}
+              fontFamily="Lakes"
+              fontStyle={"normal"}
+              paddingTop={{ md: "20px", base: "20px" }}
+              paddingBottom={"30px"}
+              width={{ md: "100%", base: "100%" }}
+              height={{ md: "100px", base: "90px" }}
+              textAlign={"left"}
             >
-              zkPerp was built by Scrollers, for the Scrollers
+              BMX functions as both the utility and governance token,
+              accumulating 30% of the protocol's generated fees.
             </Text>
-            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mt={24}>
-              <NextLink href={"https://twitter.com/zkPerp"} target="self_">
-                <Flex
-                  position="relative"
-                  bgImage={{
-                    md: "url('/Card.png', radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%))",
-                    base: "url('/Card.png')",
+            <NextLink href={""} target={"_blank"}>
+              <Button
+                backgroundColor={"transparent"}
+                transition="background-color 0.3s ease-in-out"
+                border={"1px solid #FCFDC7"}
+                width={"100%"}
+                _hover={{
+                  bg: "rgba(195, 211, 165, 0.2)",
+                }}
+                display={{ md: "none", base: "block" }}
+                padding={{ base: "8px 20px", md: "16px 32px" }}
+                style={{
+                  // fontWeight: "bold",
+                  fontSize: "16px",
+                  borderRadius: "4px",
+                  fontFamily: "Lakes",
+                  fontWeight: "200",
+                }}
+                // onClick={onComingSoonOpen}
+              >
+                <Text color={"#FCFDC7"}> Learn More</Text>
+              </Button>
+            </NextLink>
+          </Box>
+          <Box
+            border={"1px solid #FCFDC7"}
+            padding={{ md: "40px", base: "20px" }}
+            borderRadius={"12px"}
+          >
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <Box>
+                <Image
+                  src="/blast/blp.png"
+                  alt="blast icon"
+                  width={{ base: "80%", md: "100%" }}
+                />
+              </Box>
+              <NextLink href={""} target={"_blank"}>
+                <Button
+                  backgroundColor={"transparent"}
+                  transition="background-color 0.3s ease-in-out"
+                  border={"1px solid #FCFDC7"}
+                  _hover={{
+                    bg: "rgba(195, 211, 165, 0.2)",
                   }}
-                  bgSize={"cover"}
-                  bgBlendMode="overlay, normal"
-                  backdropFilter="blur(40px)"
-                  borderRadius="8px"
-                  borderWidth="1px"
-                  borderColor="gray.200"
-                  overflow="hidden"
-                  minHeight={{ md: "240px", base: "200px" }}
-                >
-                  <Box width={"full"} pt={4} pb={8}>
-                    <Flex
-                      size="md"
-                      bg="transparent"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      gap={4}
-                      px={8}
-                      py={4}
-                    >
-                      <Text
-                        color={"#FBFBFB"}
-                        fontSize="32px"
-                        lineHeight="39px"
-                        fontWeight={500}
-                        fontFamily="Relative"
-                      >
-                        X
-                      </Text>
-                      <Flex
-                        bg="transparent"
-                        width={"32px"}
-                        height={"32px"}
-                        alignItems="center"
-                        justifyContent="center"
-                        borderRadius="8px"
-                      >
-                        <Image src={"/Vector.png"} alt="zk perp" w="full" />
-                      </Flex>
-                    </Flex>
-                    <Box
-                      width={{ md: "160px", base: "100px" }}
-                      position="absolute"
-                      bottom={0}
-                      left={30}
-                    >
-                      <Image src={"/x1.png"} alt="zk perp" w="full" />
-                    </Box>
-                  </Box>
-                </Flex>
-              </NextLink>
-              <NextLink href={"https://discord.gg/zkperp"} target="self_">
-                <Flex
-                  position="relative"
-                  bgImage={{
-                    md: "url('/Card.png', radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%))",
-                    base: "url('/Card.png')",
+                  display={{ md: "flex", base: "none" }}
+                  padding={{ base: "8px 20px", md: "16px 32px" }}
+                  style={{
+                    // fontWeight: "bold",
+                    fontSize: "16px",
+                    borderRadius: "4px",
+                    fontFamily: "Lakes",
+                    fontWeight: "200",
                   }}
-                  bgSize={"cover"}
-                  bgBlendMode="overlay, normal"
-                  backdropFilter="blur(40px)"
-                  borderRadius="8px"
-                  borderWidth="1px"
-                  borderColor="gray.200"
-                  overflow="hidden"
-                  minHeight={{ md: "240px", base: "200px" }}
+                  // onClick={onComingSoonOpen}
                 >
-                  <Box width={"full"} pt={4} pb={8}>
-                    <Flex
-                      size="md"
-                      bg="transparent"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      gap={4}
-                      px={8}
-                      py={4}
-                    >
-                      <Text
-                        color={"#FBFBFB"}
-                        fontSize="32px"
-                        lineHeight="39px"
-                        fontFamily="Relative"
-                        fontWeight={500}
-                      >
-                        Discord
-                      </Text>
-                      <Flex
-                        bg="transparent"
-                        width={"32px"}
-                        height={"32px"}
-                        alignItems="center"
-                        justifyContent="center"
-                        borderRadius="8px"
-                      >
-                        <Image src={"/Vector.png"} alt="zk perp" w="full" />
-                      </Flex>
-                    </Flex>
-                    <Box
-                      width={{ md: "160px", base: "100px" }}
-                      position="absolute"
-                      bottom={0}
-                      left={30}
-                    >
-                      <Image src={"/d1.png"} alt="zk perp" w="full" />
-                    </Box>
-                  </Box>
-                </Flex>
+                  <Text color={"#FCFDC7"}> Learn More</Text>
+                </Button>
               </NextLink>
-              <NextLink href={"https://t.me/zkperp"} target="self_">
-                <Flex
-                  position="relative"
-                  bgImage={{
-                    md: "url('/Card.png', radial-gradient(114% 180.27% at -6.44% -7.16%, rgba(165, 239, 255, 0.2) 0%, rgba(110, 191, 244, 0.0447917) 77.08%, rgba(70, 144, 213, 0) 100%))",
-                    base: "url('/Card.png')",
+            </Box>
+            <Text
+              color={"#C3D3A5"}
+              fontSize={{ base: "14px", md: "18px" }}
+              lineHeight={{ base: "16px", md: "20px" }}
+              fontFamily="Lakes"
+              fontStyle={"normal"}
+              paddingTop={{ md: "20px", base: "20px" }}
+              paddingBottom={"30px"}
+              width={{ md: "100%", base: "100%" }}
+              textAlign={"left"}
+              height={{ md: "100px", base: "90px" }}
+            >
+              BLP serves as the liquidity provider token for markets, gathering
+              70% of the fees generated by the protocol.
+            </Text>
+            <NextLink href={""} target={"_blank"}>
+              <Button
+                backgroundColor={"transparent"}
+                transition="background-color 0.3s ease-in-out"
+                border={"1px solid #FCFDC7"}
+                width={"100%"}
+                _hover={{
+                  bg: "rgba(195, 211, 165, 0.2)",
+                }}
+                display={{ md: "none", base: "block" }}
+                padding={{ base: "8px 20px", md: "16px 32px" }}
+                style={{
+                  // fontWeight: "bold",
+                  fontSize: "16px",
+                  borderRadius: "4px",
+                  fontFamily: "Lakes",
+                  fontWeight: "200",
+                }}
+                // onClick={onComingSoonOpen}
+              >
+                <Text color={"#FCFDC7"}> Learn More</Text>
+              </Button>
+            </NextLink>
+          </Box>
+        </SimpleGrid>
+      </Box>
+      {/* the fund */}
+      <Box paddingBottom={{ base: "40px", md: "60px" }}>
+        <Box
+          padding={{ md: "60px", base: "10px" }}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
+          <Box
+            backgroundImage={{ md: "/blast/thefund.png", base: "" }}
+            backgroundSize={"100%"}
+            width={{ md: "70%", base: "cover" }}
+            height={{ md: "535px", base: "100%" }}
+          >
+            <Box
+              textAlign={"center"}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              flexDirection={"column"}
+            >
+              <Text
+                color={"#FCFC05"}
+                fontSize={{ base: "22px", md: "55px" }}
+                lineHeight={{ base: "28px", md: "68px" }}
+                fontFamily="Lakes"
+                fontStyle={"normal"}
+                paddingTop={{ md: "120px", base: "20px" }}
+                paddingBottom={{ md: "20px", base: "0px" }}
+              >
+                THE FUNDS ARE YOURS, <br /> THE YIELDS ARE OURS
+              </Text>
+              <Text
+                color={"#C3D3A5"}
+                fontSize={{ base: "14px", md: "26px" }}
+                lineHeight={{ base: "18px", md: "26px" }}
+                fontFamily="Lakes"
+                fontStyle={"normal"}
+                paddingTop={{ md: "10px", base: "40px" }}
+                paddingBottom={{ md: "60px", base: "40px" }}
+                width={{ md: "100%", base: "80%" }}
+              >
+                Join the community with thousands of traders, LPs, and
+                like-minded fellows.
+              </Text>
+              <NextLink href={""} target={"_blank"}>
+                <Button
+                  backgroundColor={"#FCFDC7"}
+                  transition="background-color 0.3s ease-in-out"
+                  border={"1px solid #FCFDC7"}
+                  _hover={{
+                    bg: "#fff",
                   }}
-                  bgSize={"cover"}
-                  bgBlendMode="overlay, normal"
-                  backdropFilter="blur(40px)"
-                  borderRadius="8px"
-                  borderWidth="1px"
-                  borderColor="gray.200"
-                  overflow="hidden"
-                  minHeight={{ md: "240px", base: "200px" }}
+                  borderRadius="4px"
+                  fontFamily="Lakes"
+
+                  // onClick={onComingSoonOpen}
                 >
-                  <Box width={"full"} pt={4} pb={8}>
-                    <Flex
-                      size="md"
-                      bg="transparent"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      gap={4}
-                      px={8}
-                      py={4}
-                    >
-                      <Text
-                        color={"#FBFBFB"}
-                        fontSize="32px"
-                        lineHeight="39px"
-                        fontFamily="Relative"
-                        fontWeight={500}
-                      >
-                        Telegram
-                      </Text>
-                      <Flex
-                        bg="transparent"
-                        width={"32px"}
-                        height={"32px"}
-                        alignItems="center"
-                        justifyContent="center"
-                        borderRadius="8px"
-                      >
-                        <Image src={"/Vector.png"} alt="zk perp" w="full" />
-                      </Flex>
-                    </Flex>
-                    <Box
-                      width={{ md: "160px", base: "100px" }}
-                      position="absolute"
-                      bottom={0}
-                      left={30}
-                    >
-                      <Image src={"/t1.png"} alt="zk perp" w="full" />
-                    </Box>
-                  </Box>
-                </Flex>
+                  <Text fontSize={{ md: "16px", base: "12px" }} color={"#000"}>
+                    {" "}
+                    Join The Community
+                  </Text>
+                </Button>
               </NextLink>
-            </SimpleGrid>
-          </Container>
+            </Box>
+          </Box>
         </Box>
       </Box>
+
       <ScrollToTopButton />
     </Box>
   );

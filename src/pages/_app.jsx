@@ -32,7 +32,6 @@ export default function App(props) {
     <Center
       w="100vw"
       boxShadow="lg"
-      bgGradient="linear-gradient(90.07deg, #EBDE8E -8.17%, #F3E4AC 7.41%, #F4E6B2 10.41%, #FFEEDA 31.13%, #FFF0DD 31.14%, #FFF2E3 36.77%, #FFFFFF 53.39%, #CBFDF6 61.33%, #93FBED 69.86%, #8AF7E8 76.91%, #62E6D4 106.87%)"
       p={20}
       justifyContent="center"
       alignContent="center"
@@ -49,12 +48,12 @@ export default function App(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href={favicon.src} />
-        <meta name="title" content="ZkPerp" />
+        <meta name="title" content="Blasttrade" />
         <meta
           name="description"
-          content="Trade without boundaries powered by Scroll"
+          content="Trade without boundaries powered by Blast"
         />
-        <title>ZkPerp</title>
+        <title>Blast</title>
       </Head>
       <ChakraProvider theme={theme}>
         <AppBar />

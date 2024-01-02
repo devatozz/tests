@@ -7,16 +7,16 @@ const theme = extendTheme({
     global: {
       "@font-face": [
         {
-          fontFamily: "Relative",
+          fontFamily: "Lakes",
           fontStyle: "normal",
           fontWeight: 400,
-          src: "url('../components/fonts/relative/relative-book-pro.eot')",
+          src: "url('../components/fonts/lakes/TT-Lakes-Neue-Trial-Black')",
         },
         {
-          fontFamily: "RelativeNumber",
+          fontFamily: "Lakes",
           fontStyle: "normal",
           fontWeight: 400,
-          src: "url('../components/fonts/relative/relative-book-pro.eot')",
+          src: "url('../components/fonts/lakes/TT-Lakes-Neue-Trial-Black')",
         },
       ],
     },
