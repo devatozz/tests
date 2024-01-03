@@ -181,16 +181,24 @@ export default function Banner() {
               </NextLink>
             </Flex>
           </Stack>
+
           <Flex
-            width={{ md: "800px", base: "100%" }}
+            width={{ md: "550px", base: "100%" }}
             alignItems="center"
             justifyContent="center"
-            borderRadius="8px"
+            marginLeft={{ md: "20px", base: "0px" }}
+            padding={{ md: "20px", base: "10px" }}
+            background={"#22281a"}
+            borderRadius={{ md: "12px", base: "8px" }}
           >
-            <Image
-              src="/blast/hero.png"
+            <video
+              src="/blast/video.mp4"
               alt="zk perp"
-              width={{ md: "800px", base: "100%" }}
+              s
+              width={{ md: "550px", base: "100%" }}
+              autoPlay
+              muted
+              loop
             />
           </Flex>
         </Container>
