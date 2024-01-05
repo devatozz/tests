@@ -183,19 +183,19 @@ export default function Banner() {
           </Stack>
 
           <Flex
-            width={{ md: "550px", base: "100%" }}
+            width={{ md: "750px", base: "100%" }}
             alignItems="center"
             justifyContent="center"
             marginLeft={{ md: "20px", base: "0px" }}
             padding={{ md: "20px", base: "10px" }}
-            background={"#22281a"}
+            background={""}
             borderRadius={{ md: "12px", base: "8px" }}
           >
             <video
-              src="/blast/video.mp4"
+              src="/blast/new_11.webm"
               alt="zk perp"
               s
-              width={{ md: "550px", base: "100%" }}
+              width={{ md: "750px", base: "100%" }}
               autoPlay
               muted
               loop
