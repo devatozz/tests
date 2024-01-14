@@ -50,7 +50,7 @@ const TradingViewWidget = () => {
       .then(result => {
         console.log("price: ", result);
         const btc = result[0];
-        const eth = result[0];
+        const eth = result[1];
         setTokenList(tokenList.map((item, index) => {
           switch (index) {
             case 0: // set btc price
