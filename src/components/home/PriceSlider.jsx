@@ -55,12 +55,12 @@ const TradingViewWidget = () => {
           switch (index) {
             case 0: // set btc price
               item.lastPrice = btc.lastPrice;
-              item.priceChangePercent = btc.priceChangePercent;
+              item.priceChangePercent = Number(btc.priceChangePercent).toFixed(2);
               item.volume = btc.quoteVolume;
               break;
             case 1: // set eth price
               item.lastPrice = eth.lastPrice;
-              item.priceChangePercent = eth.priceChangePercent;
+              item.priceChangePercent = Number(eth.priceChangePercent).toFixed(2);
               item.volume = eth.quoteVolume;
               break;
             default: break;
@@ -70,28 +70,6 @@ const TradingViewWidget = () => {
       });
 
     // fetch btc, eth chart from coimarketplace
-    fetch("https://coinmarketcap.com/")
-      .then(res => res.text())
-      .then(textRes => {
-        var htmlContent = document.getElementById('htmlContent').innerHTML;
-        htmlContent = textRes;
-        // Create a temporary element to parse the HTML
-        var tempElement = document.createElement('div');
-        tempElement.innerHTML = htmlContent;
-
-        // Find the img tag with title "bitcoin-7d-price"
-        var imgTag = tempElement.querySelector('img[title="bitcoin-7d-price"]');
-
-        // Extract the src attribute
-        if (imgTag) {
-          var srcAttribute = imgTag.getAttribute('src');
-          console.log('Src Attribute:', srcAttribute);
-          alert(srcAttribute)
-        } else {
-          console.log('Image with title "bitcoin-7d-price" not found.');
-        }
-      })
-      .catch(err => console.log("error: ", err))
 
     // get xau, xag price
     fetch("https://data-asg.goldprice.org/dbXRates/USD")
@@ -104,12 +82,12 @@ const TradingViewWidget = () => {
           switch (index) {
             case 2: // set gold price
               item.lastPrice = price.xauPrice;
-              item.priceChangePercent = price.pcXau;
+              item.priceChangePercent = Number(price.pcXau).toFixed(2);
               // item.volume = btc.quoteVolume;
               break;
             case 3: // set sliver price
               item.lastPrice = price.xagPrice;
-              item.priceChangePercent = price.pcXag;
+              item.priceChangePercent = Number(price.pcXau).toFixed(2);
               // item.volume = eth.quoteVolume;
               break;
             default: break;
