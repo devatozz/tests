@@ -152,7 +152,7 @@ export default function Banner() {
                     fontFamily: "Lakes",
                     fontWeight: "200",
                   }}
-                  // onClick={onComingSoonOpen}
+                // onClick={onComingSoonOpen}
                 >
                   <Text color={"#000"}>Launch App</Text>
                 </Button>
@@ -174,7 +174,7 @@ export default function Banner() {
                     fontFamily: "Lakes",
                     fontWeight: "200",
                   }}
-                  // onClick={onComingSoonOpen}
+                // onClick={onComingSoonOpen}
                 >
                   <Text color={"#FCFDC7"}> Learn More</Text>
                 </Button>
@@ -456,9 +456,10 @@ export default function Banner() {
         </Text>
         {/* trading view  */}
         <Box
+          marginTop={"60px"}
           sx={{
-            borderTop: "0.5px solid #C3D3A5",
-            borderBottom: "0.5px solid #C3D3A5",
+            // borderTop: "0.5px solid #C3D3A5",
+            // borderBottom: "0.5px solid #C3D3A5",
             height: "120px",
             display: "flex",
             alignItems: "center",
@@ -467,7 +468,7 @@ export default function Banner() {
         >
           <div
             style={{
-              width: "80%",
+              width: "100%",
             }}
           >
             <TradingViewWidget />
@@ -569,7 +570,7 @@ export default function Banner() {
                     fontFamily: "Lakes",
                     fontWeight: "200",
                   }}
-                  // onClick={onComingSoonOpen}
+                // onClick={onComingSoonOpen}
                 >
                   <Text color={"#FCFDC7"}> Learn More</Text>
                 </Button>
@@ -608,7 +609,7 @@ export default function Banner() {
                   fontFamily: "Lakes",
                   fontWeight: "200",
                 }}
-                // onClick={onComingSoonOpen}
+              // onClick={onComingSoonOpen}
               >
                 <Text color={"#FCFDC7"}> Learn More</Text>
               </Button>
@@ -648,7 +649,7 @@ export default function Banner() {
                     fontFamily: "Lakes",
                     fontWeight: "200",
                   }}
-                  // onClick={onComingSoonOpen}
+                // onClick={onComingSoonOpen}
                 >
                   <Text color={"#FCFDC7"}> Learn More</Text>
                 </Button>
@@ -687,7 +688,7 @@ export default function Banner() {
                   fontFamily: "Lakes",
                   fontWeight: "200",
                 }}
-                // onClick={onComingSoonOpen}
+              // onClick={onComingSoonOpen}
               >
                 <Text color={"#FCFDC7"}> Learn More</Text>
               </Button>
@@ -751,7 +752,7 @@ export default function Banner() {
                   borderRadius="4px"
                   fontFamily="Lakes"
 
-                  // onClick={onComingSoonOpen}
+                // onClick={onComingSoonOpen}
                 >
                   <Text fontSize={{ md: "16px", base: "12px" }} color={"#000"}>
                     {" "}
