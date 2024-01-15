@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Text,
@@ -6,7 +6,47 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { CurrencyFormater, getPriceFromBinance, removeLastZezo } from "src/utils/PriceFormater";
+import { Chart, CategoryScale, LinearScale, BarElement, LineElement, LineController, PointElement } from 'chart.js';
 
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  LineController,
+  PointElement);
+const DEFAULT_CHART_CONFIG = {
+  type: 'line',
+  data: {
+    // datasets: [
+    //   //   {
+    //   //   borderColor: "red",
+    //   //   borderWidth: 1,
+    //   //   radius: 0,
+    //   //   data: data,
+    //   // },
+    // ]
+  },
+  options: {
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: 'rgb(255, 99, 132)'
+        }
+      },
+    },
+    scales: {
+      x: {
+        type: 'linear',
+        display: false
+      },
+      y: {
+        display: false
+      }
+    }
+  }
+};
 const TradingViewWidget = () => {
   const [tokenList, setTokenList] = useState([
     {
@@ -41,7 +81,7 @@ const TradingViewWidget = () => {
       volume: "10000000",
       priceChangePercent: "-1.11"
     },
-  ])
+  ]);
 
   function getPrice() {
     // get btc, eth price
@@ -57,11 +97,37 @@ const TradingViewWidget = () => {
               item.lastPrice = btc.lastPrice;
               item.priceChangePercent = Number(btc.priceChangePercent).toFixed(2);
               item.volume = btc.quoteVolume;
+              destroyChart(btcChart);
+              btcChart = new Chart(document.getElementById('BTC-chart'), {
+                ...DEFAULT_CHART_CONFIG, data: {
+                  datasets: [{
+                    borderColor: item.priceChangePercent < 0 ? "red" : "green",
+                    borderWidth: 1,
+                    radius: 0,
+                    data: data,
+                  },
+                  ]
+                }
+              });
+              btcChart.resize(120, 80)
+              setChartUrl(btcChart.toBase64Image('image/jpeg', 1))
               break;
             case 1: // set eth price
               item.lastPrice = eth.lastPrice;
               item.priceChangePercent = Number(eth.priceChangePercent).toFixed(2);
               item.volume = eth.quoteVolume;
+              // destroyChart(ethChart);
+              // ethChart = new Chart(document.getElementById('ETH-chart'), {
+              //   ...DEFAULT_CHART_CONFIG, data: {
+              //     datasets: [{
+              //       borderColor: item.priceChangePercent < 0 ? "red" : "green",
+              //       borderWidth: 1,
+              //       radius: 0,
+              //       data: data,
+              //     },
+              //     ]
+              //   }
+              // });
               break;
             default: break;
           }
@@ -83,11 +149,12 @@ const TradingViewWidget = () => {
             case 2: // set gold price
               item.lastPrice = price.xauPrice;
               item.priceChangePercent = Number(price.pcXau).toFixed(2);
+
               // item.volume = btc.quoteVolume;
               break;
             case 3: // set sliver price
               item.lastPrice = price.xagPrice;
-              item.priceChangePercent = Number(price.pcXau).toFixed(2);
+              item.priceChangePercent = Number(price.pcXag).toFixed(2);
               // item.volume = eth.quoteVolume;
               break;
             default: break;
@@ -97,9 +164,24 @@ const TradingViewWidget = () => {
       });
   }
 
+  const data = [];
+  let prev = 100;
+  for (let i = 0; i < 24; i++) {
+    prev += 5 - Math.random() * 10;
+    data.push({ x: i, y: prev });
+  }
+
+  let btcChart = undefined;
+  let ethChart = undefined;
+  let xauChart = undefined;
+  let xagChart = undefined;
+
+  const [chartUrl, setChartUrl] = useState("");
+  const destroyChart = (chart) => { if (chart) chart.destroy() }
   useEffect(() => {
     getPrice();
   }, [])
+
 
   return (
     // <div className="tradingview-widget-container" ref={containerRef}></div>
@@ -146,17 +228,8 @@ const TradingViewWidget = () => {
               </Box>
 
               <Box width={"50%"} height={"100%"} alignContent={"space-between"} display={"grid"} gap={5}>
-                <Box>
-                  <svg width={"100%"} height="50" viewBox="0 0 145 87" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.6" d="M12.6968 62.6619L1.42902 76.9633C1.15112 77.316 1 77.752 1 78.201V86.5078H144V7.64862C144 5.62621 141.341 4.8816 140.291 6.60979L129.917 23.6761C129.215 24.8312 127.593 24.9715 126.703 23.9543L124.108 20.9879C123.027 19.7532 121.002 20.2729 120.649 21.8752L116.811 39.3233C116.466 40.8904 114.509 41.4339 113.405 40.2691L108.59 35.1857C107.751 34.3008 106.323 34.3652 105.568 35.3219L101.432 40.5609C100.529 41.7048 98.7445 41.5296 98.0812 40.2318L89.8767 24.1795C89.1164 22.6922 86.9758 22.7369 86.2784 24.2548L72.1066 55.0994C71.5519 56.3065 69.9963 56.6475 68.9876 55.7829L65.5397 52.8276C64.6929 52.1017 63.4158 52.2088 62.7017 53.0657L60.9888 55.1213C60.0575 56.2388 58.2826 56.0199 57.6508 54.7095L47.3356 33.3151C46.6024 31.7943 44.4311 31.8101 43.7201 33.3415L27.1234 69.0882C26.5618 70.2978 24.996 70.6293 23.9924 69.7511L15.5848 62.3945C14.7231 61.6405 13.4054 61.7625 12.6968 62.6619Z" fill="url(#paint0_linear_667_59125)" />
-                    <path d="M1 77.5078L12.6968 62.6619C13.4054 61.7625 14.7231 61.6405 15.5848 62.3945L23.9924 69.7511C24.996 70.6293 26.5618 70.2978 27.1234 69.0882L43.7201 33.3415C44.4311 31.8101 46.6024 31.7943 47.3356 33.3151L57.6508 54.7095C58.2826 56.0199 60.0575 56.2388 60.9888 55.1213L62.7017 53.0657C63.4158 52.2088 64.6929 52.1017 65.5398 52.8276L68.9876 55.7829C69.9963 56.6475 71.5519 56.3065 72.1066 55.0994L86.2784 24.2548C86.9758 22.7369 89.1164 22.6922 89.8767 24.1795L98.0812 40.2318C98.7445 41.5296 100.529 41.7048 101.432 40.5609L105.568 35.3219C106.323 34.3652 107.751 34.3008 108.59 35.1857L113.405 40.2691C114.509 41.4339 116.466 40.8904 116.811 39.3233L120.649 21.8752C121.002 20.2729 123.027 19.7532 124.108 20.9879L126.703 23.9543C127.593 24.9715 129.215 24.8311 129.917 23.6761L140.364 6.48947C141.394 4.79535 144 5.52529 144 7.50781V7.50781" stroke="#58FF5D" />
-                    <defs>
-                      <linearGradient id="paint0_linear_667_59125" x1="72.5" y1="0.507812" x2="72.5" y2="86.5078" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#77EA7B" />
-                        <stop offset="1" stop-color="#77EA7B" stop-opacity="0" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
+                <Box paddingLeft={"30%"}>
+                  <canvas width={"100%"} height={"50px"} id={token.symbol + "-chart"}></canvas>
                 </Box>
 
                 <Box >
