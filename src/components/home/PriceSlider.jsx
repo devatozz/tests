@@ -54,7 +54,7 @@ const TradingViewWidget = () => {
   return (
     <>
       <SimpleGrid
-        columns={{ md: "4", base: "1" }}
+        columns={{ xl: "4", base: "1", md: "2" }}
         spacing={{ md: "30px", base: "20px" }}
         paddingTop={{ md: "60px", base: "40px" }}
         paddingBottom={{ md: "60px", base: "40px" }}

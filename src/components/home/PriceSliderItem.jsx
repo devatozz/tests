@@ -30,7 +30,7 @@ const DEFAULT_CHART_CONFIG = {
         scales: {
             x: {
                 type: 'linear',
-                display: false
+                display: false,
             },
             y: {
                 display: false
@@ -71,9 +71,10 @@ export default function PriceSliderItem({ tokenData }) {
                     ...token,
                     ...result
                 });
-                setTimeout(() => initChart(result), 500);
+                initChart(result)
             });
     }, []);
+
     return <Box
         borderRadius={"8px"}
         border={"1px solid #FCFDC7"}
@@ -81,36 +82,43 @@ export default function PriceSliderItem({ tokenData }) {
         justifyContent={"center"}
         alignItems={"center"}
         gap={6}
-        height={"170px"}
         width={"100%"}
+        height={{ base: "200px", xl: "220px" }}
         paddingX={"20px"}
         paddingY={"28px"}
     >
         <Box width={"45%"} height={"100%"} alignContent={"space-between"} display={"grid"} gap={5}>
-            <Box display={"flex"} justifyContent={"center"} alignItems={"center"} justifyItems={"center"}>
-                <Image width={"50px"} height={"50px"} borderRadius={"50%"} p={"5px"} src={token.image} alt={token.name} />
+            <Box display={"flex"}
+                justifyContent={{ base: "center", xl: "flex-start" }}
+                alignItems={"center"}
+                justifyItems={"center"}
+                height={{ base: "70px", xl: "80px" }}
+            >
+                <Image width={{ base: "50px", xl: "60px" }} height={{ base: "50px", xl: "60px" }} borderRadius={"50%"} p={"5px"} src={token.image} alt={token.name} />
                 <Box fontWeight={"700"} textAlign={"left"}>
                     <Text color={"#FCFDC7"}
-                        fontSize={"20px"}
+                        fontSize={{ base: "20px", xl: "25px" }}
                         fontFamily="Lakes"
                         fontStyle={"normal"}>{token.symbol}</Text>
                     <Text color={"#FCFDC7"}
-                        fontSize={"12px"}
+                        fontSize={{ base: "12px", xl: "16px" }}
                         fontFamily="Lakes">{token.name}</Text>
                 </Box>
             </Box>
 
-            <Box display={"flex"} alignItems={"self-start"}>
+            <Box display={"flex"} justifyContent={{ base: "center", xl: "flex-start" }}>
                 <Text color={"#FCFDC7"}
-                    fontSize={"11px"}
+                    fontSize={{ base: "12px", xl: "14px" }}
                     fontFamily="Lakes">${removeLastZezo(token.lastPrice)}</Text>
             </Box>
         </Box>
 
         <Box width={"50%"} height={"100%"} alignContent={"space-between"} display={"grid"} gap={5}>
-            <Box position={'relative'} display={'flex'} alignContent={'center'} maxWidth={"150px"} height={"50px"}>
+            <Box position={'relative'}
+                display={'flex'} alignContent={'center'}
+                height={{ base: "70px", xl: "80px" }}>
                 <canvas id={"chart_" + symbol}
-                    width={200}
+                    width={400}
                     style={{
                         position: 'absolute',
                         top: 0, left: '20%',
@@ -118,9 +126,9 @@ export default function PriceSliderItem({ tokenData }) {
             </Box>
 
             <Box >
-                <Box display={"flex"} gap={5} justifyContent={"space-between"}>
+                <Box display={"flex"} gap={5} justifyContent={{ base: "center", xl: "flex-end" }}>
                     <Text color={"#FCFDC7"}
-                        fontSize={"11px"}
+                        fontSize={{ base: "12px", xl: "14px" }}
                         fontFamily="Lakes"
                         opacity={"0.6"}
                     >PRICE</Text>
@@ -138,18 +146,18 @@ export default function PriceSliderItem({ tokenData }) {
                         }
 
                         <Text color={Number(token.priceChangePercent) <= 0 ? "#F45353" : "#58FF5D"}
-                            fontSize={"11px"}
+                            fontSize={{ base: "12px", xl: "14px" }}
                             fontFamily="Lakes">{removeLastZezo(token.priceChangePercent)}%</Text>
                     </Box>
                 </Box>
 
-                <Box display={"flex"} gap={1} justifyContent={"space-between"}>
+                <Box display={"flex"} gap={10} justifyContent={{ base: "center", xl: "flex-end" }}>
                     <Text color={"#FCFDC7"}
-                        fontSize={"11px"}
+                        fontSize={{ base: "12px", xl: "14px" }}
                         fontFamily="Lakes"
                         opacity={"0.6"}>VOL</Text>
                     <Text color={"#FCFDC7"}
-                        fontSize={"11px"}
+                        fontSize={{ base: "12px", xl: "14px" }}
                         fontFamily="Lakes">
                         {CurrencyFormater(token.volume)}</Text>
                 </Box>
