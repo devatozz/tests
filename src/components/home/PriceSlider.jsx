@@ -97,20 +97,24 @@ const TradingViewWidget = () => {
               item.lastPrice = btc.lastPrice;
               item.priceChangePercent = Number(btc.priceChangePercent).toFixed(2);
               item.volume = btc.quoteVolume;
+
+              fetch('/api/home/getChart?id=1')
+                .then(res => res.json())
+                .then(result => {
+                  destroyChart(btcChart);
+                  btcChart = new Chart(document.getElementById('BTC-chart'), {
+                    ...DEFAULT_CHART_CONFIG, data: {
+                      datasets: [{
+                        borderColor: item.priceChangePercent < 0 ? "red" : "green",
+                        borderWidth: 1,
+                        radius: 0,
+                        data: result.priceHistory,
+                      },
+                      ]
+                    }
+                  });
+                })
               destroyChart(btcChart);
-              btcChart = new Chart(document.getElementById('BTC-chart'), {
-                ...DEFAULT_CHART_CONFIG, data: {
-                  datasets: [{
-                    borderColor: item.priceChangePercent < 0 ? "red" : "green",
-                    borderWidth: 1,
-                    radius: 0,
-                    data: data,
-                  },
-                  ]
-                }
-              });
-              btcChart.resize(120, 80)
-              setChartUrl(btcChart.toBase64Image('image/jpeg', 1))
               break;
             case 1: // set eth price
               item.lastPrice = eth.lastPrice;
@@ -149,8 +153,24 @@ const TradingViewWidget = () => {
             case 2: // set gold price
               item.lastPrice = price.xauPrice;
               item.priceChangePercent = Number(price.pcXau).toFixed(2);
-
-              // item.volume = btc.quoteVolume;
+              
+              fetch('/api/home/getChart?id=10481')
+                .then(res => res.json())
+                .then(result => {
+                  destroyChart(xauChart);
+                  xauChart = new Chart(document.getElementById('XAU-chart'), {
+                    ...DEFAULT_CHART_CONFIG, data: {
+                      datasets: [{
+                        borderColor: item.priceChangePercent < 0 ? "red" : "green",
+                        borderWidth: 1,
+                        radius: 0,
+                        data: result.priceHistory,
+                      },
+                      ]
+                    }
+                  });
+                })
+              
               break;
             case 3: // set sliver price
               item.lastPrice = price.xagPrice;
@@ -228,8 +248,8 @@ const TradingViewWidget = () => {
               </Box>
 
               <Box width={"50%"} height={"100%"} alignContent={"space-between"} display={"grid"} gap={5}>
-                <Box paddingLeft={"30%"}>
-                  <canvas width={"100%"} height={"50px"} id={token.symbol + "-chart"}></canvas>
+                <Box position={'relative'} display={'flex'} alignContent={'center'} maxWidth={"150px"} height={"60px"}>
+                  <canvas id={token.symbol + "-chart"} maxWidth={'400px'} style={{ position: 'absolute', top: 0, left: '20%' }}></canvas>
                 </Box>
 
                 <Box >
