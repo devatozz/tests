@@ -83,11 +83,12 @@ async function getPriceHistory(item) {
         default:
             break;
     }
-    const response = await (await fetch(`https://www.coingecko.com/price_charts/${tokenId}/usd/7_days.json`)).json();
+    const response = await (await fetch(`https://www.coingecko.com/price_charts/${tokenId}/usd/24_hours.json`)).json();
     const dataList = [];
     for (let i = 0; i < response.stats.length; i += 12) {
         dataList.push(Number(response.stats[i][1]))
     }
+    
     const quoteVolume = response.total_volumes[response.total_volumes.length - 1][1];
     item.volume = quoteVolume;
     item.priceHistory = dataList;

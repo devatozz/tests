@@ -1,8 +1,8 @@
 export const CurrencyFormater = (value, locale = "en-US", currency = "USD") => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat(locale, {
         style: "currency",
         notation: "compact",
-        currency: "USD",
+        currency,
     }).format(value)
 }
 

@@ -456,11 +456,7 @@ export default function Banner() {
         </Text>
         {/* trading view  */}
         <Box
-          marginTop={"60px"}
           sx={{
-            // borderTop: "0.5px solid #C3D3A5",
-            // borderBottom: "0.5px solid #C3D3A5",
-            height: "120px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
