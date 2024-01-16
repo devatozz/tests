@@ -56,8 +56,8 @@ const TradingViewWidget = () => {
       <SimpleGrid
         columns={{ xl: "4", base: "1", md: "2" }}
         spacing={{ md: "30px", base: "20px" }}
-        paddingTop={{ md: "60px", base: "40px" }}
-        paddingBottom={{ md: "60px", base: "40px" }}
+        paddingTop={{ base: "45px" }}
+        paddingBottom={{ base: "40px" }}
       >
         <PriceSliderItem tokenData={tokenList[0]} />
         <PriceSliderItem tokenData={tokenList[1]} />

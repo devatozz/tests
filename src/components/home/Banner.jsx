@@ -429,7 +429,7 @@ export default function Banner() {
         width={"90%"}
         margin={"0px auto"}
         textAlign={"center"}
-        paddingY={{ base: "40px", md: "60px" }}
+        paddingY={{ base: "40px", md: "10px" }}
       >
         <Text
           color={"#FCFDC7"}
@@ -462,13 +462,7 @@ export default function Banner() {
             justifyContent: "center",
           }}
         >
-          <div
-            style={{
-              width: "100%",
-            }}
-          >
             <TradingViewWidget />
-          </div>
         </Box>
       </Box>
       {/* earn 4 time */}
