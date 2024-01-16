@@ -82,8 +82,8 @@ export default function AppBar() {
         bg="linear-gradient(180deg, #12140D 0%, #15170E 51.04%, #22281A 100%);"
         color={useColorModeValue("#fff.900", "red")}
         minH={"72px"}
-        py={{ base: 2 }}
-        px={{ base: 4, md: 20 }}
+        paddingX={{ base: 4, xl: 20 }}
+        paddingY={"10px"}
         id="top"
         justifyContent={"center"}
         w="full"
@@ -92,7 +92,7 @@ export default function AppBar() {
         <Flex
           // maxW={"1200px"}
           justifyContent={"space-between"}
-          px={{ md: "66px" }}
+          px={{ lg: "10px", xl: "66px" }}
           w="full"
           align={"center"}
         >
@@ -104,13 +104,22 @@ export default function AppBar() {
             )}
             <Flex justifyContent={"center"} align={"center"}>
               <NextLink href={"/"}>
-                <Flex gap={2} alignItems={"center"}>
+                <Flex gap={2} alignItems={"center"} minWidth={"42px"}>
                   <Image
                     src={"/blast/logoApp.svg"}
                     alt="blasttrade"
-                    height={"40px"}
+                    height={"42px"}
                   />
+                  <Text
+                    display={{ base: "none", xl: "block" }}
+                    fontSize={"28px"}
+                    fontFamily="Montalban"
+                    color="#FCFC05"
+                    fontWeight={"700"}>
+                    BLASTTRADE
+                  </Text>
                 </Flex>
+
               </NextLink>
 
               <Flex
@@ -120,7 +129,9 @@ export default function AppBar() {
                 }}
                 mx={24}
               >
-                <Stack direction={"row"} spacing={4} justifyContent={"center"}>
+                <Stack direction={"row"}
+                  spacing={{ base: "30px", xl: "40px" }}
+                  justifyContent={"center"}>
                   {NAV_ITEMS.map((navItem, index) => (
                     <Box key={index}>
                       <Popover trigger={"hover"} placement={"bottom-start"}>
@@ -218,7 +229,8 @@ export default function AppBar() {
                 fontFamily: "Lakes",
                 fontWeight: "200",
               }}
-              // onClick={onComingSoonOpen}
+              height={"45px"}
+            // onClick={onComingSoonOpen}
             >
               <Text color={"#000"}>Launch App</Text>
             </Button>

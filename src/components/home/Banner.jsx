@@ -118,7 +118,6 @@ export default function Banner() {
               <Text
                 color={"#FCFDC7"}
                 fontSize={{ base: "16px", md: "22px" }}
-                fontWeight={{ base: "300", md: "400" }}
                 lineHeight={{ base: "19px", md: "28px" }}
                 fontFamily="Lakes"
                 maxW={{ md: "817", base: "100%" }}
@@ -146,12 +145,13 @@ export default function Banner() {
                   }}
                   style={{
                     // fontWeight: "bold",
-                    fontSize: "16px",
+                    fontSize: "20px",
                     borderRadius: "4px",
                     padding: "16px 32px",
                     fontFamily: "Lakes",
-                    fontWeight: "200",
+                    fontWeight: "700",
                   }}
+                  height={{ base: "45px", md: "60px" }}
                 // onClick={onComingSoonOpen}
                 >
                   <Text color={"#000"}>Launch App</Text>
@@ -168,12 +168,13 @@ export default function Banner() {
                   }}
                   style={{
                     // fontWeight: "bold",
-                    fontSize: "16px",
+                    fontSize: "20px",
                     borderRadius: "4px",
                     padding: "16px 32px",
                     fontFamily: "Lakes",
-                    fontWeight: "200",
+                    fontWeight: "700",
                   }}
+                  height={{ base: "45px", md: "60px" }}
                 // onClick={onComingSoonOpen}
                 >
                   <Text color={"#FCFDC7"}> Learn More</Text>
@@ -206,8 +207,8 @@ export default function Banner() {
 
       {/* info view  */}
       <Box
-        h={{ md: "312px", base: "100%" }}
-        py={{ md: "0px", base: "40px" }}
+        h={{ xl: "312px", base: "100%" }}
+        py={{ xl: "0px", base: "40px" }}
         bg="#22281A"
         display={"flex"}
         justifyContent={"center"}
@@ -215,12 +216,12 @@ export default function Banner() {
         gap={30}
       >
         <Box
-          width={"90%"}
+          width={{ base: "90%" }}
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
           gap={30}
-          flexDirection={{ md: "row", base: "column" }}
+          flexDirection={{ xl: "row", base: "column" }}
         >
           <Box
             borderRadius={"8px"}
@@ -231,8 +232,9 @@ export default function Banner() {
             gap={30}
             height={"170px"}
             width={"100%"}
+            paddingX={"20px"}
           >
-            <Box>
+            <Box width={"40px"} height={"40px"}>
               <Image src="/blast/chart.png" alt="zk infor" />
             </Box>
             <Box
@@ -275,8 +277,9 @@ export default function Banner() {
             gap={30}
             height={"170px"}
             width={"100%"}
+            paddingX={"20px"}
           >
-            <Box>
+            <Box width={"40px"} height={"40px"}>
               <Image src="/blast/volume.png" alt="zk infor" />
             </Box>
             <Box
@@ -318,8 +321,9 @@ export default function Banner() {
             gap={30}
             height={"170px"}
             width={"100%"}
+            paddingX={"20px"}
           >
-            <Box>
+            <Box width={"40px"} height={"40px"}>
               <Image src="/blast/user.png" alt="zk infor" />
             </Box>
             <Box
@@ -462,7 +466,7 @@ export default function Banner() {
             justifyContent: "center",
           }}
         >
-            <TradingViewWidget />
+          <TradingViewWidget />
         </Box>
       </Box>
       {/* earn 4 time */}
@@ -485,7 +489,7 @@ export default function Banner() {
         </Text>
         <Text
           color={"#C3D3A5"}
-          fontSize={{ base: "16px", md: "26px" }}
+          fontSize={{ base: "16px", md: "22px" }}
           lineHeight={{ base: "19px", md: "26px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
@@ -493,10 +497,10 @@ export default function Banner() {
         >
           Big brains know how to maximize their yields with the protocol.
         </Text>
-        <Box padding={{ base: "40px 0px", md: "80px 0px" }}>
+        <Box padding={{ base: "40px 0px" }}>
           <Image src="/blast/tokennomics.png" alt="blast chart" />
           <Image
-            paddingY={{ md: "80px", base: "20px" }}
+            paddingY={{ base: "20px" }}
             src="/blast/line.png"
             alt="blast chart"
           />
@@ -535,6 +539,7 @@ export default function Banner() {
               display={"flex"}
               alignItems={"center"}
               justifyContent={"space-between"}
+              gap={{ base: "10px", xl: 0 }}
             >
               <Box>
                 <Image
@@ -560,6 +565,7 @@ export default function Banner() {
                     fontFamily: "Lakes",
                     fontWeight: "200",
                   }}
+                  height={"45px"}
                 // onClick={onComingSoonOpen}
                 >
                   <Text color={"#FCFDC7"}> Learn More</Text>
@@ -568,8 +574,8 @@ export default function Banner() {
             </Box>
             <Text
               color={"#C3D3A5"}
-              fontSize={{ base: "14px", md: "18px" }}
-              lineHeight={{ base: "16px", md: "20px" }}
+              fontSize={{ base: "14px", xl: "22px" }}
+              lineHeight={{ base: "16px", md: "26px" }}
               fontFamily="Lakes"
               fontStyle={"normal"}
               paddingTop={{ md: "20px", base: "20px" }}
@@ -599,6 +605,7 @@ export default function Banner() {
                   fontFamily: "Lakes",
                   fontWeight: "200",
                 }}
+                height={"45px"}
               // onClick={onComingSoonOpen}
               >
                 <Text color={"#FCFDC7"}> Learn More</Text>
@@ -639,6 +646,7 @@ export default function Banner() {
                     fontFamily: "Lakes",
                     fontWeight: "200",
                   }}
+                  height={"45px"}
                 // onClick={onComingSoonOpen}
                 >
                   <Text color={"#FCFDC7"}> Learn More</Text>
@@ -647,8 +655,8 @@ export default function Banner() {
             </Box>
             <Text
               color={"#C3D3A5"}
-              fontSize={{ base: "14px", md: "18px" }}
-              lineHeight={{ base: "16px", md: "20px" }}
+              fontSize={{ base: "14px", xl: "22px" }}
+              lineHeight={{ base: "16px", md: "26px" }}
               fontFamily="Lakes"
               fontStyle={"normal"}
               paddingTop={{ md: "20px", base: "20px" }}
@@ -695,10 +703,10 @@ export default function Banner() {
           justifyContent={"center"}
         >
           <Box
-            backgroundImage={{ md: "/blast/thefund.png", base: "" }}
-            backgroundSize={"100%"}
-            width={{ md: "70%", base: "cover" }}
-            height={{ md: "535px", base: "100%" }}
+            backgroundImage={{ base: "/blast/thefund.png" }}
+            backgroundSize={"cover"}
+            width={{ xl: "1244px", base: "90%" }}
+            height={{ base: "300px", md: "533px" }}
           >
             <Box
               textAlign={"center"}
