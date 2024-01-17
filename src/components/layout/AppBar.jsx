@@ -220,18 +220,18 @@ export default function AppBar() {
                   bg: "#fff",
                 }}
                 style={{
-                  // fontWeight: "bold",
                   borderRadius: "4px",
-                  fontFamily: "Lakes",
-                  fontWeight: "200",
                 }}
-                fontWeight={"700"}
-                fontSize={{ base: "12px", md: "16px" }}
+
                 padding={{ base: '7px 14px', md: "16px 32px" }}
                 height={{ base: "30px", md: "45px" }}
               // onClick={onComingSoonOpen}
               >
-                <Text color={"black"}>Launch App</Text>
+                <Text
+                  fontFamily={"Lakes"}
+                  color={"black"}
+                  fontWeight={"700"}
+                  fontSize={{ base: "12px", md: "16px" }}>Launch App</Text>
               </Button>
             </NextLink>
             <Box
