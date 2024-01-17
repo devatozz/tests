@@ -1,6 +1,90 @@
 @font-face {
   font-family: "Lakes";
-  src: url("/fonts/lakes/TT Lakes Neue Trial Condensed ExtraBold.ttf") format('truetype');
-  /* IE9 Compat Modes */
-  src: local("../../public/fonts/lakes/TT Lakes Neue Trial Condensed ExtraBold.ttf"),
+  src:
+    /* url("/fonts/lakes/TT Lakes Neue Trial Extended Black Italic.ttf") format('truetype'), */
+    /* url("/fonts/lakes/TT Lakes Neue Trial Extended Black.ttf") format('truetype'), */
+    /* url("/fonts/lakes/TT Lakes Neue Trial Extended Bold Italic.ttf") format('truetype'), */
+    /* url("/fonts/lakes/TT Lakes Neue Trial Extended Bold.ttf") format('truetype'), */
+    /* url("/fonts/lakes/TT Lakes Neue Trial Extended DemiBold Italic.ttf") format('truetype'), */
+    url("/fonts/lakes/TT Lakes Neue Trial Extended DemiBold.ttf") format('truetype'),
+    /* url("/fonts/lakes/TT Lakes Neue Trial Extended ExtraBold Italic.ttf") format('truetype'), */
+    url("/fonts/lakes/TT Lakes Neue Trial Extended ExtraBold.ttf") format('truetype'),
+    /* url("/fonts/lakes/TT Lakes Neue Trial Extended ExtraLight Italic.ttf") format('truetype'), */
+    /* 
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Black Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Black.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Bold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Bold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded DemiBold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded DemiBold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded ExtraBold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded ExtraBold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded ExtraLight Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded ExtraLight.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Light Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Light.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Medium Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Medium.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Regular.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Thin Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Expanded Thin.ttf") format('truetype'),
+
+
+    url("/fonts/lakes/TT Lakes Neue Trial Black Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Black.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Bold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Bold.ttf") format('truetype'),
+
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Black Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Black.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Bold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Bold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed DemiBold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed DemiBold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed ExtraBold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed ExtraBold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed ExtraLight Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed ExtraLight.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Light Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Light.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Medium Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Medium.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Regular.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Thin Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Compressed Thin.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Black Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Black.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Bold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Bold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed DemiBold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed DemiBold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed ExtraBold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed ExtraBold.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed ExtraLight Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed ExtraLight.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Light Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Light.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Medium Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Medium.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Regular.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Thin Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial Condensed Thin.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial DemiBold Italic.ttf") format('truetype'),
+    url("/fonts/lakes/TT Lakes Neue Trial DemiBold.ttf") format('truetype'), */
+}
+
+
+@font-face {
+  font-family: "Montalban";
+  src:
+    /* url('/fonts/montalban/Montalban Bold Italic.otf') format('opentype'), */
+    url('/fonts/montalban/Montalban Bold.otf') format('opentype'),
+    /* url('/fonts/montalban/Montalban Condensed Bold Italic.otf') format('opentype'), */
+    /* url('/fonts/montalban/Montalban Condensed Bold.otf') format('opentype'), */
+    /* url('/fonts/montalban/Montalban Condensed Italic.otf') format('opentype'), */
+    /* url('/fonts/montalban/Montalban Condensed.otf') format('opentype'), */
+    /* url('/fonts/montalban/Montalban Italic.otf') format('opentype'), */
 }

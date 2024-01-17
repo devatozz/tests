@@ -83,7 +83,7 @@ export default function AppBar() {
         color={useColorModeValue("#fff.900", "red")}
         minH={"72px"}
         paddingX={{ base: 4, md: 12, xl: 0 }}
-        paddingY={"10px"}
+        paddingY={{ base: "18px", md: "10px" }}
         id="top"
         justifyContent={"center"}
         w="full"
@@ -113,10 +113,14 @@ export default function AppBar() {
                   <Text
                     display={{ base: "none", xl: "block" }}
                     fontSize={"28px"}
-                    fontFamily="Lakes"
+                    fontFamily="Montalban"
                     color="#FCFC05"
                     fontWeight={"700"}
                     fontStyle={"bold"}
+                    style={{
+                      wordBreak: 'break-word'
+                    }}
+                    letterSpacing={"1,2px"}
                   >
                     BLASTTRADE
                   </Text>
@@ -216,27 +220,44 @@ export default function AppBar() {
             </Flex>
           </Flex>
 
-          <NextLink href={""} target="self_">
-            <Button
-              backgroundColor={"#FCFC05"}
-              transition="background-color 0.3s ease-in-out"
-              _hover={{
-                bg: "#fff",
-              }}
-              style={{
-                // fontWeight: "bold",
-                fontSize: "16px",
-                borderRadius: "4px",
-                padding: "16px 32px",
-                fontFamily: "Lakes",
-                fontWeight: "200",
-              }}
-              height={"45px"}
-            // onClick={onComingSoonOpen}
-            >
-              <Text color={"#000"}>Launch App</Text>
-            </Button>
-          </NextLink>
+          <Flex gap={"14px"}>
+            <NextLink href={""} target="self_">
+              <Button
+                backgroundColor={"#FCFC05"}
+                transition="background-color 0.3s ease-in-out"
+                _hover={{
+                  bg: "#fff",
+                }}
+                style={{
+                  // fontWeight: "bold",
+                  borderRadius: "4px",
+                  fontFamily: "Lakes",
+                  fontWeight: "200",
+                }}
+                fontWeight={"700"}
+                fontSize={{ base: "10px", md: "16px" }}
+                padding={{ base: '7px 14px', md: "16px 32px" }}
+                height={{ base: "30px", md: "45px" }}
+              // onClick={onComingSoonOpen}
+              >
+                <Text color={"#000"}>Launch App</Text>
+              </Button>
+            </NextLink>
+            <Box
+              display={{ base: 'block', md: 'none' }}
+              border={"1px solid #fcfdc773"}
+              borderRadius={"3.5px"}
+              p={"7px"}
+              h={30}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.9994 14.1228C11.3807 14.1228 14.1219 11.3817 14.1219 8.00038C14.1219 4.61904 11.3807 1.87793 7.9994 1.87793C4.61807 1.87793 1.87695 4.61904 1.87695 8.00038C1.87695 11.3817 4.61807 14.1228 7.9994 14.1228Z" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5.54976 2.49023H6.16201C4.96813 6.06574 4.96813 9.93513 6.16201 13.5106H5.54976" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M9.83594 2.49023C11.0298 6.06574 11.0298 9.93513 9.83594 13.5106" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M2.48926 10.4492V9.83691C6.06477 11.0308 9.93416 11.0308 13.5097 9.83691V10.4492" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M2.48926 6.16396C6.06477 4.97009 9.93416 4.97009 13.5097 6.16396" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </Box>
+          </Flex>
           {/* <ComingSoonModal
             isOpen={comingSoonOpen}
             onClose={onComingSoonClose}
@@ -244,117 +265,119 @@ export default function AppBar() {
         </Flex>
       </Flex>
 
-      {!isDesktop && (
-        <>
-          <Drawer
-            isOpen={isOpen}
-            placement="top"
-            onClose={onClose}
-            finalFocusRef={btnRef}
-          >
-            <DrawerOverlay />
-            <DrawerContent>
-              <DrawerCloseButton size="lg" color={"#FCFDC7"} />
-              <DrawerHeader bg="linear-gradient(180deg, #12140D 0%, #15170E 51.04%, #22281A 100%);">
-                <NextLink href={"/"}>
-                  <Flex gap={2} alignItems={"center"} w="full" h="full">
-                    <Image src={"/blast/logo.png"} alt="blast trade" h={30} />
-                  </Flex>
-                </NextLink>
-              </DrawerHeader>
-              <DrawerBody
-                position="relative"
-                p={0}
-                style={{
-                  backdropFilter: "blur(40px)",
-                  background: "#C3D3A5",
-                }}
-              >
-                <VStack
-                  w="full"
-                  direction={"row"}
-                  spacing={4}
-                  alignItems="left"
-                  backgroundBlendMode="overlay"
-                  px={8}
-                  pt={8}
-                  pb={4}
+      {
+        !isDesktop && (
+          <>
+            <Drawer
+              isOpen={isOpen}
+              placement="left"
+              onClose={onClose}
+              finalFocusRef={btnRef}
+            >
+              <DrawerOverlay />
+              <DrawerContent
+                width={"90%"}
+                backgroundImage={"url('/blast/menu-drawer-mobile.png')"}
+                backgroundSize={"cover"}>
+                <DrawerCloseButton mt={"9px"} size="base" color={"#FCFDC7"} />
+                <DrawerHeader>
+                  <NextLink href={"/"}>
+                    <Flex gap={2} alignItems={"center"} w="full" h="full">
+                      <Image src={"/blast/logo.png"} alt="blast trade" h={18} />
+                    </Flex>
+                  </NextLink>
+                </DrawerHeader>
+
+                <DrawerBody
+                  position="relative"
+                  p={0}
                 >
-                  {NAV_ITEMS.map((navItem, index) => (
-                    <Box key={index}>
-                      {navItem.children ? (
-                        <Popover trigger={"hover"} placement={"bottom-start"}>
-                          <PopoverTrigger>
-                            <Link
+                  <VStack
+                    w="full"
+                    direction={"row"}
+                    spacing={4}
+                    alignItems="left"
+                    backgroundBlendMode="overlay"
+                    px={8}
+                    pt={'40px'}
+                    pb={4}
+                  >
+                    {NAV_ITEMS.map((navItem, index) => (
+                      <Box key={index}>
+                        {navItem.children ? (
+                          <Popover trigger={"hover"} placement={"bottom-start"}>
+                            <PopoverTrigger>
+                              <Link
+                                pr={2}
+                                py={2}
+                                fontSize={"base"}
+                                fontFamily="body"
+                                fontWeight={700}
+                                color="#FCFDC7"
+                                _hover={{
+                                  textDecoration: "none",
+                                  color: "#fff",
+                                }}
+                              >
+                                {navItem.label}
+                              </Link>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              border={0}
+                              boxShadow={"xl"}
+                              // p={4}
+                              rounded={"xl"}
+                              width={"max-content"}
+                            >
+                              <Stack>
+                                {navItem.children.map((child) => (
+                                  <DesktopSuvNav key={child.label} {...child} />
+                                ))}
+                              </Stack>
+                            </PopoverContent>
+                          </Popover>
+                        ) : (
+                          <Link href={navItem.href}>
+                            <Text
                               pr={2}
-                              py={2}
-                              fontSize={"base"}
+                              fontSize={"16px"}
                               fontFamily="body"
-                              fontWeight={700}
-                              color="#FCFDC7"
+                              color="#FBFBFB"
                               _hover={{
                                 textDecoration: "none",
                                 color: "#fff",
                               }}
-                            >
-                              {navItem.label}
-                            </Link>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            border={0}
-                            boxShadow={"xl"}
-                            // p={4}
-                            rounded={"xl"}
-                            width={"max-content"}
-                          >
-                            <Stack>
-                              {navItem.children.map((child) => (
-                                <DesktopSuvNav key={child.label} {...child} />
-                              ))}
-                            </Stack>
-                          </PopoverContent>
-                        </Popover>
-                      ) : (
-                        <Link href={navItem.href}>
-                          <Text
-                            pr={2}
-                            fontSize={"16px"}
-                            fontFamily="body"
-                            color="#000"
-                            _hover={{
-                              textDecoration: "none",
-                              color: "#fff",
-                            }}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "flex-start",
-                              fontWeight: "600",
-                            }}
-                          >
-                            {navItem.label}
-                            <Text
-                              position={"relative"}
-                              top={0}
                               style={{
-                                marginLeft: "10px",
-                                fontSize: "16px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                fontWeight: "500",
                               }}
                             >
-                              {navItem.icons}
+                              {navItem.label}
+                              <Text
+                                position={"relative"}
+                                top={0}
+                                style={{
+                                  marginLeft: "10px",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                {navItem.icons}
+                              </Text>
                             </Text>
-                          </Text>
-                        </Link>
-                      )}
-                    </Box>
-                  ))}
-                </VStack>
-              </DrawerBody>
-            </DrawerContent>
-          </Drawer>
-        </>
-      )}
-    </Box>
+                          </Link>
+                        )}
+                      </Box>
+                    ))}
+                  </VStack>
+                </DrawerBody>
+              </DrawerContent>
+            </Drawer>
+          </>
+        )
+      }
+    </Box >
   );
 }
 

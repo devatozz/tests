@@ -120,7 +120,7 @@ export default function PriceSliderItem({ tokenData }) {
                 <Text color={"#FCFDC7"}
                     fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                     fontWeight={{ base: "300", md: "700" }}
-                    fontFamily="Lakes">${CompactCurrency(token.lastPrice)}</Text>
+                    fontFamily="Lakes">{CompactCurrency(token.lastPrice)}</Text>
             </Box>
         </Box>
 
