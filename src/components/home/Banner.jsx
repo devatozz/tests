@@ -9,13 +9,15 @@ import {
   SimpleGrid,
   Image,
   Heading,
-  Center,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { ChevronUpIcon } from "@chakra-ui/icons";
 import { Link, animateScroll as scroll } from "react-scroll";
 import NextLink from "next/link";
 import TradingViewWidget from "src/components/home/PriceSlider";
 export default function Banner() {
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
+
   const TRADING_INFO = [
     {
       icon: "/blast/des-user.png",
@@ -53,7 +55,7 @@ export default function Banner() {
     {
       image: "/blast/chart.png",
       title: "Total Trading Volume",
-      subTitle: "$157,644,372"
+      subTitle: "$157,644,372,832"
     },
     {
       image: "/blast/volume.png",
@@ -63,7 +65,7 @@ export default function Banner() {
     {
       image: "/blast/user.png",
       title: "Total Users",
-      subTitle: "342,212"
+      subTitle: "447,081"
     }
   ]
 
@@ -122,29 +124,37 @@ export default function Banner() {
             <Box align={"center"}>
               <Heading
                 fontWeight={600}
-                fontSize={{ base: "32px", xl: "50px", "2xl": "70px" }}
-                lineHeight={{ "2xl": "90px", base: "32px", "xl": "65px" }}
+                fontSize={{ base: "28px", xl: "50px", "2xl": "70px" }}
+                lineHeight={{ "2xl": "90px", base: "36px", "xl": "65px" }}
                 color={"#EEEE06"}
                 textAlign={{ md: "left", base: "left" }}
                 fontFamily="Lakes"
               >
-                Decentralized <br /> Perpetual Exchange <br /> With Native Yield
+                Decentralized <br /> Perpetual Exchange
+                {
+                  !isMobile && <><br /> With Native Yield</>
+                }
               </Heading>
             </Box>
 
             <Box align={"center"}>
               <Text
                 color={"#FCFDC7"}
-                fontSize={{ base: "16px", xl: "20px", "2xl": "22px" }}
-                lineHeight={{ base: "19px", xl: "22px", "2xl": "28px" }}
+                fontSize={{ base: "15px", xl: "20px", "2xl": "22px" }}
+                lineHeight={{ base: "19.5px", xl: "22px", "2xl": "28px" }}
                 fontFamily="Lakes"
                 maxW={{ md: "817", base: "100%" }}
-                fontStyle={"normal"}
                 textAlign={{ md: "left", base: "left" }}
-                fontWeight={600}
+                fontWeight={{ base: 500, md: 600 }}
               >
-                Trade up to 50x leverage with USDB - The Blast's auto-rebasing
-                stablecoin while watching your assets compound automatically.
+                {
+                  isMobile ? `Trade BTC, ETH, AVAX and other top
+                  cryptocurrencies with up to 50x leverage
+                  directly from your wallet`
+                    : `Trade up to 50x leverage with USDB - The Blast's auto-rebasing
+                  stablecoin while watching your assets compound automatically.`
+                }
+
               </Text>
             </Box>
 
@@ -163,14 +173,13 @@ export default function Banner() {
                     bg: "#fff",
                   }}
                   style={{
-                    // fontWeight: "bold",
-                    fontSize: "20px",
                     borderRadius: "4px",
                     padding: "16px 32px",
                     fontFamily: "Lakes",
                     fontWeight: "700"
                   }}
-                  height={{ base: "45px", md: "60px" }}
+                  fontSize={{ base: "11px", md: "20px" }}
+                  height={{ base: "30px", md: "60px" }}
                 // onClick={onComingSoonOpen}
                 >
                   <Text color={"#000"}>Launch App</Text>
@@ -252,19 +261,19 @@ export default function Banner() {
                 key={index}
                 borderRadius={"8px"}
                 border={"1px solid #FCFDC7"}
-                height={"170px"}
+                height={{ base: "150px", md: "170px" }}
                 width={"100%"}
-                paddingX={"20px"}
+                paddingX={{ base: "30px", md: "20px", "2xl": "50px" }}
                 display={"flex"}
-                justifyContent={{ base: "center", xl: "" }}
+                justifyContent={{ base: "center", xl: "flex-start" }}
               >
                 <Box
                   height={"100%"}
                   minW={{ base: "300px", xl: "" }}
                   display={"flex"}
-                  justifyContent={{ base: "flex-start", xl: "center" }}
+                  justifyContent={{ base: "flex-start", xl: "center", "2xl": "flex-start" }}
                   alignItems={"center"}
-                  gap={{ base: 30 }}>
+                  gap={{ base: '20px', md: '30px' }}>
 
                   <Box width={{ "2xl": "84px", xl: "63px", base: "55px" }} height={{ "2xl": "84px", xl: "63px", base: "55px" }}>
                     <Image src={item.image} alt="zk infor" />
@@ -278,7 +287,7 @@ export default function Banner() {
                   >
                     <Text
                       color={"#FCFDC7"}
-                      fontSize={{ base: "13px", md: "18px", "2xl": "18px" }}
+                      fontSize={{ base: "12px", md: "18px", "2xl": "18px" }}
                       fontWeight={{ base: "400", md: "700" }}
                       lineHeight={{ base: "19px", xl: "22px", "2xl": "28px" }}
                       fontFamily="Lakes"
@@ -288,7 +297,7 @@ export default function Banner() {
                     </Text>
                     <Text
                       color={"#FCFDC7"}
-                      fontSize={{ base: "20px", md: "26px", "xl": "28px" }}
+                      fontSize={{ base: "18px", md: "26px", "xl": "28px" }}
                       fontWeight={{ base: "500", md: "700" }}
                       lineHeight={{ base: "18px", xl: "22px", "2xl": "28px" }}
                       fontFamily="Lakes"
@@ -313,9 +322,9 @@ export default function Banner() {
           lineHeight={{ base: "36px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
-          paddingTop={{ md: "60px", base: "40px" }}
+          paddingTop={{ base: "100px", md: "60px" }}
         >
-          Trading, the way <br /> it should be
+          Trading, the way {isMobile && <br />} it should be
         </Text>
         <Text
           color={"#C3D3A5"}
@@ -333,11 +342,11 @@ export default function Banner() {
           <SimpleGrid
             columns={{ md: "3", base: "1" }}
             spacing={{ base: "40px" }}
-            paddingTop={{ md: "60px", base: "80px" }}
+            paddingTop={{ md: "72px", base: "80px" }}
             paddingBottom={{ md: "60px", base: "40px" }}
           >
             {TRADING_INFO.map((item, index) => (
-              <Box key={item.title}>
+              <Box key={index}>
                 <Box
                   display={"flex"}
                   justifyContent={"flex-start"}
@@ -352,7 +361,7 @@ export default function Banner() {
                   <Box display={'grid'} gap={'8px'}>
                     <Text
                       color={"#FCFDC7"}
-                      fontSize={{ base: "22px", md: "30px" }}
+                      fontSize={{ base: "22px", md: "26px" }}
                       fontWeight={{ base: "600", md: "700" }}
                       lineHeight={{ base: "29px", md: "30px" }}
                       fontFamily="Lakes"
@@ -360,27 +369,28 @@ export default function Banner() {
                     >
                       {item.title}
                     </Text>
-                    <Text
-                      color={"#C3D3A5"}
-                      fontSize={{ base: "14px", md: "18px" }}
-                      fontWeight={{ base: "200", md: "600" }}
-                      lineHeight={{ base: "16px", md: "20px" }}
-                      fontFamily="Lakes"
-                      fontStyle={"normal"}
-                      width={{ md: "80%", base: "100%" }}
-                    >
-                      {item.des}
-                    </Text>
+                    {
+                      isMobile && <Text
+                        color={"#C3D3A5"}
+                        fontSize={{ base: "14px", md: "18px" }}
+                        fontWeight={{ base: "200", md: "600" }}
+                        lineHeight={{ base: "16px", md: "20px" }}
+                        fontFamily="Lakes"
+                        fontStyle={"normal"}
+                        width={{ md: "80%", base: "100%" }}
+                      >
+                        {item.des}
+                      </Text>
+                    }
                   </Box>
                 </Box>
 
                 {/* hide subtitle on mobile */}
-                <Text
-                  display={{ base: 'none', md: '' }}
+                {!isMobile && <Text
                   color={"#C3D3A5"}
-                  fontSize={{ base: "14px", md: "18px" }}
+                  fontSize={{ base: "14px", md: "20px" }}
                   fontWeight={{ base: "200", md: "600" }}
-                  lineHeight={{ base: "16px", md: "20px" }}
+                  lineHeight={{ base: "16px", md: "26px" }}
                   fontFamily="Lakes"
                   fontStyle={"normal"}
                   paddingTop={{ md: "20px", base: "10px" }}
@@ -388,7 +398,7 @@ export default function Banner() {
                   width={{ md: "80%", base: "100%" }}
                 >
                   {item.des}
-                </Text>
+                </Text>}
               </Box>
             ))}
           </SimpleGrid>
@@ -403,13 +413,13 @@ export default function Banner() {
       >
         <Text
           color={"#FCFDC7"}
-          fontSize={{ base: "16px", md: "30px" }}
+          fontSize={{ base: "16px", md: "22px" }}
           fontWeight={{ base: "500", md: "700" }}
-          lineHeight={{ base: "19px", md: "30px" }}
+          lineHeight={{ base: "19px", md: "28px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
           paddingTop={{ md: "60px", base: "10px" }}
-          paddingBottom={{ md: "20px", base: "10px" }}
+          paddingBottom={{ md: "20px", base: "10px", xl: 0 }}
         >
           MULTIPLE MARKETS
         </Text>
@@ -417,13 +427,13 @@ export default function Banner() {
           color={"#FCFC05"}
           fontSize={{ base: "28px", md: "55px" }}
           fontWeight={{ base: "800", md: "700" }}
-          lineHeight={{ base: "36px", md: "60px" }}
+          lineHeight={{ base: "36px", md: "71px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
           paddingTop={{ md: "20px", base: "10px" }}
-          paddingBottom={{ md: "60px", base: "20px" }}
+          paddingBottom={{xl: "25px", md: "60px", base: "20px" }}
         >
-          Secured by <br /> industry-leading oracles
+          Secured by {isMobile && <br />} industry-leading oracles
         </Text>
         {/* trading view  */}
         <Box
@@ -441,15 +451,15 @@ export default function Banner() {
         width={"90%"}
         margin={"0px auto"}
         textAlign={{ md: "left", base: "center" }}
-        paddingY={{ base: "20px", md: "60px" }}
+        paddingY={{ base: "20px", md: "40px" }}
       >
         <Text
           color={"#FCFDC7"}
-          fontSize={{ base: "28px", md: "30px" }}
+          fontSize={{ base: "28px", md: "40px" }}
           fontWeight={{ base: "700" }}
-          lineHeight={{ base: "33px", md: "30px" }}
+          lineHeight={{ base: "33px", md: "52px" }}
           fontFamily="Lakes"
-          align={{ base: 'start', md: 'center' }}
+          align={{ base: 'start', md: 'center', xl: 'start' }}
           paddingTop={{ md: "60px", base: "40px" }}
         >
           Earn 4 times yield on Blast Trade
@@ -460,12 +470,12 @@ export default function Banner() {
           fontWeight={{ base: "500", md: "700" }}
           lineHeight={{ base: "19px", md: "26px" }}
           fontFamily="Lakes"
-          align={{ base: 'start', md: 'center' }}
+          align={{ base: 'start', md: 'center', xl: 'start' }}
           paddingTop={{ md: "20px", base: "10px" }}
         >
           Big brains know how to maximize their yields with the protocol.
         </Text>
-        <Box padding={{ base: "40px 0px" }}>
+        <Box paddingBottom={"40px"} paddingTop={"80px"}>
           <Image src="/blast/tokennomics.png" alt="blast chart" />
           <Image
             paddingTop={{ base: "40px", md: '20px' }}
@@ -575,7 +585,7 @@ export default function Banner() {
 
             <NextLink href={""} target={"_blank"}>
               <Button
-                display={{ md: "none" }}
+                display={{ base: "flex", md: "none" }}
                 backgroundColor={"transparent"}
                 transition="background-color 0.3s ease-in-out"
                 border={"1px solid #FCFDC7"}
@@ -590,7 +600,7 @@ export default function Banner() {
                   fontFamily: "Lakes",
                   fontWeight: "200",
                 }}
-                fontSize={{ base: '14px', md: '16px' }}
+                fontSize={{ base: '12px', md: '16px' }}
                 height={{ base: "30px", md: "45px" }}
               // onClick={onComingSoonOpen}
               >
@@ -657,6 +667,7 @@ export default function Banner() {
             </Text>
             <NextLink href={""} target={"_blank"}>
               <Button
+                display={{ base: "flex", md: "none" }}
                 backgroundColor={"transparent"}
                 transition="background-color 0.3s ease-in-out"
                 border={"1px solid #FCFDC7"}
@@ -664,20 +675,21 @@ export default function Banner() {
                 _hover={{
                   bg: "rgba(195, 211, 165, 0.2)",
                 }}
-                display={{ md: "none", base: "block" }}
-                padding={{ base: "8px 20px", md: "16px 32px" }}
+                marginTop={"20px"}
+                padding={{ base: "12px 20px", md: "16px 32px" }}
                 style={{
-                  // fontWeight: "bold",
-                  fontSize: "16px",
                   borderRadius: "4px",
                   fontFamily: "Lakes",
                   fontWeight: "200",
                 }}
+                fontSize={{ base: '12px', md: '16px' }}
+                height={{ base: "30px", md: "45px" }}
               // onClick={onComingSoonOpen}
               >
-                <Text color={"#FCFDC7"}>Learn More</Text>
+                <Text color={"#FCFDC7"}> Read More</Text>
               </Button>
             </NextLink>
+
           </Box>
         </SimpleGrid>
       </Box>
@@ -689,11 +701,10 @@ export default function Banner() {
           justifyContent={"center"}
         >
           <Box
-            // backgroundImage={{ base: "/blast/thefund-mobile.png", xl: "/blast/thefund.png" }}
             position={'relative'}
             backgroundSize={"cover"}
-            width={{ "2xl": "1244px", xl: "1201px", md: "90%", base: "90%" }}
-            height={{ base: "180px", md: "600px", xl: "515px", "2xl": "533px" }}
+            width={{ "2xl": "1100px", xl: "1201px", md: "90%", base: "90%" }}
+            height={{ base: "200px", md: "600px", xl: "515px", "2xl": "533px" }}
             marginBottom={"30px"}
           >
             <img style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, width: '100%', height: '100%' }} src="/blast/thefund.png" />
@@ -728,9 +739,9 @@ export default function Banner() {
                 </Text>
                 <Text
                   color={"#C3D3A5"}
-                  fontSize={{ base: "10px", md: "14px", md: "26px" }}
+                  fontSize={{ base: "10px", md: "14px", md: "22px" }}
                   fontWeight={{ base: "500", md: "700" }}
-                  lineHeight={{ base: "14px", md: "26px" }}
+                  lineHeight={{ base: "14px", md: "28.6px" }}
                   fontFamily="Lakes"
                   fontStyle={"normal"}
                   width={{ md: "100%", base: "80%" }}

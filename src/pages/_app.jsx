@@ -9,7 +9,7 @@ import theme from "src/styles/theme";
 import { ChakraProvider, CircularProgress, Center } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-// import AppBar from "src/components/layout/AppBar";
+import AppBar from "src/components/layout/AppBar";
 import Footer from "src/components/layout/Footer";
 
 export default function App(props) {
@@ -56,7 +56,7 @@ export default function App(props) {
         <title>Blast</title>
       </Head>
       <ChakraProvider theme={theme}>
-        {/* <AppBar /> */}
+        <AppBar />
         {pageMarkup}
         <Footer />
       </ChakraProvider>

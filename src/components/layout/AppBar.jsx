@@ -92,8 +92,8 @@ export default function AppBar() {
         <Flex
           // maxW={"1200px"}
           justifyContent={"space-between"}
-          px={{ lg: "10px", xl: "66px" }}
-          w="full"
+          px={{ lg: "10px", xl: 0 }}
+          w={{ base: "full", xl: "90%"}}
           align={"center"}
         >
           <Flex justifyContent={"flex-start"}>
@@ -235,12 +235,12 @@ export default function AppBar() {
                   fontWeight: "200",
                 }}
                 fontWeight={"700"}
-                fontSize={{ base: "10px", md: "16px" }}
+                fontSize={{ base: "12px", md: "16px" }}
                 padding={{ base: '7px 14px', md: "16px 32px" }}
                 height={{ base: "30px", md: "45px" }}
               // onClick={onComingSoonOpen}
               >
-                <Text color={"#000"}>Launch App</Text>
+                <Text color={"black"}>Launch App</Text>
               </Button>
             </NextLink>
             <Box
