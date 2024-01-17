@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Lakes";
-  src: url("/fonts/lakes/TT Lakes Neue Trial Condensed Black.ttf") format('truetype');
+  src: url("/fonts/lakes/TT Lakes Neue Trial Condensed ExtraBold.ttf") format('truetype');
   /* IE9 Compat Modes */
-  src: local("../../public/fonts/lakes/TT Lakes Neue Trial Condensed Black.ttf"),
+  src: local("../../public/fonts/lakes/TT Lakes Neue Trial Condensed ExtraBold.ttf"),
 }

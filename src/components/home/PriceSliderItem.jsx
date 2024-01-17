@@ -6,7 +6,7 @@ import {
     useMediaQuery
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { CurrencyFormater, removeLastZezo } from "src/utils/PriceFormater";
+import { CurrencyFormater, removeLastZezo, CompactCurrency } from "src/utils/PriceFormater";
 import { Chart, CategoryScale, LinearScale, BarElement, LineElement, LineController, PointElement } from 'chart.js';
 Chart.register(
     CategoryScale,
@@ -120,7 +120,7 @@ export default function PriceSliderItem({ tokenData }) {
                 <Text color={"#FCFDC7"}
                     fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                     fontWeight={{ base: "300", md: "700" }}
-                    fontFamily="Lakes">${removeLastZezo(token.lastPrice)}</Text>
+                    fontFamily="Lakes">${CompactCurrency(token.lastPrice)}</Text>
             </Box>
         </Box>
 

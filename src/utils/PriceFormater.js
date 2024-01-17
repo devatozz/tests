@@ -11,6 +11,16 @@ export const CurrencyFormater = (value) => {
     }
 }
 
+
+export const CompactCurrency = (value) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(value);
+}
+
 export function removeLastZezo(value) {
     return Number(String(value).replace(/\.?0+$/, ''));
 }

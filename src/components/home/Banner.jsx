@@ -650,14 +650,15 @@ export default function Banner() {
           justifyContent={"center"}
         >
           <Box
-            backgroundImage={{ base: "", xl: "/blast/thefund.png" }}
+            backgroundImage={{ base: "/blast/thefund-mobile.png", xl: "/blast/thefund.png" }}
             backgroundSize={"cover"}
-            width={{ "2xl": "1244px", xl: "1201px", base: "90%" }}
+            width={{ "2xl": "1244px", xl: "1201px", md: "90%", base: "100%" }}
             height={{ base: "250px", md: "500px", xl: "515px", "2xl": "533px" }}
             display={"flex"}
             justifyContent={"center"}
             alignItems={"center"}
             paddingX={{ md: "60px", base: "10px" }}
+            marginBottom={"30px"}
           >
             <Box
               textAlign={"center"}
@@ -665,12 +666,13 @@ export default function Banner() {
               justifyContent={"center"}
               alignItems={"center"}
               flexDirection={"column"}
+              gap={{ base: "10px", md: "40px" }}
             >
               <Text
                 color={"#FCFC05"}
-                fontSize={{ base: "22px", md: "55px" }}
+                fontSize={{ base: "15px", md: "22px", md: "55px" }}
                 fontWeight={{ base: "300", md: "700" }}
-                lineHeight={{ base: "28px", md: "68px" }}
+                lineHeight={{ base: "20px", md: "28px", md: "68px" }}
                 fontFamily="Lakes"
                 fontStyle={"normal"}
                 paddingTop={{ md: "40px", base: "20px" }}
@@ -680,13 +682,11 @@ export default function Banner() {
               </Text>
               <Text
                 color={"#C3D3A5"}
-                fontSize={{ base: "14px", md: "26px" }}
+                fontSize={{ base: "10px", md: "14px", md: "26px" }}
                 fontWeight={{ base: "300", md: "700" }}
                 lineHeight={{ base: "18px", md: "26px" }}
                 fontFamily="Lakes"
                 fontStyle={"normal"}
-                paddingTop={{ md: "10px", base: "40px" }}
-                paddingBottom={{ md: "60px", base: "40px" }}
                 width={{ md: "100%", base: "80%" }}
               >
                 Join the community with thousands of traders, LPs, and
@@ -702,7 +702,10 @@ export default function Banner() {
                   }}
                   borderRadius="4px"
                   fontFamily="Lakes"
-
+                  paddingX={{ base: "7px", md: "22px" }}
+                  paddingY={{ base: "4px", md: "16px" }}
+                  height={{base: "25px"}}
+                  marginBottom={{base: "20px"}}
                 // onClick={onComingSoonOpen}
                 >
                   <Text fontSize={{ md: "16px", base: "12px" }} color={"#000"}>
