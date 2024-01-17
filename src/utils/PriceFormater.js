@@ -1,4 +1,5 @@
 export const CurrencyFormater = (value) => {
+    value = Number(value);
     if (value >= 1e9)
         return (value / 1e9).toFixed(1) + 'B';
     else if (value >= 1e6)
