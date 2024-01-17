@@ -6,16 +6,6 @@ const theme = extendTheme({
   styles: {
     global: {
       "@font-face": [
-        {
-          fontFamily: "Lakes",
-          src: "url('../components/fonts/lakes/TT-Lakes-Neue-Trial-Black')",
-        },
-        // {
-        //   fontFamily: "Lakes",
-        //   fontStyle: "normal",
-        //   fontWeight: 400,
-        //   src: "url('../components/fonts/lakes/TT-Lakes-Neue-Trial-Black')",
-        // },
       ],
     },
   },
