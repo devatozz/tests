@@ -109,14 +109,14 @@ export default function PriceSliderItem({ tokenData }) {
                         fontStyle={"normal"}>{token.symbol}</Text>
                     <Text color={"#FCFDC7"}
                         opacity={0.6}
-                        fontSize={{ base: "12px", "2xl": "15px" }}
+                        fontSize={{ base: "12px", lg: "13px", "2xl": "15px" }}
                         fontFamily="Lakes">{token.name}</Text>
                 </Box>
             </Box>
 
             <Box display={"flex"} justifyContent={{ base: "center", xl: "flex-start" }}>
                 <Text color={"#FCFDC7"}
-                    fontSize={{ base: "12px", xl: "13px", "2xl": "18px" }}
+                    fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                     fontFamily="Lakes">${removeLastZezo(token.lastPrice)}</Text>
             </Box>
         </Box>
@@ -135,7 +135,7 @@ export default function PriceSliderItem({ tokenData }) {
             <Box >
                 <Box display={"flex"} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
                     <Text color={"#FCFDC7"}
-                        fontSize={{ base: "12px", xl: "13px", "2xl": "18px" }}
+                        fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                         fontFamily="Lakes"
                         opacity={"0.6"}
                     >PRICE</Text>
@@ -153,18 +153,18 @@ export default function PriceSliderItem({ tokenData }) {
                         }
 
                         <Text color={Number(token.priceChangePercent) <= 0 ? "#F45353" : "#58FF5D"}
-                            fontSize={{ base: "12px", xl: "15px", "2xl": "18px" }}
+                            fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                             fontFamily="Lakes">{removeLastZezo(token.priceChangePercent)}%</Text>
                     </Box>
                 </Box>
 
                 <Box display={"flex"} w={{ base: "" }} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
                     <Text color={"#FCFDC7"}
-                        fontSize={{ base: "12px", xl: "13px", "2xl": "18px" }}
+                        fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                         fontFamily="Lakes"
                         opacity={"0.6"}>VOL</Text>
                     <Text color={"#FCFDC7"}
-                        fontSize={{ base: "12px", xl: "13px", "2xl": "18px" }}
+                        fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                         fontFamily="Lakes">
                         {CurrencyFormater(token.volume)}</Text>
                 </Box>
