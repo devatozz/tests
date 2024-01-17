@@ -94,7 +94,7 @@ export default function Banner() {
     <Box
       m={0}
       w={"100%"}
-      p={"0px"}
+      p={0}
       bg="linear-gradient(180deg, #12140D 0%, #15170E 51.04%, #22281A 100%);"
     >
       {/* hero view  */}
@@ -104,8 +104,8 @@ export default function Banner() {
         position={"relative"}
         p={{ base: "40px 0", md: "0px 0" }}
         // backgroundImage="url('./bgSection2.png') "
-        backgroundSize="cover"
-        backgroundPosition="center"
+        backgroundSize={"cover"}
+        backgroundPosition={"center"}
       >
         <Container
           maxW={"90%"}
@@ -155,7 +155,7 @@ export default function Banner() {
               gap={30}
               flexDirection={{ md: "row", base: "column" }}
             >
-              <NextLink href={""} target={"_blank"}>
+              <NextLink href={"#"} target={"_blank"}>
                 <Button
                   backgroundColor={"#FCFC05"}
                   transition="background-color 0.3s ease-in-out"
@@ -178,7 +178,7 @@ export default function Banner() {
               </NextLink>
 
               <Box display={{ base: "none", md: "block" }}>
-                <NextLink href={""} target={"_blank"} >
+                <NextLink href={"#"} target={"_blank"} >
                   <Button
 
                     backgroundColor={"transparent"}
@@ -211,15 +211,13 @@ export default function Banner() {
             width={{ md: "750px", base: "100%" }}
             alignItems="center"
             justifyContent="center"
-            marginLeft={{ md: "20px", base: "0px" }}
+            marginLeft={{ md: "20px", base: 0 }}
             padding={{ md: "20px", base: "10px" }}
-            background={""}
             borderRadius={{ md: "12px", base: "8px" }}
           >
             <video
               src="/blast/new_11.webm"
               alt="zk perp"
-              s
               width={{ md: "750px", base: "100%" }}
               autoPlay
               muted
@@ -249,8 +247,9 @@ export default function Banner() {
           flexDirection={{ xl: "row", base: "column" }}
         >
           {
-            TRADING_STATS.map(item =>
+            TRADING_STATS.map((item, index) =>
               <Box
+                key={index}
                 borderRadius={"8px"}
                 border={"1px solid #FCFDC7"}
                 height={"170px"}

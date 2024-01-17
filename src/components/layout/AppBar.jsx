@@ -250,11 +250,11 @@ export default function AppBar() {
               p={"7px"}
               h={30}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.9994 14.1228C11.3807 14.1228 14.1219 11.3817 14.1219 8.00038C14.1219 4.61904 11.3807 1.87793 7.9994 1.87793C4.61807 1.87793 1.87695 4.61904 1.87695 8.00038C1.87695 11.3817 4.61807 14.1228 7.9994 14.1228Z" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M5.54976 2.49023H6.16201C4.96813 6.06574 4.96813 9.93513 6.16201 13.5106H5.54976" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M9.83594 2.49023C11.0298 6.06574 11.0298 9.93513 9.83594 13.5106" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M2.48926 10.4492V9.83691C6.06477 11.0308 9.93416 11.0308 13.5097 9.83691V10.4492" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M2.48926 6.16396C6.06477 4.97009 9.93416 4.97009 13.5097 6.16396" stroke="#FCFC05" stroke-width="0.918367" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M7.9994 14.1228C11.3807 14.1228 14.1219 11.3817 14.1219 8.00038C14.1219 4.61904 11.3807 1.87793 7.9994 1.87793C4.61807 1.87793 1.87695 4.61904 1.87695 8.00038C1.87695 11.3817 4.61807 14.1228 7.9994 14.1228Z" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M5.54976 2.49023H6.16201C4.96813 6.06574 4.96813 9.93513 6.16201 13.5106H5.54976" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M9.83594 2.49023C11.0298 6.06574 11.0298 9.93513 9.83594 13.5106" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" MorestrokeLinejoin="round" />
+                <path d="M2.48926 10.4492V9.83691C6.06477 11.0308 9.93416 11.0308 13.5097 9.83691V10.4492" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" MorestrokeLinejoin="round" />
+                <path d="M2.48926 6.16396C6.06477 4.97009 9.93416 4.97009 13.5097 6.16396" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" MorestrokeLinejoin="round" />
               </svg>
             </Box>
           </Flex>

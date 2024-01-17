@@ -69,7 +69,6 @@ export default function PriceSliderItem({ tokenData }) {
         fetch("/api/home/getTradingWidgetInfo?symbol=" + symbol)
             .then(res => res.json())
             .then(result => {
-                console.log("detail ", result);
                 setToken({
                     ...token,
                     ...result
