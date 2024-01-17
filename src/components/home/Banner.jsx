@@ -121,7 +121,7 @@ export default function Banner() {
           >
             <Box align={"center"}>
               <Heading
-                fontWeight={300}
+                fontWeight={700}
                 fontSize={{ base: "32px", xl: "50px", "2xl": "70px" }}
                 lineHeight={{ "2xl": "90px", base: "32px", "xl": "65px" }}
                 color={"#EEEE06"}
@@ -304,7 +304,7 @@ export default function Banner() {
         <Text
           color={"#FCFDC7"}
           fontSize={{ base: "20px", md: "30px" }}
-          fontWeight={{ base: "300", md: "400" }}
+          fontWeight={{ base: "300", md: "700" }}
           lineHeight={{ base: "26px", md: "30px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
@@ -318,6 +318,7 @@ export default function Banner() {
           lineHeight={{ base: "19px", md: "26px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
+          fontWeight={{ base: "200", md: "600" }}
           paddingTop={{ md: "20px", base: "10px" }}
         >
           Pov: You are etering the trading platform designed for all.
@@ -345,7 +346,7 @@ export default function Banner() {
                   <Text
                     color={"#FCFDC7"}
                     fontSize={{ base: "16px", md: "30px" }}
-                    fontWeight={{ base: "300", md: "400" }}
+                    fontWeight={{ base: "300", md: "700" }}
                     lineHeight={{ base: "19px", md: "30px" }}
                     fontFamily="Lakes"
                     fontStyle={"normal"}
@@ -356,6 +357,7 @@ export default function Banner() {
                 <Text
                   color={"#C3D3A5"}
                   fontSize={{ base: "14px", md: "18px" }}
+                  fontWeight={{ base: "200", md: "600" }}
                   lineHeight={{ base: "16px", md: "20px" }}
                   fontFamily="Lakes"
                   fontStyle={"normal"}
@@ -380,7 +382,7 @@ export default function Banner() {
         <Text
           color={"#FCFDC7"}
           fontSize={{ base: "16px", md: "30px" }}
-          fontWeight={{ base: "300", md: "400" }}
+          fontWeight={{ base: "300", md: "700" }}
           lineHeight={{ base: "19px", md: "30px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
@@ -392,6 +394,7 @@ export default function Banner() {
         <Text
           color={"#FCFC05"}
           fontSize={{ base: "34px", md: "55px" }}
+          fontWeight={{ base: "300", md: "700" }}
           lineHeight={{ base: "36px", md: "60px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
@@ -421,7 +424,7 @@ export default function Banner() {
         <Text
           color={"#FCFDC7"}
           fontSize={{ base: "26px", md: "30px" }}
-          fontWeight={{ base: "300", md: "400" }}
+          fontWeight={{ base: "300", md: "700" }}
           lineHeight={{ base: "30px", md: "30px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
@@ -432,6 +435,7 @@ export default function Banner() {
         <Text
           color={"#C3D3A5"}
           fontSize={{ base: "16px", md: "22px" }}
+          fontWeight={{ base: "300", md: "700" }}
           lineHeight={{ base: "19px", md: "26px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
@@ -458,7 +462,7 @@ export default function Banner() {
         <Text
           color={"#FCFDC7"}
           fontSize={{ base: "26px", md: "30px" }}
-          fontWeight={{ base: "300", md: "400" }}
+          fontWeight={{ base: "300", md: "700" }}
           lineHeight={{ base: "30px", md: "30px" }}
           fontFamily="Lakes"
           fontStyle={"normal"}
@@ -517,6 +521,7 @@ export default function Banner() {
             <Text
               color={"#C3D3A5"}
               fontSize={{ base: "14px", xl: "22px" }}
+              fontWeight={{ base: "300", md: "700" }}
               lineHeight={{ base: "16px", md: "26px" }}
               fontFamily="Lakes"
               fontStyle={"normal"}
@@ -598,6 +603,7 @@ export default function Banner() {
             <Text
               color={"#C3D3A5"}
               fontSize={{ base: "14px", xl: "22px" }}
+              fontWeight={{ base: "300", md: "700" }}
               lineHeight={{ base: "16px", md: "26px" }}
               fontFamily="Lakes"
               fontStyle={"normal"}
@@ -663,6 +669,7 @@ export default function Banner() {
               <Text
                 color={"#FCFC05"}
                 fontSize={{ base: "22px", md: "55px" }}
+                fontWeight={{ base: "300", md: "700" }}
                 lineHeight={{ base: "28px", md: "68px" }}
                 fontFamily="Lakes"
                 fontStyle={"normal"}
@@ -674,6 +681,7 @@ export default function Banner() {
               <Text
                 color={"#C3D3A5"}
                 fontSize={{ base: "14px", md: "26px" }}
+                fontWeight={{ base: "300", md: "700" }}
                 lineHeight={{ base: "18px", md: "26px" }}
                 fontFamily="Lakes"
                 fontStyle={"normal"}

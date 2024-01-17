@@ -105,11 +105,13 @@ export default function PriceSliderItem({ tokenData }) {
                 <Box fontWeight={"700"} textAlign={"left"}>
                     <Text color={"#FCFDC7"}
                         fontSize={{ base: "20px", xl: "22px", "2xl": "25px" }}
+                        fontWeight={{ base: "300", md: "700" }}
                         fontFamily="Lakes"
                         fontStyle={"normal"}>{token.symbol}</Text>
                     <Text color={"#FCFDC7"}
                         opacity={0.6}
                         fontSize={{ base: "12px", lg: "13px", "2xl": "15px" }}
+                        fontWeight={{ base: "300", md: "700" }}
                         fontFamily="Lakes">{token.name}</Text>
                 </Box>
             </Box>
@@ -117,6 +119,7 @@ export default function PriceSliderItem({ tokenData }) {
             <Box display={"flex"} justifyContent={{ base: "center", xl: "flex-start" }}>
                 <Text color={"#FCFDC7"}
                     fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
+                    fontWeight={{ base: "300", md: "700" }}
                     fontFamily="Lakes">${removeLastZezo(token.lastPrice)}</Text>
             </Box>
         </Box>
@@ -136,6 +139,7 @@ export default function PriceSliderItem({ tokenData }) {
                 <Box display={"flex"} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
                     <Text color={"#FCFDC7"}
                         fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
+                        fontWeight={{ base: "300", md: "700" }}
                         fontFamily="Lakes"
                         opacity={"0.6"}
                     >PRICE</Text>
@@ -154,6 +158,7 @@ export default function PriceSliderItem({ tokenData }) {
 
                         <Text color={Number(token.priceChangePercent) <= 0 ? "#F45353" : "#58FF5D"}
                             fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
+                            fontWeight={{ base: "300", md: "700" }}
                             fontFamily="Lakes">{removeLastZezo(token.priceChangePercent)}%</Text>
                     </Box>
                 </Box>
@@ -161,10 +166,12 @@ export default function PriceSliderItem({ tokenData }) {
                 <Box display={"flex"} w={{ base: "" }} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
                     <Text color={"#FCFDC7"}
                         fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
+                        fontWeight={{ base: "300", md: "700" }}
                         fontFamily="Lakes"
                         opacity={"0.6"}>VOL</Text>
                     <Text color={"#FCFDC7"}
                         fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
+                        fontWeight={{ base: "300", md: "700" }}
                         fontFamily="Lakes">
                         {CurrencyFormater(token.volume)}</Text>
                 </Box>
