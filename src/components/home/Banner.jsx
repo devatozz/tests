@@ -49,6 +49,24 @@ export default function Banner() {
     },
   ];
 
+  const TRADING_STATS = [
+    {
+      image: "/blast/chart.png",
+      title: "Total Trading Volume",
+      subTitle: "$157,644,372"
+    },
+    {
+      image: "/blast/volume.png",
+      title: "Open Interest",
+      subTitle: "$214,690,655"
+    },
+    {
+      image: "/blast/user.png",
+      title: "Total Users",
+      subTitle: "342,212"
+    }
+  ]
+
   const ScrollToTopButton = () => {
     return (
       <Link
@@ -104,8 +122,8 @@ export default function Banner() {
             <Box align={"center"}>
               <Heading
                 fontWeight={300}
-                fontSize={{ base: "32px", md: "76px" }}
-                lineHeight={{ md: "90px", base: "32px" }}
+                fontSize={{ base: "32px", xl: "50px", "2xl": "70px" }}
+                lineHeight={{ "2xl": "90px", base: "32px", "xl": "65px" }}
                 color={"#EEEE06"}
                 textAlign={{ md: "left", base: "left" }}
                 fontFamily="Lakes"
@@ -117,8 +135,8 @@ export default function Banner() {
             <Box align={"center"}>
               <Text
                 color={"#FCFDC7"}
-                fontSize={{ base: "16px", md: "22px" }}
-                lineHeight={{ base: "19px", md: "28px" }}
+                fontSize={{ base: "16px", xl: "20px", "2xl": "22px" }}
+                lineHeight={{ base: "19px", xl: "22px", "2xl": "28px" }}
                 fontFamily="Lakes"
                 maxW={{ md: "817", base: "100%" }}
                 fontStyle={"normal"}
@@ -218,143 +236,67 @@ export default function Banner() {
         <Box
           width={{ base: "90%" }}
           display={"flex"}
-          justifyContent={"center"}
+          justifyContent={{ base: "center" }}
+          alignContent={{ base: "center", xl: "space-between" }}
           alignItems={"center"}
-          gap={30}
+          gap={{ base: 30 }}
           flexDirection={{ xl: "row", base: "column" }}
         >
-          <Box
-            borderRadius={"8px"}
-            border={"1px solid #FCFDC7"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            gap={30}
-            height={"170px"}
-            width={"100%"}
-            paddingX={"20px"}
-          >
-            <Box width={"40px"} height={"40px"}>
-              <Image src="/blast/chart.png" alt="zk infor" />
-            </Box>
-            <Box
-              display={"flex"}
-              alignItems={"left"}
-              flexDirection={"column"}
-              gap={"10px"}
-            >
-              <Text
-                color={"#FCFDC7"}
-                fontSize={{ base: "16px", md: "18px" }}
-                fontWeight={{ base: "300", md: "400" }}
-                lineHeight={{ base: "19px", md: "28px" }}
-                fontFamily="Lakes"
-                width={{ md: "284px", base: "180px" }}
-                fontStyle={"normal"}
+          {
+            TRADING_STATS.map(item =>
+              <Box
+                borderRadius={"8px"}
+                border={"1px solid #FCFDC7"}
+                height={"170px"}
+                width={"100%"}
+                paddingX={"20px"}
+                display={"flex"}
+                justifyContent={{ base: "center", xl: "" }}
               >
-                Total Trading Volume
-              </Text>
-              <Text
-                color={"#FCFDC7"}
-                fontSize={{ base: "16px", md: "28px" }}
-                fontWeight={{ base: "300", md: "400" }}
-                lineHeight={{ base: "16px", md: "28px" }}
-                fontFamily="Lakes"
-                width={{ md: "284px", base: "180px" }}
-                fontStyle={"normal"}
-              >
-                $157,644,372
-              </Text>
-            </Box>
-          </Box>
+                <Box
+                  height={"100%"}
+                  minW={{ base: "300px", xl: "" }}
+                  display={"flex"}
+                  justifyContent={{ base: "flex-start", xl: "center" }}
+                  alignItems={"center"}
+                  gap={{ base: 30 }}>
 
-          <Box
-            borderRadius={"8px"}
-            border={"1px solid #FCFDC7"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            gap={30}
-            height={"170px"}
-            width={"100%"}
-            paddingX={"20px"}
-          >
-            <Box width={"40px"} height={"40px"}>
-              <Image src="/blast/volume.png" alt="zk infor" />
-            </Box>
-            <Box
-              display={"flex"}
-              alignItems={"left"}
-              flexDirection={"column"}
-              gap={"10px"}
-            >
-              <Text
-                color={"#FCFDC7"}
-                fontSize={{ base: "16px", md: "18px" }}
-                fontWeight={{ base: "300", md: "400" }}
-                lineHeight={{ base: "19px", md: "28px" }}
-                fontFamily="Lakes"
-                width={{ md: "284px", base: "180px" }}
-                fontStyle={"normal"}
-              >
-                Open Interest
-              </Text>
-              <Text
-                color={"#FCFDC7"}
-                fontSize={{ base: "16px", md: "28px" }}
-                fontWeight={{ base: "300", md: "400" }}
-                lineHeight={{ base: "19px", md: "28px" }}
-                fontFamily="Lakes"
-                fontStyle={"normal"}
-              >
-                $214,690,655
-              </Text>
-            </Box>
-          </Box>
+                  <Box width={{ "2xl": "84px", xl: "63px" }} height={{ "2xl": "84px", xl: "63px" }}>
+                    <Image src={item.image} alt="zk infor" />
+                  </Box>
+                  <Box
+                    display={"flex"}
+                    alignItems={"left"}
+                    flexDirection={"column"}
+                    gap={"10px"}
+                    width={"fit-content"}
+                  >
+                    <Text
+                      color={"#FCFDC7"}
+                      fontSize={{ base: "16px", md: "18px", "2xl": "18px" }}
+                      fontWeight={{ base: "300", md: "700" }}
+                      lineHeight={{ base: "19px", xl: "22px", "2xl": "28px" }}
+                      fontFamily="Lakes"
+                      fontStyle={"normal"}
+                    >
+                      {item.title}
+                    </Text>
+                    <Text
+                      color={"#FCFDC7"}
+                      fontSize={{ base: "22px", md: "26px", "xl": "28px" }}
+                      fontWeight={{ base: "300", md: "700" }}
+                      lineHeight={{ base: "16px", xl: "22px", "2xl": "28px" }}
+                      fontFamily="Lakes"
+                      fontStyle={"normal"}
+                    >
+                      {item.subTitle}
+                    </Text>
+                  </Box>
+                </Box>
+              </Box>
+            )
+          }
 
-          <Box
-            borderRadius={"8px"}
-            border={"1px solid #FCFDC7"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            gap={30}
-            height={"170px"}
-            width={"100%"}
-            paddingX={"20px"}
-          >
-            <Box width={"40px"} height={"40px"}>
-              <Image src="/blast/user.png" alt="zk infor" />
-            </Box>
-            <Box
-              display={"flex"}
-              alignItems={"left"}
-              flexDirection={"column"}
-              gap={"10px"}
-            >
-              <Text
-                color={"#FCFDC7"}
-                fontSize={{ base: "16px", md: "18px" }}
-                fontWeight={{ base: "300", md: "400" }}
-                lineHeight={{ base: "19px", md: "28px" }}
-                fontFamily="Lakes"
-                width={{ md: "284px", base: "180px" }}
-                fontStyle={"normal"}
-              >
-                Total Users
-              </Text>
-              <Text
-                color={"#FCFDC7"}
-                fontSize={{ base: "16px", md: "28px" }}
-                fontWeight={{ base: "300", md: "400" }}
-                lineHeight={{ base: "19px", md: "28px" }}
-                fontFamily="Lakes"
-                fontStyle={"normal"}
-              >
-                342,212
-              </Text>
-            </Box>
-          </Box>
         </Box>
       </Box>
       {/* Trading, the way it should be */}
@@ -697,16 +639,16 @@ export default function Banner() {
       {/* the fund */}
       <Box paddingBottom={{ base: "40px", md: "60px" }}>
         <Box
-          padding={{ md: "60px", base: "10px" }}
+          paddingX={{ md: "60px", base: "10px" }}
           display={"flex"}
           alignItems={"center"}
           justifyContent={"center"}
         >
           <Box
-            backgroundImage={{ base: "/blast/thefund.png" }}
+            backgroundImage={{ base: "", xl: "/blast/thefund.png" }}
             backgroundSize={"cover"}
-            width={{ xl: "1244px", base: "90%" }}
-            height={{ base: "300px", md: "533px" }}
+            width={{ "2xl": "1244px", xl: "1200px", base: "90%" }}
+            height={{ base: "450px", xl: "512px", "2xl": "533px" }}
           >
             <Box
               textAlign={"center"}
@@ -721,7 +663,7 @@ export default function Banner() {
                 lineHeight={{ base: "28px", md: "68px" }}
                 fontFamily="Lakes"
                 fontStyle={"normal"}
-                paddingTop={{ md: "120px", base: "20px" }}
+                paddingTop={{ md: "40px", base: "20px" }}
                 paddingBottom={{ md: "20px", base: "0px" }}
               >
                 THE FUNDS ARE YOURS, <br /> THE YIELDS ARE OURS

@@ -82,7 +82,7 @@ export default function AppBar() {
         bg="linear-gradient(180deg, #12140D 0%, #15170E 51.04%, #22281A 100%);"
         color={useColorModeValue("#fff.900", "red")}
         minH={"72px"}
-        paddingX={{ base: 4, xl: 20 }}
+        paddingX={{ base: 4, md: 12, xl: 0 }}
         paddingY={"10px"}
         id="top"
         justifyContent={"center"}
@@ -113,9 +113,11 @@ export default function AppBar() {
                   <Text
                     display={{ base: "none", xl: "block" }}
                     fontSize={"28px"}
-                    fontFamily="Montalban"
+                    fontFamily="Lakes"
                     color="#FCFC05"
-                    fontWeight={"700"}>
+                    fontWeight={"700"}
+                    fontStyle={"bold"}
+                  >
                     BLASTTRADE
                   </Text>
                 </Flex>
@@ -127,10 +129,10 @@ export default function AppBar() {
                   base: "none",
                   md: "flex",
                 }}
-                mx={24}
+                mx={{ md: 10, lg: 24 }}
               >
                 <Stack direction={"row"}
-                  spacing={{ base: "30px", xl: "40px" }}
+                  spacing={{ base: "30px", md: "20px", xl: "40px" }}
                   justifyContent={"center"}>
                   {NAV_ITEMS.map((navItem, index) => (
                     <Box key={index}>

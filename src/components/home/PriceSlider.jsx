@@ -6,7 +6,7 @@ import {
 import PriceSliderItem from "./PriceSliderItem";
 
 const TradingViewWidget = () => {
-  const tokenList =　[
+  const tokenList = [
     {
       symbol: "BTC",
       name: "Bitcoin",
@@ -55,7 +55,7 @@ const TradingViewWidget = () => {
     <>
       <SimpleGrid
         columns={{ xl: "4", base: "1", md: "2" }}
-        spacing={{ md: "30px", base: "20px" }}
+        spacing={{ xl: "20px", "2xl": "30px", base: "20px" }}
         paddingTop={{ base: "45px" }}
         paddingBottom={{ base: "40px" }}
       >
