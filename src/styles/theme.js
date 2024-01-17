@@ -8,16 +8,14 @@ const theme = extendTheme({
       "@font-face": [
         {
           fontFamily: "Lakes",
-          fontStyle: "normal",
-          fontWeight: 400,
           src: "url('../components/fonts/lakes/TT-Lakes-Neue-Trial-Black')",
         },
-        {
-          fontFamily: "Lakes",
-          fontStyle: "normal",
-          fontWeight: 400,
-          src: "url('../components/fonts/lakes/TT-Lakes-Neue-Trial-Black')",
-        },
+        // {
+        //   fontFamily: "Lakes",
+        //   fontStyle: "normal",
+        //   fontWeight: 400,
+        //   src: "url('../components/fonts/lakes/TT-Lakes-Neue-Trial-Black')",
+        // },
       ],
     },
   },

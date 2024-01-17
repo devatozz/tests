@@ -133,7 +133,7 @@ export default function PriceSliderItem({ tokenData }) {
             </Box>
 
             <Box >
-                <Box display={"flex"} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "space-between", "2xl": "flex-end" }}>
+                <Box display={"flex"} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
                     <Text color={"#FCFDC7"}
                         fontSize={{ base: "12px", xl: "13px", "2xl": "18px" }}
                         fontFamily="Lakes"
@@ -143,11 +143,11 @@ export default function PriceSliderItem({ tokenData }) {
                     <Box display={"flex"} gap={1} >
                         {
                             Number(token.priceChangePercent) <= 0 ?
-                                <svg style={{ marginTop: "5px" }} width="10" height="7" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg style={{ marginTop: isGt1450 ? "7px" : "3px" }} width="13" height="10" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.28674 7.69154C5.63555 8.18243 6.36445 8.18243 6.71326 7.69154L11.0803 1.5459C11.4919 0.966549 11.0777 0.164062 10.367 0.164062H1.633C0.922276 0.164062 0.508057 0.966548 0.919733 1.5459L5.28674 7.69154Z" fill="#F45353" />
                                 </svg>
                                 :
-                                <svg style={{ marginTop: "5px" }} width="10" height="7" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg style={{ marginTop: isGt1450 ? "7px" : "3px" }} width="13" height="10" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.28674 1.32408C5.63555 0.833193 6.36445 0.833193 6.71326 1.32408L11.0803 7.46973C11.4919 8.04908 11.0777 8.85156 10.367 8.85156H1.633C0.922276 8.85156 0.508057 8.04908 0.919733 7.46973L5.28674 1.32408Z" fill="#58FF5D" />
                                 </svg>
                         }
@@ -158,7 +158,7 @@ export default function PriceSliderItem({ tokenData }) {
                     </Box>
                 </Box>
 
-                <Box display={"flex"} w={{base: ""}} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "space-between", "2xl": "flex-end" }}>
+                <Box display={"flex"} w={{ base: "" }} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
                     <Text color={"#FCFDC7"}
                         fontSize={{ base: "12px", xl: "13px", "2xl": "18px" }}
                         fontFamily="Lakes"

@@ -637,9 +637,8 @@ export default function Banner() {
         </SimpleGrid>
       </Box>
       {/* the fund */}
-      <Box paddingBottom={{ base: "40px", md: "60px" }}>
+      <Box paddingBottom={{ base: "50px", md: "60px" }}>
         <Box
-          paddingX={{ md: "60px", base: "10px" }}
           display={"flex"}
           alignItems={"center"}
           justifyContent={"center"}
@@ -647,8 +646,12 @@ export default function Banner() {
           <Box
             backgroundImage={{ base: "", xl: "/blast/thefund.png" }}
             backgroundSize={"cover"}
-            width={{ "2xl": "1244px", xl: "1200px", base: "90%" }}
-            height={{ base: "450px", xl: "512px", "2xl": "533px" }}
+            width={{ "2xl": "1244px", xl: "1201px", base: "90%" }}
+            height={{ base: "250px", md: "500px", xl: "515px", "2xl": "533px" }}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            paddingX={{ md: "60px", base: "10px" }}
           >
             <Box
               textAlign={"center"}
