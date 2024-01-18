@@ -56,6 +56,7 @@ export default function LargeWithLogoLeft() {
             <Text
               color={"#C3D3A5"}
               fontSize={{ base: "16px", md: "26px" }}
+              fontWeight={{ base: "300", md: "600" }}
               lineHeight={{ base: "19px", md: "26px" }}
               fontFamily="Lakes"
               fontStyle={"normal"}

@@ -1,9 +1,5 @@
 @font-face {
   font-family: "Lakes";
-  font-style: normal;
-  font-weight: 400;
-  src: url("../components/fonts/lakes/TT-Lakes-Neue-Trial-Black.ttf"); /* IE9 Compat Modes */
-  src: local(""), url("../components/fonts/lakes/TT-Lakes-Neue-Trial-Black.ttf") ,
-   
-}
+  src: url("/fonts/lakes/TT Lakes Neue Trial Medium.ttf"),  /* IE9 Compat Modes */
 
+}
