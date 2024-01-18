@@ -98,6 +98,7 @@ export default function PriceSliderItem({ tokenData }) {
                 justifyContent={{ base: "center", xl: "flex-start" }}
                 alignItems={"center"}
                 justifyItems={"center"}
+                gap={"10px"}
                 height={{ base: "70px", xl: "80px" }}
             >
                 <Image width={{ base: "50px", xl: "60px" }} height={{ base: "50px", xl: "60px" }} borderRadius={"50%"} p={"5px"} src={token.image} alt={token.name} />
