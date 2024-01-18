@@ -32,7 +32,9 @@ export default async function handler(req, res) {
     });
     let symbol = String(req.query.symbol);
     try {
-        let tokenInfo = undefined;
+        let tokenInfo = {
+            symbol
+        };
         symbol = symbol.toUpperCase();
 
         const currentTime = Date.now();
@@ -41,10 +43,10 @@ export default async function handler(req, res) {
             !cacheItem.data ||
             (currentTime - cacheItem.lastRetriveTime > CACHE_EXPIRY_TIME)
         ) {
-            if (symbol == "BTC" || symbol == "ETH")
-                tokenInfo = await getPriceFromBinance(symbol);
-            else
-                tokenInfo = await getPriceFromGoldPrice(symbol);
+            // if (symbol == "BTC" || symbol == "ETH")
+            //     tokenInfo = await getPriceFromBinance(symbol);
+            // else
+            //     tokenInfo = await getPriceFromGoldPrice(symbol);
             await getPriceHistory(tokenInfo);
 
             cacheItem.lastRetriveTime = Date.now();
@@ -88,10 +90,16 @@ async function getPriceHistory(item) {
     for (let i = 0; i < response.stats.length; i += 12) {
         dataList.push(Number(response.stats[i][1]))
     }
-    
+
     const quoteVolume = response.total_volumes[response.total_volumes.length - 1][1];
     item.volume = quoteVolume;
     item.priceHistory = dataList;
+
+    const lastPrice24HAgo = Number(response.stats[0][1]);
+    item.lastPrice = Number(response.stats[response.total_volumes.length - 1][1]);
+    console.log("last price", item.lastPrice );
+    console.log('24h ago: ', lastPrice24HAgo);
+    item.priceChangePercent = Number(((item.lastPrice - lastPrice24HAgo)/lastPrice24HAgo)*100).toFixed(2)
 }
 async function getPriceFromBinance(symbol) {
     try {
