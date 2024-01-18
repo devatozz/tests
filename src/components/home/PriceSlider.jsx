@@ -10,7 +10,7 @@ const TradingViewWidget = () => {
     {
       symbol: "BTC",
       name: "Bitcoin",
-      image: "/blast/home/btc.png",
+      image: "/blast/home/btc.svg",
       lastPrice: "5.94200000",
       volume: "10000000",
       priceChangePercent: "2.11",
@@ -19,7 +19,7 @@ const TradingViewWidget = () => {
     {
       symbol: "ETH",
       name: "Ethereum",
-      image: "/blast/home/eth.png",
+      image: "/blast/home/eth.svg",
       lastPrice: "2555.03",
       volume: "10000000",
       priceChangePercent: "-1.11",
@@ -28,7 +28,7 @@ const TradingViewWidget = () => {
     {
       symbol: "XAU",
       name: "Gold",
-      image: "/blast/home/xau.png",
+      image: "/blast/home/xau.svg",
       lastPrice: "2555.03",
       volume: "10000000",
       priceChangePercent: "-1.11",
@@ -37,7 +37,7 @@ const TradingViewWidget = () => {
     {
       symbol: "XAG",
       name: "Sliver",
-      image: "/blast/home/xag.png",
+      image: "/blast/home/xag.svg",
       lastPrice: "2555.03",
       volume: "1",
       priceChangePercent: "-1.11",

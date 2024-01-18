@@ -6,7 +6,7 @@ import {
     useMediaQuery
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { CurrencyFormater, removeLastZezo, CompactCurrency } from "src/utils/PriceFormater";
+import { removeLastZezo, CompactCurrency } from "src/utils/PriceFormater";
 import { Chart, CategoryScale, LinearScale, BarElement, LineElement, LineController, PointElement } from 'chart.js';
 Chart.register(
     CategoryScale,
