@@ -46,8 +46,9 @@ export default async function handler(req, res) {
             // if (symbol == "BTC" || symbol == "ETH")
             //     tokenInfo = await getPriceFromBinance(symbol);
             // else
-            //     tokenInfo = await getPriceFromGoldPrice(symbol);
             await getPriceHistory(tokenInfo);
+            if (["XAU", "XAG"].includes(symbol))
+                await getPriceFromGoldPrice(tokenInfo);
 
             cacheItem.lastRetriveTime = Date.now();
             cacheItem.data = tokenInfo;
@@ -97,9 +98,9 @@ async function getPriceHistory(item) {
 
     const lastPrice24HAgo = Number(response.stats[0][1]);
     item.lastPrice = Number(response.stats[response.total_volumes.length - 1][1]);
-    console.log("last price", item.lastPrice );
+    console.log("last price", item.lastPrice);
     console.log('24h ago: ', lastPrice24HAgo);
-    item.priceChangePercent = Number(((item.lastPrice - lastPrice24HAgo)/lastPrice24HAgo)*100).toFixed(2)
+    item.priceChangePercent = Number(((item.lastPrice - lastPrice24HAgo) / lastPrice24HAgo) * 100).toFixed(2)
 }
 async function getPriceFromBinance(symbol) {
     try {
@@ -115,22 +116,19 @@ async function getPriceFromBinance(symbol) {
         throw "getPriceFromBinance failed to get";
     }
 }
-async function getPriceFromGoldPrice(symbol) {
+async function getPriceFromGoldPrice(item) {
     try {
         const result = await (await fetch("https://data-asg.goldprice.org/dbXRates/USD")).json();
         const price = result.items[0];
-        return symbol == "XAU"
-            ?
-            {
-                symbol,
-                lastPrice: price.xauPrice,
-                priceChangePercent: Number(price.pcXau).toFixed(2)
-            } :
-            {
-                symbol,
-                lastPrice: price.xagPrice,
-                priceChangePercent: Number(price.pcXau).toFixed(2)
-            };
+
+        if (item.symbol == "XAU") {
+            item.lastPrice = price.xauPrice;
+            item.priceChangePercent = Number(price.chgXau).toFixed(2);
+        }
+        else {
+            item.lastPrice = price.xagPrice;
+            item.priceChangePercent = Number(price.chgXag).toFixed(2);
+        }
     }
     catch (err) {
         console.log(err);
