@@ -162,7 +162,7 @@ export default function PriceSliderItem({ tokenData }) {
                     </Box>
                 </Box>
 
-                <Box display={"flex"} w={{ base: "" }} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
+                {/* <Box display={"flex"} w={{ base: "" }} gap={{ base: 10, xl: 2 }} justifyContent={{ base: "center", xl: "space-between" }}>
                     <Text color={"#FCFDC7"}
                         fontSize={{ base: "12px", lg: "15px", xl: "13px", "2xl": "18px" }}
                         fontWeight={{ base: "300", md: "700" }}
@@ -173,7 +173,7 @@ export default function PriceSliderItem({ tokenData }) {
                         fontWeight={{ base: "300", md: "700" }}
                         fontFamily="Lakes">
                         {CurrencyFormater(token.volume)}</Text>
-                </Box>
+                </Box> */}
             </Box>
         </Box>
 
