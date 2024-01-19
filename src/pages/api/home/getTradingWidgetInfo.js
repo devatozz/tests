@@ -43,9 +43,6 @@ export default async function handler(req, res) {
             !cacheItem.data ||
             (currentTime - cacheItem.lastRetriveTime > CACHE_EXPIRY_TIME)
         ) {
-            // if (symbol == "BTC" || symbol == "ETH")
-            //     tokenInfo = await getPriceFromBinance(symbol);
-            // else
             await getPriceHistory(tokenInfo);
             if (["XAU", "XAG"].includes(symbol))
                 await getPriceFromGoldPrice(tokenInfo);
@@ -102,20 +99,7 @@ async function getPriceHistory(item) {
     console.log('24h ago: ', lastPrice24HAgo);
     item.priceChangePercent = Number(((item.lastPrice - lastPrice24HAgo) / lastPrice24HAgo) * 100).toFixed(2)
 }
-async function getPriceFromBinance(symbol) {
-    try {
-        const result = await (await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}USDT`)).json()
-        return {
-            symbol,
-            lastPrice: result.lastPrice,
-            priceChangePercent: Number(result.priceChangePercent).toFixed(2)
-        };
-    }
-    catch (err) {
-        console.log(err);
-        throw "getPriceFromBinance failed to get";
-    }
-}
+
 async function getPriceFromGoldPrice(item) {
     try {
         const result = await (await fetch("https://data-asg.goldprice.org/dbXRates/USD")).json();
@@ -123,11 +107,11 @@ async function getPriceFromGoldPrice(item) {
 
         if (item.symbol == "XAU") {
             item.lastPrice = price.xauPrice;
-            item.priceChangePercent = Number(price.chgXau).toFixed(2);
+            item.priceChangePercent = Number(price.pcXau).toFixed(2);
         }
         else {
             item.lastPrice = price.xagPrice;
-            item.priceChangePercent = Number(price.chgXag).toFixed(2);
+            item.priceChangePercent = Number(price.pcXag).toFixed(2);
         }
     }
     catch (err) {
