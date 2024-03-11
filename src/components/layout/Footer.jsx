@@ -113,15 +113,6 @@ export default function LargeWithLogoLeft() {
                   />
                 </Flex>
               </NextLink>
-              <NextLink href={"/"} target="_blank">
-                <Flex gap={2} alignItems={"center"}>
-                  <Image
-                    src={"/blast/sol-5.png"}
-                    alt="blasttrade"
-                    height={"38px"}
-                  />
-                </Flex>
-              </NextLink>
             </SimpleGrid>
           </Box>
         </SimpleGrid>

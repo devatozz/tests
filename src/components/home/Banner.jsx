@@ -579,8 +579,7 @@ export default function Banner() {
               height={{ md: "100px", base: "90px" }}
               textAlign={"left"}
             >
-              BMX functions as both the utility and governance token,
-              accumulating 30% of the protocol`&apos;`s generated fees.
+              BMX functions as both the utility and governance token, accumulating 30% of the protocol's generated fees.
             </Text>
 
             <NextLink href={""} target={"_blank"}>
