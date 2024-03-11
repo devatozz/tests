@@ -7,7 +7,7 @@
 // tether-gold
 // tsilver
 
-const CACHE_EXPIRY_TIME = 60 * 60 * 1000; // 10 minutes in milliseconds
+const CACHE_EXPIRY_TIME = 120 * 60 * 1000; // 10 minutes in milliseconds
 const CACHE_DATA = {
     BTC: {
         lastRetriveTime: undefined,
