@@ -20,32 +20,32 @@ export default function Banner() {
 
   const TRADING_INFO = [
     {
-      icon: "/blast/des-user.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-user.png",
       title: "Smart Account",
       des: "Connect using your Web3 wallets or log in with your social accounts",
     },
     {
-      icon: "/blast/des-market.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-market.png",
       title: "Diverse Markets",
       des: "Trade well-known digital assets, metals, and commodities with deep liquidity",
     },
     {
-      icon: "/blast/des-yeild.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-yeild.png",
       title: "Native Yield",
       des: "Blast Trade is built on Blast - The L2 with natively rebasing ETH and USDB",
     },
     {
-      icon: "/blast/des-oracle.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-oracle.png",
       title: "Oracle-based Price",
       des: "Enjoy the most accurate price for all markets thanks to the oracle technology",
     },
     {
-      icon: "/blast/des-fee.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-fee.png",
       title: "Optimized Fees",
       des: "Enter or close a position with just a 0.03% trading fee",
     },
     {
-      icon: "/blast/des-gov.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-gov.png",
       title: "Governance",
       des: "You, the protocol user, decide the future of Blast Trade",
     },
@@ -53,17 +53,17 @@ export default function Banner() {
 
   const TRADING_STATS = [
     {
-      image: "/blast/chart.png",
+      image: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/chart.png",
       title: "Total Trading Volume",
       subTitle: "$157,644,372,832"
     },
     {
-      image: "/blast/volume.png",
+      image: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/volume.png",
       title: "Open Interest",
       subTitle: "$214,690,655"
     },
     {
-      image: "/blast/user.png",
+      image: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/user.png",
       title: "Total Users",
       subTitle: "447,081"
     }
@@ -225,7 +225,7 @@ export default function Banner() {
             borderRadius={{ md: "12px", base: "8px" }}
           >
             <video
-              src="/blast/new_11.webm"
+              src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/new_11.webm"
               alt="zk perp"
               width={{ md: "750px", base: "100%" }}
               autoPlay
@@ -476,10 +476,10 @@ export default function Banner() {
           Big brains know how to maximize their yields with the protocol.
         </Text>
         <Box paddingBottom={"40px"} paddingTop={"80px"}>
-          <Image src="/blast/tokennomics.png" alt="blast chart" />
+          <Image src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/tokennomics.png" alt="blast chart" />
           <Image
             paddingTop={{ base: "40px", md: '20px' }}
-            src="/blast/line.png"
+            src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/line.png"
             alt="blast chart"
           />
         </Box>
@@ -536,7 +536,7 @@ export default function Banner() {
             >
               <Box >
                 <Image
-                  src="/blast/bmx.png"
+                  src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/bmx.png"
                   alt="blast icon"
                   width={{ base: "80%", md: "100%" }}
                 />
@@ -619,7 +619,7 @@ export default function Banner() {
             >
               <Box>
                 <Image
-                  src="/blast/blp.png"
+                  src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/blp.png"
                   alt="blast icon"
                   width={{ base: "80%", md: "100%" }}
                 />
@@ -706,7 +706,7 @@ export default function Banner() {
             height={{ base: "200px", md: "600px", xl: "515px", "2xl": "533px" }}
             marginBottom={"30px"}
           >
-            <img style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, width: '100%', height: '100%' }} src="/blast/thefund.png" />
+            <img style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, width: '100%', height: '100%' }} src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/thefund.png" />
             <Box
               w={"100%"}
               h={"100%"}

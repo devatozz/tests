@@ -49,7 +49,7 @@ export default function LargeWithLogoLeft() {
             <NextLink href={"/"}>
               <Box>
                 <Flex gap={2} alignItems={"center"} w="full" h="full">
-                  <Image src={"/blast/logo.png"} alt="blast" height="40px" />
+                  <Image src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"} alt="blast" height="40px" />
                 </Flex>
               </Box>
             </NextLink>
@@ -80,7 +80,7 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"/"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"/blast/sol-docs.png"}
+                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-docs.png"}
                     alt="blasttrade"
                     height={"38px"}
                   />
@@ -89,7 +89,7 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"/"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"/blast/sol-tw.png"}
+                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tw.png"}
                     alt="blasttrade"
                     height={"38px"}
                   />
@@ -98,7 +98,7 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"/"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"/blast/sol-discord.png"}
+                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-discord.png"}
                     alt="blasttrade"
                     height={"38px"}
                   />
@@ -107,7 +107,7 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"/"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"/blast/sol-tele.png"}
+                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tele.png"}
                     alt="blasttrade"
                     height={"38px"}
                   />

@@ -226,8 +226,6 @@ async function getPriceHistory(item) {
         item.priceChangePercent = Number(((item.lastPrice - lastPrice24HAgo) / lastPrice24HAgo) * 100).toFixed(2);
     }
     catch (err) {
-        console.log("heee", DEFAULT_HISTORY[item.symbol]);
-
         item.volume = DEFAULT_HISTORY[item.symbol].volume;
         item.lastPrice = DEFAULT_HISTORY[item.symbol].lastPrice;
         item.priceChangePercent = DEFAULT_HISTORY[item.symbol].priceChangePercent;

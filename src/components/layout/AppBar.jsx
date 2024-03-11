@@ -53,6 +53,13 @@ const NAV_ITEMS = [
     icons: "",
   },
   {
+    label: "Airdrop",
+    href: "",
+    target: "self_",
+
+    icons: "",
+  },
+  {
     label: "Docs",
     href: "",
     target: "self_",
@@ -68,7 +75,7 @@ const NAV_ITEMS = [
 ];
 
 export default function AppBar() {
-  const [isDesktop] = useMediaQuery("(min-width: 680px)");
+  const [isDesktop] = useMediaQuery("(min-width: 768px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: comingSoonOpen,
@@ -106,12 +113,12 @@ export default function AppBar() {
               <NextLink href={"/"}>
                 <Flex gap={"15px"} alignItems={"center"} minWidth={"42px"}>
                   <Image
-                    src={"/blast/logoApp.svg"}
+                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logoApp.svg"}
                     alt="blasttrade"
                     height={"42px"}
                   />
                   <Box display={{ base: "none", xl: "block" }} >
-                  <img src="/blast/home/logo.svg" />
+                  <img src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/home/logo.svg" />
                   </Box>
                 </Flex>
 
@@ -266,13 +273,13 @@ export default function AppBar() {
               <DrawerOverlay />
               <DrawerContent
                 width={"90%"}
-                backgroundImage={"url('/blast/menu-drawer-mobile.png')"}
+                backgroundImage={"url('https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/menu-drawer-mobile.png')"}
                 backgroundSize={"cover"}>
                 <DrawerCloseButton mt={"9px"} size="base" color={"#FCFDC7"} />
                 <DrawerHeader>
                   <NextLink href={"/"}>
                     <Flex gap={2} alignItems={"center"} w="full" h="full">
-                      <Image src={"/blast/logo.png"} alt="blast trade" h={18} />
+                      <Image src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"} alt="blast trade" h={18} />
                     </Flex>
                   </NextLink>
                 </DrawerHeader>
