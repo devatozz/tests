@@ -51,9 +51,19 @@ export default function App(props) {
         <meta name="title" content="Blasttrade" />
         <meta
           name="description"
-          content="Trade without boundaries powered by Blast"
+          content="Trade without boundaries powered by Blasttrade"
         />
-        <title>Blast</title>
+        <title>Blasttrade</title>
+        <meta property="og:title" content="Blasttrade" />
+          <meta property="og:description" content="Trade without boundaries powered by Blast" />
+          <meta property="og:image" content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png" />
+          <meta property="og:url" content="https://www.blasttrade.org/" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Blasttrade" />
+          <meta name="twitter:description" content="Trade without boundaries powered by Blast" />
+          <meta name="twitter:creator" content="@Kai" />
+          <meta name="twitter:image" content="https://raw.githubusercontent.com/memecoin88/image-repo/master/banner.png" />
+
       </Head>
       <ChakraProvider theme={theme}>
         <AppBar />

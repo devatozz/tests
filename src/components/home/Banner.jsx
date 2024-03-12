@@ -20,32 +20,32 @@ export default function Banner() {
 
   const TRADING_INFO = [
     {
-      icon: "/blast/des-user.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-user.png",
       title: "Smart Account",
       des: "Connect using your Web3 wallets or log in with your social accounts",
     },
     {
-      icon: "/blast/des-market.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-market.png",
       title: "Diverse Markets",
       des: "Trade well-known digital assets, metals, and commodities with deep liquidity",
     },
     {
-      icon: "/blast/des-yeild.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-yeild.png",
       title: "Native Yield",
       des: "Blast Trade is built on Blast - The L2 with natively rebasing ETH and USDB",
     },
     {
-      icon: "/blast/des-oracle.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-oracle.png",
       title: "Oracle-based Price",
       des: "Enjoy the most accurate price for all markets thanks to the oracle technology",
     },
     {
-      icon: "/blast/des-fee.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-fee.png",
       title: "Optimized Fees",
       des: "Enter or close a position with just a 0.03% trading fee",
     },
     {
-      icon: "/blast/des-gov.png",
+      icon: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/des-gov.png",
       title: "Governance",
       des: "You, the protocol user, decide the future of Blast Trade",
     },
@@ -53,17 +53,17 @@ export default function Banner() {
 
   const TRADING_STATS = [
     {
-      image: "/blast/chart.png",
+      image: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/chart.png",
       title: "Total Trading Volume",
       subTitle: "$157,644,372,832"
     },
     {
-      image: "/blast/volume.png",
+      image: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/volume.png",
       title: "Open Interest",
       subTitle: "$214,690,655"
     },
     {
-      image: "/blast/user.png",
+      image: "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/user.png",
       title: "Total Users",
       subTitle: "447,081"
     }
