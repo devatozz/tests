@@ -61,16 +61,16 @@ const NAV_ITEMS = [
   },
   {
     label: "Docs",
-    href: "",
-    target: "self_",
+    href: "https://docs.blasttrade.org/",
+    target: "_blank",
 
     icons: "",
   },
   {
     label: "Community",
-    href: "",
+    href: "https://linktr.ee/blasttrade",
     icons: "",
-    target: "self_",
+    target: "_blank",
   },
 ];
 

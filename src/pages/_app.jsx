@@ -48,20 +48,20 @@ export default function App(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href={favicon.src} />
-        <meta name="title" content="Blasttrade" />
+        <meta name="title" content="BlastTrade" />
         <meta
           name="description"
-          content="Trade without boundaries powered by Blasttrade"
+          content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
         />
         <title>Blasttrade</title>
-        <meta property="og:title" content="Blasttrade" />
-          <meta property="og:description" content="Trade without boundaries powered by Blast" />
+        <meta property="og:title" content="BlastTrade" />
+          <meta property="og:description" content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs." />
           <meta property="og:image" content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png" />
           <meta property="og:url" content="https://www.blasttrade.org/" />
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="Blasttrade" />
-          <meta name="twitter:description" content="Trade without boundaries powered by Blast" />
-          <meta name="twitter:creator" content="@Kai" />
+          <meta name="twitter:title" content="BlastTrade" />
+          <meta name="twitter:description" content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs." />
+          <meta name="twitter:creator" content="@BlastTrade" />
           <meta name="twitter:image" content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png" />
 
       </Head>

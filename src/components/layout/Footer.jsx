@@ -77,7 +77,7 @@ export default function LargeWithLogoLeft() {
               spacing={2}
               width={{ md: "70%", base: "100%" }}
             >
-              <NextLink href={"/"} target="_blank">
+              <NextLink href={"https://docs.blasttrade.org/"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
                     src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-docs.png"}
@@ -86,7 +86,7 @@ export default function LargeWithLogoLeft() {
                   />
                 </Flex>
               </NextLink>
-              <NextLink href={"/"} target="_blank">
+              <NextLink href={"https://twitter.com/Blast_Trade"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
                     src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tw.png"}
@@ -95,7 +95,7 @@ export default function LargeWithLogoLeft() {
                   />
                 </Flex>
               </NextLink>
-              <NextLink href={"/"} target="_blank">
+              <NextLink href={"https://discord.gg/DmrKCDS7"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
                     src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-discord.png"}

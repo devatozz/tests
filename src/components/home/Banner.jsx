@@ -335,7 +335,7 @@ export default function Banner() {
           fontWeight={{ base: "500", md: "600" }}
           paddingTop={{ md: "20px", base: "10px" }}
         >
-          Pov: You are etering the trading platform designed for all.
+          Pov: You are entering the trading platform designed for all.
         </Text>
 
         <Box>
@@ -751,7 +751,7 @@ export default function Banner() {
                   like-minded fellows.
                 </Text>
 
-                <NextLink href={""} target={"_blank"}>
+                <NextLink href={"https://linktr.ee/blasttrade"} target={"_blank"}>
                   <Button
                     backgroundColor={"#FCFDC7"}
                     transition="background-color 0.3s ease-in-out"
