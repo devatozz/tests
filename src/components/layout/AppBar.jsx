@@ -38,39 +38,43 @@ const Popover = dynamic(
 import NextLink from "next/link";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Tooltip } from "@chakra-ui/react";
+
 const NAV_ITEMS = [
   {
     label: "App",
     href: "",
     icons: "",
-    target: "self_",
+    target: "",
+    active: false,
   },
   {
     label: "NFT",
     href: "",
-    target: "self_",
-
+    target: "",
     icons: "",
+    active: false,
   },
   {
     label: "Airdrop",
     href: "",
-    target: "self_",
-
+    target: "",
     icons: "",
+    active: false,
   },
   {
     label: "Docs",
     href: "https://docs.blasttrade.org/",
     target: "_blank",
-
     icons: "",
+    active: true,
   },
   {
     label: "Community",
     href: "https://linktr.ee/blasttrade",
     icons: "",
     target: "_blank",
+    active: true,
   },
 ];
 
@@ -113,15 +117,16 @@ export default function AppBar() {
               <NextLink href={"/"}>
                 <Flex gap={"15px"} alignItems={"center"} minWidth={"42px"}>
                   <Image
-                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logoApp.svg"}
+                    src={
+                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logoApp.svg"
+                    }
                     alt="blasttrade"
                     height={"42px"}
                   />
-                  <Box display={{ base: "none", xl: "block" }} >
-                  <img src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/home/logo.svg" />
+                  <Box display={{ base: "none", xl: "block" }}>
+                    <img src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/home/logo.svg" />
                   </Box>
                 </Flex>
-
               </NextLink>
 
               <Flex
@@ -131,9 +136,11 @@ export default function AppBar() {
                 }}
                 mx={{ md: 10, lg: 24 }}
               >
-                <Stack direction={"row"}
+                <Stack
+                  direction={"row"}
                   spacing={{ base: "30px", md: "20px", xl: "40px" }}
-                  justifyContent={"center"}>
+                  justifyContent={"center"}
+                >
                   {NAV_ITEMS.map((navItem, index) => (
                     <Box key={index}>
                       <Popover trigger={"hover"} placement={"bottom-start"}>
@@ -146,7 +153,10 @@ export default function AppBar() {
                               py={2}
                               fontSize={"16px"}
                               fontFamily="body"
-                              color="#FCFDC7"
+                              color={navItem.active ? "#FCFDC7" : "gray"}
+                              cursor={
+                                navItem.active ? "pointer" : "not-allowed"
+                              }
                               _hover={{
                                 textDecoration: "none",
                                 color: "#fff",
@@ -166,7 +176,10 @@ export default function AppBar() {
                                 fontSize={"16px"}
                                 fontFamily="Lakes"
                                 textAlign="center"
-                                color="#FCFDC7"
+                                color={navItem.active ? "#FCFDC7" : "gray"}
+                                cursor={
+                                  navItem.active ? "pointer" : "not-allowed"
+                                }
                                 _hover={{
                                   textDecoration: "none",
                                   color: "#fff",
@@ -218,39 +231,81 @@ export default function AppBar() {
 
           <Flex gap={"14px"}>
             <NextLink href={""} target="self_">
-              <Button
-                backgroundColor={"#FCFC05"}
-                transition="background-color 0.3s ease-in-out"
-                _hover={{
-                  bg: "#fff",
-                }}
-                style={{
-                  borderRadius: "4px",
-                }}
-
-                padding={{ base: '7px 14px', md: "16px 32px" }}
-                height={{ base: "30px", md: "45px" }}
-              // onClick={onComingSoonOpen}
-              >
-                <Text
-                  fontFamily={"Lakes"}
-                  color={"black"}
-                  fontWeight={"700"}
-                  fontSize={{ base: "12px", md: "16px" }}>Launch App</Text>
-              </Button>
+              {" "}
+              <Tooltip label="Coming soon" aria-label="A tooltip">
+                <Button
+                  backgroundColor={"#FCFC05"}
+                  transition="background-color 0.3s ease-in-out"
+                  _hover={{
+                    bg: "#fff",
+                  }}
+                  style={{
+                    borderRadius: "4px",
+                  }}
+                  padding={{ base: "7px 14px", md: "16px 32px" }}
+                  height={{ base: "30px", md: "45px" }}
+                  // onClick={onComingSoonOpen}
+                >
+                  <Text
+                    fontFamily={"Lakes"}
+                    color={"black"}
+                    fontWeight={"700"}
+                    fontSize={{ base: "12px", md: "16px" }}
+                  >
+                    Launch App
+                  </Text>
+                </Button>
+              </Tooltip>
             </NextLink>
             <Box
-              display={{ base: 'block', md: 'none' }}
+              display={{ base: "block", md: "none" }}
               border={"1px solid #fcfdc773"}
               borderRadius={"3.5px"}
               p={"7px"}
-              h={30}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.9994 14.1228C11.3807 14.1228 14.1219 11.3817 14.1219 8.00038C14.1219 4.61904 11.3807 1.87793 7.9994 1.87793C4.61807 1.87793 1.87695 4.61904 1.87695 8.00038C1.87695 11.3817 4.61807 14.1228 7.9994 14.1228Z" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M5.54976 2.49023H6.16201C4.96813 6.06574 4.96813 9.93513 6.16201 13.5106H5.54976" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M9.83594 2.49023C11.0298 6.06574 11.0298 9.93513 9.83594 13.5106" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" MorestrokeLinejoin="round" />
-                <path d="M2.48926 10.4492V9.83691C6.06477 11.0308 9.93416 11.0308 13.5097 9.83691V10.4492" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" MorestrokeLinejoin="round" />
-                <path d="M2.48926 6.16396C6.06477 4.97009 9.93416 4.97009 13.5097 6.16396" stroke="#FCFC05" strokeWidth="0.918367" strokeLinecap="round" MorestrokeLinejoin="round" />
+              h={30}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.9994 14.1228C11.3807 14.1228 14.1219 11.3817 14.1219 8.00038C14.1219 4.61904 11.3807 1.87793 7.9994 1.87793C4.61807 1.87793 1.87695 4.61904 1.87695 8.00038C1.87695 11.3817 4.61807 14.1228 7.9994 14.1228Z"
+                  stroke="#FCFC05"
+                  strokeWidth="0.918367"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M5.54976 2.49023H6.16201C4.96813 6.06574 4.96813 9.93513 6.16201 13.5106H5.54976"
+                  stroke="#FCFC05"
+                  strokeWidth="0.918367"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9.83594 2.49023C11.0298 6.06574 11.0298 9.93513 9.83594 13.5106"
+                  stroke="#FCFC05"
+                  strokeWidth="0.918367"
+                  strokeLinecap="round"
+                  MorestrokeLinejoin="round"
+                />
+                <path
+                  d="M2.48926 10.4492V9.83691C6.06477 11.0308 9.93416 11.0308 13.5097 9.83691V10.4492"
+                  stroke="#FCFC05"
+                  strokeWidth="0.918367"
+                  strokeLinecap="round"
+                  MorestrokeLinejoin="round"
+                />
+                <path
+                  d="M2.48926 6.16396C6.06477 4.97009 9.93416 4.97009 13.5097 6.16396"
+                  stroke="#FCFC05"
+                  strokeWidth="0.918367"
+                  strokeLinecap="round"
+                  MorestrokeLinejoin="round"
+                />
               </svg>
             </Box>
           </Flex>
@@ -261,119 +316,127 @@ export default function AppBar() {
         </Flex>
       </Flex>
 
-      {
-        !isDesktop && (
-          <>
-            <Drawer
-              isOpen={isOpen}
-              placement="left"
-              onClose={onClose}
-              finalFocusRef={btnRef}
+      {!isDesktop && (
+        <>
+          <Drawer
+            isOpen={isOpen}
+            placement="left"
+            onClose={onClose}
+            finalFocusRef={btnRef}
+          >
+            <DrawerOverlay />
+            <DrawerContent
+              width={"90%"}
+              backgroundImage={
+                "url('https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/menu-drawer-mobile.png')"
+              }
+              backgroundSize={"cover"}
             >
-              <DrawerOverlay />
-              <DrawerContent
-                width={"90%"}
-                backgroundImage={"url('https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/menu-drawer-mobile.png')"}
-                backgroundSize={"cover"}>
-                <DrawerCloseButton mt={"9px"} size="base" color={"#FCFDC7"} />
-                <DrawerHeader>
-                  <NextLink href={"/"}>
-                    <Flex gap={2} alignItems={"center"} w="full" h="full">
-                      <Image src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"} alt="blast trade" h={18} />
-                    </Flex>
-                  </NextLink>
-                </DrawerHeader>
+              <DrawerCloseButton mt={"9px"} size="base" color={"#FCFDC7"} />
+              <DrawerHeader>
+                <NextLink href={"/"}>
+                  <Flex gap={2} alignItems={"center"} w="full" h="full">
+                    <Image
+                      src={
+                        "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"
+                      }
+                      alt="blast trade"
+                      h={18}
+                    />
+                  </Flex>
+                </NextLink>
+              </DrawerHeader>
 
-                <DrawerBody
-                  position="relative"
-                  p={0}
+              <DrawerBody position="relative" p={0}>
+                <VStack
+                  w="full"
+                  direction={"row"}
+                  spacing={4}
+                  alignItems="left"
+                  backgroundBlendMode="overlay"
+                  px={8}
+                  pt={"40px"}
+                  pb={4}
                 >
-                  <VStack
-                    w="full"
-                    direction={"row"}
-                    spacing={4}
-                    alignItems="left"
-                    backgroundBlendMode="overlay"
-                    px={8}
-                    pt={'40px'}
-                    pb={4}
-                  >
-                    {NAV_ITEMS.map((navItem, index) => (
-                      <Box key={index}>
-                        {navItem.children ? (
-                          <Popover trigger={"hover"} placement={"bottom-start"}>
-                            <PopoverTrigger>
-                              <Link
-                                pr={2}
-                                py={2}
-                                fontSize={"base"}
-                                fontFamily="body"
-                                fontWeight={700}
-                                color="#FCFDC7"
-                                _hover={{
-                                  textDecoration: "none",
-                                  color: "#fff",
-                                }}
-                              >
-                                {navItem.label}
-                              </Link>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              border={0}
-                              boxShadow={"xl"}
-                              // p={4}
-                              rounded={"xl"}
-                              width={"max-content"}
-                            >
-                              <Stack>
-                                {navItem.children.map((child) => (
-                                  <DesktopSuvNav key={child.label} {...child} />
-                                ))}
-                              </Stack>
-                            </PopoverContent>
-                          </Popover>
-                        ) : (
-                          <Link href={navItem.href}>
-                            <Text
+                  {NAV_ITEMS.map((navItem, index) => (
+                    <Box key={index}>
+                      {navItem.children ? (
+                        <Popover trigger={"hover"} placement={"bottom-start"}>
+                          <PopoverTrigger>
+                            <Link
                               pr={2}
-                              fontSize={"16px"}
+                              py={2}
+                              fontSize={"base"}
                               fontFamily="body"
-                              color="#FBFBFB"
+                              fontWeight={700}
+                              color={navItem.active ? "#FCFDC7" : "gray"}
+                              cursor={
+                                navItem.active ? "pointer" : "not-allowed"
+                              }
                               _hover={{
                                 textDecoration: "none",
                                 color: "#fff",
                               }}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-start",
-                                fontWeight: "500",
-                              }}
                             >
                               {navItem.label}
-                              <Text
-                                position={"relative"}
-                                top={0}
-                                style={{
-                                  marginLeft: "10px",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                {navItem.icons}
-                              </Text>
+                            </Link>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            border={0}
+                            boxShadow={"xl"}
+                            // p={4}
+                            rounded={"xl"}
+                            width={"max-content"}
+                          >
+                            <Stack>
+                              {navItem.children.map((child) => (
+                                <DesktopSuvNav key={child.label} {...child} />
+                              ))}
+                            </Stack>
+                          </PopoverContent>
+                        </Popover>
+                      ) : (
+                        <Link href={navItem.href}>
+                          <Text
+                            pr={2}
+                            fontSize={"16px"}
+                            fontFamily="body"
+                            color={navItem.active ? "#FCFDC7" : "gray"}
+                            cursor={navItem.active ? "pointer" : "not-allowed"}
+                            _hover={{
+                              textDecoration: "none",
+                              color: "#fff",
+                            }}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "flex-start",
+                              fontWeight: "500",
+                            }}
+                          >
+                            {navItem.label}
+                            <Text
+                              position={"relative"}
+                              top={0}
+                              style={{
+                                marginLeft: "10px",
+                                fontSize: "16px",
+                              }}
+                            >
+                              {navItem.icons}
                             </Text>
-                          </Link>
-                        )}
-                      </Box>
-                    ))}
-                  </VStack>
-                </DrawerBody>
-              </DrawerContent>
-            </Drawer>
-          </>
-        )
-      }
-    </Box >
+                          </Text>
+                        </Link>
+                      )}
+                    </Box>
+                  ))}
+                </VStack>
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </>
+      )}
+    </Box>
   );
 }
 

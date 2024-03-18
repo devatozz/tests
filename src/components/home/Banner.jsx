@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Tooltip } from "@chakra-ui/react";
 import {
   Box,
   Button,
@@ -168,25 +169,28 @@ export default function Banner() {
               gap={30}
               flexDirection={{ md: "row", base: "column" }}
             >
-              <NextLink href={"#"} target={"_blank"}>
-                <Button
-                  backgroundColor={"#FCFC05"}
-                  transition="background-color 0.3s ease-in-out"
-                  _hover={{
-                    bg: "#fff",
-                  }}
-                  style={{
-                    borderRadius: "4px",
-                    padding: "16px 32px",
-                    fontFamily: "Lakes",
-                    fontWeight: "700",
-                  }}
-                  fontSize={{ base: "11px", md: "20px" }}
-                  height={{ base: "30px", md: "60px" }}
-                  // onClick={onComingSoonOpen}
-                >
-                  <Text color={"#000"}>Launch App</Text>
-                </Button>
+              <NextLink href={"#"}>
+                <Tooltip label="Coming soon" aria-label="A tooltip">
+                  <Button
+                    backgroundColor={"#FCFC05"}
+                    transition="background-color 0.3s ease-in-out"
+                    disabled={true}
+                    _hover={{
+                      bg: "#fff",
+                    }}
+                    style={{
+                      borderRadius: "4px",
+                      padding: "16px 32px",
+                      fontFamily: "Lakes",
+                      fontWeight: "700",
+                    }}
+                    fontSize={{ base: "11px", md: "20px" }}
+                    height={{ base: "30px", md: "60px" }}
+                    // onClick={onComingSoonOpen}
+                  >
+                    <Text color={"#000"}>Launch App</Text>
+                  </Button>
+                </Tooltip>
               </NextLink>
 
               <Box display={{ base: "none", md: "block" }}>
