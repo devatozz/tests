@@ -57,10 +57,10 @@ const NAV_ITEMS = [
   },
   {
     label: "Airdrop",
-    href: "",
+    href: "/airdrop",
     target: "",
     icons: "",
-    active: false,
+    active: true,
   },
   {
     label: "Docs",
