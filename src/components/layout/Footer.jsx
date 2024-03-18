@@ -49,7 +49,13 @@ export default function LargeWithLogoLeft() {
             <NextLink href={"/"}>
               <Box>
                 <Flex gap={2} alignItems={"center"} w="full" h="full">
-                  <Image src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"} alt="blast" height="40px" />
+                  <Image
+                    src={
+                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"
+                    }
+                    alt="blast"
+                    height="40px"
+                  />
                 </Flex>
               </Box>
             </NextLink>
@@ -80,16 +86,23 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"https://docs.blasttrade.org/"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-docs.png"}
+                    src={
+                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-docs.png"
+                    }
                     alt="blasttrade"
                     height={"38px"}
                   />
                 </Flex>
               </NextLink>
-              <NextLink href={"https://twitter.com/Blast_Trade"} target="_blank">
+              <NextLink
+                href={"https://twitter.com/Blast_Trade"}
+                target="_blank"
+              >
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tw.png"}
+                    src={
+                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tw.png"
+                    }
                     alt="blasttrade"
                     height={"38px"}
                   />
@@ -98,16 +111,20 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"https://discord.gg/DmrKCDS7"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-discord.png"}
+                    src={
+                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-discord.png"
+                    }
                     alt="blasttrade"
                     height={"38px"}
                   />
                 </Flex>
               </NextLink>
-              <NextLink href={"/"} target="_blank">
+              <NextLink href={"https://t.me/blasttradegroup"} target="_blank">
                 <Flex gap={2} alignItems={"center"}>
                   <Image
-                    src={"https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tele.png"}
+                    src={
+                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tele.png"
+                    }
                     alt="blasttrade"
                     height={"38px"}
                   />
