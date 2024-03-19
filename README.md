@@ -1,2 +1,2 @@
 # landing-page
-deploy to vercel, toggle 0
+deploy to vercel, toggle 1
