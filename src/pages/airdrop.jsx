@@ -9,6 +9,7 @@ import {
   Image,
   Heading,
   useMediaQuery,
+  Input,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import NextLink from "next/link";
@@ -45,6 +46,10 @@ const airdrop = () => {
   const [isRetweeted, setIsRetweeted] = useState(false);
   const [loadingDiscord, setLoadingDiscord] = useState(false);
   const [isDiscord, setIsDiscord] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [userWallet, setUserWallet] = useState("");
+
   // user infor action
   const [userInfoAction, setUserInfoAction] = useState({
     name: "",
@@ -57,6 +62,9 @@ const airdrop = () => {
   });
   const provider = new TwitterAuthProvider();
   // login
+  const updateUserInfoAction = (newAction) => {
+    setUserInfoAction((prevState) => ({ ...prevState, ...newAction }));
+  };
   const login = () => {
     setLoadingLogin(true);
     signInWithPopup(auth, provider)
@@ -68,14 +76,10 @@ const airdrop = () => {
         if (user) {
           setIsSignedIn(true);
           setUserInfo(user);
-          setUserInfoAction({
+          updateUserInfoAction({
             name: user.displayName,
             UID: user.uid,
             image: user.photoURL,
-            follow: false,
-            retweet: false,
-            joinDiscord: false,
-            wallet: "",
           });
           setLoadingLogin(false);
           toast({
@@ -117,8 +121,6 @@ const airdrop = () => {
       });
   };
 
-  console.log("userInfo", userInfo);
-  console.log("userInfoAction", userInfoAction);
   // handle follow twitter:
   function handleClickFollow() {
     setLoadingFollow(true);
@@ -129,6 +131,7 @@ const airdrop = () => {
       setLoadingFollow(false);
     }, 10000);
     setIsFollowed(true);
+    updateUserInfoAction({ follow: true });
   }
   // handle reweet twitter:
   function handleClickRetweet() {
@@ -140,6 +143,7 @@ const airdrop = () => {
       setLoadingRetweet(false);
     }, 10000);
     setIsRetweeted(true);
+    updateUserInfoAction({ retweet: true });
   }
   // handle join discord:
   function handleJoinDiscord() {
@@ -150,8 +154,42 @@ const airdrop = () => {
       setLoadingDiscord(false);
     }, 10000);
     setIsDiscord(true);
+    updateUserInfoAction({ joinDiscord: true });
   }
+  // check account in database
+  async function hasAccountInDatabase(database, account) {
+    const walletsRef = collection(database, "wallets");
+    const q = query(walletsRef, where("wallet", "==", account));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  }
+  // handle submit infor
+  console.log("userInfoAction", userInfoAction);
+  function handleSubmit() {
+    setLoadingSubmit(true);
+    if (
+      !userInfoAction.follow ||
+      !userInfoAction.retweet ||
+      !userInfoAction.joinDiscord ||
+      !userInfoAction.UID ||
+      !userWallet
+    ) {
+      toast({
+        title: "You need complete the task first.",
+        // description: "We've created your account for you.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "bottom-right",
+      });
 
+      setLoadingSubmit(false);
+    } else updateUserInfoAction({ wallet: userWallet });
+    setTimeout(() => {
+      setLoadingSubmit(false);
+      setIsSubmit(true);
+    }, 10000);
+  }
   return (
     <Box
       backgroundImage="url('./blast/background/tradebackground.svg') "
@@ -241,7 +279,7 @@ const airdrop = () => {
               bg={"#22281a"}
               borderRadius={"12px"}
               width={"90%"}
-              height={"500px"}
+              height={"fit-content"}
               marginTop={"30px"}
               padding={"30px"}
             >
@@ -260,6 +298,8 @@ const airdrop = () => {
                 <span style={{ color: "#EEEE06" }}>1,000,000 BMX</span> prize
                 pool on mainnet
               </Text>
+              {/* Follow */}
+
               <Box
                 marginTop={"30px"}
                 display={"flex"}
@@ -383,6 +423,8 @@ const airdrop = () => {
                   )}
                 </Box>
               </Box>
+              {/* retweet */}
+
               <Box
                 marginTop={"30px"}
                 display={"flex"}
@@ -508,6 +550,8 @@ const airdrop = () => {
                   )}
                 </Box>
               </Box>
+              {/* discord */}
+
               <Box
                 marginTop={"30px"}
                 display={"flex"}
@@ -631,6 +675,8 @@ const airdrop = () => {
                   )}
                 </Box>
               </Box>
+              {/* submit */}
+
               <Box
                 marginTop={"30px"}
                 display={"flex"}
@@ -694,16 +740,14 @@ const airdrop = () => {
                           fontWeight: "700",
                         }}
                         height={{ base: "45px", md: "60px" }}
-                        onClick={handleClickRetweet}
+                        onClick={handleSubmit}
                       >
                         <Text color={"#FCFDC7"}>Submit</Text>
                       </Button>
                       <Box
                         height={{ base: "45px", md: "60px" }}
                         width={{ base: "45px", md: "60px" }}
-                        backgroundColor={
-                          isRetweeted ? "#4b553b" : "transparent"
-                        }
+                        backgroundColor={isSubmit ? "#4b553b" : "transparent"}
                         transition="background-color 0.3s ease-in-out"
                         border={"1px solid #FCFDC7"}
                         borderRadius={"3px"}
@@ -720,11 +764,11 @@ const airdrop = () => {
                           fontWeight: "700",
                         }}
                       >
-                        {loadingRetweet ? (
+                        {loadingSubmit ? (
                           <Spinner color="#75835D" speed="1s" />
                         ) : (
                           <CheckIcon
-                            color={isRetweeted ? "#EEEE06" : "#75835D"}
+                            color={isSubmit ? "#EEEE06" : "#75835D"}
                             fontSize={"20px"}
                           />
                         )}
@@ -754,6 +798,42 @@ const airdrop = () => {
                       <Text color={"#FCFDC7"}>Login X</Text>
                     </Button>
                   )}
+                </Box>
+              </Box>
+              {/* submit wallet */}
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+              >
+                <Box marginTop={"30px"} bg={"#75835d"} width={"100%"}>
+                  <Input
+                    type="text"
+                    onChange={(event) => setUserWallet(event.target.value)}
+                    color={"#fff"}
+                    placeholder="0x..."
+                    width={"100%"}
+                    border={"1px solid transparent"}
+                    _placeholder={{ color: "#c3d3a5" }}
+                    style={{
+                      background: "transparent",
+                      borderRadius: "3px",
+                      color: "#fff",
+                      fontSize: "24px",
+                      padding: "25px",
+                    }}
+                    _focus={{
+                      boxShadow: "none",
+                      borderColor: "transparent",
+                    }}
+                    _hover={{
+                      borderColor: "transparent",
+                      cursor: "pointer",
+                    }}
+                    _active={{
+                      borderColor: "transparent",
+                    }}
+                  />
                 </Box>
               </Box>
             </Box>
