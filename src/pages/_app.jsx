@@ -49,13 +49,13 @@ export default function App(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href={favicon.src} />
-        <meta name="title" content="BlastTrade" />
+        <meta name="title" content="Blast Trade" />
         <meta
           name="description"
           content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
         />
-        <title>Blasttrade</title>
-        <meta property="og:title" content="BlastTrade" />
+        <title>Blast Trade</title>
+        <meta property="og:title" content="Blast Trade" />
         <meta
           property="og:description"
           content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
@@ -66,7 +66,7 @@ export default function App(props) {
         />
         <meta property="og:url" content="https://www.blasttrade.org/" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="BlastTrade" />
+        <meta name="twitter:title" content="Blast Trade" />
         <meta
           name="twitter:description"
           content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."

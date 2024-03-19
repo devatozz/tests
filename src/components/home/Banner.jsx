@@ -169,7 +169,7 @@ export default function Banner() {
               gap={30}
               flexDirection={{ md: "row", base: "column" }}
             >
-              <NextLink href={"#"}>
+              <NextLink href={""}>
                 <Tooltip label="Coming soon" aria-label="A tooltip">
                   <Button
                     backgroundColor={"#FCFC05"}
