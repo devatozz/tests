@@ -29,6 +29,7 @@ import {
   addDoc,
   query,
   where,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { helperToast } from "src/lib/helpToast";
@@ -40,6 +41,7 @@ import {
   browserLocalPersistence,
 } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
+import firebase from "firebase/app";
 const airdrop = () => {
   const toast = useToast();
   // state
@@ -57,7 +59,8 @@ const airdrop = () => {
   const [userWallet, setUserWallet] = useState("");
   const [validateWalletMess, setValidateMess] = useState("");
   const [isValidAddress, setIsValidAddress] = useState(false);
-
+  const [userDataOnSever, setUserDataOnSever] = useState(false);
+  const [userLogout, setUserLogout] = useState(false);
   // user infor action
   const [userInfoAction, setUserInfoAction] = useState({
     name: "",
@@ -137,6 +140,7 @@ const airdrop = () => {
           image: "",
         });
         setIsSignedIn(false);
+        setUserLogout(true);
       })
       .catch((error) => {
         console.error("Error signing out:", error);
@@ -270,30 +274,49 @@ const airdrop = () => {
     const valis = isValidETHAddress(inputValue);
     setIsValidAddress(valis);
   };
-  console.log("isvalid", isValidAddress);
+  // handle get user info by UID
+  async function getUserDataByUID(UID) {
+    const walletsRef = collection(db, "blasttrade_user");
+    const q = query(walletsRef, where("UID", "==", UID));
+    const querySnapshot = await getDocs(q);
+    let userData = null;
+    querySnapshot.forEach((doc) => {
+      userData = doc.data();
+    });
+    return userData;
+  }
+
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsSignedIn(true);
-        setUserInfoAction({
-          name: user?.displayName,
-          UID: user?.uid,
-          follow: false,
-          retweet: false,
-          joinDiscord: false,
-          wallet: "",
-          image: user?.photoURL,
-        });
+        // Fetch additional user data from Firestore
+        const userData = await getUserDataByUID(user.uid);
+        // Update userInfo state with both auth and Firestore data
+        if (userData) {
+          setUserInfoAction({
+            name: user.displayName,
+            UID: user.uid,
+            follow: userData.follow,
+            retweet: userData.retweet,
+            joinDiscord: userData.joinDiscord,
+            wallet: userData.wallet,
+            image: user.photoURL,
+          });
+          setUserDataOnSever(true);
+        }
       } else {
         setIsSignedIn(false);
         setUserInfoAction(null);
+        setUserDataOnSever(false);
       }
     });
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, []);
+  }, [userLogout]);
+
   return (
     <Box bg={"#22281a"}>
       <Box
@@ -302,7 +325,7 @@ const airdrop = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
         width={"100%"}
-        height={"fit-content"}
+        height={"100vh"}
       >
         <Container
           maxW={"100%"}
@@ -501,6 +524,7 @@ const airdrop = () => {
                           backgroundColor={"transparent"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
+                          isDisabled={userDataOnSever}
                           _hover={{
                             bg: "rgba(195, 211, 165, 0.2)",
                             color: "#000",
@@ -975,7 +999,9 @@ const airdrop = () => {
                       onChange={handleInputChange}
                       isDisabled={!isDiscord}
                       color={"#fff"}
-                      placeholder="0x..."
+                      placeholder={
+                        userDataOnSever ? userInfoAction.wallet : "0x..."
+                      }
                       width={"100%"}
                       border={"1px solid transparent"}
                       _placeholder={{ color: "#c3d3a5" }}
