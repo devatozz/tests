@@ -56,6 +56,7 @@ const airdrop = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [userWallet, setUserWallet] = useState("");
   const [validateWalletMess, setValidateMess] = useState("");
+  const [isValidAddress, setIsValidAddress] = useState(false);
 
   // user infor action
   const [userInfoAction, setUserInfoAction] = useState({
@@ -93,7 +94,7 @@ const airdrop = () => {
               });
               setLoadingLogin(false);
               toast({
-                title: "Login success.",
+                title: "Login success",
                 status: "success",
                 duration: 9000,
                 isClosable: true,
@@ -108,7 +109,7 @@ const airdrop = () => {
             setIsSignedIn(false);
             setLoadingLogin(false);
             toast({
-              title: "Login failed.",
+              title: "Login failed",
               status: "error",
               duration: 9000,
               isClosable: true,
@@ -211,7 +212,7 @@ const airdrop = () => {
         const exists = await hasAccountInDatabase(db, userInfoAction.UID);
         if (exists) {
           toast({
-            title: "Submit failed.",
+            title: "Submit failed",
             description: "This account has been linked with another wallet.",
             status: "error",
             duration: 9000,
@@ -234,7 +235,7 @@ const airdrop = () => {
             setLoadingSubmit(false);
             setIsSubmit(true);
             toast({
-              title: "Submit success.",
+              title: "Submit success",
               // description: "We've created your account for you.",
               status: "success",
               duration: 9000,
@@ -266,8 +267,10 @@ const airdrop = () => {
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
     setUserWallet(inputValue);
-    isValidETHAddress(inputValue);
+    const valis = isValidETHAddress(inputValue);
+    setIsValidAddress(valis);
   };
+  console.log("isvalid", isValidAddress);
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -880,7 +883,9 @@ const airdrop = () => {
                           bg: "rgba(195, 211, 165, 0.2)",
                           color: "#000",
                         }}
-                        isDisabled={!isDiscord || userWallet === ""}
+                        isDisabled={
+                          !isDiscord || userWallet === "" || !isValidAddress
+                        }
                         padding={{ base: "12px 20px", md: "16px 32px" }}
                         fontSize={{ base: "14px", md: "20px" }}
                         style={{
@@ -963,6 +968,7 @@ const airdrop = () => {
                   <Input
                     type="text"
                     onChange={handleInputChange}
+                    isDisabled={!isDiscord}
                     color={"#fff"}
                     placeholder="0x..."
                     width={"100%"}
