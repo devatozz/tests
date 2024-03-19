@@ -295,6 +295,7 @@ const airdrop = () => {
       if (user) {
         setIsSignedIn(true);
         // Fetch additional user data from Firestore
+
         const userData = await getUserDataByUID(user.uid);
         // Update userInfo state with both auth and Firestore data
         if (userData) {
@@ -308,6 +309,16 @@ const airdrop = () => {
             image: user.photoURL,
           });
           setUserDataOnSever(true);
+        } else {
+          setUserInfoAction({
+            name: user.displayName,
+            UID: user.uid,
+            follow: false,
+            retweet: false,
+            joinDiscord: false,
+            wallet: "",
+            image: user.photoURL,
+          });
         }
       } else {
         setIsSignedIn(false);
@@ -319,7 +330,6 @@ const airdrop = () => {
     // Cleanup subscription on unmount
     return () => unsubscribe();
   }, [userLogout]);
-
   return (
     <Box bg={"#22281a"}>
       <Box
@@ -524,7 +534,7 @@ const airdrop = () => {
                       <>
                         <Button
                           width={{ md: "180px", base: "120px" }}
-                          backgroundColor={"transparent"}
+                          backgroundColor={"#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           isDisabled={userDataOnSever}
@@ -547,9 +557,7 @@ const airdrop = () => {
                         <Box
                           height={{ base: "45px", md: "60px" }}
                           width={{ base: "45px", md: "60px" }}
-                          backgroundColor={
-                            isFollowed ? "#4b553b" : "transparent"
-                          }
+                          backgroundColor={isFollowed ? "#4b553b" : "#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           borderRadius={"3px"}
@@ -570,8 +578,8 @@ const airdrop = () => {
                             <Spinner color="#75835D" speed="1s" />
                           ) : (
                             <CheckIcon
-                              color={isFollowed ? "#EEEE06" : "#75835D"}
-                              fontSize={"20px"}
+                              color={isFollowed ? "#fcfc05" : "#75835D"}
+                              fontSize={"24px"}
                             />
                           )}
                         </Box>
@@ -579,7 +587,7 @@ const airdrop = () => {
                     ) : (
                       <Button
                         width={{ md: "180px", base: "120px" }}
-                        backgroundColor={"transparent"}
+                        backgroundColor={"#22281a"}
                         transition="background-color 0.3s ease-in-out"
                         border={"1px solid #FCFDC7"}
                         _hover={{
@@ -654,7 +662,7 @@ const airdrop = () => {
                       <>
                         <Button
                           width={{ md: "180px", base: "120px" }}
-                          backgroundColor={"transparent"}
+                          backgroundColor={"#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           _hover={{
@@ -677,9 +685,7 @@ const airdrop = () => {
                         <Box
                           height={{ base: "45px", md: "60px" }}
                           width={{ base: "45px", md: "60px" }}
-                          backgroundColor={
-                            isRetweeted ? "#4b553b" : "transparent"
-                          }
+                          backgroundColor={isRetweeted ? "#4b553b" : "#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           borderRadius={"3px"}
@@ -700,8 +706,8 @@ const airdrop = () => {
                             <Spinner color="#75835D" speed="1s" />
                           ) : (
                             <CheckIcon
-                              color={isRetweeted ? "#EEEE06" : "#75835D"}
-                              fontSize={"20px"}
+                              color={isRetweeted ? "#fcfc05" : "#75835D"}
+                              fontSize={"24px"}
                             />
                           )}
                         </Box>
@@ -709,7 +715,7 @@ const airdrop = () => {
                     ) : (
                       <Button
                         width={{ md: "180px", base: "120px" }}
-                        backgroundColor={"transparent"}
+                        backgroundColor={"#22281a"}
                         transition="background-color 0.3s ease-in-out"
                         border={"1px solid #FCFDC7"}
                         _hover={{
@@ -781,7 +787,7 @@ const airdrop = () => {
                       <>
                         <Button
                           width={{ md: "180px", base: "120px" }}
-                          backgroundColor={"transparent"}
+                          backgroundColor={"#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           _hover={{
@@ -804,9 +810,7 @@ const airdrop = () => {
                         <Box
                           height={{ base: "45px", md: "60px" }}
                           width={{ base: "45px", md: "60px" }}
-                          backgroundColor={
-                            isDiscord ? "#4b553b" : "transparent"
-                          }
+                          backgroundColor={isDiscord ? "#4b553b" : "#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           borderRadius={"3px"}
@@ -827,8 +831,8 @@ const airdrop = () => {
                             <Spinner color="#75835D" speed="1s" />
                           ) : (
                             <CheckIcon
-                              color={isDiscord ? "#EEEE06" : "#75835D"}
-                              fontSize={"20px"}
+                              color={isDiscord ? "#fcfc05" : "#75835D"}
+                              fontSize={"24px"}
                             />
                           )}
                         </Box>
@@ -836,7 +840,7 @@ const airdrop = () => {
                     ) : (
                       <Button
                         width={{ md: "180px", base: "120px" }}
-                        backgroundColor={"transparent"}
+                        backgroundColor={"#22281a"}
                         transition="background-color 0.3s ease-in-out"
                         border={"1px solid #FCFDC7"}
                         _hover={{
@@ -908,7 +912,7 @@ const airdrop = () => {
                       <>
                         <Button
                           width={{ md: "180px", base: "120px" }}
-                          backgroundColor={"transparent"}
+                          backgroundColor={"#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           _hover={{
@@ -933,7 +937,7 @@ const airdrop = () => {
                         <Box
                           height={{ base: "45px", md: "60px" }}
                           width={{ base: "45px", md: "60px" }}
-                          backgroundColor={isSubmit ? "#4b553b" : "transparent"}
+                          backgroundColor={isSubmit ? "#4b553b" : "#22281a"}
                           transition="background-color 0.3s ease-in-out"
                           border={"1px solid #FCFDC7"}
                           borderRadius={"3px"}
@@ -954,8 +958,8 @@ const airdrop = () => {
                             <Spinner color="#75835D" speed="1s" />
                           ) : (
                             <CheckIcon
-                              color={isSubmit ? "#EEEE06" : "#75835D"}
-                              fontSize={"20px"}
+                              color={isSubmit ? "#fcfc05" : "#75835D"}
+                              fontSize={"24px"}
                             />
                           )}
                         </Box>
@@ -963,7 +967,7 @@ const airdrop = () => {
                     ) : (
                       <Button
                         width={{ md: "180px", base: "120px" }}
-                        backgroundColor={"transparent"}
+                        backgroundColor={"#22281a"}
                         transition="background-color 0.3s ease-in-out"
                         border={"1px solid #FCFDC7"}
                         _hover={{
