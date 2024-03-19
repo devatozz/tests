@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   Input,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
 import { Tooltip } from "@chakra-ui/react";
 import { IoChevronForward } from "react-icons/io5";
@@ -34,6 +34,12 @@ import { db } from "../firebaseConfig";
 import { helperToast } from "src/lib/helpToast";
 import { CheckIcon } from "@chakra-ui/icons";
 import { Spinner } from "@chakra-ui/react";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 const airdrop = () => {
   const toast = useToast();
   // state
@@ -68,49 +74,53 @@ const airdrop = () => {
   };
   const login = () => {
     setLoadingLogin(true);
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const credential = TwitterAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const secret = credential.secret;
-        const user = result.user;
-        if (user) {
-          setIsSignedIn(true);
-          setUserInfo(user);
-          updateUserInfoAction({
-            name: user.displayName,
-            UID: user.uid,
-            image: user.photoURL,
+    const auth = getAuth();
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        signInWithPopup(auth, provider)
+          .then((result) => {
+            const credential = TwitterAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const secret = credential.secret;
+            const user = result.user;
+            if (user) {
+              setIsSignedIn(true);
+              setUserInfo(user);
+              updateUserInfoAction({
+                name: user.displayName,
+                UID: user.uid,
+                image: user.photoURL,
+              });
+              setLoadingLogin(false);
+              toast({
+                title: "Login success.",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+                position: "bottom-right",
+              });
+            }
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error(errorCode, errorMessage);
+            setIsSignedIn(false);
+            setLoadingLogin(false);
+            toast({
+              title: "Login failed.",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+              position: "bottom-right",
+            });
           });
-          setLoadingLogin(false);
-          toast({
-            title: "Login success.",
-            // description: "We've created your account for you.",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-            position: "bottom-right",
-          });
-        }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error?.customData?.email;
-        const credential = TwitterAuthProvider.credentialFromError(error);
-        console.error(errorCode, errorMessage);
-        setIsSignedIn(false);
-        setLoadingLogin(false);
-        toast({
-          title: "Login failed.",
-          // description: "We've created your account for you.",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-          position: "bottom-right",
-        });
+        console.error("Error setting persistence:", error);
       });
   };
+
   // logout
   const logout = () => {
     signOut(auth)
@@ -258,6 +268,29 @@ const airdrop = () => {
     setUserWallet(inputValue);
     isValidETHAddress(inputValue);
   };
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsSignedIn(true);
+        setUserInfoAction({
+          name: user?.displayName,
+          UID: user?.uid,
+          follow: false,
+          retweet: false,
+          joinDiscord: false,
+          wallet: "",
+          image: user?.photoURL,
+        });
+      } else {
+        setIsSignedIn(false);
+        setUserInfoAction(null);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
   return (
     <Box
       // backgroundImage="url('./blast/background/tradebackground.svg') "

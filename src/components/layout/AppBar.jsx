@@ -219,34 +219,33 @@ export default function AppBar() {
           </Flex>
 
           <Flex gap={"14px"}>
-            <NextLink href={""} target="self_">
-              {" "}
-              <Tooltip label="Coming soon" aria-label="A tooltip">
-                <Button
-                  backgroundColor={"#FCFC05"}
-                  transition="background-color 0.3s ease-in-out"
-                  _hover={{
-                    bg: "#fff",
-                  }}
-                  style={{
-                    borderRadius: "4px",
-                  }}
-                  padding={{ base: "7px 14px", md: "16px 32px" }}
-                  height={{ base: "30px", md: "45px" }}
-                  // onClick={onComingSoonOpen}
+            {/* <NextLink href={""} target="self_"> */}{" "}
+            <Tooltip label="Coming soon" aria-label="A tooltip">
+              <Button
+                backgroundColor={"#FCFC05"}
+                transition="background-color 0.3s ease-in-out"
+                _hover={{
+                  bg: "#fff",
+                }}
+                style={{
+                  borderRadius: "4px",
+                }}
+                padding={{ base: "7px 14px", md: "16px 32px" }}
+                height={{ base: "30px", md: "45px" }}
+                // onClick={onComingSoonOpen}
+              >
+                <Text
+                  fontFamily={"Lakes"}
+                  color={"black"}
+                  fontWeight={"700"}
+                  fontSize={{ base: "12px", md: "16px" }}
                 >
-                  <Text
-                    fontFamily={"Lakes"}
-                    color={"black"}
-                    fontWeight={"700"}
-                    fontSize={{ base: "12px", md: "16px" }}
-                  >
-                    Launch App
-                  </Text>
-                </Button>
-              </Tooltip>
-            </NextLink>
-            <Box
+                  Launch App
+                </Text>
+              </Button>
+            </Tooltip>
+            {/* </NextLink> */}
+            {/* <Box
               display={{ base: "block", md: "none" }}
               border={"1px solid #fcfdc773"}
               borderRadius={"3.5px"}
@@ -296,7 +295,7 @@ export default function AppBar() {
                   // MorestrokeLinejoin="round"
                 />
               </svg>
-            </Box>
+            </Box> */}
           </Flex>
           {/* <ComingSoonModal
             isOpen={comingSoonOpen}
