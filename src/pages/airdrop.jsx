@@ -10,11 +10,148 @@ import {
   Heading,
   useMediaQuery,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import NextLink from "next/link";
 import { Tooltip } from "@chakra-ui/react";
 import { IoChevronForward } from "react-icons/io5";
+// firebase
+import { signInWithPopup } from "firebase/auth";
+import { auth, TwitterAuthProvider } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
+import { useToast } from "@chakra-ui/react";
+// firebase
+import {
+  getDocs,
+  collection,
+  deleteDoc,
+  doc,
+  addDoc,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { helperToast } from "src/lib/helpToast";
+import { CheckIcon } from "@chakra-ui/icons";
+import { Spinner } from "@chakra-ui/react";
 const airdrop = () => {
+  const toast = useToast();
+  // state
+  const [userInfo, setUserInfo] = useState([]);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [loadingLogin, setLoadingLogin] = useState(false);
+  const [loadingFollow, setLoadingFollow] = useState(false);
+  const [isFollowed, setIsFollowed] = useState(false);
+  const [loadingRetweet, setLoadingRetweet] = useState(false);
+  const [isRetweeted, setIsRetweeted] = useState(false);
+  const [loadingDiscord, setLoadingDiscord] = useState(false);
+  const [isDiscord, setIsDiscord] = useState(false);
+  // user infor action
+  const [userInfoAction, setUserInfoAction] = useState({
+    name: "",
+    UID: "",
+    follow: false,
+    retweet: false,
+    joinDiscord: false,
+    wallet: "",
+    image: "",
+  });
+  const provider = new TwitterAuthProvider();
+  // login
+  const login = () => {
+    setLoadingLogin(true);
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = TwitterAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const secret = credential.secret;
+        const user = result.user;
+        if (user) {
+          setIsSignedIn(true);
+          setUserInfo(user);
+          setUserInfoAction({
+            name: user.displayName,
+            UID: user.uid,
+            image: user.photoURL,
+            follow: false,
+            retweet: false,
+            joinDiscord: false,
+            wallet: "",
+          });
+          setLoadingLogin(false);
+          toast({
+            title: "Login success.",
+            // description: "We've created your account for you.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+            position: "bottom-right",
+          });
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error?.customData?.email;
+        const credential = TwitterAuthProvider.credentialFromError(error);
+        console.error(errorCode, errorMessage);
+        setIsSignedIn(false);
+        setLoadingLogin(false);
+        toast({
+          title: "Login failed.",
+          // description: "We've created your account for you.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+      });
+  };
+  // logout
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("User signed out!");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+
+  console.log("userInfo", userInfo);
+  console.log("userInfoAction", userInfoAction);
+  // handle follow twitter:
+  function handleClickFollow() {
+    setLoadingFollow(true);
+    const twitterFollowUrl =
+      "https://twitter.com/intent/follow?screen_name=Blast_Trade";
+    window.open(twitterFollowUrl, "_blank");
+    setTimeout(() => {
+      setLoadingFollow(false);
+    }, 10000);
+    setIsFollowed(true);
+  }
+  // handle reweet twitter:
+  function handleClickRetweet() {
+    setLoadingRetweet(true);
+    const twitterRetweetUrl =
+      "https://twitter.com/intent/retweet?tweet_id=1769762551632412677";
+    window.open(twitterRetweetUrl, "_blank");
+    setTimeout(() => {
+      setLoadingRetweet(false);
+    }, 10000);
+    setIsRetweeted(true);
+  }
+  // handle join discord:
+  function handleJoinDiscord() {
+    setLoadingDiscord(true);
+    const discordUrl = "https://discord.com/invite/DmrKCDS7";
+    window.open(discordUrl, "_blank");
+    setTimeout(() => {
+      setLoadingDiscord(false);
+    }, 10000);
+    setIsDiscord(true);
+  }
+
   return (
     <Box
       backgroundImage="url('./blast/background/tradebackground.svg') "
@@ -166,28 +303,84 @@ const airdrop = () => {
                   justifyContent={"flex-start"}
                   gap={"20px"}
                 >
-                  <Button
-                    width={{ md: "180px", base: "120px" }}
-                    backgroundColor={"transparent"}
-                    transition="background-color 0.3s ease-in-out"
-                    border={"1px solid #FCFDC7"}
-                    _hover={{
-                      bg: "rgba(195, 211, 165, 0.2)",
-                      color: "#000",
-                    }}
-                    style={{
-                      // fontWeight: "bold",
-                      fontSize: "20px",
-                      borderRadius: "4px",
-                      padding: "16px 32px",
-                      fontFamily: "Lakes",
-                      fontWeight: "700",
-                    }}
-                    height={{ base: "45px", md: "60px" }}
-                    // onClick={onComingSoonOpen}
-                  >
-                    <Text color={"#FCFDC7"}>Follow</Text>
-                  </Button>
+                  {isSignedIn ? (
+                    <>
+                      <Button
+                        width={{ md: "180px", base: "120px" }}
+                        backgroundColor={"transparent"}
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          // fontWeight: "bold",
+                          fontSize: "20px",
+                          borderRadius: "4px",
+                          padding: "16px 32px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                        height={{ base: "45px", md: "60px" }}
+                        onClick={handleClickFollow}
+                      >
+                        <Text color={"#FCFDC7"}>Follow</Text>
+                      </Button>
+                      <Box
+                        height={{ base: "45px", md: "60px" }}
+                        width={{ base: "45px", md: "60px" }}
+                        backgroundColor={isFollowed ? "#4b553b" : "transparent"}
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        borderRadius={"3px"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          fontSize: "20px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {loadingFollow ? (
+                          <Spinner color="#75835D" speed="1s" />
+                        ) : (
+                          <CheckIcon
+                            color={isFollowed ? "#EEEE06" : "#75835D"}
+                            fontSize={"20px"}
+                          />
+                        )}
+                      </Box>
+                    </>
+                  ) : (
+                    <Button
+                      width={{ md: "180px", base: "120px" }}
+                      backgroundColor={"transparent"}
+                      transition="background-color 0.3s ease-in-out"
+                      border={"1px solid #FCFDC7"}
+                      _hover={{
+                        bg: "rgba(195, 211, 165, 0.2)",
+                        color: "#000",
+                      }}
+                      style={{
+                        // fontWeight: "bold",
+                        fontSize: "20px",
+                        borderRadius: "4px",
+                        padding: "16px 32px",
+                        fontFamily: "Lakes",
+                        fontWeight: "700",
+                      }}
+                      height={{ base: "45px", md: "60px" }}
+                      onClick={login}
+                    >
+                      <Text color={"#FCFDC7"}>Login X</Text>
+                    </Button>
+                  )}
                 </Box>
               </Box>
               <Box
@@ -233,28 +426,86 @@ const airdrop = () => {
                   justifyContent={"flex-start"}
                   gap={"20px"}
                 >
-                  <Button
-                    width={{ md: "180px", base: "120px" }}
-                    backgroundColor={"transparent"}
-                    transition="background-color 0.3s ease-in-out"
-                    border={"1px solid #FCFDC7"}
-                    _hover={{
-                      bg: "rgba(195, 211, 165, 0.2)",
-                      color: "#000",
-                    }}
-                    style={{
-                      // fontWeight: "bold",
-                      fontSize: "20px",
-                      borderRadius: "4px",
-                      padding: "16px 32px",
-                      fontFamily: "Lakes",
-                      fontWeight: "700",
-                    }}
-                    height={{ base: "45px", md: "60px" }}
-                    // onClick={onComingSoonOpen}
-                  >
-                    <Text color={"#FCFDC7"}>Retweet</Text>
-                  </Button>
+                  {isSignedIn ? (
+                    <>
+                      <Button
+                        width={{ md: "180px", base: "120px" }}
+                        backgroundColor={"transparent"}
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          // fontWeight: "bold",
+                          fontSize: "20px",
+                          borderRadius: "4px",
+                          padding: "16px 32px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                        height={{ base: "45px", md: "60px" }}
+                        onClick={handleClickRetweet}
+                      >
+                        <Text color={"#FCFDC7"}>Retweet</Text>
+                      </Button>
+                      <Box
+                        height={{ base: "45px", md: "60px" }}
+                        width={{ base: "45px", md: "60px" }}
+                        backgroundColor={
+                          isRetweeted ? "#4b553b" : "transparent"
+                        }
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        borderRadius={"3px"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          fontSize: "20px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {loadingRetweet ? (
+                          <Spinner color="#75835D" speed="1s" />
+                        ) : (
+                          <CheckIcon
+                            color={isRetweeted ? "#EEEE06" : "#75835D"}
+                            fontSize={"20px"}
+                          />
+                        )}
+                      </Box>
+                    </>
+                  ) : (
+                    <Button
+                      width={{ md: "180px", base: "120px" }}
+                      backgroundColor={"transparent"}
+                      transition="background-color 0.3s ease-in-out"
+                      border={"1px solid #FCFDC7"}
+                      _hover={{
+                        bg: "rgba(195, 211, 165, 0.2)",
+                        color: "#000",
+                      }}
+                      style={{
+                        // fontWeight: "bold",
+                        fontSize: "20px",
+                        borderRadius: "4px",
+                        padding: "16px 32px",
+                        fontFamily: "Lakes",
+                        fontWeight: "700",
+                      }}
+                      height={{ base: "45px", md: "60px" }}
+                      onClick={login}
+                    >
+                      <Text color={"#FCFDC7"}>Login X</Text>
+                    </Button>
+                  )}
                 </Box>
               </Box>
               <Box
@@ -300,28 +551,84 @@ const airdrop = () => {
                   justifyContent={"flex-start"}
                   gap={"20px"}
                 >
-                  <Button
-                    width={{ md: "180px", base: "120px" }}
-                    backgroundColor={"transparent"}
-                    transition="background-color 0.3s ease-in-out"
-                    border={"1px solid #FCFDC7"}
-                    _hover={{
-                      bg: "rgba(195, 211, 165, 0.2)",
-                      color: "#000",
-                    }}
-                    style={{
-                      // fontWeight: "bold",
-                      fontSize: "20px",
-                      borderRadius: "4px",
-                      padding: "16px 32px",
-                      fontFamily: "Lakes",
-                      fontWeight: "700",
-                    }}
-                    height={{ base: "45px", md: "60px" }}
-                    // onClick={onComingSoonOpen}
-                  >
-                    <Text color={"#FCFDC7"}>Join</Text>
-                  </Button>
+                  {isSignedIn ? (
+                    <>
+                      <Button
+                        width={{ md: "180px", base: "120px" }}
+                        backgroundColor={"transparent"}
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          // fontWeight: "bold",
+                          fontSize: "20px",
+                          borderRadius: "4px",
+                          padding: "16px 32px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                        height={{ base: "45px", md: "60px" }}
+                        onClick={handleJoinDiscord}
+                      >
+                        <Text color={"#FCFDC7"}>Join</Text>
+                      </Button>
+                      <Box
+                        height={{ base: "45px", md: "60px" }}
+                        width={{ base: "45px", md: "60px" }}
+                        backgroundColor={isDiscord ? "#4b553b" : "transparent"}
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        borderRadius={"3px"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          fontSize: "20px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {loadingDiscord ? (
+                          <Spinner color="#75835D" speed="1s" />
+                        ) : (
+                          <CheckIcon
+                            color={isDiscord ? "#EEEE06" : "#75835D"}
+                            fontSize={"20px"}
+                          />
+                        )}
+                      </Box>
+                    </>
+                  ) : (
+                    <Button
+                      width={{ md: "180px", base: "120px" }}
+                      backgroundColor={"transparent"}
+                      transition="background-color 0.3s ease-in-out"
+                      border={"1px solid #FCFDC7"}
+                      _hover={{
+                        bg: "rgba(195, 211, 165, 0.2)",
+                        color: "#000",
+                      }}
+                      style={{
+                        // fontWeight: "bold",
+                        fontSize: "20px",
+                        borderRadius: "4px",
+                        padding: "16px 32px",
+                        fontFamily: "Lakes",
+                        fontWeight: "700",
+                      }}
+                      height={{ base: "45px", md: "60px" }}
+                      onClick={handleJoinDiscord}
+                    >
+                      <Text color={"#FCFDC7"}>Join Discord</Text>
+                    </Button>
+                  )}
                 </Box>
               </Box>
               <Box
@@ -367,28 +674,86 @@ const airdrop = () => {
                   justifyContent={"flex-start"}
                   gap={"20px"}
                 >
-                  <Button
-                    backgroundColor={"transparent"}
-                    width={{ md: "180px", base: "120px" }}
-                    transition="background-color 0.3s ease-in-out"
-                    border={"1px solid #FCFDC7"}
-                    _hover={{
-                      bg: "rgba(195, 211, 165, 0.2)",
-                      color: "#000",
-                    }}
-                    style={{
-                      // fontWeight: "bold",
-                      fontSize: "20px",
-                      borderRadius: "4px",
-                      padding: "16px 32px",
-                      fontFamily: "Lakes",
-                      fontWeight: "700",
-                    }}
-                    height={{ base: "45px", md: "60px" }}
-                    // onClick={onComingSoonOpen}
-                  >
-                    <Text color={"#FCFDC7"}>Submit</Text>
-                  </Button>
+                  {isSignedIn ? (
+                    <>
+                      <Button
+                        width={{ md: "180px", base: "120px" }}
+                        backgroundColor={"transparent"}
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          // fontWeight: "bold",
+                          fontSize: "20px",
+                          borderRadius: "4px",
+                          padding: "16px 32px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                        height={{ base: "45px", md: "60px" }}
+                        onClick={handleClickRetweet}
+                      >
+                        <Text color={"#FCFDC7"}>Submit</Text>
+                      </Button>
+                      <Box
+                        height={{ base: "45px", md: "60px" }}
+                        width={{ base: "45px", md: "60px" }}
+                        backgroundColor={
+                          isRetweeted ? "#4b553b" : "transparent"
+                        }
+                        transition="background-color 0.3s ease-in-out"
+                        border={"1px solid #FCFDC7"}
+                        borderRadius={"3px"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                        _hover={{
+                          bg: "rgba(195, 211, 165, 0.2)",
+                          color: "#000",
+                        }}
+                        style={{
+                          fontSize: "20px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {loadingRetweet ? (
+                          <Spinner color="#75835D" speed="1s" />
+                        ) : (
+                          <CheckIcon
+                            color={isRetweeted ? "#EEEE06" : "#75835D"}
+                            fontSize={"20px"}
+                          />
+                        )}
+                      </Box>
+                    </>
+                  ) : (
+                    <Button
+                      width={{ md: "180px", base: "120px" }}
+                      backgroundColor={"transparent"}
+                      transition="background-color 0.3s ease-in-out"
+                      border={"1px solid #FCFDC7"}
+                      _hover={{
+                        bg: "rgba(195, 211, 165, 0.2)",
+                        color: "#000",
+                      }}
+                      style={{
+                        // fontWeight: "bold",
+                        fontSize: "20px",
+                        borderRadius: "4px",
+                        padding: "16px 32px",
+                        fontFamily: "Lakes",
+                        fontWeight: "700",
+                      }}
+                      height={{ base: "45px", md: "60px" }}
+                      onClick={login}
+                    >
+                      <Text color={"#FCFDC7"}>Login X</Text>
+                    </Button>
+                  )}
                 </Box>
               </Box>
             </Box>
