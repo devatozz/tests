@@ -49,6 +49,7 @@ const airdrop = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [userWallet, setUserWallet] = useState("");
+  const [validateWalletMess, setValidateMess] = useState("");
 
   // user infor action
   const [userInfoAction, setUserInfoAction] = useState({
@@ -139,9 +140,9 @@ const airdrop = () => {
     window.open(twitterFollowUrl, "_blank");
     setTimeout(() => {
       setLoadingFollow(false);
+      setIsFollowed(true);
+      updateUserInfoAction({ follow: true });
     }, 7000);
-    setIsFollowed(true);
-    updateUserInfoAction({ follow: true });
   }
   // handle reweet twitter:
   function handleClickRetweet() {
@@ -151,9 +152,9 @@ const airdrop = () => {
     window.open(twitterRetweetUrl, "_blank");
     setTimeout(() => {
       setLoadingRetweet(false);
+      setIsRetweeted(true);
+      updateUserInfoAction({ retweet: true });
     }, 7000);
-    setIsRetweeted(true);
-    updateUserInfoAction({ retweet: true });
   }
   // handle join discord:
   function handleJoinDiscord() {
@@ -162,9 +163,9 @@ const airdrop = () => {
     window.open(discordUrl, "_blank");
     setTimeout(() => {
       setLoadingDiscord(false);
+      setIsDiscord(true);
+      updateUserInfoAction({ joinDiscord: true });
     }, 7000);
-    setIsDiscord(true);
-    updateUserInfoAction({ joinDiscord: true });
   }
   // check account in database
   async function hasAccountInDatabase(database, UID) {
@@ -238,7 +239,25 @@ const airdrop = () => {
       }
     }
   }
-
+  function isValidETHAddress(str) {
+    let regex = new RegExp(/^(0x)?[0-9a-fA-F]{40}$/);
+    if (str == null) {
+      setValidateMess("Invalid input.");
+      return false;
+    }
+    if (regex.test(str)) {
+      setValidateMess("");
+      return true;
+    } else {
+      setValidateMess("Please enter a valid Ethereum address.");
+      return false;
+    }
+  }
+  const handleInputChange = (event) => {
+    const inputValue = event.target.value;
+    setUserWallet(inputValue);
+    isValidETHAddress(inputValue);
+  };
   return (
     <Box
       // backgroundImage="url('./blast/background/tradebackground.svg') "
@@ -576,6 +595,7 @@ const airdrop = () => {
                           bg: "rgba(195, 211, 165, 0.2)",
                           color: "#000",
                         }}
+                        isDisabled={!isFollowed}
                         padding={{ base: "12px 20px", md: "16px 32px" }}
                         fontSize={{ base: "14px", md: "20px" }}
                         style={{
@@ -637,14 +657,11 @@ const airdrop = () => {
                         fontFamily: "Lakes",
                         fontWeight: "700",
                       }}
+                      isDisabled={!isFollowed}
                       height={{ base: "45px", md: "60px" }}
                       onClick={login}
                     >
-                      {loadingLogin ? (
-                        <Spinner color="#75835D" speed="1s" />
-                      ) : (
-                        <Text color={"#FCFDC7"}>Login X</Text>
-                      )}
+                      <Text color={"#FCFDC7"}>Retweet</Text>
                     </Button>
                   )}
                 </Box>
@@ -707,6 +724,7 @@ const airdrop = () => {
                         }}
                         padding={{ base: "12px 20px", md: "16px 32px" }}
                         fontSize={{ base: "14px", md: "20px" }}
+                        isDisabled={!isRetweeted}
                         style={{
                           borderRadius: "4px",
                           fontFamily: "Lakes",
@@ -759,6 +777,7 @@ const airdrop = () => {
                       }}
                       padding={{ base: "12px 20px", md: "16px 32px" }}
                       fontSize={{ base: "14px", md: "20px" }}
+                      isDisabled={!isRetweeted}
                       style={{
                         borderRadius: "4px",
                         fontFamily: "Lakes",
@@ -828,6 +847,7 @@ const airdrop = () => {
                           bg: "rgba(195, 211, 165, 0.2)",
                           color: "#000",
                         }}
+                        isDisabled={!isDiscord || userWallet === ""}
                         padding={{ base: "12px 20px", md: "16px 32px" }}
                         fontSize={{ base: "14px", md: "20px" }}
                         style={{
@@ -887,14 +907,10 @@ const airdrop = () => {
                         fontFamily: "Lakes",
                         fontWeight: "700",
                       }}
+                      isDisabled={!isDiscord}
                       height={{ base: "45px", md: "60px" }}
-                      onClick={login}
                     >
-                      {loadingLogin ? (
-                        <Spinner color="#75835D" speed="1s" />
-                      ) : (
-                        <Text color={"#FCFDC7"}>Login X</Text>
-                      )}
+                      <Text color={"#FCFDC7"}>Submit</Text>
                     </Button>
                   )}
                 </Box>
@@ -913,7 +929,7 @@ const airdrop = () => {
                 >
                   <Input
                     type="text"
-                    onChange={(event) => setUserWallet(event.target.value)}
+                    onChange={handleInputChange}
                     color={"#fff"}
                     placeholder="0x..."
                     width={"100%"}
@@ -938,6 +954,16 @@ const airdrop = () => {
                     }}
                   />
                 </Box>
+              </Box>
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"flex-start"}
+                marginTop={"10px"}
+              >
+                <Text color={"#ef4444"}>
+                  {validateWalletMess && validateWalletMess}
+                </Text>
               </Box>
             </Box>
           </Box>
