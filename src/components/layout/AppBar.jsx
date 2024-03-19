@@ -163,7 +163,6 @@ export default function AppBar() {
                               }}
                             >
                               {navItem.label}
-                              {navItem.icons}
                             </Link>
                           ) : (
                             <NextLink
@@ -192,16 +191,6 @@ export default function AppBar() {
                                 }}
                               >
                                 {navItem.label}
-                                <Text
-                                  position={"relative"}
-                                  top={0}
-                                  style={{
-                                    marginLeft: "10px",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  {navItem.icons}
-                                </Text>
                               </Text>
                             </NextLink>
                           )}
@@ -290,21 +279,21 @@ export default function AppBar() {
                   stroke="#FCFC05"
                   strokeWidth="0.918367"
                   strokeLinecap="round"
-                  MorestrokeLinejoin="round"
+                  // MorestrokeLinejoin="round"
                 />
                 <path
                   d="M2.48926 10.4492V9.83691C6.06477 11.0308 9.93416 11.0308 13.5097 9.83691V10.4492"
                   stroke="#FCFC05"
                   strokeWidth="0.918367"
                   strokeLinecap="round"
-                  MorestrokeLinejoin="round"
+                  // MorestrokeLinejoin="round"
                 />
                 <path
                   d="M2.48926 6.16396C6.06477 4.97009 9.93416 4.97009 13.5097 6.16396"
                   stroke="#FCFC05"
                   strokeWidth="0.918367"
                   strokeLinecap="round"
-                  MorestrokeLinejoin="round"
+                  // MorestrokeLinejoin="round"
                 />
               </svg>
             </Box>
@@ -415,16 +404,6 @@ export default function AppBar() {
                             }}
                           >
                             {navItem.label}
-                            <Text
-                              position={"relative"}
-                              top={0}
-                              style={{
-                                marginLeft: "10px",
-                                fontSize: "16px",
-                              }}
-                            >
-                              {navItem.icons}
-                            </Text>
                           </Text>
                         </Link>
                       )}

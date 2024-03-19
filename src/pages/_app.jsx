@@ -36,8 +36,9 @@ export default function App(props) {
       justifyContent="center"
       alignContent="center"
       h={{ base: "calc(100vh - 50px)" }}
+      bg={"#22281a"}
     >
-      <CircularProgress isIndeterminate color="blue.600" />
+      <CircularProgress isIndeterminate color="#fcfc05" />
     </Center>
   );
 
@@ -55,15 +56,26 @@ export default function App(props) {
         />
         <title>Blasttrade</title>
         <meta property="og:title" content="BlastTrade" />
-          <meta property="og:description" content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs." />
-          <meta property="og:image" content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png" />
-          <meta property="og:url" content="https://www.blasttrade.org/" />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="BlastTrade" />
-          <meta name="twitter:description" content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs." />
-          <meta name="twitter:creator" content="@BlastTrade" />
-          <meta name="twitter:image" content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png" />
-
+        <meta
+          property="og:description"
+          content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png"
+        />
+        <meta property="og:url" content="https://www.blasttrade.org/" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="BlastTrade" />
+        <meta
+          name="twitter:description"
+          content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
+        />
+        <meta name="twitter:creator" content="@BlastTrade" />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png"
+        />
       </Head>
       <ChakraProvider theme={theme}>
         <AppBar />

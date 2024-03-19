@@ -1,14 +1,14 @@
-// call back twitter https://blattrade.firebaseapp.com/__/auth/handler
+// https://blasttrade-d223b.firebaseapp.com/__/auth/handler
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, TwitterAuthProvider } from "firebase/auth";
 const firebaseConfig = {
-  apiKey: "AIzaSyC6_u5gYciAjsuaLjtbUga8oADQCP-vH3Y",
-  authDomain: "blattrade.firebaseapp.com",
-  projectId: "blattrade",
-  storageBucket: "blattrade.appspot.com",
-  messagingSenderId: "504170197043",
-  appId: "1:504170197043:web:5f398c28c99c730a513346",
+  apiKey: "AIzaSyAZ1-sntELTrygOO3lFCxSpLhlzV0whnkk",
+  authDomain: "blasttrade-baa2f.firebaseapp.com",
+  projectId: "blasttrade-baa2f",
+  storageBucket: "blasttrade-baa2f.appspot.com",
+  messagingSenderId: "101525758389",
+  appId: "1:101525758389:web:09b2bd2fca52d9eba7f9fc",
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
