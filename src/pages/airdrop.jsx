@@ -130,6 +130,11 @@ const airdrop = () => {
     signOut(auth)
       .then(() => {
         console.log("User signed out!");
+        setUserLogout(true);
+        setIsSignedIn(false);
+        setIsFollowed(false);
+        setIsRetweeted(false);
+        setIsDiscord(false);
         setUserInfoAction({
           name: "",
           UID: "",
@@ -139,8 +144,6 @@ const airdrop = () => {
           wallet: "",
           image: "",
         });
-        setIsSignedIn(false);
-        setUserLogout(true);
       })
       .catch((error) => {
         console.error("Error signing out:", error);
