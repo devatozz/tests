@@ -260,14 +260,14 @@ const airdrop = () => {
   function isValidETHAddress(str) {
     let regex = new RegExp(/^(0x)?[0-9a-fA-F]{40}$/);
     if (str == null) {
-      setValidateMess("Invalid input.");
+      setValidateMess("Invalid input");
       return false;
     }
     if (regex.test(str)) {
       setValidateMess("");
       return true;
     } else {
-      setValidateMess("Please enter a valid Ethereum address.");
+      setValidateMess("Please enter a valid Ethereum address");
       return false;
     }
   }
