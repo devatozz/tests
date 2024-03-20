@@ -57,7 +57,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Airdrop",
-    href: "/airdrop",
+    href: "",
     target: "",
     icons: "",
     active: false,
