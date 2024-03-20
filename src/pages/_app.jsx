@@ -42,7 +42,8 @@ export default function App(props) {
     </Center>
   );
 
-  const pageMarkup = isLoading || !ready ? loadingPageMarkup : actualPageMarkup;
+  // const pageMarkup = isLoading || !ready ? loadingPageMarkup : actualPageMarkup;
+  const pageMarkup = actualPageMarkup;
 
   return (
     <CacheProvider value={emotionCache}>

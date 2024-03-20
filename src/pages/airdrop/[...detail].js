@@ -17,7 +17,7 @@ import { Tooltip } from "@chakra-ui/react";
 import { IoChevronForward } from "react-icons/io5";
 // firebase
 import { signInWithPopup } from "firebase/auth";
-import { auth, TwitterAuthProvider } from "../firebaseConfig";
+import { auth, TwitterAuthProvider, db } from "../../firebaseConfig";
 import { signOut } from "firebase/auth";
 import { useToast } from "@chakra-ui/react";
 // firebase
@@ -31,7 +31,6 @@ import {
   where,
   getDoc,
 } from "firebase/firestore";
-import { db } from "../firebaseConfig";
 import { helperToast } from "src/lib/helpToast";
 import { CheckIcon } from "@chakra-ui/icons";
 import { Spinner } from "@chakra-ui/react";
@@ -40,10 +39,18 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
+import { getFirestore, getCountFromServer } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import firebase from "firebase/app";
+import { useRouter } from "next/router";
 const airdrop = () => {
   const toast = useToast();
+  // router
+  const router = useRouter();
+  const { detail = [] } = router.query;
+  const refCode = detail[0];
+
+  console.log("ref", refCode);
   // state
   const [userInfo, setUserInfo] = useState();
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -61,6 +68,11 @@ const airdrop = () => {
   const [isValidAddress, setIsValidAddress] = useState(false);
   const [userDataOnSever, setUserDataOnSever] = useState(false);
   const [userLogout, setUserLogout] = useState(false);
+  const [yourRefCount, setYourRefCount] = useState("0");
+  const [totalItemCount, setTotalItemCount] = useState(0);
+  const [userRefCodeLink, setUserRefCodeLink] = useState("");
+  const [appearRefcodeLink, setAppearRefCodeLink] = useState(false);
+
   // user infor action
   const [userInfoAction, setUserInfoAction] = useState({
     name: "",
@@ -70,6 +82,7 @@ const airdrop = () => {
     joinDiscord: false,
     wallet: "",
     image: "",
+    userInviteCode: "",
   });
   const provider = new TwitterAuthProvider();
   // login
@@ -95,6 +108,12 @@ const airdrop = () => {
                 UID: user.uid,
                 image: user.photoURL,
               });
+
+              const yourRefCode = user.uid;
+              countYourRef(yourRefCode).then((count) => {
+                setYourRefCount(count.toString());
+              });
+              createReferralUrl(yourRefCode);
               setLoadingLogin(false);
               toast({
                 title: "Login success",
@@ -192,8 +211,18 @@ const airdrop = () => {
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
   }
-  // handle submit infor
+  // get invite count
+  async function countYourRef(yourCode) {
+    const itemsRef = collection(db, "blasttrade_user");
+    const q = query(itemsRef, where("invitedCode", "==", yourCode));
+    const querySnapshot = await getDocs(q);
+    const count = querySnapshot.size;
+    console.log(`Count of items with invite code ${yourCode}: ${count}`);
+    return count;
+  }
+  console.log("yourRefCount", yourRefCount);
 
+  // handle submit infor
   async function handleSubmit() {
     setLoadingSubmit(true);
     updateUserInfoAction({ wallet: userWallet });
@@ -237,10 +266,15 @@ const airdrop = () => {
             joinDiscord: userInfoAction.joinDiscord,
             wallet: userWallet,
             image: userInfoAction.image,
+            userRefCount: "",
+            yourCode: userInfoAction.UID,
+            invitedCode: refCode,
           });
           setTimeout(() => {
             setLoadingSubmit(false);
             setIsSubmit(true);
+            createReferralUrl(userInfoAction.UID);
+
             toast({
               title: "Submit success",
               // description: "We've created your account for you.",
@@ -288,7 +322,13 @@ const airdrop = () => {
     });
     return userData;
   }
-
+  function createReferralUrl(uid) {
+    let baseUrl = window.location.origin;
+    // baseUrl = "http://localhost:3010" ? "http://localhost:3010" : "https://app.zkperp.tech";
+    const referralUrl = `${baseUrl}/airdrop/${uid}`;
+    setUserRefCodeLink(referralUrl);
+    return referralUrl;
+  }
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -308,7 +348,13 @@ const airdrop = () => {
             wallet: userData.wallet,
             image: user.photoURL,
           });
+          const yourRefCode = user.uid;
+          countYourRef(yourRefCode).then((count) => {
+            setYourRefCount(count.toString());
+          });
+          createReferralUrl(yourRefCode);
           setUserDataOnSever(true);
+          setAppearRefCodeLink(true);
         } else {
           setUserInfoAction({
             name: user.displayName,
@@ -330,6 +376,19 @@ const airdrop = () => {
     // Cleanup subscription on unmount
     return () => unsubscribe();
   }, [userLogout]);
+  // get total user
+
+  useEffect(() => {
+    const collectionRef = collection(db, "blasttrade_user");
+    getCountFromServer(collectionRef)
+      .then((snapshot) => {
+        const count = snapshot.data().count;
+        setTotalItemCount(count);
+      })
+      .catch((error) => {
+        console.error("Error getting document count:", error);
+      });
+  }, [isSubmit]);
   return (
     <Box bg={"#22281a"}>
       <Box
@@ -338,7 +397,7 @@ const airdrop = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
         width={"100%"}
-        height={"100vh"}
+        height={"fit-content"}
       >
         <Container
           maxW={"100%"}
@@ -367,7 +426,7 @@ const airdrop = () => {
                 color={"#fff"}
                 textAlign={{ md: "left", base: "left" }}
                 fontFamily="Lakes"
-                marginTop={{ base: "10px", md: "40px" }}
+                marginTop={{ base: "10px", md: "30px" }}
               >
                 Ecosystem Airdrop
               </Heading>
@@ -376,7 +435,7 @@ const airdrop = () => {
                 alignItems={"center"}
                 justifyContent={"flex-start"}
                 gap={"10px"}
-                marginTop={{ base: "10px", md: "30px" }}
+                marginTop={{ base: "10px", md: "20px" }}
               >
                 <NextLink href={"/"}>
                   <Text
@@ -414,7 +473,7 @@ const airdrop = () => {
                   fontFamily="Lakes"
                   fontStyle={"normal"}
                   textAlign={{ md: "left", base: "left" }}
-                  marginTop={{ base: "20px 15px", md: "30px 30px" }}
+                  marginTop={{ base: "20px 15px", md: "20px 20px" }}
                 >
                   Airdrop
                 </Text>
@@ -424,52 +483,88 @@ const airdrop = () => {
                 borderRadius={"12px"}
                 width={{ xl: "90%", md: "100%", base: "100%" }}
                 height={"fit-content"}
-                marginTop={{ base: "10px", md: "30px" }}
+                marginTop={{ base: "10px", md: "20px" }}
                 padding={{ base: "10px", md: "30px" }}
               >
-                {userInfoAction && userInfoAction.UID !== "" && (
-                  <Box
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"flex-end"}
-                    gap={"12px"}
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                  gap={"12px"}
+                  flexDirection={{ base: "column", md: "row" }}
+                >
+                  <Text
+                    color={"#fff"}
+                    fontSize={{ base: "12px", md: "24px" }}
+                    fontWeight={{ base: "300", md: "400" }}
+                    lineHeight={{ base: "19px", md: "28px" }}
+                    fontFamily="Lakes"
                   >
+                    Total User:{" "}
+                    <span style={{ color: "#FCFDC7" }}>
+                      {totalItemCount && totalItemCount}
+                    </span>{" "}
+                  </Text>
+                  {userInfoAction && userInfoAction.UID !== "" && (
                     <Box
-                      borderRadius={"50%"}
-                      overflow={"hidden"}
-                      width={"24px"}
-                      height={"24px"}
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"flex-end"}
+                      gap={{ base: "10px", md: "20px" }}
                     >
-                      <img
-                        src={userInfoAction?.image}
-                        alt="avatar"
+                      <Box
+                        borderRadius={"50%"}
+                        overflow={"hidden"}
                         width={"24px"}
                         height={"24px"}
-                      />
+                      >
+                        <img
+                          src={userInfoAction?.image}
+                          alt="avatar"
+                          width={"24px"}
+                          height={"24px"}
+                        />
+                      </Box>
+                      <Text
+                        color={"#FCFDC7"}
+                        fontSize={{ base: "12px", md: "24px" }}
+                        fontWeight={{ base: "300", md: "400" }}
+                        lineHeight={{ base: "19px", md: "28px" }}
+                        fontFamily="Lakes"
+                      >
+                        {userInfoAction?.name}
+                      </Text>
+                      <Text
+                        color={"#fff"}
+                        fontSize={{ base: "12px", md: "24px" }}
+                        fontWeight={{ base: "300", md: "400" }}
+                        lineHeight={{ base: "19px", md: "28px" }}
+                        fontFamily="Lakes"
+                      >
+                        Your ref count:
+                        <span style={{ color: "#FCFDC7" }}>
+                          {" "}
+                          {yourRefCount && yourRefCount}
+                        </span>{" "}
+                      </Text>
+                      <Text
+                        color={"#fff"}
+                        fontSize={{ base: "12px", md: "24px" }}
+                        fontWeight={{ base: "300", md: "400" }}
+                        lineHeight={{ base: "19px", md: "28px" }}
+                        fontFamily="Lakes"
+                        _hover={{
+                          color: "#FCFDC7",
+                        }}
+                        cursor={"pointer"}
+                        onClick={logout}
+                      >
+                        Logout
+                      </Text>
                     </Box>
-                    <Text
-                      color={"#fff"}
-                      fontSize={{ base: "12px", md: "24px" }}
-                      fontWeight={{ base: "300", md: "400" }}
-                      lineHeight={{ base: "19px", md: "28px" }}
-                    >
-                      {userInfoAction?.name}
-                    </Text>
-                    <Text
-                      color={"#fff"}
-                      fontSize={{ base: "12px", md: "24px" }}
-                      fontWeight={{ base: "300", md: "400" }}
-                      lineHeight={{ base: "19px", md: "28px" }}
-                      _hover={{
-                        color: "#FCFDC7",
-                      }}
-                      cursor={"pointer"}
-                      onClick={logout}
-                    >
-                      Logout
-                    </Text>
-                  </Box>
-                )}
+                  )}
+                </Box>
+
                 <Text
                   color={"#fff"}
                   fontSize={{ base: "12px", md: "24px" }}
@@ -478,8 +573,8 @@ const airdrop = () => {
                   fontFamily="Lakes"
                   fontStyle={"normal"}
                   textAlign={{ md: "left", base: "left" }}
-                  marginTop={{ base: "10px", md: "30px" }}
-                  width={{ md: "80%", base: "100%" }}
+                  marginTop={{ base: "10px", md: "20px" }}
+                  width={{ md: "100%", base: "100%" }}
                 >
                   Complete the following tasks to share a{" "}
                   <span style={{ color: "#EEEE06" }}>1,000,000 BMX</span> prize
@@ -512,6 +607,7 @@ const airdrop = () => {
                         color={"#75835d"}
                         fontSize={{ base: "18px", md: "32px" }}
                         fontWeight={"700"}
+                        fontFamily="Lakes"
                       >
                         1
                       </Text>
@@ -520,6 +616,7 @@ const airdrop = () => {
                       color={"#fff"}
                       fontSize={{ base: "12px", md: "24px" }}
                       fontWeight={"500"}
+                      fontFamily="Lakes"
                     >
                       Follow Blast Trade
                     </Text>
@@ -552,7 +649,9 @@ const airdrop = () => {
                           height={{ base: "45px", md: "60px" }}
                           onClick={handleClickFollow}
                         >
-                          <Text color={"#FCFDC7"}>Follow</Text>
+                          <Text fontFamily="Lakes" color={"#FCFDC7"}>
+                            Follow
+                          </Text>
                         </Button>
                         <Box
                           height={{ base: "45px", md: "60px" }}
@@ -607,7 +706,9 @@ const airdrop = () => {
                         {loadingLogin ? (
                           <Spinner color="#75835D" speed="1s" />
                         ) : (
-                          <Text color={"#FCFDC7"}>Login X</Text>
+                          <Text fontFamily="Lakes" color={"#FCFDC7"}>
+                            Login X
+                          </Text>
                         )}
                       </Button>
                     )}
@@ -640,6 +741,7 @@ const airdrop = () => {
                         color={"#75835d"}
                         fontSize={{ base: "18px", md: "32px" }}
                         fontWeight={"700"}
+                        fontFamily="Lakes"
                       >
                         2
                       </Text>
@@ -648,6 +750,7 @@ const airdrop = () => {
                       color={"#fff"}
                       fontSize={{ base: "12px", md: "24px" }}
                       fontWeight={"500"}
+                      fontFamily="Lakes"
                     >
                       Retweet the post
                     </Text>
@@ -680,7 +783,9 @@ const airdrop = () => {
                           height={{ base: "45px", md: "60px" }}
                           onClick={handleClickRetweet}
                         >
-                          <Text color={"#FCFDC7"}>Retweet</Text>
+                          <Text fontFamily="Lakes" color={"#FCFDC7"}>
+                            Retweet
+                          </Text>
                         </Button>
                         <Box
                           height={{ base: "45px", md: "60px" }}
@@ -733,7 +838,9 @@ const airdrop = () => {
                         height={{ base: "45px", md: "60px" }}
                         onClick={login}
                       >
-                        <Text color={"#FCFDC7"}>Retweet</Text>
+                        <Text fontFamily="Lakes" color={"#FCFDC7"}>
+                          Retweet
+                        </Text>
                       </Button>
                     )}
                   </Box>
@@ -765,6 +872,7 @@ const airdrop = () => {
                         color={"#75835d"}
                         fontSize={{ base: "18px", md: "32px" }}
                         fontWeight={"700"}
+                        fontFamily="Lakes"
                       >
                         3
                       </Text>
@@ -773,6 +881,7 @@ const airdrop = () => {
                       color={"#fff"}
                       fontSize={{ base: "12px", md: "24px" }}
                       fontWeight={"500"}
+                      fontFamily="Lakes"
                     >
                       Join our Discord
                     </Text>
@@ -858,7 +967,9 @@ const airdrop = () => {
                         height={{ base: "45px", md: "60px" }}
                         onClick={handleJoinDiscord}
                       >
-                        <Text color={"#FCFDC7"}>Join Discord</Text>
+                        <Text color={"#FCFDC7"} fontFamily="Lakes">
+                          Join Discord
+                        </Text>
                       </Button>
                     )}
                   </Box>
@@ -866,7 +977,7 @@ const airdrop = () => {
                 {/* submit */}
 
                 <Box
-                  marginTop={{ base: "10px", md: "30px" }}
+                  marginTop={{ base: "10px", md: "20px" }}
                   display={"flex"}
                   alignItems={"center"}
                   justifyContent={"space-between"}
@@ -890,6 +1001,7 @@ const airdrop = () => {
                         color={"#75835d"}
                         fontSize={{ base: "18px", md: "32px" }}
                         fontWeight={"700"}
+                        fontFamily="Lakes"
                       >
                         4
                       </Text>
@@ -898,6 +1010,7 @@ const airdrop = () => {
                       color={"#fff"}
                       fontSize={{ base: "12px", md: "24px" }}
                       fontWeight={"500"}
+                      fontFamily="Lakes"
                     >
                       Enter your EVM address
                     </Text>
@@ -932,7 +1045,9 @@ const airdrop = () => {
                           height={{ base: "45px", md: "60px" }}
                           onClick={handleSubmit}
                         >
-                          <Text color={"#FCFDC7"}>Submit</Text>
+                          <Text color={"#FCFDC7"} fontFamily="Lakes">
+                            Submit
+                          </Text>
                         </Button>
                         <Box
                           height={{ base: "45px", md: "60px" }}
@@ -984,7 +1099,9 @@ const airdrop = () => {
                         isDisabled={!isDiscord}
                         height={{ base: "45px", md: "60px" }}
                       >
-                        <Text color={"#FCFDC7"}>Submit</Text>
+                        <Text color={"#FCFDC7"} fontFamily="Lakes">
+                          Submit
+                        </Text>
                       </Button>
                     )}
                   </Box>
@@ -996,7 +1113,7 @@ const airdrop = () => {
                   justifyContent={"space-between"}
                 >
                   <Box
-                    marginTop={"30px"}
+                    marginTop={"20px"}
                     bg={"#75835d"}
                     width={"100%"}
                     borderRadius={"3px"}
@@ -1009,6 +1126,7 @@ const airdrop = () => {
                       placeholder={
                         userDataOnSever ? userInfoAction.wallet : "0x..."
                       }
+                      fontFamily="Lakes"
                       width={"100%"}
                       border={"1px solid transparent"}
                       _placeholder={{ color: "#c3d3a5" }}
@@ -1038,9 +1156,79 @@ const airdrop = () => {
                   justifyContent={"flex-start"}
                   marginTop={"10px"}
                 >
-                  <Text color={"#ef4444"}>
+                  <Text color={"#ef4444"} fontFamily="Lakes">
                     {validateWalletMess && validateWalletMess}
                   </Text>
+                </Box>
+                {/* get the ref link */}
+
+                <Box
+                  marginTop={{ base: "10px", md: "20px" }}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                >
+                  <Box
+                    display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"flex-start"}
+                    gap={{ base: "10px", md: "20px" }}
+                  >
+                    <Box
+                      width={{ base: "30px", md: "50px" }}
+                      height={{ base: "30px", md: "50px" }}
+                      bg={"#c3d3a5"}
+                      borderRadius={"3px"}
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      <Text
+                        color={"#75835d"}
+                        fontSize={{ base: "18px", md: "32px" }}
+                        fontWeight={"700"}
+                        fontFamily="Lakes"
+                      >
+                        5
+                      </Text>
+                    </Box>
+                    <Text
+                      color={"#fff"}
+                      fontSize={{ base: "12px", md: "24px" }}
+                      fontWeight={"500"}
+                      fontFamily="Lakes"
+                    >
+                      {!isSignedIn
+                        ? "Submit wallet to get  referral link"
+                        : "Your referral link"}
+                    </Text>
+                  </Box>
+
+                  {/* input */}
+                </Box>
+
+                <Box
+                  marginTop={"20px"}
+                  bg={"#75835d"}
+                  fontFamily="Lakes"
+                  width={"100%"}
+                  borderRadius={"3px"}
+                  fontSize={{ base: "14px", md: "24px" }}
+                  padding={{ md: "10px 20px", base: "8px" }}
+                  color={"#c3d3a5"}
+                  wordBreak="break-word"
+                  whiteSpace="normal"
+                  _hover={{
+                    borderColor: "transparent",
+                    cursor: "pointer",
+                  }}
+                  opacity={isSubmit ? 1 : "0.8"}
+                >
+                  {appearRefcodeLink
+                    ? !isSignedIn || !isSubmit
+                      ? "Submit wallet to get your referral link"
+                      : userRefCodeLink && userRefCodeLink
+                    : userRefCodeLink}
                 </Box>
               </Box>
             </Box>
