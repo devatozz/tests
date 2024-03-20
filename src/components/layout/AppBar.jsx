@@ -41,13 +41,13 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Tooltip } from "@chakra-ui/react";
 
 const NAV_ITEMS = [
-  {
-    label: "App",
-    href: "",
-    icons: "",
-    target: "",
-    active: false,
-  },
+  // {
+  //   label: "App",
+  //   href: "",
+  //   icons: "",
+  //   target: "",
+  //   active: false,
+  // },
   {
     label: "NFT",
     href: "",
@@ -60,7 +60,7 @@ const NAV_ITEMS = [
     href: "/airdrop",
     target: "",
     icons: "",
-    active: true,
+    active: false,
   },
   {
     label: "Docs",
