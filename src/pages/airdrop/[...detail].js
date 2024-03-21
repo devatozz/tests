@@ -1237,7 +1237,7 @@ const airdrop = () => {
                 justifyContent="flex-start"
                 alignItems={"center"}
               >
-                <Text>Referral Link</Text>
+                <Text>Referral link</Text>
               </GridItem>
               <GridItem
                 w="100%"
@@ -1246,7 +1246,7 @@ const airdrop = () => {
                 justifyContent="flex-start"
                 alignItems={"center"}
               >
-                <Text>Your Referrals</Text>
+                <Text>Your referrals</Text>
               </GridItem>
               <GridItem
                 w="100%"
