@@ -54,6 +54,37 @@ const airdrop = () => {
   const router = useRouter();
   const { detail = [] } = router.query;
   const refCode = detail[0];
+  // validate refcode
+  const handleValidateRefcode = async (event) => {
+    try {
+      const validInviteCode = await hasRefcodeInDatabase(db, refCode);
+      if (validInviteCode || refCode == "detail") {
+        console.log("Success");
+      } else {
+        router.push(`/airdrop`);
+        toast({
+          title: "Referral code invalid",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+  async function hasRefcodeInDatabase(database, refCode) {
+    const walletsRef = collection(database, "blasttrade_user");
+    const q = query(walletsRef, where("yourCode", "==", refCode));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  }
+
+  useEffect(() => {
+    if (refCode) handleValidateRefcode();
+  }, [refCode]);
 
   // state
   const [userInfo, setUserInfo] = useState();

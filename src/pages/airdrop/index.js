@@ -14,14 +14,83 @@ import {
 } from "@chakra-ui/react";
 import { IoChevronForward } from "react-icons/io5";
 import { useState } from "react";
+// firebase
+import {
+  getDocs,
+  collection,
+  deleteDoc,
+  doc,
+  addDoc,
+  query,
+  where,
+  getDoc,
+} from "firebase/firestore";
+import { auth, TwitterAuthProvider, db } from "../../firebaseConfig";
+import { Spinner } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useToast } from "@chakra-ui/react";
 
+import { helperToast } from "src/lib/helpToast";
+import { CheckIcon } from "@chakra-ui/icons";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
+import { getFirestore, getCountFromServer } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import firebase from "firebase/app";
 function Index() {
-  const [inputRef, setInputRef] = useState("0x0");
+  const router = useRouter();
+  const toast = useToast();
 
+  const [inputRef, setInputRef] = useState("detail");
+  const [validateMess, setValidateMess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  function validateString(str) {
+    const regex = /^[a-zA-Z0-9]{28}$/;
+    return regex.test(str);
+  }
+  async function hasRefcodeInDatabase(database, refCode) {
+    const walletsRef = collection(database, "blasttrade_user");
+    const q = query(walletsRef, where("yourCode", "==", refCode));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  }
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
-    setInputRef(inputValue);
+    setInputRef(event.target.value);
   };
+  const handleSubmit = async (event) => {
+    setIsLoading(true);
+    try {
+      const validateInputString = validateString(inputRef);
+      if (validateInputString) {
+        const validInviteCode = await hasRefcodeInDatabase(db, inputRef);
+        if (validInviteCode) {
+          toast({
+            title: "Success",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+            position: "bottom-right",
+          });
+          router.push(`/airdrop/${inputRef}`);
+          setValidateMess("");
+        } else {
+          setValidateMess("Invalid referral code");
+        }
+      } else {
+        setValidateMess("Invalid Input");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      setValidateMess("An error occurred while processing your request.");
+    } finally {
+      setIsLoading(false); // End loading
+    }
+  };
+
   return (
     <Box bg={"#22281a"}>
       <Box
@@ -162,6 +231,15 @@ function Index() {
                       }}
                     />
                   </Box>
+                  <Box>
+                    <Text
+                      marginTop={"20px"}
+                      fontSize={{ base: "14px", md: "24px" }}
+                      color={"#ef4444"}
+                    >
+                      {validateMess && validateMess}
+                    </Text>
+                  </Box>
                   <Box
                     marginTop={"30px"}
                     display={"flex"}
@@ -171,33 +249,37 @@ function Index() {
                     gap={"20px"}
                   >
                     <Box width={"100%"}>
-                      <NextLink
+                      {/* <NextLink
                         href="/airdrop/[...detail]"
                         as={`/airdrop/${inputRef}`}
+                      > */}
+                      <Button
+                        backgroundColor={"#FCFC05"}
+                        fontFamily="Lakes"
+                        transition="background-color 0.3s ease-in-out"
+                        _hover={{
+                          bg: "#fff",
+                        }}
+                        style={{
+                          borderRadius: "4px",
+                          padding: "16px 32px",
+                          fontFamily: "Lakes",
+                          fontWeight: "700",
+                        }}
+                        fontSize={{ base: "11px", md: "20px" }}
+                        height={{ base: "30px", md: "60px" }}
+                        width={"100%"}
+                        onClick={handleSubmit}
                       >
-                        <Button
-                          backgroundColor={"#FCFC05"}
-                          fontFamily="Lakes"
-                          transition="background-color 0.3s ease-in-out"
-                          _hover={{
-                            bg: "#fff",
-                          }}
-                          style={{
-                            borderRadius: "4px",
-                            padding: "16px 32px",
-                            fontFamily: "Lakes",
-                            fontWeight: "700",
-                          }}
-                          fontSize={{ base: "11px", md: "20px" }}
-                          height={{ base: "30px", md: "60px" }}
-                          width={"100%"}
-                          // onClick={onComingSoonOpen}
-                        >
+                        {isLoading ? (
+                          <Spinner color="#75835D" speed="1s" />
+                        ) : (
                           <Text fontFamily="Lakes" color={"#000"}>
                             Enter
                           </Text>
-                        </Button>
-                      </NextLink>
+                        )}
+                      </Button>
+                      {/* </NextLink> */}
                     </Box>
                     <Box width={"100%"}>
                       <NextLink
