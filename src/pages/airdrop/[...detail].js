@@ -241,9 +241,9 @@ const airdrop = () => {
     }, 7000);
   }
   // check account in database
-  async function hasAccountInDatabase(database, UID) {
+  async function hasAccountInDatabase(database, wallet) {
     const walletsRef = collection(database, "blasttrade_user");
-    const q = query(walletsRef, where("UID", "==", UID));
+    const q = query(walletsRef, where("wallet", "==", wallet));
     const querySnapshot = await getDocs(q);
     return !querySnapshot.empty;
   }
@@ -280,11 +280,11 @@ const airdrop = () => {
       setLoadingSubmit(false);
     } else {
       try {
-        const exists = await hasAccountInDatabase(db, userInfoAction.UID);
+        const exists = await hasAccountInDatabase(db, userWallet);
         if (exists) {
           toast({
             title: "Submit failed",
-            description: "This account has been linked with another wallet.",
+            description: "This wallet has been linked with another account.",
             status: "error",
             duration: 9000,
             isClosable: true,
