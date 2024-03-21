@@ -81,7 +81,7 @@ function Index() {
           setValidateMess("Invalid referral code");
         }
       } else {
-        setValidateMess("Invalid Input");
+        setValidateMess("Invalid code");
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -195,7 +195,7 @@ function Index() {
                     textAlign={{ md: "left", base: "left" }}
                     marginTop={{ base: "10px", md: "20px" }}
                   >
-                    Input your invite code here
+                    Use the invite code to BOOST x2 rewards
                   </Text>
                   <Box
                     marginTop={"30px"}
