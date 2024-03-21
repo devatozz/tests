@@ -206,7 +206,7 @@ function Index() {
                     <Input
                       type="text"
                       color={"#fff"}
-                      placeholder={"Input your invite code..."}
+                      placeholder={"Input the invite code..."}
                       fontFamily="Lakes"
                       onChange={handleInputChange}
                       width={"100%"}
