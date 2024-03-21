@@ -10,6 +10,8 @@ import {
   Heading,
   useMediaQuery,
   Input,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
@@ -43,6 +45,9 @@ import { getFirestore, getCountFromServer } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import firebase from "firebase/app";
 import { useRouter } from "next/router";
+import { useClipboard } from "@chakra-ui/react";
+import { CopyIcon } from "@chakra-ui/icons";
+import { IconButton } from "@chakra-ui/react";
 const airdrop = () => {
   const toast = useToast();
   // router
@@ -50,7 +55,6 @@ const airdrop = () => {
   const { detail = [] } = router.query;
   const refCode = detail[0];
 
-  console.log("ref", refCode);
   // state
   const [userInfo, setUserInfo] = useState();
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -154,6 +158,7 @@ const airdrop = () => {
         setIsFollowed(false);
         setIsRetweeted(false);
         setIsDiscord(false);
+        setAppearRefCodeLink(false);
         setUserInfoAction({
           name: "",
           UID: "",
@@ -220,7 +225,6 @@ const airdrop = () => {
     console.log(`Count of items with invite code ${yourCode}: ${count}`);
     return count;
   }
-  console.log("yourRefCount", yourRefCount);
 
   // handle submit infor
   async function handleSubmit() {
@@ -389,6 +393,12 @@ const airdrop = () => {
         console.error("Error getting document count:", error);
       });
   }, [isSubmit]);
+
+  const [copyValue, setCopyValue] = useState(userRefCodeLink || "");
+  const { onCopy, hasCopied } = useClipboard(copyValue);
+  useEffect(() => {
+    setCopyValue(userRefCodeLink || "");
+  }, [userRefCodeLink]);
   return (
     <Box bg={"#22281a"}>
       <Box
@@ -398,8 +408,9 @@ const airdrop = () => {
         backgroundPosition={"center"}
         width={"100%"}
         height={"fit-content"}
+        padding={{ base: "10px", md: "30px" }}
       >
-        <Container
+        <Box
           maxW={"100%"}
           display={"flex"}
           justifyContent={"space-between"}
@@ -408,11 +419,10 @@ const airdrop = () => {
           paddingY={"20px"}
         >
           <Box
-            as={Box}
             width={"100%"}
             display={"flex"}
             justifyContent={"flex-end"}
-            alignItems={{ md: "flex-end", base: "center" }}
+            alignItems={{ md: "flex-end" }}
             flexDirection={"column"}
           >
             <Box
@@ -489,22 +499,10 @@ const airdrop = () => {
                 <Box
                   display={"flex"}
                   alignItems={"center"}
-                  justifyContent={"space-between"}
+                  justifyContent={"flex-end"}
                   gap={"12px"}
                   flexDirection={{ base: "column", md: "row" }}
                 >
-                  <Text
-                    color={"#fff"}
-                    fontSize={{ base: "12px", md: "24px" }}
-                    fontWeight={{ base: "300", md: "400" }}
-                    lineHeight={{ base: "19px", md: "28px" }}
-                    fontFamily="Lakes"
-                  >
-                    Total User:{" "}
-                    <span style={{ color: "#FCFDC7" }}>
-                      {totalItemCount && totalItemCount}
-                    </span>{" "}
-                  </Text>
                   {userInfoAction && userInfoAction.UID !== "" && (
                     <Box
                       display={"flex"}
@@ -534,19 +532,7 @@ const airdrop = () => {
                       >
                         {userInfoAction?.name}
                       </Text>
-                      <Text
-                        color={"#fff"}
-                        fontSize={{ base: "12px", md: "24px" }}
-                        fontWeight={{ base: "300", md: "400" }}
-                        lineHeight={{ base: "19px", md: "28px" }}
-                        fontFamily="Lakes"
-                      >
-                        Your ref count:
-                        <span style={{ color: "#FCFDC7" }}>
-                          {" "}
-                          {yourRefCount && yourRefCount}
-                        </span>{" "}
-                      </Text>
+
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "12px", md: "24px" }}
@@ -1160,76 +1146,6 @@ const airdrop = () => {
                     {validateWalletMess && validateWalletMess}
                   </Text>
                 </Box>
-                {/* get the ref link */}
-
-                <Box
-                  marginTop={{ base: "10px", md: "20px" }}
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <Box
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"flex-start"}
-                    gap={{ base: "10px", md: "20px" }}
-                  >
-                    <Box
-                      width={{ base: "30px", md: "50px" }}
-                      height={{ base: "30px", md: "50px" }}
-                      bg={"#c3d3a5"}
-                      borderRadius={"3px"}
-                      display={"flex"}
-                      alignItems={"center"}
-                      justifyContent={"center"}
-                    >
-                      <Text
-                        color={"#75835d"}
-                        fontSize={{ base: "18px", md: "32px" }}
-                        fontWeight={"700"}
-                        fontFamily="Lakes"
-                      >
-                        5
-                      </Text>
-                    </Box>
-                    <Text
-                      color={"#fff"}
-                      fontSize={{ base: "12px", md: "24px" }}
-                      fontWeight={"500"}
-                      fontFamily="Lakes"
-                    >
-                      {!isSignedIn
-                        ? "Submit wallet to get  referral link"
-                        : "Your referral link"}
-                    </Text>
-                  </Box>
-
-                  {/* input */}
-                </Box>
-
-                <Box
-                  marginTop={"20px"}
-                  bg={"#75835d"}
-                  fontFamily="Lakes"
-                  width={"100%"}
-                  borderRadius={"3px"}
-                  fontSize={{ base: "14px", md: "24px" }}
-                  padding={{ md: "10px 20px", base: "8px" }}
-                  color={"#c3d3a5"}
-                  wordBreak="break-word"
-                  whiteSpace="normal"
-                  _hover={{
-                    borderColor: "transparent",
-                    cursor: "pointer",
-                  }}
-                  opacity={isSubmit ? 1 : "0.8"}
-                >
-                  {appearRefcodeLink
-                    ? !isSignedIn || !isSubmit
-                      ? "Submit wallet to get your referral link"
-                      : userRefCodeLink && userRefCodeLink
-                    : userRefCodeLink}
-                </Box>
               </Box>
             </Box>
           </Box>
@@ -1245,7 +1161,199 @@ const airdrop = () => {
               />
             </Flex>
           </Box>
-        </Container>
+        </Box>
+        <Box
+          bg={"#22281a"}
+          borderRadius={"12px"}
+          width={{ xl: "92.5%", md: "100%", base: "100%" }}
+          height={"300px"}
+          margin={{ base: "0px auto", md: "0px auto" }}
+          padding={{ base: "20px", md: "30px" }}
+          border={"1px solid #FCFDC7"}
+        >
+          <Text
+            color={"#fff"}
+            fontSize={{ base: "16px", md: "30px" }}
+            fontWeight={"500"}
+            fontFamily="Lakes"
+            paddingBottom={"20px"}
+          >
+            Invite friends to earn more BMX
+          </Text>
+          <Box
+            borderTop={"1px solid #75835d"}
+            padding={"20px 0px"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            flexDirection={{ base: "row", md: "column" }}
+            width={"100%"}
+            height={{ base: "fit-content", md: "50px" }}
+          >
+            <Grid
+              templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+              gap={{ base: 2, md: 6 }}
+              fontSize={{ base: "12px", lg: "28px", md: "18px" }}
+              color={"#91938c"}
+              fontFamily="Lakes"
+              width={{ base: "60%", md: "100%" }}
+              alignItems={"center"}
+            >
+              <GridItem
+                w="100%"
+                h={{ base: "50px", md: "100%" }}
+                display="flex"
+                justifyContent="flex-start"
+                alignItems={"center"}
+              >
+                <Text>Referral Link</Text>
+              </GridItem>
+              <GridItem
+                w="100%"
+                h={{ base: "50px", md: "100%" }}
+                display="flex"
+                justifyContent="flex-start"
+                alignItems={"center"}
+              >
+                <Text>Your Referrals</Text>
+              </GridItem>
+              <GridItem
+                w="100%"
+                h={{ base: "50px", md: "100%" }}
+                display="flex"
+                justifyContent="flex-start"
+                alignItems={"center"}
+              >
+                <Text>Total participants</Text>
+              </GridItem>
+            </Grid>
+            <Grid
+              templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+              gap={{ base: 2, md: 6 }}
+              bg={{ md: "#75835d", base: "transparent" }}
+              fontSize={{ base: "12px", lg: "28px", md: "18px" }}
+              color={"#91938c"}
+              fontFamily="Lakes"
+              width={{ base: "100%", md: "100%" }}
+              marginTop={{ base: "0px", md: "20px" }}
+              padding={"0px 10px"}
+              height={{ base: "fit-content", md: "50px" }}
+            >
+              <GridItem
+                h={{ base: "50px", md: "100%" }}
+                display="flex"
+                justifyContent="flex-start"
+                alignItems={"center"}
+              >
+                <Box
+                  fontSize={{ base: "8px", md: "14px", lg: "12px" }}
+                  color={"#c3d3a5"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"flex-start"}
+                  gap={"10px"}
+                >
+                  {appearRefcodeLink && !isSubmit ? (
+                    <Box
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"flex-start"}
+                      gap={"10px"}
+                    >
+                      <Text
+                        fontSize={{ base: "8px", md: "12px", lg: "10px" }}
+                        color={"#c3d3a5"}
+                        wordWrap="break-word"
+                        width={{
+                          "2xl": "100%",
+                          xl: "320px",
+                          lg: "250px",
+                          md: "200px",
+                          base: "150px",
+                        }}
+                      >
+                        {userRefCodeLink && userRefCodeLink}
+                      </Text>
+                      <IconButton
+                        aria-label="Copy to clipboard"
+                        icon={
+                          <CopyIcon color={hasCopied ? "c3d3a5" : "#FCFDC7"} />
+                        }
+                        onClick={onCopy}
+                        background={"transparent"}
+                        _hover={{
+                          background: "transparent",
+                        }}
+                      />
+                    </Box>
+                  ) : isSubmit ? (
+                    ""
+                  ) : (
+                    <Text
+                      fontSize={{ base: "8px", md: "14px", lg: "12px" }}
+                      color={"#c3d3a5"}
+                    >
+                      Submit wallet to get your referral link{" "}
+                    </Text>
+                  )}
+                  {isSubmit && userRefCodeLink && (
+                    <Box
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                      gap={"10px"}
+                    >
+                      <Text
+                        fontSize={{ base: "8px", md: "14px", lg: "12px" }}
+                        color={"#c3d3a5"}
+                      >
+                        {userRefCodeLink}
+                      </Text>
+                      <IconButton
+                        aria-label="Copy to clipboard"
+                        icon={
+                          <CopyIcon color={hasCopied ? "c3d3a5" : "#FCFDC7"} />
+                        }
+                        onClick={onCopy}
+                        background={"transparent"}
+                        _hover={{
+                          background: "transparent",
+                        }}
+                      />
+                    </Box>
+                  )}
+                </Box>
+              </GridItem>
+              <GridItem
+                h={{ base: "50px", md: "100%" }}
+                display="flex"
+                justifyContent="flex-start"
+                alignItems={"center"}
+              >
+                <Text>
+                  {" "}
+                  <span style={{ color: "#FCFDC7" }}>
+                    {" "}
+                    {yourRefCount && yourRefCount}
+                  </span>{" "}
+                </Text>
+              </GridItem>
+              <GridItem
+                h={{ base: "50px", md: "100%" }}
+                display="flex"
+                justifyContent="flex-start"
+                alignItems={"center"}
+              >
+                <Text>
+                  {" "}
+                  <span style={{ color: "#FCFDC7" }}>
+                    {totalItemCount && totalItemCount}
+                  </span>{" "}
+                </Text>
+              </GridItem>
+            </Grid>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
