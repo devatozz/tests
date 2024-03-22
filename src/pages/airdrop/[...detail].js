@@ -221,7 +221,7 @@ const airdrop = () => {
   function handleClickRetweet() {
     setLoadingRetweet(true);
     const twitterRetweetUrl =
-      "https://twitter.com/intent/retweet?tweet_id=1769762551632412677";
+      "https://twitter.com/intent/retweet?tweet_id=1770883706892279897";
     window.open(twitterRetweetUrl, "_blank");
     setTimeout(() => {
       setLoadingRetweet(false);
@@ -232,7 +232,7 @@ const airdrop = () => {
   // handle join discord:
   function handleJoinDiscord() {
     setLoadingDiscord(true);
-    const discordUrl = "https://discord.com/invite/DmrKCDS7";
+    const discordUrl = "https://discord.com/invite/ep95AF2Kgy";
     window.open(discordUrl, "_blank");
     setTimeout(() => {
       setLoadingDiscord(false);
@@ -594,7 +594,7 @@ const airdrop = () => {
                   width={{ md: "100%", base: "100%" }}
                 >
                   Complete the following tasks to share a{" "}
-                  <span style={{ color: "#EEEE06" }}>1,000,000 BMX</span> prize
+                  <span style={{ color: "#EEEE06" }}>10,000,000 BMX</span> prize
                   pool on mainnet
                 </Text>
                 {/* Follow */}
@@ -724,7 +724,7 @@ const airdrop = () => {
                           <Spinner color="#75835D" speed="1s" />
                         ) : (
                           <Text fontFamily="Lakes" color={"#FCFDC7"}>
-                            Login X
+                            Connect X
                           </Text>
                         )}
                       </Button>
