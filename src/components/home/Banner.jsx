@@ -233,13 +233,16 @@ export default function Banner() {
             borderRadius={{ md: "12px", base: "8px" }}
           >
             <video
-              src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/new_11.webm"
-              alt="zk perp"
+              alt="blast trade"
               width={{ md: "750px", base: "100%" }}
               autoPlay
               muted
               loop
-            />
+              playsInline
+              poster="https://raw.githubusercontent.com/devBlasttrade/image-repo/patch-1/hero.png"
+            >
+              <source src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/new_11.webm" />
+            </video>
           </Flex>
         </Container>
       </Flex>

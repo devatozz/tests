@@ -58,7 +58,7 @@ const airdrop = () => {
   const handleValidateRefcode = async (event) => {
     try {
       const validInviteCode = await hasRefcodeInDatabase(db, refCode);
-      if (validInviteCode || refCode == "detail") {
+      if (validInviteCode || refCode == "noref") {
         console.log("Success");
       } else {
         router.push(`/airdrop`);

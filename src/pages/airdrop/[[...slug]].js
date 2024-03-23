@@ -13,7 +13,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { IoChevronForward } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // firebase
 import {
   getDocs,
@@ -43,10 +43,48 @@ import firebase from "firebase/app";
 function Index() {
   const router = useRouter();
   const toast = useToast();
+  const { slug = [] } = router.query;
+  const refCode = slug[0];
 
-  const [inputRef, setInputRef] = useState("detail");
+  const [inputRef, setInputRef] = useState("noref");
   const [validateMess, setValidateMess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefcode, setIsRefcode] = useState(false);
+  // validate refcode
+  const handleValidateRefcode = async (event) => {
+    try {
+      const validInviteCode = await hasRefcodeInDatabase(db, refCode);
+      if (validInviteCode) {
+        console.log("Success");
+        setInputRef(refCode);
+        setIsRefcode(true);
+      } else {
+        toast({
+          title: "Referral link invalid",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+        setIsRefcode(false);
+        setInputRef("");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+  async function hasRefcodeInDatabase(database, refCode) {
+    const walletsRef = collection(database, "blasttrade_user");
+    const q = query(walletsRef, where("yourCode", "==", refCode));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  }
+
+  useEffect(() => {
+    if (refCode) handleValidateRefcode();
+  }, [refCode]);
+
   function validateString(str) {
     const regex = /^[a-zA-Z0-9]{28}$/;
     return regex.test(str);
@@ -75,7 +113,7 @@ function Index() {
             isClosable: true,
             position: "bottom-right",
           });
-          router.push(`/airdrop/${inputRef}`);
+          router.push(`/detail/${inputRef}`);
           setValidateMess("");
         } else {
           setValidateMess("Invalid referral code");
@@ -206,10 +244,13 @@ function Index() {
                     <Input
                       type="text"
                       color={"#fff"}
-                      placeholder={"Input the invite code..."}
+                      placeholder={
+                        isRefcode ? refCode : "Input the invite code..."
+                      }
                       fontFamily="Lakes"
                       onChange={handleInputChange}
                       width={"100%"}
+                      isDisabled={isRefcode}
                       border={"1px solid transparent"}
                       _placeholder={{ color: "#c3d3a5" }}
                       fontSize={{ base: "14px", md: "24px" }}
@@ -282,10 +323,7 @@ function Index() {
                       {/* </NextLink> */}
                     </Box>
                     <Box width={"100%"}>
-                      <NextLink
-                        href="/airdrop/[...detail]"
-                        as="/airdrop/detail"
-                      >
+                      <NextLink href="/detail/[...detail]" as="/detail/noref">
                         <Button
                           backgroundColor={"#22281a"}
                           transition="background-color 0.3s ease-in-out"
