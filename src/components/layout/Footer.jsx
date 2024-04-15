@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Container,
@@ -7,130 +7,207 @@ import {
   Text,
   Flex,
   Image,
-  useColorModeValue,
-  useDisclosure,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Lorem,
-  Heading,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 export default function LargeWithLogoLeft() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [imageXSrc, setImageXSrc] = useState("./asset/img/x.svg");
+  const [imageTeleSrc, setImageTeleSrc] = useState("./asset/img/tele.svg");
+  const [imageInSrc, setImageInSrc] = useState("./asset/img/in.svg");
 
   return (
     <Box
-      color={useColorModeValue("gray.700", "gray.200")}
-      bg="#21281a"
+      bg="#000"
 
       // minHeight: "100vh",
     >
       <Container
         as={Stack}
-        maxW={"1440px"}
-        w="full"
+        maxW={"90%"}
         maxHeight={{ md: "400px", base: "auto" }}
-        color={"#101010"}
+        color={"#fff"}
+        borderTop={"2px solid gray "}
       >
         <SimpleGrid
-          templateColumns={{ sm: " 1fr 1fr", md: " 1fr 1fr" }}
+          templateColumns={{ sm: " 1fr 1fr 1fr", md: " 2fr 1fr 2fr" }}
           spacing={8}
           py={{ md: "60px", base: "40px" }}
           px={{ base: "15px" }}
         >
           <Stack spacing={2}>
             <NextLink href={"/"}>
-              <Box>
-                <Flex gap={2} alignItems={"center"} w="full" h="full">
-                  <Image
-                    src={
-                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"
-                    }
-                    alt="blast"
-                    height="40px"
-                  />
-                </Flex>
-              </Box>
+              <Flex gap={"15px"} alignItems={"center"} minWidth={"28px"}>
+                <Image src="./asset/img/logo.png" alt="m33m" height={"28px"} />
+              </Flex>
             </NextLink>
             <Text
-              color={"#C3D3A5"}
+              color={"#fff"}
               fontSize={{ base: "16px", md: "26px" }}
-              fontWeight={{ base: "300", md: "600" }}
+              fontWeight={{ base: "300", md: "400" }}
               lineHeight={{ base: "19px", md: "26px" }}
-              fontFamily="Lakes"
+              fontFamily="Anta"
               fontStyle={"normal"}
               paddingTop={{ md: "20px", base: "10px" }}
             >
-              The Perpetual DEX with Native Yield
+              Your trusted Blockchain service provider
+            </Text>
+            <Text
+              color={"#fff"}
+              fontSize={{ base: "14px", md: "20px" }}
+              fontWeight={{ base: "300", md: "300" }}
+              lineHeight={{ base: "19px", md: "26px" }}
+              opacity={"0.64"}
+              fontFamily="Anta"
+              fontStyle={"normal"}
+              paddingTop={{ md: "20px", base: "10px" }}
+            >
+              © 2024 M33M LABS. All rights reserved.
             </Text>
           </Stack>
           <Box
             display={"flex"}
-            alignItems={"flex-end"}
-            justifyContent={{ md: "flex-end", base: "space-center" }}
+            alignItems={"center"}
+            justifyContent={{ md: "center", base: "space-center" }}
           >
             <SimpleGrid
               fontSize={{ base: "16px", md: "24px" }}
               lineHeight={{ base: "24px", md: "29px" }}
-              columns={{ base: 5, sm: 5, md: 5 }}
-              spacing={2}
-              width={{ md: "70%", base: "100%" }}
+              columns={{ base: 3, sm: 3, md: 3 }}
+              spacing={1}
+              width={{ md: "100%", base: "100%" }}
+              textAlign={"center"}
             >
-              <NextLink href={"https://docs.blasttrade.org/"} target="_blank">
-                <Flex gap={2} alignItems={"center"}>
-                  <Image
-                    src={
-                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-docs.png"
-                    }
-                    alt="blasttrade"
-                    height={"38px"}
-                  />
+              <NextLink href={""} target="_blank">
+                <Flex gap={2} alignItems={"center"} justifyContent={"center"}>
+                  <Box
+                    as="span"
+                    cursor="pointer"
+                    onMouseEnter={() => setImageXSrc("./asset/img/x2.svg")}
+                    onMouseLeave={() => setImageXSrc("./asset/img/x.svg")}
+                    transition="0.2s ease-in-out"
+                  >
+                    <Image
+                      src={imageXSrc}
+                      alt="Icons"
+                      height={"38px"}
+                      width={"38px"}
+                    />
+                  </Box>
                 </Flex>
               </NextLink>
-              <NextLink
-                href={"https://twitter.com/Blast_Trade"}
-                target="_blank"
-              >
-                <Flex gap={2} alignItems={"center"}>
-                  <Image
-                    src={
-                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tw.png"
+              <NextLink href={""} target="_blank">
+                <Flex gap={2} alignItems={"center"} justifyContent={"center"}>
+                  <Box
+                    as="span"
+                    cursor="pointer"
+                    onMouseEnter={() =>
+                      setImageTeleSrc("./asset/img/tele2.svg")
                     }
-                    alt="blasttrade"
-                    height={"38px"}
-                  />
+                    onMouseLeave={() => setImageTeleSrc("./asset/img/tele.svg")}
+                    transition="0.2s ease-in-out"
+                  >
+                    <Image
+                      src={imageTeleSrc}
+                      alt="Icons"
+                      height={"38px"}
+                      width={"38px"}
+                    />
+                  </Box>
                 </Flex>
               </NextLink>
-              <NextLink href={"https://discord.gg/DmrKCDS7"} target="_blank">
-                <Flex gap={2} alignItems={"center"}>
-                  <Image
-                    src={
-                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-discord.png"
-                    }
-                    alt="blasttrade"
-                    height={"38px"}
-                  />
-                </Flex>
-              </NextLink>
-              <NextLink href={"https://t.me/blasttradegroup"} target="_blank">
-                <Flex gap={2} alignItems={"center"}>
-                  <Image
-                    src={
-                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/sol-tele.png"
-                    }
-                    alt="blasttrade"
-                    height={"38px"}
-                  />
+
+              <NextLink href={""} target="_blank">
+                <Flex gap={2} alignItems={"center"} justifyContent={"center"}>
+                  <Box
+                    as="span"
+                    cursor="pointer"
+                    onMouseEnter={() => setImageInSrc("./asset/img/in2.svg")}
+                    onMouseLeave={() => setImageInSrc("./asset/img/in.svg")}
+                    transition="0.2s ease-in-out"
+                  >
+                    <Image
+                      src={imageInSrc}
+                      alt="Icons"
+                      height={"38px"}
+                      width={"38px"}
+                    />
+                  </Box>
                 </Flex>
               </NextLink>
             </SimpleGrid>
+          </Box>
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"space-around"}
+            flexDirection={"row"}
+          >
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              flexDirection={"column"}
+            >
+              <NextLink href={"/service"}>
+                <Text
+                  color={"#fff"}
+                  fontSize={{ base: "16px", md: "26px" }}
+                  fontWeight={{ base: "300", md: "400" }}
+                  lineHeight={{ base: "19px", md: "26px" }}
+                  fontFamily="Anta"
+                  fontStyle={"normal"}
+                  paddingTop={{ md: "20px", base: "10px" }}
+                >
+                  SERVICES
+                </Text>
+              </NextLink>
+              <NextLink href={"/careers"}>
+                <Text
+                  color={"#fff"}
+                  fontSize={{ base: "16px", md: "26px" }}
+                  fontWeight={{ base: "300", md: "400" }}
+                  lineHeight={{ base: "19px", md: "26px" }}
+                  fontFamily="Anta"
+                  fontStyle={"normal"}
+                  paddingTop={{ md: "20px", base: "10px" }}
+                >
+                  CAREERS
+                </Text>
+              </NextLink>
+            </Box>
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"space-around"}
+              flexDirection={"column"}
+            >
+              <NextLink href={"/portfolio"}>
+                <Text
+                  color={"#fff"}
+                  fontSize={{ base: "16px", md: "26px" }}
+                  fontWeight={{ base: "300", md: "400" }}
+                  lineHeight={{ base: "19px", md: "26px" }}
+                  fontFamily="Anta"
+                  fontStyle={"normal"}
+                  paddingTop={{ md: "20px", base: "10px" }}
+                >
+                  PORTFOLIO
+                </Text>
+              </NextLink>
+              <NextLink href={"/links"}>
+                <Text
+                  color={"#fff"}
+                  fontSize={{ base: "16px", md: "26px" }}
+                  fontWeight={{ base: "300", md: "400" }}
+                  lineHeight={{ base: "19px", md: "26px" }}
+                  fontFamily="Anta"
+                  fontStyle={"normal"}
+                  paddingTop={{ md: "20px", base: "10px" }}
+                >
+                  LINKS
+                </Text>
+              </NextLink>
+            </Box>
           </Box>
         </SimpleGrid>
       </Container>

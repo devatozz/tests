@@ -29,6 +29,7 @@ import {
   ModalCloseButton,
   ModalBody,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 const Popover = dynamic(
   () => import("@chakra-ui/react").then((chakra) => chakra.Popover),
   {
@@ -39,58 +40,54 @@ import NextLink from "next/link";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Tooltip } from "@chakra-ui/react";
-
 const NAV_ITEMS = [
-  // {
-  //   label: "App",
-  //   href: "",
-  //   icons: "",
-  //   target: "",
-  //   active: false,
-  // },
   {
-    label: "NFT",
-    href: "",
+    label: "ABOUT",
+    href: "/about",
     target: "",
-    icons: "",
-    active: false,
-  },
-  {
-    label: "Airdrop",
-    href: "",
-    target: "",
-    icons: "",
-    active: false,
-  },
-  {
-    label: "Docs",
-    href: "https://docs.blasttrade.org/",
-    target: "_blank",
     icons: "",
     active: true,
   },
   {
-    label: "Community",
-    href: "https://linktr.ee/blasttrade",
+    label: "SERVICES",
+    href: "/service",
+    target: "",
     icons: "",
-    target: "_blank",
+    active: true,
+  },
+  {
+    label: "PORTFOLIO",
+    href: "/portfolio",
+    target: "",
+    icons: "",
+    active: true,
+  },
+  {
+    label: "CAREERS",
+    href: "/careers",
+    icons: "",
+    target: "",
+    active: true,
+  },
+  {
+    label: "LINKS",
+    href: "/links",
+    icons: "",
+    target: "",
     active: true,
   },
 ];
 
-export default function AppBar() {
+export default function AppBar({ bg }) {
   const [isDesktop] = useMediaQuery("(min-width: 768px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: comingSoonOpen,
-    onOpen: onComingSoonOpen,
-    onClose: onComingSoonClose,
-  } = useDisclosure();
   const btnRef = React.useRef();
+  const router = useRouter();
+  const currentPath = router.pathname;
   return (
     <Box>
       <Flex
-        bg="linear-gradient(180deg, #12140D 0%, #15170E 51.04%, #22281A 100%);"
+        bg={bg}
         color={useColorModeValue("#fff.900", "red")}
         minH={"72px"}
         paddingX={{ base: 4, md: 12, xl: 0 }}
@@ -109,23 +106,18 @@ export default function AppBar() {
         >
           <Flex justifyContent={"flex-start"}>
             {!isDesktop && (
-              <Button ref={btnRef} bg="none" color="#FCFDC7" onClick={onOpen}>
-                <HamburgerIcon fontSize={"32px"} />
+              <Button ref={btnRef} bg="none" color="#FFF" onClick={onOpen}>
+                <HamburgerIcon fontSize={"36px"} />
               </Button>
             )}
             <Flex justifyContent={"center"} align={"center"}>
               <NextLink href={"/"}>
-                <Flex gap={"15px"} alignItems={"center"} minWidth={"42px"}>
+                <Flex gap={"15px"} alignItems={"center"} minWidth={"28px"}>
                   <Image
-                    src={
-                      "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logoApp.svg"
-                    }
-                    alt="blasttrade"
-                    height={"42px"}
+                    src="./asset/img/logo.png"
+                    alt="m33m"
+                    height={"28px"}
                   />
-                  <Box display={{ base: "none", xl: "block" }}>
-                    <img src="https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/home/logo.svg" />
-                  </Box>
                 </Flex>
               </NextLink>
 
@@ -153,13 +145,17 @@ export default function AppBar() {
                               py={2}
                               fontSize={"16px"}
                               fontFamily="body"
-                              color={navItem.active ? "#FCFDC7" : "gray"}
+                              color={
+                                currentPath === navItem.href
+                                  ? "#0068FF"
+                                  : "#fff"
+                              }
                               cursor={
                                 navItem.active ? "pointer" : "not-allowed"
                               }
                               _hover={{
                                 textDecoration: "none",
-                                color: "#fff",
+                                color: "#0068FF",
                               }}
                             >
                               {navItem.label}
@@ -175,13 +171,17 @@ export default function AppBar() {
                                 fontSize={"16px"}
                                 fontFamily="Lakes"
                                 textAlign="center"
-                                color={navItem.active ? "#FCFDC7" : "gray"}
+                                color={
+                                  currentPath === navItem.href
+                                    ? "#0068FF"
+                                    : "#fff"
+                                }
                                 cursor={
                                   navItem.active ? "pointer" : "not-allowed"
                                 }
                                 _hover={{
                                   textDecoration: "none",
-                                  color: "#fff",
+                                  color: "#0068FF",
                                 }}
                                 style={{
                                   display: "flex",
@@ -217,90 +217,6 @@ export default function AppBar() {
               </Flex>
             </Flex>
           </Flex>
-
-          <Flex gap={"14px"}>
-            {/* <NextLink href={""} target="self_"> */}{" "}
-            <Tooltip label="Coming soon" aria-label="A tooltip">
-              <Button
-                backgroundColor={"#FCFC05"}
-                transition="background-color 0.3s ease-in-out"
-                _hover={{
-                  bg: "#fff",
-                }}
-                style={{
-                  borderRadius: "4px",
-                }}
-                padding={{ base: "7px 14px", md: "16px 32px" }}
-                height={{ base: "30px", md: "45px" }}
-                // onClick={onComingSoonOpen}
-              >
-                <Text
-                  fontFamily={"Lakes"}
-                  color={"black"}
-                  fontWeight={"700"}
-                  fontSize={{ base: "12px", md: "16px" }}
-                >
-                  Launch App
-                </Text>
-              </Button>
-            </Tooltip>
-            {/* </NextLink> */}
-            {/* <Box
-              display={{ base: "block", md: "none" }}
-              border={"1px solid #fcfdc773"}
-              borderRadius={"3.5px"}
-              p={"7px"}
-              h={30}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.9994 14.1228C11.3807 14.1228 14.1219 11.3817 14.1219 8.00038C14.1219 4.61904 11.3807 1.87793 7.9994 1.87793C4.61807 1.87793 1.87695 4.61904 1.87695 8.00038C1.87695 11.3817 4.61807 14.1228 7.9994 14.1228Z"
-                  stroke="#FCFC05"
-                  strokeWidth="0.918367"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5.54976 2.49023H6.16201C4.96813 6.06574 4.96813 9.93513 6.16201 13.5106H5.54976"
-                  stroke="#FCFC05"
-                  strokeWidth="0.918367"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9.83594 2.49023C11.0298 6.06574 11.0298 9.93513 9.83594 13.5106"
-                  stroke="#FCFC05"
-                  strokeWidth="0.918367"
-                  strokeLinecap="round"
-                  // MorestrokeLinejoin="round"
-                />
-                <path
-                  d="M2.48926 10.4492V9.83691C6.06477 11.0308 9.93416 11.0308 13.5097 9.83691V10.4492"
-                  stroke="#FCFC05"
-                  strokeWidth="0.918367"
-                  strokeLinecap="round"
-                  // MorestrokeLinejoin="round"
-                />
-                <path
-                  d="M2.48926 6.16396C6.06477 4.97009 9.93416 4.97009 13.5097 6.16396"
-                  stroke="#FCFC05"
-                  strokeWidth="0.918367"
-                  strokeLinecap="round"
-                  // MorestrokeLinejoin="round"
-                />
-              </svg>
-            </Box> */}
-          </Flex>
-          {/* <ComingSoonModal
-            isOpen={comingSoonOpen}
-            onClose={onComingSoonClose}
-          /> */}
         </Flex>
       </Flex>
 
@@ -315,21 +231,17 @@ export default function AppBar() {
             <DrawerOverlay />
             <DrawerContent
               width={"90%"}
-              backgroundImage={
-                "url('https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/menu-drawer-mobile.png')"
-              }
+              background={"#0068FF"}
               backgroundSize={"cover"}
             >
-              <DrawerCloseButton mt={"9px"} size="base" color={"#FCFDC7"} />
+              <DrawerCloseButton mt={"9px"} size="base" color={"#FFF"} />
               <DrawerHeader>
                 <NextLink href={"/"}>
                   <Flex gap={2} alignItems={"center"} w="full" h="full">
                     <Image
-                      src={
-                        "https://raw.githubusercontent.com/Blasttrade/image-repo/master/blast/logo.png"
-                      }
-                      alt="blast trade"
-                      h={18}
+                      src="./asset/img/logo.png"
+                      alt="m33m"
+                      height={"28px"}
                     />
                   </Flex>
                 </NextLink>
@@ -357,7 +269,7 @@ export default function AppBar() {
                               fontSize={"base"}
                               fontFamily="body"
                               fontWeight={700}
-                              color={navItem.active ? "#FCFDC7" : "gray"}
+                              color={navItem.active ? "#FFF" : "gray"}
                               cursor={
                                 navItem.active ? "pointer" : "not-allowed"
                               }
@@ -389,7 +301,7 @@ export default function AppBar() {
                             pr={2}
                             fontSize={"16px"}
                             fontFamily="body"
-                            color={navItem.active ? "#FCFDC7" : "gray"}
+                            color={navItem.active ? "#FFF" : "gray"}
                             cursor={navItem.active ? "pointer" : "not-allowed"}
                             _hover={{
                               textDecoration: "none",
@@ -444,59 +356,5 @@ const DesktopSuvNav = ({ label, href }) => {
         </Stack>
       </Box>
     </a>
-  );
-};
-const ComingSoonModal = ({ isOpen, onClose }) => (
-  <Modal
-    blockScrollOnMount={false}
-    isOpen={isOpen}
-    onClose={onClose}
-    size={{ base: "sm", md: "xl" }}
-    alignItems={"center"}
-  >
-    <ModalOverlay />
-    <ModalContent motion="slideInBottom" alignContent="center">
-      <ModalHeader
-        sx={{
-          fontSize: "34px",
-          // fontWeight: "300",
-          // borderRadius: "10px",
-          overflow: "hidden",
-          backgroundImage:
-            "linear-gradient(90.07deg, #EBDE8E -8.17%, #F3E4AC 7.41%, #F4E6B2 10.41%, #FFEEDA 31.13%, #FFF0DD 31.14%, #FFF2E3 36.77%, #FFFFFF 53.39%, #CBFDF6 61.33%, #93FBED 69.86%, #8AF7E8 76.91%, #62E6D4 106.87%)",
-
-          lineHeight: "44px",
-          "@media(max-width: 768px)": {
-            fontSize: "28px",
-          },
-        }}
-      >
-        <Heading color={"fbfbfb"}>Launch App</Heading>
-      </ModalHeader>
-      <ModalCloseButton />
-      <ModalBody
-        sx={{
-          backgroundColor: "#fbfbfb",
-          borderRadius: "10px",
-        }}
-      >
-        <CommingSoonModalText />
-      </ModalBody>
-    </ModalContent>
-  </Modal>
-);
-export const CommingSoonModalText = () => {
-  return (
-    <>
-      <Text
-        fontFamily="body"
-        fontSize={{ md: "24px", base: "18px" }}
-        color="#101010"
-        padding={"20px 0px"}
-        textAlign={"Center"}
-      >
-        Comming Soon!
-      </Text>
-    </>
   );
 };

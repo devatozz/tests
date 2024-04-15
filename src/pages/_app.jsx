@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 
 import AppBar from "src/components/layout/AppBar";
 import Footer from "src/components/layout/Footer";
-
+import Fonts from "src/styles/Fonts";
 export default function App(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const Router = useRouter();
@@ -36,52 +36,51 @@ export default function App(props) {
       justifyContent="center"
       alignContent="center"
       h={{ base: "calc(100vh - 50px)" }}
-      bg={"#22281a"}
+      bg={"#000000"}
     >
-      <CircularProgress isIndeterminate color="#fcfc05" />
+      <CircularProgress isIndeterminate color="#0068FF" />
     </Center>
   );
 
   // const pageMarkup = isLoading || !ready ? loadingPageMarkup : actualPageMarkup;
   const pageMarkup = actualPageMarkup;
-
+  const appBarBg = Router.pathname === "/" ? "transparent" : "#000";
+  const footerDisplay = Router.pathname === "/" ? false : true;
   return (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href={favicon.src} />
-        <meta name="title" content="Blast Trade" />
+        <meta name="title" content="M33M Labs" />
         <meta
           name="description"
-          content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
+          content="We build and experiment world class products in crypto space
+                  that will definitely blow your mind with abnormal DeFi models."
         />
-        <title>Blast Trade</title>
-        <meta property="og:title" content="Blast Trade" />
+        <title>M33M</title>
+        <meta property="og:title" content="M33M Labs" />
         <meta
           property="og:description"
-          content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
+          content="We build and experiment world class products in crypto space
+                  that will definitely blow your mind with abnormal DeFi models."
         />
-        <meta
-          property="og:image"
-          content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png"
-        />
-        <meta property="og:url" content="https://www.blasttrade.org/" />
+        <meta property="og:image" content="/public/asset/img/Cover.png" />
+        <meta property="og:url" content="" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Blast Trade" />
+        <meta name="twitter:title" content="M33M Labs" />
         <meta
           name="twitter:description"
-          content="Perpetual trading changed forever. Synergized by Blast's native yield. 100% Blast Points + Blast Gold to traders and LPs."
+          content="We build and experiment world class products in crypto space
+                  that will definitely blow your mind with abnormal DeFi models."
         />
-        <meta name="twitter:creator" content="@BlastTrade" />
-        <meta
-          name="twitter:image"
-          content="https://raw.githubusercontent.com/Blasttrade/image-repo/master/banner.png"
-        />
+        <meta name="twitter:creator" content="" />
+        <meta name="twitter:image" content="/public/asset/img/Cover.png" />
       </Head>
       <ChakraProvider theme={theme}>
-        <AppBar />
+        <Fonts />
+        <AppBar bg={appBarBg} />
         {pageMarkup}
-        <Footer />
+        {footerDisplay && <Footer />}
       </ChakraProvider>
     </CacheProvider>
   );

@@ -1,8 +1,11 @@
-// import the necessary modules
+// theme.js or theme.ts
 import { extendTheme } from "@chakra-ui/react";
 
-// create your theme
-const theme = extendTheme({});
+const theme = extendTheme({
+  fonts: {
+    heading: "Anta",
+    body: "Anta",
+  },
+});
 
-// export the theme
 export default theme;
