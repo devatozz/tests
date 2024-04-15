@@ -116,7 +116,10 @@ export default function LargeWithLogoLeft() {
                 </Flex>
               </NextLink>
 
-              <NextLink href={""} target="_blank">
+              <NextLink
+                href={"https://www.linkedin.com/company/m33m/"}
+                target="_blank"
+              >
                 <Flex gap={2} alignItems={"center"} justifyContent={"center"}>
                   <Box
                     as="span"

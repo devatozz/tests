@@ -14,11 +14,16 @@ import {
 import { ScrollToTopButton } from "../home/Banner";
 import NextLink from "next/link";
 // avatar
-let stan = "./asset/avatar/stan.svg";
-let loki = "./asset/avatar/loki.svg";
-let frankie = "./asset/avatar/frankie.svg";
-let brian = "./asset/avatar/brian.svg";
-let david = "./asset/avatar/david.svg";
+let stan =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/stan.svg?alt=media&token=77fdd1df-f7da-4153-8c4c-814a01ab1a28";
+let loki =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/loki.svg?alt=media&token=0d17982c-bfb1-44b0-b123-81469cbcced1";
+let frankie =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/frankie.svg?alt=media&token=a1526bc3-0eeb-4130-9475-7f2a761e3aae";
+let brian =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/brian.svg?alt=media&token=71f3ee06-37de-4207-9df3-0e966dc13567";
+let david =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/david.svg?alt=media&token=709cd544-c402-451c-81b8-0a25ec66803a";
 
 const AVATAR = [
   {
@@ -63,21 +68,36 @@ const AVATAR = [
   },
 ];
 // partner
-let partner1 = "./asset/partner/1.svg";
-let partner2 = "./asset/partner/2.svg";
-let partner3 = "./asset/partner/3.svg";
-let partner4 = "./asset/partner/4.svg";
-let partner5 = "./asset/partner/5.svg";
-let partner6 = "./asset/partner/6.svg";
-let partner7 = "./asset/partner/7.svg";
-let partner8 = "./asset/partner/8.svg";
-let partner9 = "./asset/partner/9.svg";
-let partner10 = "./asset/partner/10.svg";
-let partner11 = "./asset/partner/11.svg";
-let partner12 = "./asset/partner/12.svg";
-let partner13 = "./asset/partner/13.svg";
-let partner14 = "./asset/partner/14.svg";
-let partner15 = "./asset/partner/15.svg";
+let partner1 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/1.svg?alt=media&token=21acacdb-0cb6-464a-8d71-4e088fc70a7d";
+let partner2 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/2.svg?alt=media&token=0ae9ff08-d186-4864-965b-a1a0a4db9721";
+let partner3 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/3.svg?alt=media&token=6df97c6e-2da9-4e9c-b702-767664eef911";
+let partner4 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/4.svg?alt=media&token=ea6b061a-a87e-4d22-85dc-0c8a550015e0";
+let partner5 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/5.svg?alt=media&token=6d9c1d51-f2cd-4229-a906-dbea754e2542";
+let partner6 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/6.svg?alt=media&token=775c96c0-5c05-41c6-a722-4e0e5d7615ca";
+let partner7 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/7.svg?alt=media&token=f7b7364c-a7e4-4fbf-8fc6-10f6f207c4a4";
+let partner8 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/8.svg?alt=media&token=6decefa7-4c71-4d0f-b331-9c467217cd1b";
+let partner9 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/9.svg?alt=media&token=971aa326-b0a6-43f0-8a0a-21768610b798";
+let partner10 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/10.svg?alt=media&token=066cfe52-a079-4164-ae04-81c8b58f2cc2";
+let partner11 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/11.svg?alt=media&token=759476ef-b57e-43d9-b085-2db9578d12f8";
+let partner12 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/12.svg?alt=media&token=3c2b128f-39a8-4ac2-9677-2375773b5567";
+let partner13 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/13.svg?alt=media&token=9a1b24f4-a3d8-4e58-8e47-281b487ade1e";
+let partner14 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/14.svg?alt=media&token=62dc6f2b-bb8d-4f87-87bc-1a232fd04e2b";
+let partner15 =
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/15.svg?alt=media&token=1d55d277-a511-47a1-aca8-617edb13ce50";
 const PARTNER_IMG = [
   {
     img: partner1,

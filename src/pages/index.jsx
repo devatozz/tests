@@ -18,9 +18,12 @@ export default function Index() {
           objectFit: "cover",
           zIndex: -1,
         }}
-        poster="./asset/img/bgPoster.png"
+        poster="https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/bgPoster.png?alt=media&token=5e15ff00-cb3f-4dc3-8a22-1a3d95adc4b0"
       >
-        <source src="./asset/video/bgVideo.mp4" type="video/mp4" />
+        <source
+          src="https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/bgVideo.mp4?alt=media&token=88506fef-0c63-4f5d-982a-708f0492ac3a"
+          type="video/mp4"
+        />
       </video>
       <Banner />
     </Box>
