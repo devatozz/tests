@@ -30,41 +30,41 @@ const AVATAR = [
     name: "STAN A CHANCE",
     title: "Chief Airdrop Officer",
     img: stan,
-    x: "https://twitter.com/home",
-    tele: "https://twitter.com/home",
-    in: "https://twitter.com/home",
+    x: "",
+    tele: "https://t.me/stanachance",
+    in: "",
   },
   {
     name: "DEV LOKI",
     title: "Chief Product Officer",
     img: loki,
-    x: "https://twitter.com/home",
-    tele: "https://twitter.com/home",
-    in: "https://twitter.com/home",
+    x: "https://twitter.com/DevLoki888",
+    tele: "https://t.me/tonyWalkerReal",
+    in: "https://www.linkedin.com/in/tuan-tran-051439178/",
   },
   {
     name: "FRANKIE",
     title: "Chief Executive Officer",
     img: frankie,
-    x: "https://twitter.com/home",
-    tele: "https://twitter.com/home",
-    in: "https://twitter.com/home",
+    x: "https://twitter.com/0xfr4nkie",
+    tele: "https://t.me/frankiem33m",
+    in: "https://www.linkedin.com/in/0xfrank",
   },
   {
     name: "BRIAN",
     title: "Chief Finance Officer",
     img: brian,
-    x: "https://twitter.com/home",
-    tele: "https://twitter.com/home",
-    in: "https://twitter.com/home",
+    x: "",
+    tele: "https://t.me/brianonus",
+    in: "https://www.linkedin.com/in/brian-tran-59341411a/",
   },
   {
     name: "DAVID",
     title: "Chief Strategy Officer",
     img: david,
-    x: "https://twitter.com/home",
-    tele: "https://twitter.com/home",
-    in: "https://twitter.com/home",
+    x: "",
+    tele: "",
+    in: "https://www.linkedin.com/in/davidtanxy/",
   },
 ];
 // partner
@@ -298,7 +298,7 @@ const index = () => {
                       </NextLink>
                     )}
                     {item.tele && (
-                      <NextLink href={item.x} target="_blank">
+                      <NextLink href={item.tele} target="_blank">
                         <Flex
                           gap={2}
                           alignItems={"center"}
@@ -326,7 +326,7 @@ const index = () => {
                       </NextLink>
                     )}
                     {item.in && (
-                      <NextLink href={item.x} target="_blank">
+                      <NextLink href={item.in} target="_blank">
                         <Flex
                           gap={2}
                           alignItems={"center"}
