@@ -16,6 +16,7 @@
     "chart.js": "^4.4.1",
     "firebase": "^10.9.0",
     "framer-motion": "^6.5.1",
+    "jarallax": "^2.2.0",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

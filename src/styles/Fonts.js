@@ -6,7 +6,6 @@ const Fonts = () => (
     styles={`
       @font-face {
         font-family: "Anta";
-        src: url("/fonts/anta/anta.ttf") format("truetype");
         font-weight: normal;
         font-style: normal;
         font-display: swap;

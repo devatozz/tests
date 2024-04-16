@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Anta";
-  src: url("/public/fonts/anta/anta.ttf"),
+  src: url("/fonts/anta/anta.ttf"),
     /* IE9 Compat Modes */
 
 }
@@ -8,12 +8,15 @@
 #__next {
   background: black;
 }
-.ytp-title {
-  display: none;
-}
 
 .video-full,
 .test.jarallax {
   width: 100%;
   height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .test.jarallax iframe {
+    margin-left: -800px !important;
+  }
 }
