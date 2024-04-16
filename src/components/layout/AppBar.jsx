@@ -85,7 +85,7 @@ export default function AppBar({ bg }) {
   const router = useRouter();
   const currentPath = router.pathname;
   return (
-    <Box>
+    <Box position={'relative'} zIndex={9}>
       <Flex
         bg={bg}
         color={useColorModeValue("#fff.900", "red")}
