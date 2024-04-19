@@ -54,15 +54,13 @@ export default function App(props) {
         <meta name="title" content="M33M Labs" />
         <meta
           name="description"
-          content="We build and experiment world class products in crypto space
-                  that will definitely blow your mind with abnormal DeFi models."
+          content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
         />
         <title>M33M</title>
         <meta property="og:title" content="M33M Labs" />
         <meta
           property="og:description"
-          content="We build and experiment world class products in crypto space
-                  that will definitely blow your mind with abnormal DeFi models."
+          content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
         />
         <meta property="og:image" content="/public/asset/img/Cover.png" />
         <meta property="og:url" content="" />
@@ -70,8 +68,7 @@ export default function App(props) {
         <meta name="twitter:title" content="M33M Labs" />
         <meta
           name="twitter:description"
-          content="We build and experiment world class products in crypto space
-                  that will definitely blow your mind with abnormal DeFi models."
+          content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
         />
         <meta name="twitter:creator" content="" />
         <meta name="twitter:image" content="/public/asset/img/Cover.png" />

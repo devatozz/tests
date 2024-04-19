@@ -95,7 +95,11 @@ export default function Banner() {
               flexDirection={{ md: "row", base: "column" }}
             >
               <Box width={"100%"}>
-                <NextLink href={""}>
+                <a
+                  href="mailto:team@m33m.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Button
                     backgroundColor={"#fff"}
                     transition="background-color 0.3s ease-in-out"
@@ -118,10 +122,10 @@ export default function Banner() {
                   >
                     CONTACT US
                   </Button>
-                </NextLink>
+                </a>
               </Box>
               <Box width={"100%"}>
-                <NextLink href={""}>
+                <NextLink href={"/service"}>
                   <Button
                     backgroundColor={"transparent"}
                     transition="background-color 0.3s ease-in-out"

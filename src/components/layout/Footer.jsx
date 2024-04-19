@@ -77,7 +77,7 @@ export default function LargeWithLogoLeft() {
               width={{ md: "100%", base: "100%" }}
               textAlign={"center"}
             >
-              <NextLink href={""} target="_blank">
+              <NextLink href={"https://twitter.com/m33mlabs"} target="_blank">
                 <Flex gap={2} alignItems={"center"} justifyContent={"center"}>
                   <Box
                     as="span"
@@ -95,7 +95,7 @@ export default function LargeWithLogoLeft() {
                   </Box>
                 </Flex>
               </NextLink>
-              <NextLink href={""} target="_blank">
+              <NextLink href={"https://t.me/frankiem33m"} target="_blank">
                 <Flex gap={2} alignItems={"center"} justifyContent={"center"}>
                   <Box
                     as="span"
@@ -197,7 +197,7 @@ export default function LargeWithLogoLeft() {
                   PORTFOLIO
                 </Text>
               </NextLink>
-              <NextLink href={"/links"}>
+              <NextLink href={"https://linktr.ee/m33mlabs"} target="_blank">
                 <Text
                   color={"#fff"}
                   fontSize={{ base: "16px", md: "26px" }}

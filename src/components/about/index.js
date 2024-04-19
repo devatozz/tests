@@ -15,7 +15,7 @@ import { ScrollToTopButton } from "../home/Banner";
 import NextLink from "next/link";
 // avatar
 let stan =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/stan.svg?alt=media&token=77fdd1df-f7da-4153-8c4c-814a01ab1a28";
+  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/stan.svg?alt=media&token=3af8bac4-ef14-4937-8389-f771277fde22";
 let loki =
   "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/loki.svg?alt=media&token=0d17982c-bfb1-44b0-b123-81469cbcced1";
 let frankie =
@@ -30,7 +30,7 @@ const AVATAR = [
     name: "STAN A CHANCE",
     title: "Chief Airdrop Officer",
     img: stan,
-    x: "",
+    x: "https://twitter.com/stanachance",
     tele: "https://t.me/stanachance",
     in: "",
   },

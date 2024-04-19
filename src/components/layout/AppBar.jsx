@@ -71,9 +71,9 @@ const NAV_ITEMS = [
   },
   {
     label: "LINKS",
-    href: "/links",
+    href: "https://linktr.ee/m33mlabs",
     icons: "",
-    target: "",
+    target: "_blank",
     active: true,
   },
 ];
@@ -85,7 +85,7 @@ export default function AppBar({ bg }) {
   const router = useRouter();
   const currentPath = router.pathname;
   return (
-    <Box position={'relative'} zIndex={9}>
+    <Box position={"relative"} zIndex={9}>
       <Flex
         bg={bg}
         color={useColorModeValue("#fff.900", "red")}
@@ -144,7 +144,7 @@ export default function AppBar({ bg }) {
                               pr={2}
                               py={2}
                               fontSize={"16px"}
-                              fontFamily="body"
+                              fontFamily="Anta"
                               color={
                                 currentPath === navItem.href
                                   ? "#0068FF"
@@ -169,7 +169,7 @@ export default function AppBar({ bg }) {
                               <Text
                                 pr={2}
                                 fontSize={"16px"}
-                                fontFamily="Lakes"
+                                fontFamily="Anta"
                                 textAlign="center"
                                 color={
                                   currentPath === navItem.href
@@ -267,7 +267,7 @@ export default function AppBar({ bg }) {
                               pr={2}
                               py={2}
                               fontSize={"base"}
-                              fontFamily="body"
+                              fontFamily="Anta"
                               fontWeight={700}
                               color={navItem.active ? "#FFF" : "gray"}
                               cursor={
@@ -300,7 +300,7 @@ export default function AppBar({ bg }) {
                           <Text
                             pr={2}
                             fontSize={"16px"}
-                            fontFamily="body"
+                            fontFamily="Anta"
                             color={navItem.active ? "#FFF" : "gray"}
                             cursor={navItem.active ? "pointer" : "not-allowed"}
                             _hover={{
@@ -348,7 +348,7 @@ const DesktopSuvNav = ({ label, href }) => {
             <Text
               transition={"all 0.3s ease"}
               fontWeight={200}
-              fontFamily="body"
+              fontFamily="Anta"
             >
               {label}
             </Text>
