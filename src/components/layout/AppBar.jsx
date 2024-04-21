@@ -90,18 +90,20 @@ export default function AppBar({ bg }) {
         bg={bg}
         color={useColorModeValue("#fff.900", "red")}
         minH={"72px"}
-        paddingX={{ base: 4, md: 12, xl: 0 }}
+        paddingX={{ base: 0, md: 12, xl: 0 }}
         paddingY={{ base: "18px", md: "10px" }}
         id="top"
         justifyContent={"center"}
         w="full"
         align={"center"}
+        pt="30px"
       >
         <Flex
           // maxW={"1200px"}
           justifyContent={"space-between"}
           px={{ lg: "10px", xl: 0 }}
-          w={{ base: "full", xl: "90%" }}
+          w={{ base: "full", xl: "100%" }}
+          maxW={"90%"}
           align={"center"}
         >
           <Flex justifyContent={"flex-start"}>
@@ -116,6 +118,7 @@ export default function AppBar({ bg }) {
                   <Image
                     src="./asset/img/logo.png"
                     alt="m33m"
+                    minW="70px"
                     height={"28px"}
                   />
                 </Flex>
@@ -143,7 +146,7 @@ export default function AppBar({ bg }) {
                               rel="noopener noreferrer"
                               pr={2}
                               py={2}
-                              fontSize={"16px"}
+                              fontSize={"20px"}
                               fontFamily="Anta"
                               color={
                                 currentPath === navItem.href
@@ -168,7 +171,7 @@ export default function AppBar({ bg }) {
                             >
                               <Text
                                 pr={2}
-                                fontSize={"16px"}
+                                fontSize={"20px"}
                                 fontFamily="Anta"
                                 textAlign="center"
                                 color={
@@ -187,7 +190,7 @@ export default function AppBar({ bg }) {
                                   display: "flex",
                                   alignItems: "center",
                                   justifyContent: "center",
-                                  fontWeight: "600",
+                                  fontWeight: "400",
                                 }}
                               >
                                 {navItem.label}
@@ -231,6 +234,7 @@ export default function AppBar({ bg }) {
             <DrawerOverlay />
             <DrawerContent
               width={"90%"}
+              mx="auto"
               background={"#0068FF"}
               backgroundSize={"cover"}
             >
@@ -241,6 +245,7 @@ export default function AppBar({ bg }) {
                     <Image
                       src="./asset/img/logo.png"
                       alt="m33m"
+                      minW="70px"
                       height={"28px"}
                     />
                   </Flex>

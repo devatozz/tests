@@ -11,17 +11,17 @@ import {
 import { ScrollToTopButton } from "../home/Banner";
 import NextLink from "next/link";
 let mono =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/mono.svg?alt=media&token=52504040-0644-4340-93be-f8fba38501c6";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/931740d7b5a0b483496ecc775461acb36dc0d73f/m33m/portfolio/mono.svg";
 let musd =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/musd.svg?alt=media&token=3af5de67-5d36-4765-8244-631293e96ece";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/931740d7b5a0b483496ecc775461acb36dc0d73f/m33m/portfolio/musd.svg";
 let hype =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/hype.svg?alt=media&token=fdd5dea8-a0c4-4efe-aa36-3294d59a2ce1";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/931740d7b5a0b483496ecc775461acb36dc0d73f/m33m/portfolio/hype.svg";
 let monoIcon =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/monoIcon.svg?alt=media&token=baffb59d-fcde-4e14-87a5-3e275e796f13";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/972121fd1d4bcd3a1e75b7e572f45f9611049744/m33m/portfolio/monoIcon.svg";
 let musdIcon =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/msdIcon.svg?alt=media&token=d324c92b-bb16-4f34-897f-d02ee4a6ae22";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/972121fd1d4bcd3a1e75b7e572f45f9611049744/m33m/portfolio/msdIcon.svg";
 let hypeIcon =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/hypeIcon.svg?alt=media&token=228fb37b-3acb-4ddb-b4a2-4b916772f935";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/972121fd1d4bcd3a1e75b7e572f45f9611049744/m33m/portfolio/hypeIcon.svg";
 
 const index = () => {
   const [hoverMonoswap, setHoverMonoSwap] = useState(null);
@@ -38,20 +38,18 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={"90%"}>
+        <Container maxW={"90%"} p="0">
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
                 fontWeight={400}
                 fontSize={{
-                  base: "22px",
-                  md: "28px",
+                  base: "28px",
                   xl: "36px",
-                  "2xl": "56px",
+                  "2xl": "80px",
                 }}
                 lineHeight={{
-                  base: "28px",
-                  md: "36px",
+                  base: "36px",
                   xl: "50px",
                   "2xl": "70px",
                 }}
@@ -62,12 +60,12 @@ const index = () => {
                 <span style={{ color: "#0068FF" }}> TOGETHER </span>
               </Heading>
             </Box>
-            <Box border={"1px solid gray"} margin={"30px 0px"}></Box>
+            <Box border={"1px solid gray"} margin={"64px 0px"}></Box>
             {/* Monoswap*/}
             <Box>
               <Box
                 width={"100%"}
-                height={"fit-content"}
+                maxH={"400px"}
                 border={"1px solid gray"}
                 display={"flex"}
                 alignItems={"center"}
@@ -82,6 +80,8 @@ const index = () => {
                   display={"flex"}
                   alignItems={"flex-start"}
                   justifyContent={"flex-start"}
+                  p={{ lg: "40px" }}
+                  py="10px"
                 >
                   <Box
                     display={"flex"}
@@ -112,7 +112,7 @@ const index = () => {
                       <Box>
                         <Text
                           color={"#fff"}
-                          fontSize={{ base: "16px", md: "26px" }}
+                          fontSize={{ base: "16px", md: "28px" }}
                           fontWeight={{ base: "300", md: "400" }}
                           lineHeight={{ base: "19px", md: "26px" }}
                           fontFamily="Anta"
@@ -122,7 +122,11 @@ const index = () => {
                         </Text>
                       </Box>
                     </Box>
-                    <Box align={"center"} textAlign={"left"} marginTop={"10px"}>
+                    <Box
+                      align={"center"}
+                      textAlign={"left"}
+                      my={{ base: "10px", lg: "30px" }}
+                    >
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
@@ -143,7 +147,7 @@ const index = () => {
                         different yield sources.
                       </Text>
                     </Box>
-                    <Box width={{ base: "100%", md: "40%" }} marginTop={"20px"}>
+                    <Box width={{ base: "100%", md: "fit-content" }}>
                       <NextLink
                         href={"https://www.monoswap.io/"}
                         target="_blank"
@@ -164,8 +168,8 @@ const index = () => {
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: "20px" }}
-                          height={{ base: "30px", md: "56px" }}
+                          fontSize={{ base: "11px", md: "18px", lg: "24px" }}
+                          height={{ base: "30px", lg: "56px" }}
                           color={"#000"}
                         >
                           Launch App
@@ -187,10 +191,10 @@ const index = () => {
               </Box>
             </Box>
 
-            <Box marginTop={"30px"}>
+            <Box marginTop={"24px"}>
               <Box
                 width={"100%"}
-                height={"fit-content"}
+                maxH={"400px"}
                 border={"1px solid gray"}
                 display={"flex"}
                 alignItems={"center"}
@@ -214,6 +218,8 @@ const index = () => {
                   display={"flex"}
                   alignItems={"flex-start"}
                   justifyContent={"flex-start"}
+                  p={{ lg: "40px" }}
+                  py="10px"
                 >
                   <Box
                     display={"flex"}
@@ -242,7 +248,7 @@ const index = () => {
                       <Box>
                         <Text
                           color={"#fff"}
-                          fontSize={{ base: "16px", md: "26px" }}
+                          fontSize={{ base: "16px", md: "28px" }}
                           fontWeight={{ base: "300", md: "400" }}
                           lineHeight={{ base: "19px", md: "26px" }}
                           fontFamily="Anta"
@@ -252,7 +258,11 @@ const index = () => {
                         </Text>
                       </Box>
                     </Box>
-                    <Box align={"center"} textAlign={"left"} marginTop={"10px"}>
+                    <Box
+                      align={"center"}
+                      textAlign={"left"}
+                      my={{ base: "10px", lg: "30px" }}
+                    >
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
@@ -273,7 +283,7 @@ const index = () => {
                         that ever existed.
                       </Text>
                     </Box>
-                    <Box width={{ base: "100%", md: "40%" }} marginTop={"20px"}>
+                    <Box width={{ base: "100%", md: "fit-content" }}>
                       <NextLink
                         href={"https://www.monoswap.io/#/musd"}
                         target="_blank"
@@ -294,8 +304,8 @@ const index = () => {
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: "20px" }}
-                          height={{ base: "30px", md: "56px" }}
+                          fontSize={{ base: "11px", md: "18px", lg: "24px" }}
+                          height={{ base: "30px", lg: "56px" }}
                           color={"#000"}
                         >
                           Launch App
@@ -306,10 +316,10 @@ const index = () => {
                 </Box>
               </Box>
             </Box>
-            <Box marginTop={"30px"}>
+            <Box marginTop={"24px"}>
               <Box
                 width={"100%"}
-                height={"fit-content"}
+                maxH="400px"
                 border={"1px solid gray"}
                 display={"flex"}
                 alignItems={"center"}
@@ -324,6 +334,8 @@ const index = () => {
                   display={"flex"}
                   alignItems={"flex-start"}
                   justifyContent={"flex-start"}
+                  p={{ lg: "40px" }}
+                  py="10px"
                 >
                   <Box
                     display={"flex"}
@@ -352,7 +364,7 @@ const index = () => {
                       <Box>
                         <Text
                           color={"#fff"}
-                          fontSize={{ base: "16px", md: "26px" }}
+                          fontSize={{ base: "16px", md: "28px" }}
                           fontWeight={{ base: "300", md: "400" }}
                           lineHeight={{ base: "19px", md: "26px" }}
                           fontFamily="Anta"
@@ -362,7 +374,11 @@ const index = () => {
                         </Text>
                       </Box>
                     </Box>
-                    <Box align={"center"} textAlign={"left"} marginTop={"10px"}>
+                    <Box
+                      align={"center"}
+                      textAlign={"left"}
+                      my={{ base: "10px", lg: "30px" }}
+                    >
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
@@ -376,16 +392,16 @@ const index = () => {
                         textAlign={{ md: "left", base: "left" }}
                         fontWeight={{ base: 400, md: 400 }}
                       >
-                        MonoSwap is a gamified Decentralized Exchange built on
-                        the Blast network. It leverages the native yield for
-                        on-chain assets via an XP system that allows traders,
-                        liquidity providers, and community members to earn 5
-                        different yield sources.
+                        HYPE is one of our experiments in decentralized
+                        liquidity field. The idea of this project is to create a
+                        special token where the community owns 100% of the
+                        liquidity and earn incentives on every single DEX trade.
+                        Fully open source and decentralized.
                       </Text>
                     </Box>
-                    <Box width={{ base: "100%", md: "40%" }} marginTop={"20px"}>
+                    <Box width={{ base: "100%", md: "fit-content" }}>
                       <NextLink
-                        href={"https://www.monoswap.io/#/xp"}
+                        href={"https://hypecoinblast.io/"}
                         target="_blank"
                       >
                         <Button
@@ -404,8 +420,8 @@ const index = () => {
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: "20px" }}
-                          height={{ base: "30px", md: "56px" }}
+                          fontSize={{ base: "11px", md: "18px", lg: "24px" }}
+                          height={{ base: "30px", lg: "56px" }}
                           color={"#000"}
                         >
                           Launch App

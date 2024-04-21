@@ -42,9 +42,9 @@ export default function LargeWithLogoLeft() {
             </NextLink>
             <Text
               color={"#fff"}
-              fontSize={{ base: "16px", md: "26px" }}
+              fontSize={{ base: "16px", md: "24px" }}
               fontWeight={{ base: "300", md: "400" }}
-              lineHeight={{ base: "19px", md: "26px" }}
+              lineHeight={{ base: "19px", md: "22px" }}
               fontFamily="Anta"
               fontStyle={"normal"}
               paddingTop={{ md: "20px", base: "10px" }}
@@ -147,19 +147,19 @@ export default function LargeWithLogoLeft() {
           >
             <Box
               display={"flex"}
-              alignItems={"center"}
+              alignItems={"flex-start"}
               justifyContent={"space-between"}
               flexDirection={"column"}
             >
               <NextLink href={"/service"}>
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
+                  // paddingTop={{ md: "20px", base: "10px" }}
                 >
                   SERVICES
                 </Text>
@@ -167,12 +167,12 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"/careers"}>
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
+                  paddingTop={{ md: "60px", base: "10px" }}
                 >
                   CAREERS
                 </Text>
@@ -180,19 +180,18 @@ export default function LargeWithLogoLeft() {
             </Box>
             <Box
               display={"flex"}
-              alignItems={"center"}
+              alignItems={"flex-start"}
               justifyContent={"space-around"}
               flexDirection={"column"}
             >
               <NextLink href={"/portfolio"}>
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
                 >
                   PORTFOLIO
                 </Text>
@@ -200,12 +199,13 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"https://linktr.ee/m33mlabs"} target="_blank">
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
+                  paddingTop={{ md: "60px", base: "10px" }}
+                  textAlign={"left"}
                 >
                   LINKS
                 </Text>

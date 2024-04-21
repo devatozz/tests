@@ -42,7 +42,7 @@ const ITEM_CAREER = [
 
 const index = () => {
   return (
-    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 72px)" bg={"#000"}>
+    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 172px)" bg={"#000"}>
       <Flex
         alignItems={"center"}
         position={"relative"}
@@ -51,7 +51,7 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={"90%"}>
+        <Container maxW={"90%"} p="0">
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
@@ -60,7 +60,7 @@ const index = () => {
                   base: "22px",
                   md: "28px",
                   xl: "36px",
-                  "2xl": "56px",
+                  "2xl": "80px",
                 }}
                 lineHeight={{
                   base: "28px",
@@ -76,7 +76,7 @@ const index = () => {
                 FORCE TODAY
               </Heading>
             </Box>
-            <Box border={"1px solid gray"} margin={"30px 0px"}></Box>
+            <Box border={"1px solid gray"} margin={"64px 0px"}></Box>
             {/* tab selected */}
             <Box>
               <Tabs
@@ -89,10 +89,11 @@ const index = () => {
                 <TabList>
                   <SimpleGrid
                     columns={{ base: 1, md: 6 }}
-                    spacing={{ md: 4, base: 0 }}
+                    spacing={{ md: "64px", base: 0 }}
+                    display={{ md: "flex" }}
                   >
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "18px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -101,7 +102,7 @@ const index = () => {
                       ENGINEERING
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "18px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -110,7 +111,7 @@ const index = () => {
                       CREATIVE
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "18px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -119,7 +120,7 @@ const index = () => {
                       GROWTH
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "18px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -128,7 +129,7 @@ const index = () => {
                       LEGAL
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "18px", md: "20px", xl: "22px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -137,7 +138,7 @@ const index = () => {
                       HUMAN
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "16px", md: "18px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
