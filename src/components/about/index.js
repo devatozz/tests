@@ -163,20 +163,18 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={"90%"}>
+        <Container maxW={{ base: "90%", '2xl': '100%' }} p='0'>
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
                 fontWeight={400}
                 fontSize={{
-                  base: "22px",
-                  md: "28px",
+                  base: "28px",
                   xl: "36px",
-                  "2xl": "56px",
+                  "2xl": "80px",
                 }}
                 lineHeight={{
-                  base: "28px",
-                  md: "36px",
+                  base: "36px",
                   xl: "50px",
                   "2xl": "70px",
                 }}
@@ -188,12 +186,12 @@ const index = () => {
                 OF WEB3
               </Heading>
             </Box>
-            <Box border={"1px solid gray"} margin={"30px 0px"}></Box>
-            <Box align={"center"} marginBottom={"60px"}>
+            <Box border={"1px solid gray"} margin={"64px 0px"}></Box>
+            <Box align={"center"} marginBottom={"60px"} maxW='1680px'>
               <Text
                 color={"#fff"}
                 fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
-                lineHeight={{ base: "24pxpx", xl: "28px", "2xl": "40px" }}
+                lineHeight={{ base: "24pxpx", xl: "28px", "2xl": "36px" }}
                 fontFamily="Anta"
                 textAlign={{ md: "left", base: "left" }}
                 fontWeight={{ base: 400, md: 400 }}
@@ -215,17 +213,17 @@ const index = () => {
             <Box
               margin={"20px auto"}
               display={"flex"}
-              alignItems={"flex-start"}
-              justifyContent={"center"}
-              gap={10}
+              alignItems={{ base: 'center', md: "flex-start" }}
+              justifyContent={{ base: 'center', md: "flex-start" }}
+              gap={'24px'}
               flexWrap={"wrap"}
             >
               {/* avatar card */}
               {AVATAR.map((item, index) => (
                 <Box
                   display={"flex"}
-                  alignItems={"flex-start"}
-                  justifyContent={"flex-start"}
+                  alignItems={{ base: 'center', md: "flex-start" }}
+                  justifyContent={{ base: 'center', md: "flex-start" }}
                   flexDirection={"column"}
                   key={index}
                   margin={"20px 0px"}
@@ -233,8 +231,8 @@ const index = () => {
                   <Image
                     src={item.img}
                     alt="avatar"
-                    height={"300px"}
-                    width={"300px"}
+                    height={"317px"}
+                    width={"317px"}
                     filter={"grayscale(1)"}
                     _hover={{
                       filter: "none",
@@ -247,7 +245,7 @@ const index = () => {
                     lineHeight={{ base: "19px", md: "26px" }}
                     fontFamily="Anta"
                     fontStyle={"normal"}
-                    paddingTop={{ md: "20px", base: "10px" }}
+                    paddingTop={{ md: "40px", base: "10px" }}
                   >
                     {item.name}
                   </Text>
@@ -258,7 +256,7 @@ const index = () => {
                     lineHeight={{ base: "19px", md: "26px" }}
                     fontFamily="Anta"
                     fontStyle={"normal"}
-                    paddingTop={{ md: "20px", base: "10px" }}
+                    paddingTop={{ md: "12px", base: "10px" }}
                   >
                     {item.title}
                   </Text>
@@ -267,7 +265,7 @@ const index = () => {
                     alignItems={"center"}
                     justifyContent={"flex-start"}
                     gap={"10px"}
-                    marginTop={"20px"}
+                    marginTop={"24px"}
                   >
                     {item.x && (
                       <NextLink href={item.x} target="_blank">
@@ -357,14 +355,14 @@ const index = () => {
                 </Box>
               ))}
             </Box>
-            <Box align={"center"} marginTop={"80px"}>
+            <Box align={"center"} marginTop={"160px"}>
               <Heading
                 fontWeight={400}
                 fontSize={{
                   base: "22px",
                   md: "28px",
                   xl: "36px",
-                  "2xl": "56px",
+                  "2xl": "80px",
                 }}
                 lineHeight={{
                   base: "28px",
@@ -380,7 +378,7 @@ const index = () => {
                 OF CRYPTO
               </Heading>
             </Box>
-            <Box border={"1px solid gray"} margin={"30px 0px"}></Box>
+            <Box border={"1px solid gray"} margin={"64px 0px"}></Box>
             <Box align={"center"}>
               <Text
                 color={"#fff"}
@@ -398,9 +396,9 @@ const index = () => {
             <Box
               margin={"80px auto"}
               display={"flex"}
-              alignItems={"flex-start"}
-              justifyContent={"center"}
-              gap={10}
+              alignItems={{ base: 'center', md: "flex-start" }}
+              justifyContent={{ base: 'center', md: "flex-start" }}
+              gap={'24px'}
               flexWrap={"wrap"}
             >
               {/* avatar card */}
@@ -415,8 +413,8 @@ const index = () => {
                   <Image
                     src={item.img}
                     alt="avatar"
-                    height={"300px"}
-                    width={"300px"}
+                    height={"317px"}
+                    width={"317px"}
                     filter={"grayscale(1)"}
                     _hover={{
                       filter: "none",

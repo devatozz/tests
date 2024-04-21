@@ -13,7 +13,7 @@ export default function Index() {
         top: 0,
         left: 0,
       }}>
-        <Jarallax speed={0.2} videoSrc="https://www.youtube.com/watch?v=0SzvZph_P4Y"></Jarallax>
+        <Jarallax speed={0.2} videoSrc="https://www.youtube.com/v/0SzvZph_P4Y?rel=0&vq=hd1080p"></Jarallax>
       </div>
       <Banner />
     </Box>

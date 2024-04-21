@@ -81,7 +81,7 @@ const ITEM_SERVICE = [
 
 const index = () => {
   return (
-    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 72px)" bg={"#000"}>
+    <Box m={0} w={{ xl: '"100%"' }} mx='auto' p={0} mb={'300px'} bg={"#000"}>
       <Flex
         alignItems={"center"}
         position={"relative"}
@@ -90,7 +90,7 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={"90%"}>
+        <Container maxW={{ base: "90%", '2xl': '100%' }} p={0}>
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
@@ -99,7 +99,7 @@ const index = () => {
                   base: "22px",
                   md: "28px",
                   xl: "36px",
-                  "2xl": "56px",
+                  "2xl": "80px",
                 }}
                 lineHeight={{
                   base: "28px",
@@ -114,7 +114,7 @@ const index = () => {
                 <span style={{ color: "#0068FF" }}> SERVICES </span>
               </Heading>
             </Box>
-            <Box border={"1px solid gray"} margin={"30px 0px"}></Box>
+            <Box border={"1px solid gray"} margin={"64px 0px"}></Box>
             {/* tab selected */}
             <Box>
               <Tabs
@@ -122,15 +122,18 @@ const index = () => {
                 variant="unstyled"
                 fontSize={{ md: "22px", base: "18px" }}
                 textAlign={"left"}
+                p={0}
               >
                 {" "}
                 <TabList>
                   <SimpleGrid
                     columns={{ base: 1, md: 4 }}
-                    spacing={{ md: 4, base: 0 }}
+                    spacing={{ lg: '64px', base: 0 }}
+                    display={{ md: 'flex' }}
                   >
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+
+                      fontSize={{ base: "20px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -139,7 +142,7 @@ const index = () => {
                       DEFI & WEB3 PRODUCTS
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "20px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -148,7 +151,7 @@ const index = () => {
                       INFRASTRUCTURES
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "20px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -157,7 +160,7 @@ const index = () => {
                       ENTERPRISE PRODUCTS
                     </Tab>
                     <Tab
-                      fontSize={{ base: "16px", md: "18px", xl: "22px" }}
+                      fontSize={{ base: "20px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
                       alignItems={"flex-start"}
@@ -167,8 +170,9 @@ const index = () => {
                     </Tab>
                   </SimpleGrid>
                 </TabList>
-                <TabPanels marginTop={"20px"}>
-                  <TabPanel>
+
+                <TabPanels marginTop={"70px"}>
+                  <TabPanel p={0}>
                     <Box
                       key={index}
                       display={"flex"}
@@ -176,7 +180,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={5}
+                      gap={'22px'}
                     >
                       {ITEM_SERVICE[0].items.map((tab, index) => (
                         <Box
@@ -187,11 +191,11 @@ const index = () => {
                           alignItems={"center"}
                           justifyContent={"center"}
                           style={{
-                            padding: "5px 20px",
+                            padding: "10px 40px",
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: "20px" }}
+                          fontSize={{ base: "13px", md: "24px" }}
                           height={{ base: "30px", md: "56px" }}
                         >
                           <Text color={"#fff"}>{tab}</Text>
@@ -199,6 +203,7 @@ const index = () => {
                       ))}
                     </Box>
                   </TabPanel>
+
                   <TabPanel>
                     <Box
                       key={index}
@@ -207,7 +212,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={5}
+                      gap={'24px'}
                     >
                       {ITEM_SERVICE[1].items.map((tab, index) => (
                         <Box
@@ -218,11 +223,11 @@ const index = () => {
                           alignItems={"center"}
                           justifyContent={"center"}
                           style={{
-                            padding: "5px 20px",
+                            padding: "10px 40px",
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: "20px" }}
+                          fontSize={{ base: "13px", md: "24px" }}
                           height={{ base: "30px", md: "56px" }}
                         >
                           <Text color={"#fff"}>{tab}</Text>
@@ -238,7 +243,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={5}
+                      gap={'24px'}
                     >
                       {ITEM_SERVICE[2].items.map((tab, index) => (
                         <Box
@@ -249,11 +254,11 @@ const index = () => {
                           alignItems={"center"}
                           justifyContent={"center"}
                           style={{
-                            padding: "5px 20px",
+                            padding: "10px 40px",
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: "20px" }}
+                          fontSize={{ base: "13px", md: "24px" }}
                           height={{ base: "30px", md: "56px" }}
                         >
                           <Text color={"#fff"}>{tab}</Text>
@@ -269,7 +274,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={5}
+                      gap={'24px'}
                     >
                       {ITEM_SERVICE[3].items.map((tab, index) => (
                         <Box
@@ -280,11 +285,11 @@ const index = () => {
                           alignItems={"center"}
                           justifyContent={"center"}
                           style={{
-                            padding: "5px 20px",
+                            padding: "10px 40px",
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: "20px" }}
+                          fontSize={{ base: "13px", md: "24px" }}
                           height={{ base: "30px", md: "56px" }}
                         >
                           <Text color={"#fff"}>{tab}</Text>
@@ -299,7 +304,7 @@ const index = () => {
         </Container>
       </Flex>
       <ScrollToTopButton />
-    </Box>
+    </Box >
   );
 };
 

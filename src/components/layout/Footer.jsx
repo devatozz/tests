@@ -23,7 +23,7 @@ export default function LargeWithLogoLeft() {
     >
       <Container
         as={Stack}
-        maxW={"90%"}
+        maxW={"1685px"}
         maxHeight={{ md: "400px", base: "auto" }}
         color={"#fff"}
         borderTop={"2px solid gray "}
@@ -42,9 +42,9 @@ export default function LargeWithLogoLeft() {
             </NextLink>
             <Text
               color={"#fff"}
-              fontSize={{ base: "16px", md: "26px" }}
+              fontSize={{ base: "16px", md: "24px" }}
               fontWeight={{ base: "300", md: "400" }}
-              lineHeight={{ base: "19px", md: "26px" }}
+              lineHeight={{ base: "19px", md: "22px" }}
               fontFamily="Anta"
               fontStyle={"normal"}
               paddingTop={{ md: "20px", base: "10px" }}
@@ -142,21 +142,23 @@ export default function LargeWithLogoLeft() {
           <Box
             display={"flex"}
             alignItems={"center"}
-            justifyContent={"space-around"}
+            justifyContent={{base: 'center', md: "flex-end"}}
             flexDirection={"row"}
+            gap={{base: '20px', lg: '184px'}}
           >
             <Box
               display={"flex"}
               alignItems={"center"}
               justifyContent={"space-between"}
               flexDirection={"column"}
+              gap={{base: '10px', md: '56px'}}
             >
               <NextLink href={"/service"}>
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
                   paddingTop={{ md: "20px", base: "10px" }}
@@ -167,9 +169,9 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"/careers"}>
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
                   paddingTop={{ md: "20px", base: "10px" }}
@@ -178,18 +180,20 @@ export default function LargeWithLogoLeft() {
                 </Text>
               </NextLink>
             </Box>
+
             <Box
               display={"flex"}
-              alignItems={"center"}
+              alignItems={"flex-start"}
               justifyContent={"space-around"}
               flexDirection={"column"}
+              gap={{base: '10px', md: '56px'}}
             >
               <NextLink href={"/portfolio"}>
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
                   paddingTop={{ md: "20px", base: "10px" }}
@@ -200,9 +204,9 @@ export default function LargeWithLogoLeft() {
               <NextLink href={"https://linktr.ee/m33mlabs"} target="_blank">
                 <Text
                   color={"#fff"}
-                  fontSize={{ base: "16px", md: "26px" }}
+                  fontSize={{ base: "16px", md: "20px" }}
                   fontWeight={{ base: "300", md: "400" }}
-                  lineHeight={{ base: "19px", md: "26px" }}
+                  lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
                   paddingTop={{ md: "20px", base: "10px" }}
