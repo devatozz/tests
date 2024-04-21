@@ -11,17 +11,17 @@ import {
 import { ScrollToTopButton } from "../home/Banner";
 import NextLink from "next/link";
 let mono =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/mono.svg?alt=media&token=52504040-0644-4340-93be-f8fba38501c6";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/931740d7b5a0b483496ecc775461acb36dc0d73f/m33m/portfolio/mono.svg";
 let musd =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/musd.svg?alt=media&token=3af5de67-5d36-4765-8244-631293e96ece";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/931740d7b5a0b483496ecc775461acb36dc0d73f/m33m/portfolio/musd.svg";
 let hype =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/hype.svg?alt=media&token=fdd5dea8-a0c4-4efe-aa36-3294d59a2ce1";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/931740d7b5a0b483496ecc775461acb36dc0d73f/m33m/portfolio/hype.svg";
 let monoIcon =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/monoIcon.svg?alt=media&token=baffb59d-fcde-4e14-87a5-3e275e796f13";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/972121fd1d4bcd3a1e75b7e572f45f9611049744/m33m/portfolio/monoIcon.svg";
 let musdIcon =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/msdIcon.svg?alt=media&token=d324c92b-bb16-4f34-897f-d02ee4a6ae22";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/972121fd1d4bcd3a1e75b7e572f45f9611049744/m33m/portfolio/msdIcon.svg";
 let hypeIcon =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/hypeIcon.svg?alt=media&token=228fb37b-3acb-4ddb-b4a2-4b916772f935";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/972121fd1d4bcd3a1e75b7e572f45f9611049744/m33m/portfolio/hypeIcon.svg";
 
 const index = () => {
   const [hoverMonoswap, setHoverMonoSwap] = useState(null);
@@ -376,16 +376,16 @@ const index = () => {
                         textAlign={{ md: "left", base: "left" }}
                         fontWeight={{ base: 400, md: 400 }}
                       >
-                        MonoSwap is a gamified Decentralized Exchange built on
-                        the Blast network. It leverages the native yield for
-                        on-chain assets via an XP system that allows traders,
-                        liquidity providers, and community members to earn 5
-                        different yield sources.
+                        HYPE is one of our experiments in decentralized
+                        liquidity field. The idea of this project is to create a
+                        special token where the community owns 100% of the
+                        liquidity and earn incentives on every single DEX trade.
+                        Fully open source and decentralized.
                       </Text>
                     </Box>
                     <Box width={{ base: "100%", md: "40%" }} marginTop={"20px"}>
                       <NextLink
-                        href={"https://www.monoswap.io/#/xp"}
+                        href={"https://hypecoinblast.io/"}
                         target="_blank"
                       >
                         <Button

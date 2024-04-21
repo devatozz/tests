@@ -159,7 +159,7 @@ export default function LargeWithLogoLeft() {
                   lineHeight={{ base: "19px", md: "26px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
+                  // paddingTop={{ md: "20px", base: "10px" }}
                 >
                   SERVICES
                 </Text>
@@ -172,7 +172,7 @@ export default function LargeWithLogoLeft() {
                   lineHeight={{ base: "19px", md: "26px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
+                  paddingTop={{ md: "40px", base: "10px" }}
                 >
                   CAREERS
                 </Text>
@@ -180,7 +180,7 @@ export default function LargeWithLogoLeft() {
             </Box>
             <Box
               display={"flex"}
-              alignItems={"center"}
+              alignItems={"flex-start"}
               justifyContent={"space-around"}
               flexDirection={"column"}
             >
@@ -192,7 +192,8 @@ export default function LargeWithLogoLeft() {
                   lineHeight={{ base: "19px", md: "26px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
+                  // paddingTop={{ md: "20px", base: "10px" }}
+                  textAlign={"left"}
                 >
                   PORTFOLIO
                 </Text>
@@ -205,7 +206,8 @@ export default function LargeWithLogoLeft() {
                   lineHeight={{ base: "19px", md: "26px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "20px", base: "10px" }}
+                  paddingTop={{ md: "40px", base: "10px" }}
+                  textAlign={"left"}
                 >
                   LINKS
                 </Text>
