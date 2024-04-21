@@ -23,7 +23,7 @@ export default function LargeWithLogoLeft() {
     >
       <Container
         as={Stack}
-        maxW={"1685px"}
+        maxW={"90%"}
         maxHeight={{ md: "400px", base: "auto" }}
         color={"#fff"}
         borderTop={"2px solid gray "}
@@ -142,16 +142,14 @@ export default function LargeWithLogoLeft() {
           <Box
             display={"flex"}
             alignItems={"center"}
-            justifyContent={{base: 'center', md: "flex-end"}}
+            justifyContent={"space-around"}
             flexDirection={"row"}
-            gap={{base: '20px', lg: '184px'}}
           >
             <Box
               display={"flex"}
-              alignItems={"center"}
+              alignItems={"flex-start"}
               justifyContent={"space-between"}
               flexDirection={"column"}
-              gap={{base: '10px', md: '56px'}}
             >
               <NextLink href={"/service"}>
                 <Text
@@ -174,19 +172,17 @@ export default function LargeWithLogoLeft() {
                   lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "40px", base: "10px" }}
+                  paddingTop={{ md: "60px", base: "10px" }}
                 >
                   CAREERS
                 </Text>
               </NextLink>
             </Box>
-
             <Box
               display={"flex"}
               alignItems={"flex-start"}
               justifyContent={"space-around"}
               flexDirection={"column"}
-              gap={{base: '10px', md: '56px'}}
             >
               <NextLink href={"/portfolio"}>
                 <Text
@@ -196,8 +192,6 @@ export default function LargeWithLogoLeft() {
                   lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  // paddingTop={{ md: "20px", base: "10px" }}
-                  textAlign={"left"}
                 >
                   PORTFOLIO
                 </Text>
@@ -210,7 +204,7 @@ export default function LargeWithLogoLeft() {
                   lineHeight={{ base: "19px", md: "22px" }}
                   fontFamily="Anta"
                   fontStyle={"normal"}
-                  paddingTop={{ md: "40px", base: "10px" }}
+                  paddingTop={{ md: "60px", base: "10px" }}
                   textAlign={"left"}
                 >
                   LINKS
