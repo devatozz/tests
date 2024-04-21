@@ -154,7 +154,7 @@ const index = () => {
   const [hoveredItemTele, setHoveredItemTele] = useState(null);
   const [hoveredItemIn, setHoveredItemIn] = useState(null);
   return (
-    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 72px)" bg={"#000"}>
+    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 172px)" bg={"#000"}>
       <Flex
         alignItems={"center"}
         position={"relative"}
@@ -163,7 +163,7 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={{ base: "90%", '2xl': '100%' }} p='0'>
+        <Container maxW={" 90%"} p="0">
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
@@ -187,7 +187,7 @@ const index = () => {
               </Heading>
             </Box>
             <Box border={"1px solid gray"} margin={"64px 0px"}></Box>
-            <Box align={"center"} marginBottom={"60px"} maxW='1680px'>
+            <Box align={"center"} marginBottom={"60px"} maxW="1680px">
               <Text
                 color={"#fff"}
                 fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
@@ -213,17 +213,17 @@ const index = () => {
             <Box
               margin={"20px auto"}
               display={"flex"}
-              alignItems={{ base: 'center', md: "flex-start" }}
-              justifyContent={{ base: 'center', md: "flex-start" }}
-              gap={'24px'}
+              alignItems={{ base: "center", md: "flex-start" }}
+              justifyContent={{ base: "center", md: "flex-start" }}
+              gap={"24px"}
               flexWrap={"wrap"}
             >
               {/* avatar card */}
               {AVATAR.map((item, index) => (
                 <Box
                   display={"flex"}
-                  alignItems={{ base: 'center', md: "flex-start" }}
-                  justifyContent={{ base: 'center', md: "flex-start" }}
+                  alignItems={{ base: "center", md: "flex-start" }}
+                  justifyContent={{ base: "center", md: "flex-start" }}
                   flexDirection={"column"}
                   key={index}
                   margin={"20px 0px"}
@@ -396,9 +396,9 @@ const index = () => {
             <Box
               margin={"80px auto"}
               display={"flex"}
-              alignItems={{ base: 'center', md: "flex-start" }}
-              justifyContent={{ base: 'center', md: "flex-start" }}
-              gap={'24px'}
+              alignItems={{ base: "center", md: "flex-start" }}
+              justifyContent={{ base: "center", md: "flex-start" }}
+              gap={"24px"}
               flexWrap={"wrap"}
             >
               {/* avatar card */}

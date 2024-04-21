@@ -42,7 +42,7 @@ const ITEM_CAREER = [
 
 const index = () => {
   return (
-    <Box m={0} w={"100%"} p={0} mb='440px' bg={"#000"}>
+    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 172px)" bg={"#000"}>
       <Flex
         alignItems={"center"}
         position={"relative"}
@@ -51,7 +51,7 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={{ base: "90%", '2xl': '100%' }} p='0'>
+        <Container maxW={"90%"} p="0">
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
@@ -89,8 +89,8 @@ const index = () => {
                 <TabList>
                   <SimpleGrid
                     columns={{ base: 1, md: 6 }}
-                    spacing={{ md: '64px', base: 0 }}
-                    display={{ md: 'flex' }}
+                    spacing={{ md: "64px", base: 0 }}
+                    display={{ md: "flex" }}
                   >
                     <Tab
                       fontSize={{ base: "18px", md: "20px", xl: "28px" }}

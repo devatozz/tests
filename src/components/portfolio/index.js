@@ -29,7 +29,7 @@ const index = () => {
   const [hoverHype, setHoverHype] = useState(null);
 
   return (
-    <Box m={0} w={"100%"} p={0} mb='60px' bg={"#000"}>
+    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 72px)" bg={"#000"}>
       <Flex
         alignItems={"center"}
         position={"relative"}
@@ -38,7 +38,7 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={"90%"} p='0'>
+        <Container maxW={"90%"} p="0">
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
@@ -80,8 +80,8 @@ const index = () => {
                   display={"flex"}
                   alignItems={"flex-start"}
                   justifyContent={"flex-start"}
-                  p={{ lg: '40px' }}
-                  py='10px'
+                  p={{ lg: "40px" }}
+                  py="10px"
                 >
                   <Box
                     display={"flex"}
@@ -122,7 +122,11 @@ const index = () => {
                         </Text>
                       </Box>
                     </Box>
-                    <Box align={"center"} textAlign={"left"} my={{ base: '10px', lg: "30px" }}>
+                    <Box
+                      align={"center"}
+                      textAlign={"left"}
+                      my={{ base: "10px", lg: "30px" }}
+                    >
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
@@ -164,7 +168,7 @@ const index = () => {
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: '18px', lg: "24px" }}
+                          fontSize={{ base: "11px", md: "18px", lg: "24px" }}
                           height={{ base: "30px", lg: "56px" }}
                           color={"#000"}
                         >
@@ -214,8 +218,8 @@ const index = () => {
                   display={"flex"}
                   alignItems={"flex-start"}
                   justifyContent={"flex-start"}
-                  p={{ lg: '40px' }}
-                  py='10px'
+                  p={{ lg: "40px" }}
+                  py="10px"
                 >
                   <Box
                     display={"flex"}
@@ -254,7 +258,11 @@ const index = () => {
                         </Text>
                       </Box>
                     </Box>
-                    <Box align={"center"} textAlign={"left"} my={{ base: '10px', lg: "30px" }}>
+                    <Box
+                      align={"center"}
+                      textAlign={"left"}
+                      my={{ base: "10px", lg: "30px" }}
+                    >
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
@@ -275,7 +283,7 @@ const index = () => {
                         that ever existed.
                       </Text>
                     </Box>
-                    <Box width={{ base: "100%", md: "fit-content" }} >
+                    <Box width={{ base: "100%", md: "fit-content" }}>
                       <NextLink
                         href={"https://www.monoswap.io/#/musd"}
                         target="_blank"
@@ -296,7 +304,7 @@ const index = () => {
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: '18px', lg: "24px" }}
+                          fontSize={{ base: "11px", md: "18px", lg: "24px" }}
                           height={{ base: "30px", lg: "56px" }}
                           color={"#000"}
                         >
@@ -311,7 +319,7 @@ const index = () => {
             <Box marginTop={"24px"}>
               <Box
                 width={"100%"}
-                maxH='400px'
+                maxH="400px"
                 border={"1px solid gray"}
                 display={"flex"}
                 alignItems={"center"}
@@ -326,8 +334,8 @@ const index = () => {
                   display={"flex"}
                   alignItems={"flex-start"}
                   justifyContent={"flex-start"}
-                  p={{ lg: '40px' }}
-                  py='10px'
+                  p={{ lg: "40px" }}
+                  py="10px"
                 >
                   <Box
                     display={"flex"}
@@ -336,7 +344,6 @@ const index = () => {
                     flexDirection={"column"}
                     padding={{ md: "5px 20px", base: "30px" }}
                     gap={"10px"}
-
                   >
                     {" "}
                     <Box
@@ -367,7 +374,11 @@ const index = () => {
                         </Text>
                       </Box>
                     </Box>
-                    <Box align={"center"} textAlign={"left"} my={{ base: '10px', lg: "30px" }}>
+                    <Box
+                      align={"center"}
+                      textAlign={"left"}
+                      my={{ base: "10px", lg: "30px" }}
+                    >
                       <Text
                         color={"#fff"}
                         fontSize={{ base: "15px", xl: "20px", "2xl": "24px" }}
@@ -409,7 +420,7 @@ const index = () => {
                             fontFamily: "Anta",
                             fontWeight: "400",
                           }}
-                          fontSize={{ base: "11px", md: '18px', lg: "24px" }}
+                          fontSize={{ base: "11px", md: "18px", lg: "24px" }}
                           height={{ base: "30px", lg: "56px" }}
                           color={"#000"}
                         >
@@ -434,7 +445,7 @@ const index = () => {
         </Container>
       </Flex>
       <ScrollToTopButton />
-    </Box >
+    </Box>
   );
 };
 

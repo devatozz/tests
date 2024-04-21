@@ -81,7 +81,7 @@ const ITEM_SERVICE = [
 
 const index = () => {
   return (
-    <Box m={0} w={{ xl: '"100%"' }} mx='auto' p={0} mb={'300px'} bg={"#000"}>
+    <Box m={0} w={"100%"} p={0} minHeight="calc(100vh - 172px)" bg={"#000"}>
       <Flex
         alignItems={"center"}
         position={"relative"}
@@ -90,7 +90,7 @@ const index = () => {
         backgroundSize={"cover"}
         backgroundPosition={"center"}
       >
-        <Container maxW={{ base: "90%", '2xl': '100%' }} p={0}>
+        <Container maxW={"90%"} p={0}>
           <Box py={{ md: 12, lg: 16 }}>
             <Box align={"center"}>
               <Heading
@@ -128,11 +128,10 @@ const index = () => {
                 <TabList>
                   <SimpleGrid
                     columns={{ base: 1, md: 4 }}
-                    spacing={{ lg: '64px', base: 0 }}
-                    display={{ md: 'flex' }}
+                    spacing={{ lg: "64px", base: 0 }}
+                    display={{ md: "flex" }}
                   >
                     <Tab
-
                       fontSize={{ base: "20px", md: "20px", xl: "28px" }}
                       _selected={{ color: "white" }}
                       display={"flex"}
@@ -170,7 +169,6 @@ const index = () => {
                     </Tab>
                   </SimpleGrid>
                 </TabList>
-
                 <TabPanels marginTop={"70px"}>
                   <TabPanel p={0}>
                     <Box
@@ -180,7 +178,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={'22px'}
+                      gap={"22px"}
                     >
                       {ITEM_SERVICE[0].items.map((tab, index) => (
                         <Box
@@ -212,7 +210,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={'24px'}
+                      gap={"24px"}
                     >
                       {ITEM_SERVICE[1].items.map((tab, index) => (
                         <Box
@@ -243,7 +241,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={'24px'}
+                      gap={"24px"}
                     >
                       {ITEM_SERVICE[2].items.map((tab, index) => (
                         <Box
@@ -274,7 +272,7 @@ const index = () => {
                       justifyContent={"flex-start"}
                       flexWrap={"wrap"}
                       flexDirection={"row"}
-                      gap={'24px'}
+                      gap={"24px"}
                     >
                       {ITEM_SERVICE[3].items.map((tab, index) => (
                         <Box
@@ -304,7 +302,7 @@ const index = () => {
         </Container>
       </Flex>
       <ScrollToTopButton />
-    </Box >
+    </Box>
   );
 };
 

@@ -85,7 +85,7 @@ export default function AppBar({ bg }) {
   const router = useRouter();
   const currentPath = router.pathname;
   return (
-    <Box position={"relative"} zIndex={9} w={{'2xl': '1685px'}}  mx='auto' >
+    <Box position={"relative"} zIndex={9}>
       <Flex
         bg={bg}
         color={useColorModeValue("#fff.900", "red")}
@@ -96,14 +96,14 @@ export default function AppBar({ bg }) {
         justifyContent={"center"}
         w="full"
         align={"center"}
-        pt='30px'
+        pt="30px"
       >
         <Flex
           // maxW={"1200px"}
           justifyContent={"space-between"}
           px={{ lg: "10px", xl: 0 }}
           w={{ base: "full", xl: "100%" }}
-          maxW={'90%'}
+          maxW={"90%"}
           align={"center"}
         >
           <Flex justifyContent={"flex-start"}>
@@ -118,7 +118,7 @@ export default function AppBar({ bg }) {
                   <Image
                     src="./asset/img/logo.png"
                     alt="m33m"
-                    minW='70px'
+                    minW="70px"
                     height={"28px"}
                   />
                 </Flex>
@@ -234,7 +234,7 @@ export default function AppBar({ bg }) {
             <DrawerOverlay />
             <DrawerContent
               width={"90%"}
-              mx='auto'
+              mx="auto"
               background={"#0068FF"}
               backgroundSize={"cover"}
             >
@@ -245,7 +245,7 @@ export default function AppBar({ bg }) {
                     <Image
                       src="./asset/img/logo.png"
                       alt="m33m"
-                      minW='70px'
+                      minW="70px"
                       height={"28px"}
                     />
                   </Flex>
