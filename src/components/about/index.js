@@ -15,15 +15,15 @@ import { ScrollToTopButton } from "../home/Banner";
 import NextLink from "next/link";
 // avatar
 let stan =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/stan.svg?alt=media&token=3af8bac4-ef14-4937-8389-f771277fde22";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/avatar/stan.svg";
 let loki =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/loki.svg?alt=media&token=0d17982c-bfb1-44b0-b123-81469cbcced1";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/avatar/loki.svg";
 let frankie =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/frankie.svg?alt=media&token=a1526bc3-0eeb-4130-9475-7f2a761e3aae";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/avatar/frankie.svg";
 let brian =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/brian.svg?alt=media&token=71f3ee06-37de-4207-9df3-0e966dc13567";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/avatar/brian.svg";
 let david =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/david.svg?alt=media&token=709cd544-c402-451c-81b8-0a25ec66803a";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/avatar/david.svg";
 
 const AVATAR = [
   {
@@ -69,35 +69,35 @@ const AVATAR = [
 ];
 // partner
 let partner1 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/1.svg?alt=media&token=21acacdb-0cb6-464a-8d71-4e088fc70a7d";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/1.svg";
 let partner2 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/2.svg?alt=media&token=0ae9ff08-d186-4864-965b-a1a0a4db9721";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/2.svg";
 let partner3 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/3.svg?alt=media&token=6df97c6e-2da9-4e9c-b702-767664eef911";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/3.svg";
 let partner4 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/4.svg?alt=media&token=ea6b061a-a87e-4d22-85dc-0c8a550015e0";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/4.svg";
 let partner5 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/5.svg?alt=media&token=6d9c1d51-f2cd-4229-a906-dbea754e2542";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/5.svg";
 let partner6 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/6.svg?alt=media&token=775c96c0-5c05-41c6-a722-4e0e5d7615ca";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/6.svg";
 let partner7 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/7.svg?alt=media&token=f7b7364c-a7e4-4fbf-8fc6-10f6f207c4a4";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/7.svg";
 let partner8 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/8.svg?alt=media&token=6decefa7-4c71-4d0f-b331-9c467217cd1b";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/8.svg";
 let partner9 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/9.svg?alt=media&token=971aa326-b0a6-43f0-8a0a-21768610b798";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/9.svg";
 let partner10 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/10.svg?alt=media&token=066cfe52-a079-4164-ae04-81c8b58f2cc2";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/10.svg";
 let partner11 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/11.svg?alt=media&token=759476ef-b57e-43d9-b085-2db9578d12f8";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/11.svg";
 let partner12 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/12.svg?alt=media&token=3c2b128f-39a8-4ac2-9677-2375773b5567";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/12.svg";
 let partner13 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/13.svg?alt=media&token=9a1b24f4-a3d8-4e58-8e47-281b487ade1e";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/13.svg";
 let partner14 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/14.svg?alt=media&token=62dc6f2b-bb8d-4f87-87bc-1a232fd04e2b";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/14.svg";
 let partner15 =
-  "https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/15.svg?alt=media&token=1d55d277-a511-47a1-aca8-617edb13ce50";
+  "https://raw.githubusercontent.com/Monoswap/images-repo/e23e208570013f0a888d5267e6df788656ae5220/m33m/partner/15.svg";
 const PARTNER_IMG = [
   {
     img: partner1,
