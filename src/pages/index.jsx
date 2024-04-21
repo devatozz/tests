@@ -5,14 +5,6 @@ import { Box } from "@chakra-ui/react";
 export default function Index() {
   return (
     <Box>
-      {/* <div style={{
-        height: '100%', width: '100%',
-        position: "fixed",
-        top: 0,
-        left: 0,
-      }}>
-        <Jarallax speed={0.2} videoSrc="https://www.youtube.com/v/0SzvZph_P4Y?rel=0&vq=hd1080p"></Jarallax>
-      </div> */}
       <video
         autoPlay
         loop
@@ -29,7 +21,7 @@ export default function Index() {
         poster="./asset/img/bgPoster.png"
       >
         <source
-          src="https://firebasestorage.googleapis.com/v0/b/monoswap-154a7.appspot.com/o/bgVideo.mp4?alt=media&token=88506fef-0c63-4f5d-982a-708f0492ac3a"
+          src="https://ipfs.io/ipfs/QmW8fycZ6QPhfA2uAM9aEwFbEibTmLvirZ5iWFkaeZKc8t"
           type="video/mp4"
         />
       </video>
