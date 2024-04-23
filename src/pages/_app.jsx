@@ -53,10 +53,7 @@ export default function App(props) {
         <title>M33M</title>
         <meta name="description" content="https://www.m33m.io/" />
         <meta property="og:title" content="M33M Labs" />
-        <meta
-          property="og:description"
-          content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
-        />
+        <meta property="og:description" content="M33M Labs - change content." />
         <meta
           property="og:image"
           content="https://raw.githubusercontent.com/Monoswap/images-repo/m33m/m33m/Cover.png"
@@ -67,7 +64,7 @@ export default function App(props) {
         <meta name="twitter:title" content="M33M Labs" />
         <meta
           name="twitter:description"
-          content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
+          content="M33M Labs - change content."
         />
         <meta name="twitter:creator" content="@m33mlabs" />
         <meta
