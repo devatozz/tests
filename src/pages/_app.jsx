@@ -49,14 +49,9 @@ export default function App(props) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <link rel="shortcut icon" href={favicon.src} />
-        <meta name="title" content="M33M Labs" />
-        <meta
-          name="description"
-          content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
-        />
+        <meta charset="utf-8" />
         <title>M33M</title>
+        <meta name="description" content="https://www.m33m.io/" />
         <meta property="og:title" content="M33M Labs" />
         <meta
           property="og:description"
@@ -66,18 +61,22 @@ export default function App(props) {
           property="og:image"
           content="https://raw.githubusercontent.com/Monoswap/images-repo/m33m/m33m/Cover.png"
         />
-        <meta property="og:url" content="" />
+        <meta property="og:url" content="https://www.m33m.io/" />
+
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="M33M Labs" />
         <meta
           name="twitter:description"
           content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
         />
-        <meta name="twitter:creator" content="" />
+        <meta name="twitter:creator" content="@m33mlabs" />
         <meta
           name="twitter:image"
           content="https://raw.githubusercontent.com/Monoswap/images-repo/m33m/m33m/Cover.png"
         />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <link rel="shortcut icon" href={favicon.src} />
+        <meta name="title" content="M33M Labs" />
       </Head>
       <ChakraProvider theme={theme}>
         <Fonts />
