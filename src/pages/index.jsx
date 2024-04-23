@@ -9,6 +9,7 @@ export default function Index() {
         autoPlay
         loop
         muted
+        playsInline
         style={{
           position: "fixed",
           top: 0,

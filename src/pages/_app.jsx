@@ -62,7 +62,10 @@ export default function App(props) {
           property="og:description"
           content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
         />
-        <meta property="og:image" content="/public/asset/img/Cover.png" />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/Monoswap/images-repo/m33m/m33m/Cover.png"
+        />
         <meta property="og:url" content="" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="M33M Labs" />
@@ -71,7 +74,10 @@ export default function App(props) {
           content="M33M Labs - Your trusted Blockchain service provider with world class crypto products."
         />
         <meta name="twitter:creator" content="" />
-        <meta name="twitter:image" content="/public/asset/img/Cover.png" />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/Monoswap/images-repo/m33m/m33m/Cover.png"
+        />
       </Head>
       <ChakraProvider theme={theme}>
         <Fonts />
